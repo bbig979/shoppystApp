@@ -34,6 +34,7 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        window.open('http://beta.shoppyst.com', '_blank', 'location=no,toolbar=no');
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
