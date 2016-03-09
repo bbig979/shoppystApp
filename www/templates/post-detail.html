@@ -1,0 +1,9 @@
+<ion-view id="post-detail">
+    <ion-content class="padding">
+        <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
+        <button class="button icon ion-ios-chatbubble-outline"></button>
+        <p ng-repeat="comment in post.comments">
+            {{ comment.user.first_name }} {{ comment.user.last_name }} : {{ comment.content }} <span am-time-ago="comment.created_at | amUtc"></span>
+        </p>
+    </ion-content>
+</ion-view>

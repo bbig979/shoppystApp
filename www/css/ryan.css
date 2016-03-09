@@ -1,0 +1,8 @@
+/* line 2, ../../scss/ryan/style/post-detail.scss */
+#post-detail img {
+  width: 100%;
+}
+/* line 5, ../../scss/ryan/style/post-detail.scss */
+#post-detail ion-content {
+  padding: 0;
+}
