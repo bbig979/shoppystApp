@@ -18,11 +18,6 @@
     </entry>
   </component>
   <component name="ProjectRootManager" version="2" />
-  <component name="VagrantSettings">
-    <option name="instanceFolder" value="" />
-    <option name="provider" value="" />
-    <option name="vagrantExecutable" value="vagrant" />
-  </component>
   <component name="masterDetails">
     <states>
       <state key="ScopeChooserConfigurable.UI">

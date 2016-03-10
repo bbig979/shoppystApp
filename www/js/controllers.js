@@ -85,10 +85,32 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts) {
+.controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts, $http) {
+    $scope.comment = {};
+    var user = JSON.parse(localStorage.getItem('user'));
     ExplorePosts.get($stateParams.postId).then(function(post){
         $scope.post = post;
     });
+    $scope.submitComment = function(){
+        $http({
+            method : 'POST',
+            url : 'http://localhost:8888/api/post/'+$scope.post.id+'/comment/create',
+            data : {comment:$scope.comment.content}
+        })
+        .success(function(response){
+            response.user = user;
+            $scope.post.comments.push(response);
+        });
+        $scope.comment.content = '';
+    };
+    $scope.remItem = function($index){
+        $http.get('http://localhost:8888/api/comment/'+$scope.post.comments[$index].id+'/delete').success(function(){
+            $scope.post.comments.splice($index, 1);
+        });
+    };
+    $scope.ownComment = function($index){
+        return user.id == $scope.post.comments[$index].user.id;
+    };
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {

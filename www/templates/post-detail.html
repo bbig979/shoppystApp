@@ -4,6 +4,15 @@
         <button class="button icon ion-ios-chatbubble-outline"></button>
         <p ng-repeat="comment in post.comments">
             {{ comment.user.first_name }} {{ comment.user.last_name }} : {{ comment.content }} <span am-time-ago="comment.created_at | amUtc"></span>
+            <a ng-click="remItem($index)" ng-if="ownComment($index)">x</a>
         </p>
+        <form name="commentForm" ng-submit="submitComment()">
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input name="comment" type="text" placeholder="Search" ng-model="comment.content">
+                </label>
+            </div>
+        </form>
     </ion-content>
 </ion-view>
