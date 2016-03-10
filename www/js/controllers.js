@@ -85,11 +85,20 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts, $http) {
+.controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts, $http, focus) {
     $scope.comment = {};
+    $scope.liked = false;
+    $scope.saved = false;
+    $scope.likesCount = 0;
     var user = JSON.parse(localStorage.getItem('user'));
+
     ExplorePosts.get($stateParams.postId).then(function(post){
         $scope.post = post;
+        if(post.user_liked){
+            $scope.liked = true;
+        }
+        console.log(post.user_liked);
+        $scope.likesCount = post.likes.length;
     });
     $scope.submitComment = function(){
         $http({
@@ -111,6 +120,38 @@ angular.module('starter.controllers', [])
     $scope.ownComment = function($index){
         return user.id == $scope.post.comments[$index].user.id;
     };
+    $scope.focusComment = function(){
+        console.log('go focus');
+        focus('comment');
+    };
+    $scope.likeClicked = function(){
+        if($scope.liked){
+            $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/unlike').success(function(){
+
+            });
+        }
+        else{
+            $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/like').success(function(){
+
+            });
+        }
+        $scope.liked = !$scope.liked;
+    };
+    /*
+    $scope.saveClicked = function(){
+        if($scope.liked){
+            $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/unsave').success(function(){
+
+            });
+        }
+        else{
+            $http.post('http://localhost:8888/api/post/'+$scope.post.id+'/save').success(function(){
+
+            });
+        }
+        $scope.saved = !$scope.saved;
+    };
+    */
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {

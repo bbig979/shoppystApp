@@ -1,7 +1,10 @@
 <ion-view id="post-detail">
     <ion-content class="padding">
         <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
-        <button class="button icon ion-ios-chatbubble-outline"></button>
+        <button class="button icon ion-ios-chatbubble-outline" ng-click="focusComment()"></button>
+        <button class= "button icon" ng-click="likeClicked()" ng-class="liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
+        <!--<button class= "button icon" ng-click="saveClicked()" ng-class="saved ? 'ion-ios-star' : 'ion-ios-star-outline'"></button>-->
+        <span>{{ likesCount }} likes</span>
         <p ng-repeat="comment in post.comments">
             {{ comment.user.first_name }} {{ comment.user.last_name }} : {{ comment.content }} <span am-time-ago="comment.created_at | amUtc"></span>
             <a ng-click="remItem($index)" ng-if="ownComment($index)">x</a>
@@ -10,7 +13,7 @@
             <div class="list list-inset">
                 <label class="item item-input">
                     <i class="icon ion-search placeholder-icon"></i>
-                    <input name="comment" type="text" placeholder="Search" ng-model="comment.content">
+                    <input name="comment" type="text" id="comment" placeholder="Search" ng-model="comment.content">
                 </label>
             </div>
         </form>
