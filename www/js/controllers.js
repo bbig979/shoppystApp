@@ -85,7 +85,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts, $http, focus) {
+.controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts, $http, focus, $location) {
     $scope.comment = {};
     $scope.liked = false;
     $scope.saved = false;
@@ -159,6 +159,10 @@ angular.module('starter.controllers', [])
             });
         }
         $scope.liked = !$scope.liked;
+    };
+    $scope.loadProfile = function(slug){
+        console.log(slug);
+        //$location.path('#/tab/dash');
     };
     /*
     $scope.saveClicked = function(){
