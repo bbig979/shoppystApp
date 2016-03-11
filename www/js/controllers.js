@@ -90,15 +90,24 @@ angular.module('starter.controllers', [])
     $scope.liked = false;
     $scope.saved = false;
     $scope.likesCount = 0;
+    $scope.commentsHiddenCount = 0;
+    $scope.page = 2;
     var user = JSON.parse(localStorage.getItem('user'));
 
     ExplorePosts.get($stateParams.postId).then(function(post){
+        post.latest_ten_comments.reverse();
+        var commentsCount = 0;
+        if(post.comments_count){
+            commentsCount = post.comments_count.aggregate;
+        }
+        $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
         $scope.post = post;
         if(post.user_liked){
             $scope.liked = true;
         }
-        console.log(post.user_liked);
-        $scope.likesCount = post.likes.length;
+        if(post.likes_count){
+            $scope.likesCount = post.likes_count.aggregate;
+        }
     });
     $scope.submitComment = function(){
         $http({
@@ -108,17 +117,29 @@ angular.module('starter.controllers', [])
         })
         .success(function(response){
             response.user = user;
-            $scope.post.comments.push(response);
+            $scope.post.latest_ten_comments.push(response);
         });
         $scope.comment.content = '';
     };
-    $scope.remItem = function($index){
-        $http.get('http://localhost:8888/api/comment/'+$scope.post.comments[$index].id+'/delete').success(function(){
-            $scope.post.comments.splice($index, 1);
+    $scope.remComment = function($index){
+        $http.get('http://localhost:8888/api/comment/'+$scope.post.latest_ten_comments[$index].id+'/delete').success(function(){
+            $scope.post.latest_ten_comments.splice($index, 1);
         });
     };
+    $scope.loadMoreComments = function(){
+        if($scope.commentsHiddenCount > 0){
+            $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/comment?page='+$scope.page).success(function(response){
+                $scope.post.latest_ten_comments = response.data.reverse().concat($scope.post.latest_ten_comments);
+                $scope.commentsHiddenCount -= response.data.length;
+                if($scope.commentsHiddenCount < 0){
+                    $scope.commentsHiddenCount = 0;
+                }
+                $scope.page++;
+            });
+        }
+    };
     $scope.ownComment = function($index){
-        return user.id == $scope.post.comments[$index].user.id;
+        return user.id == $scope.post.latest_ten_comments[$index].user.id;
     };
     $scope.focusComment = function(){
         console.log('go focus');
@@ -126,11 +147,13 @@ angular.module('starter.controllers', [])
     };
     $scope.likeClicked = function(){
         if($scope.liked){
+            $scope.likesCount--;
             $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/unlike').success(function(){
 
             });
         }
         else{
+            $scope.likesCount++;
             $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/like').success(function(){
 
             });

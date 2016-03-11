@@ -1,13 +1,18 @@
 <ion-view id="post-detail">
+    <ion-header-bar align-title="left" class="bar-subheader">
+        <img ng-src="{{ photoPath( post.user.profile_img_path, 's' ) }}"> {{ post.user.first_name }} {{ post.user.last_name }} <span am-time-ago="post.created_at | amUtc"></span>
+    </ion-header-bar>
     <ion-content class="padding">
+
         <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
         <button class="button icon ion-ios-chatbubble-outline" ng-click="focusComment()"></button>
         <button class= "button icon" ng-click="likeClicked()" ng-class="liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
         <!--<button class= "button icon" ng-click="saveClicked()" ng-class="saved ? 'ion-ios-star' : 'ion-ios-star-outline'"></button>-->
         <span>{{ likesCount }} likes</span>
-        <p ng-repeat="comment in post.comments">
+        <p ng-click="loadMoreComments()" ng-if="commentsHiddenCount">load previous comments {{ commentsHiddenCount }}</p>
+        <p ng-repeat="comment in post.latest_ten_comments">
             {{ comment.user.first_name }} {{ comment.user.last_name }} : {{ comment.content }} <span am-time-ago="comment.created_at | amUtc"></span>
-            <a ng-click="remItem($index)" ng-if="ownComment($index)">x</a>
+            <a ng-click="remComment($index)" ng-if="ownComment($index)">x</a>
         </p>
         <form name="commentForm" ng-submit="submitComment()">
             <div class="list list-inset">
