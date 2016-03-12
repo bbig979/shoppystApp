@@ -19,6 +19,10 @@
       float: right;
       padding: 7px;
     }
+    ion-spinner{
+      float: right;
+      padding: 3px;
+    }
   }
   ion-content{
     .button{
@@ -64,5 +68,8 @@
     .load-more, .like-count{
       padding-left: 10px;
     }
+  }
+  form .item-input-inset{
+    border: 0;
   }
 }

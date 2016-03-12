@@ -9,6 +9,6 @@ function helper_generatePhotoPath( file_name, size ){
         return base_url + path + file_name_without_ext + size + '.' + file_ext;
     }
     else{
-        return '/img/ionic.png';
+        return '/img/placeholder.png';
     }
 }

@@ -85,6 +85,12 @@ angular.module('starter.controllers', [])
     };
 })
 
+.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location) {
+    $http.get('http://localhost:8888/api/post/'+$stateParams.postId+'/likers').success(function(){
+
+    });
+})
+
 .controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts, $http, focus, $location) {
     $scope.comment = {};
     $scope.liked = false;

@@ -62,11 +62,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   })
 
    .state('tab.post-detail', {
-       url: '/posts/:postId',
+       url: '/post/:postId',
        views: {
            'tab-dash': {
                templateUrl: 'templates/post-detail.html',
                controller: 'PostDetailCtrl'
+           }
+       }
+   })
+
+   .state('tab.post-likers', {
+       url: '/post/:postId/likers',
+       views: {
+           'tab-dash': {
+               templateUrl: 'templates/post-likers.html',
+               controller: 'PostLikersCtrl'
            }
        }
    })
