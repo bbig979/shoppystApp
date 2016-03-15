@@ -51,12 +51,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   // Each tab has its own nav history stack:
 
-  .state('tab.dash', {
-    url: '/dash',
+  .state('tab.home', {
+    url: '/home',
     views: {
-      'tab-dash': {
-        templateUrl: 'templates/tab-dash.html',
-        controller: 'DashCtrl'
+      'tab-home': {
+        templateUrl: 'templates/tab-home.html',
+        controller: 'HomeCtrl'
       }
     }
   })
@@ -64,7 +64,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
    .state('tab.post-detail', {
        url: '/post/:postId',
        views: {
-           'tab-dash': {
+           'tab-home': {
                templateUrl: 'templates/post-detail.html',
                controller: 'PostDetailCtrl'
            }
@@ -74,7 +74,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
    .state('tab.post-comments', {
        url: '/post/:postId/comments',
        views: {
-           'tab-dash': {
+           'tab-home': {
                templateUrl: 'templates/post-comments.html',
                controller: 'PostDetailCtrl'
            }
@@ -84,7 +84,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
    .state('tab.post-likers', {
        url: '/post/:postId/likers',
        views: {
-           'tab-dash': {
+           'tab-home': {
                templateUrl: 'templates/post-likers.html',
                controller: 'PostLikersCtrl'
            }
@@ -121,6 +121,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/tab/home');
 
 });

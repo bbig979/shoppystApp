@@ -38,7 +38,7 @@ angular.module('starter.controllers', [])
                     disableBack: true
                 });
 
-                $state.go('tab.dash');
+                $state.go('tab.home');
             })
                 .error(function(){
                     $scope.loginError = true;
@@ -54,7 +54,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('DashCtrl', function($scope, ExplorePosts, $http, Modified, $state) {
+.controller('HomeCtrl', function($scope, ExplorePosts, $http, Modified, $state) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -231,7 +231,7 @@ console.log(test);
     };
     $scope.loadProfile = function(slug){
         console.log(slug);
-        //$location.path('#/tab/dash');
+        //$location.path('#/tab/home');
     };
     /*
     $scope.saveClicked = function(){
