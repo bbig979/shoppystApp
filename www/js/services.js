@@ -48,7 +48,7 @@ angular.module('starter.services', [])
     }
   };
 })
-.factory('ExplorePosts', function($http) {
+.factory('FetchPosts', function($http) {
     return {
         all: function(pg) {
             return $http.get("http://localhost:8888/api/home?page="+pg).then(function(response){

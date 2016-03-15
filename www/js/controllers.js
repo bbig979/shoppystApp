@@ -54,7 +54,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('HomeCtrl', function($scope, ExplorePosts, $http, Modified, $state) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, Modified, $state) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -65,13 +65,13 @@ if($scope.test.index > -1){
 }
 console.log($scope.test);
 */
-    ExplorePosts.all($scope.page).then(function(posts){
+    FetchPosts.all($scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
     });
 
     $scope.loadMore = function() {
-        ExplorePosts.all($scope.page).then(function(posts){
+        FetchPosts.all($scope.page).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -82,7 +82,7 @@ console.log($scope.test);
     };
     $scope.doRefresh = function() {
         $scope.page = 1;
-        ExplorePosts.all($scope.page).then(function(posts){
+        FetchPosts.all($scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
@@ -149,7 +149,7 @@ console.log($scope.test);
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts, $http, Focus, $location, Modified) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $location, Modified) {
     $scope.comment = {};
     $scope.liked = false;
     $scope.saved = false;
@@ -164,7 +164,7 @@ test.like = 1;
 console.log(test);
 */
 
-    ExplorePosts.get($stateParams.postId).then(function(post){
+    FetchPosts.get($stateParams.postId).then(function(post){
         post.latest_ten_comments.reverse();
         var commentsCount = 0;
         if(post.comments_count){
@@ -250,7 +250,7 @@ console.log(test);
     */
 })
 
-.controller('PostExploreCtrl', function($scope, $stateParams, ExplorePosts, $http, Focus, $location, Modified) {
+.controller('PostExploreCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $location, Modified) {
 
 })
 
