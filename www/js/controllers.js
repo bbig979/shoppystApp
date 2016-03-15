@@ -250,8 +250,35 @@ console.log(test);
     */
 })
 
-.controller('PostExploreCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $location, Modified) {
+.controller('PostExploreCtrl', function($scope, FetchPosts) {
+    $scope.posts = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
 
+    FetchPosts.new($scope.page).then(function(posts){
+        $scope.posts = posts;
+        $scope.page++;
+    });
+
+    $scope.loadMore = function() {
+        FetchPosts.new($scope.page).then(function(posts){
+            $scope.posts = $scope.posts.concat(posts);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.page = 1;
+        FetchPosts.new($scope.page).then(function(posts){
+            $scope.posts = posts;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+        });
+    };
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {

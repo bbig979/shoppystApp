@@ -59,6 +59,11 @@ angular.module('starter.services', [])
             return $http.get("http://localhost:8888/api/post/"+postID).then(function(response){
                 return response.data;
             });
+        },
+        new: function(pg){
+            return $http.get("http://localhost:8888/api/explore?page="+pg).then(function(response){
+                return response.data.data;
+            });
         }
     };
 })
