@@ -54,11 +54,17 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('DashCtrl', function($scope, ExplorePosts) {
+.controller('DashCtrl', function($scope, ExplorePosts, $http, Modified, $state) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
-
+/*
+$scope.test = Modified.get();
+if($scope.test.index > -1){
+    $scope.posts[$scope.test.index].likes_count.aggregate++;
+}
+console.log($scope.test);
+*/
     ExplorePosts.all($scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
@@ -83,15 +89,67 @@ angular.module('starter.controllers', [])
             $scope.noMoreItemsAvailable = false;
         });
     };
+    $scope.likeClicked = function($event,post){
+        $event.preventDefault();
+        if(post.user_liked){
+            post.likes_count.aggregate--;
+            $http.get('http://localhost:8888/api/post/'+post.id+'/unlike').success(function(){
+
+            });
+        }
+        else{
+            post.likes_count.aggregate++;
+            $http.get('http://localhost:8888/api/post/'+post.id+'/like').success(function(){
+
+            });
+        }
+        post.user_liked = !post.user_liked;
+    };
+    $scope.commentsPage = function(id){
+        $state.go('tab.post-comments',{postId: id});
+    };
 })
 
-.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location) {
-    $http.get('http://localhost:8888/api/post/'+$stateParams.postId+'/likers').success(function(){
+.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchLikers) {
+    $scope.likes = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
+    var user = JSON.parse(localStorage.getItem('user'));
 
+    FetchLikers.all($stateParams.postId, $scope.page).then(function(likes){
+        console.log(likes);
+        $scope.likes = likes;
+        $scope.page++;
     });
+    $scope.loadMore = function() {
+        FetchLikers.all($stateParams.postId, $scope.page).then(function(likes){
+            $scope.likes = $scope.likes.concat(likes);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( likes.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.followToggle = function(like) {
+        if(like.user.following_check){
+            $http.get('http://localhost:8888/api/'+ like.user.slug +'/unfollow').success(function(){
+
+            });
+        }
+        else{
+            $http.get('http://localhost:8888/api/'+ like.user.slug +'/follow').success(function(){
+
+            });
+        }
+        like.user.following_check = !like.user.following_check;
+    };
+    $scope.notMe = function(like) {
+        return (like.user.id != user.id);
+    };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts, $http, focus, $location) {
+.controller('PostDetailCtrl', function($scope, $stateParams, ExplorePosts, $http, Focus, $location, Modified) {
     $scope.comment = {};
     $scope.liked = false;
     $scope.saved = false;
@@ -99,6 +157,12 @@ angular.module('starter.controllers', [])
     $scope.commentsHiddenCount = 0;
     $scope.page = 2;
     var user = JSON.parse(localStorage.getItem('user'));
+/*
+var test = Modified.get();
+test.index = 0;
+test.like = 1;
+console.log(test);
+*/
 
     ExplorePosts.get($stateParams.postId).then(function(post){
         post.latest_ten_comments.reverse();
@@ -148,8 +212,7 @@ angular.module('starter.controllers', [])
         return user.id == $scope.post.latest_ten_comments[$index].user.id;
     };
     $scope.focusComment = function(){
-        console.log('go focus');
-        focus('comment');
+        Focus('comment');
     };
     $scope.likeClicked = function(){
         if($scope.liked){

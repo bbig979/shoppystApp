@@ -51,7 +51,7 @@ angular.module('starter.services', [])
 .factory('ExplorePosts', function($http) {
     return {
         all: function(pg) {
-            return $http.get("http://localhost:8888/post/explore/json?page="+pg).then(function(response){
+            return $http.get("http://localhost:8888/api/home?page="+pg).then(function(response){
                 return response.data.data;
             });
         },
@@ -62,7 +62,33 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('focus', function($timeout, $window) {
+.factory('FetchLikers', function($http) {
+    return {
+        all: function(id, pg) {
+            return $http.get('http://localhost:8888/api/post/'+ id +'/likers?page='+ pg).then(function(response){
+                return response.data.data;
+            });
+        }
+    };
+})
+.factory('Modified', function() {
+    modified = {};
+    modified.index = -1;
+    modified.like = 0;
+    modified.comment = 0;
+    return {
+        get: function(){
+            return modified;
+        },
+        reset: function(){
+            modified = {};
+            modified.index = -1;
+            modified.like = 0;
+            modified.comment = 0;
+        }
+    };
+})
+.factory('Focus', function($timeout, $window) {
     return function(id) {
         // http://stackoverflow.com/questions/25596399/set-element-focus-in-angular-way
         //

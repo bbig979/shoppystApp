@@ -31,7 +31,6 @@
     .button.button-dark.button-clear.ion-ios-heart{
       color: $like-red;
     }
-    padding: 0;
     .item{
       .time-ago{
         position: absolute;
@@ -67,6 +66,15 @@
     }
     .load-more, .like-count{
       padding-left: 10px;
+    }
+    .load-more{
+      padding-top: 10px;
+    }
+    .content{
+      padding: 0 10px 10px 10px;
+      white-space: normal;
+      font-size: 14px;
+      color: #444;
     }
   }
   form .item-input-inset{
