@@ -65,13 +65,13 @@ if($scope.test.index > -1){
 }
 console.log($scope.test);
 */
-    FetchPosts.all($scope.page).then(function(posts){
+    FetchPosts.following($scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
     });
 
     $scope.loadMore = function() {
-        FetchPosts.all($scope.page).then(function(posts){
+        FetchPosts.following($scope.page).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -82,7 +82,7 @@ console.log($scope.test);
     };
     $scope.doRefresh = function() {
         $scope.page = 1;
-        FetchPosts.all($scope.page).then(function(posts){
+        FetchPosts.following($scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;

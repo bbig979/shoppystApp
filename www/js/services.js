@@ -50,7 +50,7 @@ angular.module('starter.services', [])
 })
 .factory('FetchPosts', function($http) {
     return {
-        all: function(pg) {
+        following: function(pg) {
             return $http.get("http://localhost:8888/api/home?page="+pg).then(function(response){
                 return response.data.data;
             });
