@@ -91,6 +91,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
    })
 
+   .state('tab.explore', {
+       url: '/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/tab-explore.html',
+               controller: 'PostExploreCtrl'
+           }
+       }
+   })
+
   .state('tab.chats', {
       url: '/chats',
       views: {
