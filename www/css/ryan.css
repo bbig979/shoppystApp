@@ -307,3 +307,18 @@ ion-tabs .tab-item {
 #home ion-item {
   padding: 0;
 }
+
+/* line 2, ../../scss/ryan/style/_explore.scss */
+#tab-explore masonry {
+  width: 100%;
+}
+/* line 5, ../../scss/ryan/style/_explore.scss */
+#tab-explore .masonry-brick {
+  width: 50%;
+  border: 0;
+  padding: 2px 4px;
+}
+/* line 6, ../../scss/ryan/style/_explore.scss */
+#tab-explore .masonry-brick img {
+  width: 100%;
+}

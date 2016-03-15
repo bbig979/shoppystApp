@@ -24,7 +24,7 @@
                 </div>
                 <hr size="1" color="#e7e7e7">
                 <div class="stats">
-                    <a href="#/tab/post/{{post.id}}/likers" ng-if="post.likes_count.aggregate">
+                    <a href="#/tab/post/{{post.id}}/likers/home" ng-if="post.likes_count.aggregate">
                         <span class="likes-count"><i class="ion-ios-heart"></i> {{ post.likes_count.aggregate }} likes</span>
                     </a>
                     <span class="comments-count" ng-if="post.comments_count.aggregate" ng-click="commentsPage(post.id)"><i class="ion-ios-chatbubble"></i> {{ post.comments_count.aggregate }} comments</span>

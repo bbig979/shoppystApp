@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'satellizer', 'angularMoment'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'satellizer', 'angularMoment', 'wu.masonry'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -64,7 +64,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
    .state('tab.post-detail', {
        url: '/post/:postId',
        views: {
-           'tab-home': {
+           'tab-explore': {
                templateUrl: 'templates/post-detail.html',
                controller: 'PostDetailCtrl'
            }
@@ -81,10 +81,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
    })
 
-   .state('tab.post-likers', {
-       url: '/post/:postId/likers',
+   .state('tab.post-likers-home', {
+       url: '/post/:postId/likers/home',
        views: {
            'tab-home': {
+               templateUrl: 'templates/post-likers.html',
+               controller: 'PostLikersCtrl'
+           }
+       }
+   })
+
+   .state('tab.post-likers-explore', {
+       url: '/post/:postId/likers/explore',
+       views: {
+           'tab-explore': {
                templateUrl: 'templates/post-likers.html',
                controller: 'PostLikersCtrl'
            }

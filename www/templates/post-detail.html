@@ -13,7 +13,7 @@
         <button class= "button button-clear button-dark icon" ng-click="likeClicked()" ng-class="liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
         <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="focusComment()"></button>
         <hr size="1" color="#e7e7e7">
-        <a href="#/tab/post/{{post.id}}/likers">
+        <a href="#/tab/post/{{post.id}}/likers/explore">
             <p class="like-count"><i class="ion-ios-heart"></i> {{ likesCount }} likes</p>
         </a>
         <div class="content">{{ post.content }}</div>

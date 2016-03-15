@@ -5,9 +5,13 @@
                 on-refresh="doRefresh()">
         </ion-refresher>
         <ion-list>
-            <ion-item ng-repeat="post in posts">
-                <img ng-src="{{ photoPath( post.photos[0].img_path, 'm' ) }}">
-            </ion-item>
+            <div masonry preserve-order>
+                <ion-item ng-repeat="post in posts" class="masonry-brick">
+                    <a href="#/tab/post/{{post.id}}">
+                        <img ng-src="{{ photoPath( post.photos[0].img_path, 'm' ) }}">
+                    </a>
+                </ion-item>
+            </div>
         </ion-list>
         <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
     </ion-content>

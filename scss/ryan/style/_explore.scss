@@ -1,0 +1,13 @@
+#tab-explore{
+  masonry{
+    width: 100%;
+  }
+  .masonry-brick{
+    img{
+      width: 100%;
+    }
+    width: 50%;
+    border: 0;
+    padding: 2px 4px;
+  }
+}
