@@ -24,12 +24,10 @@
                 </div>
                 <hr size="1" color="#e7e7e7">
                 <div class="stats">
-                    <a href="#/tab/post/{{post.id}}/likers/home" ng-if="post.likes_count.aggregate">
-                        <span class="likes-count"><i class="ion-ios-heart"></i> {{ post.likes_count.aggregate }} likes</span>
-                    </a>
+                    <span class="likes-count" ng-click="goPostLikers(post.id)"><i class="ion-ios-heart"></i> {{ post.likes_count.aggregate }} likes</span>
                     <span class="comments-count" ng-if="post.comments_count.aggregate" ng-click="commentsPage(post.id)"><i class="ion-ios-chatbubble"></i> {{ post.comments_count.aggregate }} comments</span>
                 </div>
-                <div class="content">{{ post.content }}</div>
+                <p class="content" ng-bind-html="linkHashTag(post.content) | unsafe"></p>
                 <div class="divider">
 
                 </div>

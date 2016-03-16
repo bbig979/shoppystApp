@@ -1,9 +1,58 @@
 angular.module('starter.controllers', [])
 
-.run(function($rootScope) {
+.run(function($rootScope, $ionicTabsDelegate, $state) {
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( file_name, size );
     };
+    $rootScope.currentTab = function(){
+        return $ionicTabsDelegate.selectedIndex();
+    };
+    $rootScope.linkHashTag = function(str){
+        if(str){
+            var tab = 'notAssigned';
+            switch($ionicTabsDelegate.selectedIndex()){
+                case 0:
+                    tab = 'home';
+                    break;
+                case 1:
+                    tab = 'explore';
+                    break;
+                default:
+                    tab = 'newTab';
+            }
+            str = str.replace(/(#[a-z\d-_]+)/ig, "<a href='#/tab/explore/$1/"+tab+"'>$1</a>");
+            str = str.replace(/(\/#)/g, "/");
+            return str;
+        }
+    };
+    $rootScope.goPostDetail = function(id){
+        var tab = 'notAssigned';
+        switch($ionicTabsDelegate.selectedIndex()){
+            case 0:
+                tab = 'home';
+                break;
+            case 1:
+                tab = 'explore';
+                break;
+            default:
+                tab = 'newTab';
+        }
+        $state.go('tab.post-detail-'+tab,{postId: id});
+    }
+    $rootScope.goPostLikers = function(id){
+        var tab = 'notAssigned';
+        switch($ionicTabsDelegate.selectedIndex()){
+            case 0:
+                tab = 'home';
+                break;
+            case 1:
+                tab = 'explore';
+                break;
+            default:
+                tab = 'newTab';
+        }
+        $state.go('tab.post-likers-'+tab,{postId: id});
+    }
 })
 
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
@@ -106,7 +155,7 @@ console.log($scope.test);
         post.user_liked = !post.user_liked;
     };
     $scope.commentsPage = function(id){
-        $state.go('tab.post-comments',{postId: id});
+        $state.go('tab.post-comments-home',{postId: id});
     };
 })
 
@@ -250,18 +299,18 @@ console.log(test);
     */
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $ionicTabsDelegate) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
 
-    FetchPosts.new($scope.page).then(function(posts){
+    FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
     });
 
     $scope.loadMore = function() {
-        FetchPosts.new($scope.page).then(function(posts){
+        FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -272,13 +321,28 @@ console.log(test);
     };
     $scope.doRefresh = function() {
         $scope.page = 1;
-        FetchPosts.new($scope.page).then(function(posts){
+        FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
         });
     };
+    $scope.submitSearch = function(search_term) {
+        $state.go('tab.explore-explore',{searchTerm: search_term});
+    };
+    $scope.noSearchTerm = function() {
+       return !$stateParams.searchTerm;
+    };
+    $scope.focusSearch = function(){
+        Focus('search');
+    }
+    $scope.tagSearchTerm = function(){
+        if($stateParams.searchTerm){
+            var temp = $stateParams.searchTerm.split(' ');
+            return '#'+temp.join(' #');
+        }
+    }
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {

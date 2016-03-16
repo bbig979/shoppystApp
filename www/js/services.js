@@ -1,5 +1,9 @@
 angular.module('starter.services', [])
-
+.filter('unsafe', function($sce){
+   return function(val){
+       return $sce.trustAsHtml(val);
+   }
+})
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 
@@ -60,8 +64,9 @@ angular.module('starter.services', [])
                 return response.data;
             });
         },
-        new: function(pg){
-            return $http.get("http://localhost:8888/api/explore?page="+pg).then(function(response){
+        new: function(pg, search_term){
+            console.log("http://localhost:8888/api/explore?page="+pg+"&search_term="+search_term);
+            return $http.get("http://localhost:8888/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
                 return response.data.data;
             });
         }

@@ -61,8 +61,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
 
-   .state('tab.post-detail', {
-       url: '/post/:postId',
+   .state('tab.post-detail-home', {
+       url: '/post/:postId/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/post-detail.html',
+               controller: 'PostDetailCtrl'
+           }
+       }
+   })
+
+   .state('tab.post-detail-explore', {
+       url: '/post/:postId/explore',
        views: {
            'tab-explore': {
                templateUrl: 'templates/post-detail.html',
@@ -71,8 +81,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
    })
 
-   .state('tab.post-comments', {
-       url: '/post/:postId/comments',
+   .state('tab.post-comments-home', {
+       url: '/post/:postId/comments/home',
        views: {
            'tab-home': {
                templateUrl: 'templates/post-comments.html',
@@ -101,8 +111,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
    })
 
-   .state('tab.explore', {
-       url: '/explore',
+   .state('tab.explore-home', {
+       url: '/explore/:searchTerm/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/tab-explore.html',
+               controller: 'PostExploreCtrl'
+           }
+       }
+   })
+
+   .state('tab.explore-explore', {
+       url: '/explore/:searchTerm/explore',
        views: {
            'tab-explore': {
                templateUrl: 'templates/tab-explore.html',
