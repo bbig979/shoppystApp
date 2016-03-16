@@ -316,9 +316,10 @@ ion-tabs .tab-item {
 #tab-explore .masonry-brick {
   width: 50%;
   border: 0;
-  padding: 2px 4px;
+  padding: 3px 6px;
 }
 /* line 6, ../../scss/ryan/style/_explore.scss */
 #tab-explore .masonry-brick img {
   width: 100%;
+  border-radius: 3px;
 }
