@@ -365,3 +365,28 @@ ion-tabs .tab-item {
   display: block;
   padding-top: 5px;
 }
+
+/* line 2, ../../scss/ryan/style/_school.scss */
+#school-detail masonry {
+  width: 100%;
+}
+/* line 5, ../../scss/ryan/style/_school.scss */
+#school-detail .masonry-brick {
+  width: 50%;
+  border: 0;
+  padding: 3px 6px;
+}
+/* line 6, ../../scss/ryan/style/_school.scss */
+#school-detail .masonry-brick img {
+  width: 100%;
+  border-radius: 3px;
+}
+/* line 14, ../../scss/ryan/style/_school.scss */
+#school-detail .school-header {
+  text-align: center;
+  padding: 30px 0;
+}
+/* line 15, ../../scss/ryan/style/_school.scss */
+#school-detail .school-header h4 {
+  color: #555;
+}

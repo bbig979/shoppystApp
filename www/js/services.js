@@ -59,6 +59,11 @@ angular.module('starter.services', [])
                 return response.data.data;
             });
         },
+        school: function(pg, id) {
+            return $http.get("http://localhost:8888/api/school/"+id+"/post?page="+pg).then(function(response){
+                return response.data.data;
+            });
+        },
         get: function(postID){
             return $http.get("http://localhost:8888/api/post/"+postID).then(function(response){
                 return response.data;

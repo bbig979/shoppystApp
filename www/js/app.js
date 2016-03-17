@@ -81,6 +81,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
    })
 
+   .state('tab.post-detail-ranking', {
+       url: '/post/:postId/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/post-detail.html',
+               controller: 'PostDetailCtrl'
+           }
+       }
+   })
+
+   .state('tab.post-detail-account', {
+       url: '/post/:postId/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/post-detail.html',
+               controller: 'PostDetailCtrl'
+           }
+       }
+   })
+
    .state('tab.post-comments-home', {
        url: '/post/:postId/comments/home',
        views: {
@@ -111,6 +131,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
    })
 
+   .state('tab.post-likers-ranking', {
+       url: '/post/:postId/likers/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/post-likers.html',
+               controller: 'PostLikersCtrl'
+           }
+       }
+   })
+
+   .state('tab.post-likers-account', {
+       url: '/post/:postId/likers/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/post-likers.html',
+               controller: 'PostLikersCtrl'
+           }
+       }
+   })
+
    .state('tab.explore-home', {
        url: '/explore/:searchTerm/home',
        views: {
@@ -125,6 +165,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/explore/:searchTerm/explore',
        views: {
            'tab-explore': {
+               templateUrl: 'templates/tab-explore.html',
+               controller: 'PostExploreCtrl'
+           }
+       }
+   })
+
+   .state('tab.explore-ranking', {
+       url: '/explore/:searchTerm/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/tab-explore.html',
+               controller: 'PostExploreCtrl'
+           }
+       }
+   })
+
+   .state('tab.explore-account', {
+       url: '/explore/:searchTerm/account',
+       views: {
+           'tab-account': {
                templateUrl: 'templates/tab-explore.html',
                controller: 'PostExploreCtrl'
            }
@@ -149,10 +209,40 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     })
 
+   .state('tab.school-detail-home', {
+       url: '/school/:schoolId/:schoolName/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/school-detail.html',
+               controller: 'SchoolCtrl'
+           }
+       }
+   })
+
+   .state('tab.school-detail-explore', {
+       url: '/school/:schoolId/:schoolName/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/school-detail.html',
+               controller: 'SchoolCtrl'
+           }
+       }
+   })
+
    .state('tab.school-detail-ranking', {
-       url: '/school/:schoolId/ranking',
+       url: '/school/:schoolId/:schoolName/ranking',
        views: {
            'tab-ranking': {
+               templateUrl: 'templates/school-detail.html',
+               controller: 'SchoolCtrl'
+           }
+       }
+   })
+
+   .state('tab.school-detail-account', {
+       url: '/school/:schoolId/:schoolName/account',
+       views: {
+           'tab-account': {
                templateUrl: 'templates/school-detail.html',
                controller: 'SchoolCtrl'
            }

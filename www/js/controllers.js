@@ -17,6 +17,9 @@ angular.module('starter.controllers', [])
                 case 1:
                     tab = 'explore';
                     break;
+                case 3:
+                    tab = 'ranking';
+                    break;
                 default:
                     tab = 'newTab';
             }
@@ -34,6 +37,9 @@ angular.module('starter.controllers', [])
             case 1:
                 tab = 'explore';
                 break;
+            case 3:
+                tab = 'ranking';
+                break;
             default:
                 tab = 'newTab';
         }
@@ -48,12 +54,15 @@ angular.module('starter.controllers', [])
             case 1:
                 tab = 'explore';
                 break;
+            case 3:
+                tab = 'ranking';
+                break;
             default:
                 tab = 'newTab';
         }
         $state.go('tab.post-likers-'+tab,{postId: id});
     }
-    $rootScope.goSchoolDetail = function(id){
+    $rootScope.goSchoolDetail = function(id, name){
         var tab = 'notAssigned';
         switch($ionicTabsDelegate.selectedIndex()){
             case 0:
@@ -68,7 +77,7 @@ angular.module('starter.controllers', [])
             default:
                 tab = 'newTab';
         }
-        $state.go('tab.school-detail-'+tab,{schoolId: id});
+        $state.go('tab.school-detail-'+tab,{schoolId: id, schoolName: name});
     }
 })
 
@@ -394,19 +403,18 @@ console.log(test);
 })
 
 .controller('SchoolCtrl', function($scope, FetchPosts, $stateParams) {
-    $scope.schoolId = $stateParams.schoolId;
-        /*
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.schoolName = $stateParams.schoolName;
 
-    FetchPosts.ranking($scope.page).then(function(posts){
+    FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
     });
 
     $scope.loadMore = function() {
-        FetchPosts.ranking($scope.page).then(function(posts){
+        FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -417,14 +425,13 @@ console.log(test);
     };
     $scope.doRefresh = function() {
         $scope.page = 1;
-        FetchPosts.ranking($scope.page).then(function(posts){
+        FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
         });
     };
-    */
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {
