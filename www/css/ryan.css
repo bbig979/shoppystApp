@@ -332,3 +332,36 @@ ion-tabs .tab-item {
 #tab-explore .search-header h3 {
   color: #555;
 }
+
+/* line 2, ../../scss/ryan/style/_ranking.scss */
+#tab-ranking .ranking-title {
+  padding: 25px;
+  text-align: center;
+  background-color: #f7f7f7;
+}
+/* line 3, ../../scss/ryan/style/_ranking.scss */
+#tab-ranking .ranking-title h4 {
+  color: #555;
+  line-height: 140%;
+}
+/* line 11, ../../scss/ryan/style/_ranking.scss */
+#tab-ranking .ranking-list {
+  color: #337ab7;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 25px 20px;
+}
+/* line 12, ../../scss/ryan/style/_ranking.scss */
+#tab-ranking .ranking-list .ranking-badge {
+  padding: 5px;
+  margin-right: 5px;
+  background-color: gold;
+  display: block;
+  float: left;
+  margin-right: 10px;
+}
+/* line 20, ../../scss/ryan/style/_ranking.scss */
+#tab-ranking .ranking-list .school-name {
+  display: block;
+  padding-top: 5px;
+}

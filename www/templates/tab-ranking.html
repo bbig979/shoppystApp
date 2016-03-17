@@ -1,0 +1,17 @@
+<ion-view id="tab-ranking" view-title="RANKING">
+    <ion-content class="has-header">
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="ranking-title">
+            <h4>Mar 2016 Top Colleges with<br>Most Fashionable Students</h4>
+        </div>
+        <ion-list>
+            <ion-item ng-repeat="school in schools" class="ranking-list item-text-wrap">
+                <span class="ranking-badge">#{{$index+1}}</span> <span class="school-name">{{school.name}}</span>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
+    </ion-content>
+</ion-view>

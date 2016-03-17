@@ -345,6 +345,37 @@ console.log(test);
     }
 })
 
+.controller('RankingCtrl', function($scope, FetchSchools) {
+    $scope.schools = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
+
+    FetchSchools.ranking($scope.page).then(function(schools){
+        $scope.schools = schools;
+        $scope.page++;
+    });
+
+    $scope.loadMore = function() {
+        FetchSchools.ranking($scope.page).then(function(schools){
+            $scope.schools = $scope.schools.concat(schools);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( schools.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.page = 1;
+        FetchSchools.ranking($scope.page).then(function(schools){
+            $scope.schools = schools;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+        });
+    };
+})
+
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.

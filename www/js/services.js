@@ -81,6 +81,15 @@ angular.module('starter.services', [])
         }
     };
 })
+.factory('FetchSchools', function($http) {
+    return {
+        ranking: function(pg) {
+            return $http.get('http://localhost:8888/api/ranking/school?page='+pg).then(function(response){
+                return response.data.data;
+            });
+        }
+    };
+})
 .factory('Modified', function() {
     modified = {};
     modified.index = -1;

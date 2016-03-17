@@ -138,12 +138,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
         }
       }
-    })
+  })
     .state('tab.ranking', {
       url: '/ranking',
       views: {
         'tab-ranking': {
-
+            templateUrl: 'templates/tab-ranking.html',
+            controller: 'RankingCtrl'
         }
       }
     })
