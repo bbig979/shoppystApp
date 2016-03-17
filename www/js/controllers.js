@@ -53,6 +53,23 @@ angular.module('starter.controllers', [])
         }
         $state.go('tab.post-likers-'+tab,{postId: id});
     }
+    $rootScope.goSchoolDetail = function(id){
+        var tab = 'notAssigned';
+        switch($ionicTabsDelegate.selectedIndex()){
+            case 0:
+                tab = 'home';
+                break;
+            case 1:
+                tab = 'explore';
+                break;
+            case 3:
+                tab = 'ranking';
+                break;
+            default:
+                tab = 'newTab';
+        }
+        $state.go('tab.school-detail-'+tab,{schoolId: id});
+    }
 })
 
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
@@ -374,6 +391,40 @@ console.log(test);
             $scope.noMoreItemsAvailable = false;
         });
     };
+})
+
+.controller('SchoolCtrl', function($scope, FetchPosts, $stateParams) {
+    $scope.schoolId = $stateParams.schoolId;
+        /*
+    $scope.posts = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
+
+    FetchPosts.ranking($scope.page).then(function(posts){
+        $scope.posts = posts;
+        $scope.page++;
+    });
+
+    $scope.loadMore = function() {
+        FetchPosts.ranking($scope.page).then(function(posts){
+            $scope.posts = $scope.posts.concat(posts);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.page = 1;
+        FetchPosts.ranking($scope.page).then(function(posts){
+            $scope.posts = posts;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+        });
+    };
+    */
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {

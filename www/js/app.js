@@ -149,6 +149,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     })
 
+   .state('tab.school-detail-ranking', {
+       url: '/school/:schoolId/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/school-detail.html',
+               controller: 'SchoolCtrl'
+           }
+       }
+   })
+
   .state('tab.account', {
     url: '/account',
     views: {
