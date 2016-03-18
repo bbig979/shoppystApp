@@ -95,6 +95,11 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
                 return response.data.data;
             });
+        },
+        liked: function(slug, pg){
+            return $http.get($rootScope.baseURL+"/api/"+slug+"/liked?page="+pg).then(function(response){
+                return response.data.data;
+            });
         }
     };
 })

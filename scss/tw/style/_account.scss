@@ -1,0 +1,68 @@
+#tab-account{
+  .account-top {
+    color: white;
+    position: relative;
+    background-position: 50% 50%;
+    min-height: 400px;
+    background-size: auto 100%;
+    margin-left: -5px;
+    margin-right: -5px;
+    margin-top: -5px;
+    padding-top: 5px;
+  }
+
+  .account-image {
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    border: 3px solid white;
+    margin: auto;
+    margin-bottom: 10px;
+    clear: both;
+  }
+
+  .user-name {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+  }
+
+  .user-school {
+  	text-align: center;
+    margin-bottom: 10px;
+    text-decoration: underline;
+  }
+
+  .user-joined {
+  	text-align: center;
+  }
+
+  .account-option-btn {
+  	color: white;
+  	float: right;
+  	margin-right: 10px;
+  	font-size: 0.8em;
+  }
+
+  .account-achievement {
+  	margin-top: 20px;
+  	font-size: 0.8em;
+
+  	button {
+	  	color: white;
+	  	line-height: 120%;
+	  	font-weight: 400;
+	}
+  }
+
+  .account-social-network {
+  	margin-top: 40px;
+  	font-size: 0.6em;
+  	button {
+  		color: white;
+  	}
+  }
+}

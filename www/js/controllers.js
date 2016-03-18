@@ -56,9 +56,9 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-follower-'+tab,{userSlug: slug});
     }
-    $rootScope.goAccountLikes = function(slug){
+    $rootScope.goAccountLiked = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-likes-'+tab,{userSlug: slug});
+        $state.go('tab.account-liked-'+tab,{userSlug: slug});
     }
 })
 
@@ -526,49 +526,33 @@ console.log(test);
         user.following_check = !user.following_check;
     };
 })
-.controller('LikesCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
-    $scope.userSlug = $stateParams.userSlug;
-        /*
-    $scope.users = [];
+.controller('LikedCtrl', function($scope, $stateParams, FetchPosts) {
+    $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
 
-    FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
-        $scope.users = users;
+    FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
+        $scope.posts = posts;
         $scope.page++;
     });
 
     $scope.loadMore = function() {
-        FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
-            $scope.users = $scope.users.concat(users);
+        FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
+            $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
-            if ( users.length == 0 ) {
+            if ( posts.length == 0 ) {
                 $scope.noMoreItemsAvailable = true;
             }
         });
     };
     $scope.doRefresh = function() {
         $scope.page = 1;
-        FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
-            $scope.users = users;
+        FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
+            $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
         });
     };
-    $scope.followToggle = function(user) {
-        if(user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-
-            });
-        }
-        else{
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-
-            });
-        }
-        user.following_check = !user.following_check;
-    };
-    */
 });

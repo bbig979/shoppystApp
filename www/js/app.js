@@ -279,12 +279,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
     })
 
-    .state('tab.account-likes-account', {
-        url: '/account/:userSlug/likes/account',
+    .state('tab.account-liked-account', {
+        url: '/account/:userSlug/liked/account',
         views: {
             'tab-account': {
-                templateUrl: 'templates/account-likes.html',
-                controller: 'LikesCtrl'
+                templateUrl: 'templates/account-liked.html',
+                controller: 'LikedCtrl'
             }
         }
     });

@@ -382,3 +382,8 @@ ion-tabs .tab-item {
 #school-detail .school-header h4 {
   color: #555;
 }
+
+/* line 2, ../../scss/ryan/style/_account-liked.scss */
+#account-liked ion-content {
+  padding-top: 7px;
+}
