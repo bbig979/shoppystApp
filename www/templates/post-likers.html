@@ -2,8 +2,8 @@
     <ion-content>
         <ion-list>
             <ion-item class="item item-avatar" ng-repeat="like in likes" href="#">
-                <img ng-click="loadProfile(like.user.slug)" ng-src="{{ photoPath( like.user.profile_img_path, 's' ) }}" class="profile-image">
-                <div ng-click="loadProfile(like.user.slug)" class="user-name">{{ like.user.first_name }} {{ like.user.last_name }}</div>
+                <img ng-click="goAccount(like.user.slug)" ng-src="{{ photoPath( like.user.profile_img_path, 's' ) }}" class="profile-image">
+                <div ng-click="goAccount(like.user.slug)" class="user-name">{{ like.user.first_name }} {{ like.user.last_name }}</div>
                 <button class="button button-small follow-toggle" ng-class="{'following' : like.user.following_check}" ng-click="followToggle(like)" ng-if="notMe(like)"></button>
             </ion-item>
         </ion-list>

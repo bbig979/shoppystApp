@@ -54,8 +54,11 @@ angular.module('starter.controllers', [])
         $state.go('tab.post-likers-'+tab,{postId: id});
     }
 
-    $rootScope.goAccount = function(){
+    $rootScope.goMyAccount = function(){
         $state.go('tab.account');
+    };
+    $rootScope.goAccount = function(slug){
+        $state.go('tab.account',{accountSlug: slug});
     };
 
 })
@@ -171,7 +174,6 @@ console.log($scope.test);
     var user = JSON.parse(localStorage.getItem('user'));
 
     FetchLikers.all($stateParams.postId, $scope.page).then(function(likes){
-        console.log(likes);
         $scope.likes = likes;
         $scope.page++;
     });
@@ -284,7 +286,6 @@ console.log(test);
         $scope.liked = !$scope.liked;
     };
     $scope.loadProfile = function(slug){
-        console.log(slug);
         //$location.path('#/tab/home');
     };
     /*
@@ -371,11 +372,22 @@ console.log(test);
 
 .controller('AccountCtrl', function($scope, $stateParams, FetchUser, FetchUserPosts, $http, $state, $location) {
     $scope.page = 1;
+    $scope.isMyAccount = false;
     var user = JSON.parse(localStorage.getItem('user'));
-    FetchUser.get(user.slug).then(function(user){
+    if (!$stateParams.accountSlug)
+    {
+        var slug = user.slug;
+        $scope.isMyAccount = true;
+    }
+    else
+    {
+        var slug = $stateParams.accountSlug;
+    }
+
+    FetchUser.get(slug).then(function(user){
         $scope.user = user;
     });
-    FetchUserPosts.get(user.slug, $scope.page).then(function(posts){
+    FetchUserPosts.get(slug, $scope.page).then(function(posts){
         $scope.posts = posts;
     });
     $scope.goAccountOption = function(id){
@@ -398,6 +410,20 @@ console.log(test);
         {
             window.open('https://www.pinterest.com/'+$scope.user.social_networks.pinterest, '_system');
         }
+    };
+    $scope.followToggle = function(like) {
+        if(like.following_check){
+            $http.get('http://localhost:8000/api/'+ like.slug +'/unfollow').success(function(){
+            });
+        }
+        else {
+            $http.get('http://localhost:8000/api/'+ like.slug +'/follow').success(function(){
+            });
+        }
+        like.following_check = !like.following_check;
+    };
+    $scope.notMe = function(like) {
+        return !$scope.isMyAccount;
     };
 })
 .controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location) {

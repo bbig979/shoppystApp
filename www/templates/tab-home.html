@@ -13,7 +13,7 @@
                 <div class="post-header">
                     <a href="#">
                         <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )"></div>
-                        <div class="user-name">{{ post.user.first_name }} {{ post.user.last_name }}</div>
+                        <div class="user-name" ng-click="goAccount(post.user.slug)">{{ post.user.first_name }} {{ post.user.last_name }}</div>
                     </a>
                     <span class="time-ago grey-small-font" am-time-ago="post.created_at | amUtc" ng-if="post"></span>
                     <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
