@@ -55,18 +55,18 @@ angular.module('starter.services', [])
 .factory('FetchPosts', function($http) {
     return {
         following: function(pg) {
-            return $http.get("http://localhost:8888/api/home?page="+pg).then(function(response){
+            return $http.get("http://localhost:8000/api/home?page="+pg).then(function(response){
                 return response.data.data;
             });
         },
         get: function(postID){
-            return $http.get("http://localhost:8888/api/post/"+postID).then(function(response){
+            return $http.get("http://localhost:8000/api/post/"+postID).then(function(response){
                 return response.data;
             });
         },
         new: function(pg, search_term){
-            console.log("http://localhost:8888/api/explore?page="+pg+"&search_term="+search_term);
-            return $http.get("http://localhost:8888/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
+            console.log("http://localhost:8000/api/explore?page="+pg+"&search_term="+search_term);
+            return $http.get("http://localhost:8000/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
                 return response.data.data;
             });
         }
@@ -75,7 +75,7 @@ angular.module('starter.services', [])
 .factory('FetchLikers', function($http) {
     return {
         all: function(id, pg) {
-            return $http.get('http://localhost:8888/api/post/'+ id +'/likers?page='+ pg).then(function(response){
+            return $http.get('http://localhost:8000/api/post/'+ id +'/likers?page='+ pg).then(function(response){
                 return response.data.data;
             });
         }
@@ -111,5 +111,23 @@ angular.module('starter.services', [])
             if(element)
                 element.focus();
         });
+    };
+})
+.factory('FetchUser', function($http) {
+    return {
+        get: function(userSlug) {
+            return $http.get("http://localhost:8000/api/"+userSlug).then(function(response){
+                return response.data;
+            });
+        }
+    };
+})
+.factory('FetchUserPosts', function($http) {
+    return {
+        get: function(userSlug, pg) {
+            return $http.get("http://localhost:8000/api/"+userSlug+"/post?page="+pg).then(function(response){
+                return response.data;
+            });
+        }
     };
 });

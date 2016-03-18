@@ -1,18 +1,18 @@
-/* line 3, ../../scss/ryan/_reusable.scss */
+/* line 3, ../../scss/common/_reusable.scss */
 .background-image-handler, #post-detail ion-header-bar .profile-image, #home .post-header .profile-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-/* line 8, ../../scss/ryan/_reusable.scss */
+/* line 8, ../../scss/common/_reusable.scss */
 .expand-full {
   display: block;
   width: 100%;
   padding-top: 100%;
 }
 
-/* line 13, ../../scss/ryan/_reusable.scss */
+/* line 13, ../../scss/common/_reusable.scss */
 .grey-small-font {
   color: #aaa;
   font-size: 0.9em;

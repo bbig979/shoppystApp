@@ -1,0 +1,88 @@
+/* line 3, ../../scss/common/_reusable.scss */
+.background-image-handler {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* line 8, ../../scss/common/_reusable.scss */
+.expand-full {
+  display: block;
+  width: 100%;
+  padding-top: 100%;
+}
+
+/* line 13, ../../scss/common/_reusable.scss */
+.grey-small-font {
+  color: #aaa;
+  font-size: 0.9em;
+}
+
+/* line 2, ../../scss/tw/style/_account.scss */
+#tab-account .account-top {
+  color: white;
+  position: relative;
+  background-position: 50% 50%;
+  min-height: 400px;
+  background-size: auto 100%;
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-top: -5px;
+  padding-top: 5px;
+}
+/* line 14, ../../scss/tw/style/_account.scss */
+#tab-account .account-image {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  border: 3px solid white;
+  margin: auto;
+  margin-bottom: 10px;
+  clear: both;
+}
+/* line 27, ../../scss/tw/style/_account.scss */
+#tab-account .user-name {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 15px;
+}
+/* line 33, ../../scss/tw/style/_account.scss */
+#tab-account .user-school {
+  text-align: center;
+  margin-bottom: 10px;
+  text-decoration: underline;
+}
+/* line 39, ../../scss/tw/style/_account.scss */
+#tab-account .user-joined {
+  text-align: center;
+}
+/* line 43, ../../scss/tw/style/_account.scss */
+#tab-account .account-option-btn {
+  color: white;
+  float: right;
+  margin-right: 10px;
+  font-size: 0.8em;
+}
+/* line 50, ../../scss/tw/style/_account.scss */
+#tab-account .account-achievement {
+  margin-top: 20px;
+  font-size: 0.8em;
+}
+/* line 54, ../../scss/tw/style/_account.scss */
+#tab-account .account-achievement button {
+  color: white;
+  line-height: 120%;
+  font-weight: 400;
+}
+/* line 61, ../../scss/tw/style/_account.scss */
+#tab-account .account-social-network {
+  margin-top: 40px;
+  font-size: 0.6em;
+}
+/* line 64, ../../scss/tw/style/_account.scss */
+#tab-account .account-social-network button {
+  color: white;
+}

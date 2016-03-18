@@ -53,6 +53,11 @@ angular.module('starter.controllers', [])
         }
         $state.go('tab.post-likers-'+tab,{postId: id});
     }
+
+    $rootScope.goAccount = function(){
+        $state.go('tab.account');
+    };
+
 })
 
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
@@ -72,7 +77,7 @@ angular.module('starter.controllers', [])
 
         $auth.login(credentials).then(function() {
             // Return an $http request for the authenticated user
-            $http.get('http://localhost:8888/api/authenticate/user').success(function(response){
+            $http.get('http://localhost:8000/api/authenticate/user').success(function(response){
                 // Stringify the retured data
                 var user = JSON.stringify(response.user);
 
@@ -142,13 +147,13 @@ console.log($scope.test);
         $event.preventDefault();
         if(post.user_liked){
             post.likes_count.aggregate--;
-            $http.get('http://localhost:8888/api/post/'+post.id+'/unlike').success(function(){
+            $http.get('http://localhost:8000/api/post/'+post.id+'/unlike').success(function(){
 
             });
         }
         else{
             post.likes_count.aggregate++;
-            $http.get('http://localhost:8888/api/post/'+post.id+'/like').success(function(){
+            $http.get('http://localhost:8000/api/post/'+post.id+'/like').success(function(){
 
             });
         }
@@ -182,12 +187,12 @@ console.log($scope.test);
     };
     $scope.followToggle = function(like) {
         if(like.user.following_check){
-            $http.get('http://localhost:8888/api/'+ like.user.slug +'/unfollow').success(function(){
+            $http.get('http://localhost:8000/api/'+ like.user.slug +'/unfollow').success(function(){
 
             });
         }
         else{
-            $http.get('http://localhost:8888/api/'+ like.user.slug +'/follow').success(function(){
+            $http.get('http://localhost:8000/api/'+ like.user.slug +'/follow').success(function(){
 
             });
         }
@@ -231,7 +236,7 @@ console.log(test);
     $scope.submitComment = function(){
         $http({
             method : 'POST',
-            url : 'http://localhost:8888/api/post/'+$scope.post.id+'/comment/create',
+            url : 'http://localhost:8000/api/post/'+$scope.post.id+'/comment/create',
             data : {comment:$scope.comment.content}
         })
         .success(function(response){
@@ -241,13 +246,13 @@ console.log(test);
         $scope.comment.content = '';
     };
     $scope.remComment = function($index){
-        $http.get('http://localhost:8888/api/comment/'+$scope.post.latest_ten_comments[$index].id+'/delete').success(function(){
+        $http.get('http://localhost:8000/api/comment/'+$scope.post.latest_ten_comments[$index].id+'/delete').success(function(){
             $scope.post.latest_ten_comments.splice($index, 1);
         });
     };
     $scope.loadMoreComments = function(){
         if($scope.commentsHiddenCount > 0){
-            $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/comment?page='+$scope.page).success(function(response){
+            $http.get('http://localhost:8000/api/post/'+$scope.post.id+'/comment?page='+$scope.page).success(function(response){
                 $scope.post.latest_ten_comments = response.data.reverse().concat($scope.post.latest_ten_comments);
                 $scope.commentsHiddenCount -= response.data.length;
                 if($scope.commentsHiddenCount < 0){
@@ -266,13 +271,13 @@ console.log(test);
     $scope.likeClicked = function(){
         if($scope.liked){
             $scope.likesCount--;
-            $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/unlike').success(function(){
+            $http.get('http://localhost:8000/api/post/'+$scope.post.id+'/unlike').success(function(){
 
             });
         }
         else{
             $scope.likesCount++;
-            $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/like').success(function(){
+            $http.get('http://localhost:8000/api/post/'+$scope.post.id+'/like').success(function(){
 
             });
         }
@@ -285,12 +290,12 @@ console.log(test);
     /*
     $scope.saveClicked = function(){
         if($scope.liked){
-            $http.get('http://localhost:8888/api/post/'+$scope.post.id+'/unsave').success(function(){
+            $http.get('http://localhost:8000/api/post/'+$scope.post.id+'/unsave').success(function(){
 
             });
         }
         else{
-            $http.post('http://localhost:8888/api/post/'+$scope.post.id+'/save').success(function(){
+            $http.post('http://localhost:8000/api/post/'+$scope.post.id+'/save').success(function(){
 
             });
         }
@@ -364,8 +369,36 @@ console.log(test);
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('AccountCtrl', function($scope, $stateParams, FetchUser, FetchUserPosts, $http, $state, $location) {
+    $scope.page = 1;
+    var user = JSON.parse(localStorage.getItem('user'));
+    FetchUser.get(user.slug).then(function(user){
+        $scope.user = user;
+    });
+    FetchUserPosts.get(user.slug, $scope.page).then(function(posts){
+        $scope.posts = posts;
+    });
+    $scope.goAccountOption = function(id){
+        $state.go('tab.option-account',{userId: id});
+    };
+    $scope.goAccountSocialNetwork = function(type){
+        if (type == 'facebook')
+        {
+            window.open('https://www.facebook.com/'+$scope.user.social_networks.facebook, '_system');
+        }
+        else if (type == 'twitter')
+        {
+            window.open('https://www.twitter.com/'+$scope.user.social_networks.twitter, '_system');
+        }
+        else if (type == 'instagram')
+        {
+            window.open('https://www.instagram.com/'+$scope.user.social_networks.instagram, '_system');
+        }
+        else if (type == 'pinterest')
+        {
+            window.open('https://www.pinterest.com/'+$scope.user.social_networks.pinterest, '_system');
+        }
+    };
+})
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location) {
 });

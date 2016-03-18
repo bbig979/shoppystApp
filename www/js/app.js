@@ -25,7 +25,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 .config(function($stateProvider, $urlRouterProvider, $authProvider) {
 
-    $authProvider.loginUrl = 'http://localhost:8888/api/authenticate';
+    $authProvider.loginUrl = 'http://localhost:8000/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850'
     });
@@ -149,14 +149,23 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     })
 
   .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
-      }
-    }
-  });
+     url: '/account',
+     views: {
+         'tab-account': {
+             templateUrl: 'templates/tab-account.html',
+             controller: 'AccountCtrl'
+         }
+     }
+  })
+  .state('tab.option-account', {
+     url: '/option',
+     views: {
+         'tab-account': {
+             templateUrl: 'templates/tab-option.html',
+             controller: 'OptionCtrl'
+         }
+     }
+  })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');
