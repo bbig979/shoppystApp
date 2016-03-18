@@ -1,0 +1,34 @@
+.comment-list{
+  .item-avatar{
+    .user-name{
+      font-size: 14px;
+      color: $a-color;
+    }
+    .item-content{
+      .profile-image{
+        max-width: 35px;
+        max-height: 35px;
+        left: 5px;
+        top: 10px;
+      }
+      padding: 7px;
+      padding-left: 50px;
+      min-height: 55px;
+    }
+    padding: 0;
+    min-height: 55px;
+  }
+  .item{
+    .time-ago{
+      position: absolute;
+      top: 7px;
+      right: 10px;
+      font-size: 13px;
+    }
+    border-color: $grey-light;
+    padding: 7px;
+  }
+  .load-more{
+    padding: 10px;
+  }
+}
