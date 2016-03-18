@@ -257,8 +257,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         controller: 'AccountCtrl'
       }
     }
-  });
+  })
 
+    .state('tab.account-following-account', {
+        url: '/account/:userSlug/following/account',
+        views: {
+            'tab-account': {
+                templateUrl: 'templates/account-following.html',
+                controller: 'FollowingCtrl'
+            }
+        }
+    })
+
+    .state('tab.account-follower-account', {
+        url: '/account/:userSlug/follower/account',
+        views: {
+            'tab-account': {
+                templateUrl: 'templates/account-follower.html',
+                controller: 'FollowerCtrl'
+            }
+        }
+    });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');
 

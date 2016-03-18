@@ -107,6 +107,20 @@ angular.module('starter.services', [])
         }
     };
 })
+.factory('FetchUsers', function($http, $rootScope) {
+    return {
+        following: function(slug, pg) {
+            return $http.get($rootScope.baseURL+'/api/'+ slug +'/following?page='+ pg).then(function(response){
+                return response.data.data;
+            });
+        },
+        follower: function(slug, pg) {
+            return $http.get($rootScope.baseURL+'/api/'+ slug +'/follower?page='+ pg).then(function(response){
+                return response.data.data;
+            });
+        }
+    };
+})
 .factory('FetchSchools', function($http, $rootScope) {
     return {
         ranking: function(pg) {
