@@ -48,13 +48,17 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.school-detail-'+tab,{schoolId: id, schoolName: name});
     }
-    $rootScope.goFollowing = function(slug){
+    $rootScope.goAccountFollowing = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-following-'+tab,{userSlug: slug});
     }
-    $rootScope.goFollower = function(slug){
+    $rootScope.goAccountFollower = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-follower-'+tab,{userSlug: slug});
+    }
+    $rootScope.goAccountLikes = function(slug){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.account-likes-'+tab,{userSlug: slug});
     }
 })
 
@@ -521,4 +525,50 @@ console.log(test);
         }
         user.following_check = !user.following_check;
     };
+})
+.controller('LikesCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
+    $scope.userSlug = $stateParams.userSlug;
+        /*
+    $scope.users = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
+
+    FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
+        $scope.users = users;
+        $scope.page++;
+    });
+
+    $scope.loadMore = function() {
+        FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
+            $scope.users = $scope.users.concat(users);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( users.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.page = 1;
+        FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
+            $scope.users = users;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+        });
+    };
+    $scope.followToggle = function(user) {
+        if(user.following_check){
+            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
+
+            });
+        }
+        else{
+            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
+
+            });
+        }
+        user.following_check = !user.following_check;
+    };
+    */
 });

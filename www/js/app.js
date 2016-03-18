@@ -277,6 +277,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 controller: 'FollowerCtrl'
             }
         }
+    })
+
+    .state('tab.account-likes-account', {
+        url: '/account/:userSlug/likes/account',
+        views: {
+            'tab-account': {
+                templateUrl: 'templates/account-likes.html',
+                controller: 'LikesCtrl'
+            }
+        }
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');

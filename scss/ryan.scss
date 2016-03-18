@@ -2,6 +2,9 @@
 @import 'ryan/mixin';
 @import 'ryan/reusable';
 
+@import 'ryan/style/follow-toggle-user-list';
+@import 'ryan/style/masonry-post-list';
+
 @import 'ryan/style/global';
 @import 'ryan/style/top-bar';
 @import 'ryan/style/footer-nav';
@@ -11,4 +14,3 @@
 @import 'ryan/style/explore';
 @import 'ryan/style/ranking';
 @import 'ryan/style/school';
-@import 'ryan/style/follow-toggle-user-list';
