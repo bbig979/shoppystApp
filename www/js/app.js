@@ -190,7 +190,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
-       
+
     .state('tab.ranking', {
       url: '/ranking',
       views: {

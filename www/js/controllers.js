@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state) {
     $rootScope.baseURL = 'http://localhost:8000';
     $rootScope.photoPath = function(file_name, size) {
-        return helper_generatePhotoPath( file_name, size );
+        return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
     $rootScope.currentTab = function(){
         return $ionicTabsDelegate.selectedIndex();
