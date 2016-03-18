@@ -166,4 +166,22 @@ angular.module('starter.services', [])
                 element.focus();
         });
     };
+})
+.factory('FetchUser', function($http) {
+    return {
+        get: function(userSlug) {
+            return $http.get("http://localhost:8000/api/"+userSlug).then(function(response){
+                return response.data;
+            });
+        }
+    };
+})
+.factory('FetchUserPosts', function($http) {
+    return {
+        get: function(userSlug, pg) {
+            return $http.get("http://localhost:8000/api/"+userSlug+"/post?page="+pg).then(function(response){
+                return response.data;
+            });
+        }
+    };
 });

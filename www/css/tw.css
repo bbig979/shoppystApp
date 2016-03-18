@@ -86,3 +86,30 @@
 #tab-account .account-social-network button {
   color: white;
 }
+/* line 69, ../../scss/tw/style/_account.scss */
+#tab-account .follow-toggle {
+  font-size: 11px;
+  float: right;
+  margin-top: 8px;
+  padding: 0 20px;
+  margin-right: 5px;
+  background-color: #fff;
+  border-color: #337ab7;
+  color: #337ab7;
+  width: 90px;
+}
+/* line 80, ../../scss/tw/style/_account.scss */
+#tab-account .follow-toggle:after {
+  padding-top: 7px;
+  content: "FOLLOW";
+}
+/* line 84, ../../scss/tw/style/_account.scss */
+#tab-account .following {
+  background-color: #F95D61;
+  border-color: #F95D61;
+  color: #fff;
+}
+/* line 89, ../../scss/tw/style/_account.scss */
+#tab-account .following:after {
+  content: "UNFOLLOW";
+}

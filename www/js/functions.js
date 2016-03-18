@@ -1,6 +1,6 @@
 function helper_generatePhotoPath( file_name, size ){
     if(file_name){
-        var base_url = 'http://localhost:8888/imgs/';
+        var base_url = 'http://localhost:8000/imgs/';
         if (size)
         {
             size = '_' + size;

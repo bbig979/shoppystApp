@@ -1,12 +1,29 @@
-<ion-view view-title="Account">
-  <ion-content>
-    <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
-        Enable Friends
-    </ion-toggle>
-    </ion-list>
-      <div ng-click="goAccountFollowing('kibum-kim')">following</div>
-      <div ng-click="goAccountFollower('kibum-kim')">follower</div>
-      <div ng-click="goAccountLiked('kibum-kim')">liked</div>
-  </ion-content>
+<ion-view id="tab-account" view-title="{{ user.first_name }} {{ user.last_name }}'s Profile">
+    <ion-header-bar align-title="left" class="bar-subheader">
+        <div class="account-top" style="background-image: url( {{ photoPath( user.cover_img_path, '' ) }} )">
+            <button class="button button-clear icon ion-gear-b account-option-btn" ng-click="goAccountOption()" ng-if="isMyAccount"></button>
+            <button class="button button-small follow-toggle" ng-class="{'following' : user.following_check}" ng-click="followToggle(user)" ng-if="notMe(user)"></button>
+            <div class="account-image" style="background-image: url( {{ photoPath( user.profile_img_path, 's' ) }} )"></div>
+            <div class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
+            <div class="user-school" ng-click="goSchool(user.school.id)" ng-if="user.school.id != 0">{{ user.school.name }}</div>
+            <div class="user-joined">Joined at <span class="time-ago" am-time-ago="user.created_at | amUtc" ng-if="user"></span></div>
+            <div class="account-achievement row">
+                <button class="button button-clear icon account-post-btn ion-camera col" ng-click="goAccountPost(user.id)"><br>{{user.posts_count}}<br>Posts</button>
+                <button class="button button-clear icon account-like-btn ion-ios-heart col" ng-click="goAccountLiked(user.id)"><br>{{user.likes_count}}<br>Likes</button>
+                <button class="button button-clear icon account-followers-btn ion-ios-people col" ng-click="goAccountFollower(user.id)"><br>{{user.follower_count}}<br>Followers</button>
+                <button class="button button-clear icon account-following-btn ion-android-person col" ng-click="goAccountFollowing(user.id)"><br>{{user.following_count}}<br>Following</button>
+            </div>
+            <div class="account-social-network row">
+                <button class="button button-clear icon col ion-social-facebook account-facebook-btn" ng-click="goAccountSocialNetwork('facebook')" ng-if="user.social_networks.facebook"></button>
+                <button class="button button-clear icon col ion-social-twitter account-twitter-btn" ng-click="goAccountSocialNetwork('twitter')" ng-if="user.social_networks.twitter"></button>
+                <button class="button button-clear icon col ion-social-instagram-outline account-instagram-btn" ng-click="goAccountSocialNetwork('instagram')" ng-if="user.social_networks.instagram"></button>
+                <button class="button button-clear icon col ion-social-pinterest account-pinterest-btn" ng-click="goAccountSocialNetwork('pinterest')" ng-if="user.social_networks.pinterest"></button>
+            </div>
+            <ion-spinner icon="ios-small" ng-if="!user"></ion-spinner>
+        </div>
+    </ion-header-bar>
+    <ion-content class="padding">
+        <ion-list>
+        </ion-list>
+    </ion-content>
 </ion-view>
