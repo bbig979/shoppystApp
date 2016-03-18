@@ -1,0 +1,52 @@
+.follow-toggle-user-list{
+  ion-content{
+    .item{
+      border-color: $grey-light;
+      padding: 7px;
+    }
+    .item-avatar{
+      .user-name{
+        font-size: 12px;
+        float: left;
+        padding-top: 14px;
+        font-weight: 500;
+      }
+      .follow-toggle{
+        font-size: 11px;
+        float: right;
+        margin-top: 8px;
+        padding: 0 20px;
+        margin-right: 5px;
+        background-color: #fff;
+        border-color: $a-color;
+        color: $a-color;
+        width: 90px;
+      }
+      .follow-toggle:after{
+        padding-top: 7px;
+        content: "FOLLOW";
+      }
+      .following{
+        background-color: $primary-color-dark;
+        border-color: $primary-color-dark;
+        color: #fff;
+      }
+      .following:after{
+        content: "UNFOLLOW";
+      }
+      .item-content{
+        .profile-image{
+          max-width: 30px;
+          max-height: 30px;
+          left: 10px;
+          top: 13px;
+        }
+        padding: 4px;
+        padding-left: 50px;
+        min-height: 55px;
+      }
+      padding: 0;
+      min-height: 55px;
+    }
+  }
+}

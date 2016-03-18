@@ -1,0 +1,19 @@
+.tab-nav{
+  background-color: $footer-nav-color;
+  padding-top: 0;
+}
+ion-tabs .tab-item {
+  color: #fff;
+  opacity: 1;
+}
+.tab-item{
+  .icon.ion-trophy{
+    font-size: 27px;
+  }
+  .icon.ion-camera{
+    font-size: 35px;
+  }
+}
+.tab-item-active{
+  background-color: $footer-nav-active-color;
+}

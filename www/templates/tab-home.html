@@ -1,0 +1,48 @@
+<ion-view id="home" view-title="SHOPPYST">
+    <ion-content>
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="tab-instruction" ng-if="posts.length==0">
+            Hi Hi yoyoyo
+        </div>
+        <div class="loading-spinner" data-loading ng-if="posts.length == 0">
+            <ion-spinner></ion-spinner>
+        </div>
+        <ion-list>
+
+            <ion-item ng-repeat="post in posts">
+                <div class="post-header">
+                    <a href="#">
+                        <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )"></div>
+                        <div class="user-name">{{ post.user.first_name }} {{ post.user.last_name }}</div>
+                    </a>
+                    <span class="time-ago grey-small-font" am-time-ago="post.created_at | amUtc" ng-if="post"></span>
+                    <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
+                </div>
+                <div class="post-image">
+                    <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
+                </div>
+                <div class="button-group">
+                    <button class= "button button-clear button-dark icon" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
+                    <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="commentsPage(post.id)"></button>
+                </div>
+                <hr size="1" color="#e7e7e7">
+                <div class="stats">
+                    <span class="likes-count" ng-click="goPostLikers(post.id)"><i class="ion-ios-heart"></i> {{ post.likes_count.aggregate }} likes</span>
+                    <span class="comments-count" ng-if="post.comments_count.aggregate" ng-click="commentsPage(post.id)"><i class="ion-ios-chatbubble"></i> {{ post.comments_count.aggregate }} comments</span>
+                </div>
+                <p class="content" ng-bind-html="linkHashTag(post.content) | unsafe"></p>
+                <div class="divider">
+
+                </div>
+
+            </ion-item>
+
+        </ion-list>
+
+        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
+
+    </ion-content>
+</ion-view>

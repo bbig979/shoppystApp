@@ -1,0 +1,31 @@
+<ion-view class="masonry-post-list" id="tab-explore" view-title="EXPLORE">
+    <ion-content>
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
+        <form name="searchForm" ng-submit="submitSearch(searchTerm)" ng-show="noSearchTerm()">
+            <div class="bar bar-header item-input-inset">
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                    <input type="search" id="search" placeholder="Search hashtags" ng-model="searchTerm">
+                </label>
+                <div ng-click="searchTerm='';focusSearch();" class="button button-clear" ng-show="searchTerm.length">X</div>
+            </div>
+        </form>
+        <div class="search-header" ng-hide="noSearchTerm()">
+            <h3>{{ tagSearchTerm() }}</h3>
+        </div>
+        <div class="loading-spinner" data-loading ng-if="posts.length == 0">
+            <ion-spinner></ion-spinner>
+        </div>
+        <ion-list>
+            <div masonry preserve-order>
+                <ion-item ng-repeat="post in posts" class="masonry-brick">
+                    <img ng-src="{{ photoPath( post.photos[0].img_path, 'm' ) }}" ng-click="goPostDetail(post.id)">
+                </ion-item>
+            </div>
+        </ion-list>
+        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
+    </ion-content>
+</ion-view>
