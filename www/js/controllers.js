@@ -225,6 +225,7 @@ console.log($scope.test);
 })
 
 .controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $location, Modified) {
+    $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
     $scope.saved = false;

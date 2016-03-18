@@ -31,6 +31,12 @@ a {
   text-decoration: none;
 }
 
+/* line 10, ../../scss/ryan/style/_global.scss */
+.loading-spinner {
+  padding: 20px 0;
+  text-align: center;
+}
+
 /* line 1, ../../scss/ryan/style/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;

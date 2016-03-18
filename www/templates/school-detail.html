@@ -7,6 +7,9 @@
         <div class="school-header">
             <h4>{{schoolName}}</h4>
         </div>
+        <div class="loading-spinner" data-loading ng-if="posts.length == 0">
+            <ion-spinner></ion-spinner>
+        </div>
         <ion-list>
             <div masonry >
                 <ion-item ng-repeat="post in posts" class="masonry-brick">
