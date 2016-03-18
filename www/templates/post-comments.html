@@ -1,5 +1,8 @@
 <ion-view id="post-detail" view-title="COMMENTS">
     <ion-content>
+        <div class="loading-spinner" data-loading ng-if="post == 0">
+            <ion-spinner></ion-spinner>
+        </div>
         <p class="load-more grey-small-font" ng-click="loadMoreComments()" ng-if="commentsHiddenCount">load previous comments ({{ commentsHiddenCount }})</p>
         <ion-list>
             <ion-item class="item item-avatar item-text-wrap" ng-repeat="comment in post.latest_ten_comments" href="#">

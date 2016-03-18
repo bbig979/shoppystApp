@@ -1,21 +1,9 @@
-<ion-view class="masonry-post-list" id="tab-explore" view-title="EXPLORE">
+<ion-view class="masonry-post-list" id="account-liked" view-title="LIKED">
     <ion-content>
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
-        <form name="searchForm" ng-submit="submitSearch(searchTerm)" ng-show="noSearchTerm()">
-            <div class="bar bar-header item-input-inset">
-                <label class="item-input-wrapper">
-                    <i class="icon ion-ios-search placeholder-icon"></i>
-                    <input type="search" id="search" placeholder="Search hashtags" ng-model="searchTerm">
-                </label>
-                <div ng-click="searchTerm='';focusSearch();" class="button button-clear" ng-show="searchTerm.length">X</div>
-            </div>
-        </form>
-        <div class="search-header" ng-hide="noSearchTerm()">
-            <h3>{{ tagSearchTerm() }}</h3>
-        </div>
         <div class="loading-spinner" data-loading ng-if="posts.length == 0">
             <ion-spinner></ion-spinner>
         </div>

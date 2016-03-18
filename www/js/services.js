@@ -4,6 +4,28 @@ angular.module('starter.services', [])
        return $sce.trustAsHtml(val);
    }
 })
+.directive('loading',   ['$http' ,function ($http)
+{
+    return {
+        restrict: 'A',
+        link: function (scope, elm, attrs)
+        {
+            scope.isLoading = function () {
+                return $http.pendingRequests.length > 0;
+            };
+
+            scope.$watch(scope.isLoading, function (v)
+            {
+                if(v){
+                    elm.show();
+                }else{
+                    elm.hide();
+                }
+            });
+        }
+    };
+
+}])
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 
@@ -52,30 +74,62 @@ angular.module('starter.services', [])
     }
   };
 })
-.factory('FetchPosts', function($http) {
+.factory('FetchPosts', function($http, $rootScope) {
     return {
         following: function(pg) {
-            return $http.get("http://localhost:8000/api/home?page="+pg).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/home?page="+pg).then(function(response){
+                return response.data.data;
+            });
+        },
+        school: function(pg, id) {
+            return $http.get($rootScope.baseURL+"/api/school/"+id+"/post?page="+pg).then(function(response){
                 return response.data.data;
             });
         },
         get: function(postID){
-            return $http.get("http://localhost:8000/api/post/"+postID).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/post/"+postID).then(function(response){
                 return response.data;
             });
         },
         new: function(pg, search_term){
-            console.log("http://localhost:8000/api/explore?page="+pg+"&search_term="+search_term);
-            return $http.get("http://localhost:8000/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
+                return response.data.data;
+            });
+        },
+        liked: function(slug, pg){
+            return $http.get($rootScope.baseURL+"/api/"+slug+"/liked?page="+pg).then(function(response){
                 return response.data.data;
             });
         }
     };
 })
-.factory('FetchLikers', function($http) {
+.factory('FetchLikers', function($http, $rootScope) {
     return {
         all: function(id, pg) {
-            return $http.get('http://localhost:8000/api/post/'+ id +'/likers?page='+ pg).then(function(response){
+            return $http.get($rootScope.baseURL+'/api/post/'+ id +'/likers?page='+ pg).then(function(response){
+                return response.data.data;
+            });
+        }
+    };
+})
+.factory('FetchUsers', function($http, $rootScope) {
+    return {
+        following: function(slug, pg) {
+            return $http.get($rootScope.baseURL+'/api/'+ slug +'/following?page='+ pg).then(function(response){
+                return response.data.data;
+            });
+        },
+        follower: function(slug, pg) {
+            return $http.get($rootScope.baseURL+'/api/'+ slug +'/follower?page='+ pg).then(function(response){
+                return response.data.data;
+            });
+        }
+    };
+})
+.factory('FetchSchools', function($http, $rootScope) {
+    return {
+        ranking: function(pg) {
+            return $http.get($rootScope.baseURL+'/api/ranking/school?page='+pg).then(function(response){
                 return response.data.data;
             });
         }
