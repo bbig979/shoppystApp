@@ -8,76 +8,41 @@ angular.module('starter.controllers', [])
     $rootScope.currentTab = function(){
         return $ionicTabsDelegate.selectedIndex();
     };
+    $rootScope.routeTab = function(id){
+        var tab = 'notAssigned';
+        switch(id){
+            case 0:
+                tab = 'home';
+                break;
+            case 1:
+                tab = 'explore';
+                break;
+            case 3:
+                tab = 'ranking';
+                break;
+            default:
+                tab = 'newTab';
+        }
+        return tab;
+    };
     $rootScope.linkHashTag = function(str){
         if(str){
-            var tab = 'notAssigned';
-            switch($ionicTabsDelegate.selectedIndex()){
-                case 0:
-                    tab = 'home';
-                    break;
-                case 1:
-                    tab = 'explore';
-                    break;
-                case 3:
-                    tab = 'ranking';
-                    break;
-                default:
-                    tab = 'newTab';
-            }
+            var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
             str = str.replace(/(#[a-z\d-_]+)/ig, "<a href='#/tab/explore/$1/"+tab+"'>$1</a>");
             str = str.replace(/(\/#)/g, "/");
             return str;
         }
     };
     $rootScope.goPostDetail = function(id){
-        var tab = 'notAssigned';
-        switch($ionicTabsDelegate.selectedIndex()){
-            case 0:
-                tab = 'home';
-                break;
-            case 1:
-                tab = 'explore';
-                break;
-            case 3:
-                tab = 'ranking';
-                break;
-            default:
-                tab = 'newTab';
-        }
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-detail-'+tab,{postId: id});
     }
     $rootScope.goPostLikers = function(id){
-        var tab = 'notAssigned';
-        switch($ionicTabsDelegate.selectedIndex()){
-            case 0:
-                tab = 'home';
-                break;
-            case 1:
-                tab = 'explore';
-                break;
-            case 3:
-                tab = 'ranking';
-                break;
-            default:
-                tab = 'newTab';
-        }
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-likers-'+tab,{postId: id});
     }
     $rootScope.goSchoolDetail = function(id, name){
-        var tab = 'notAssigned';
-        switch($ionicTabsDelegate.selectedIndex()){
-            case 0:
-                tab = 'home';
-                break;
-            case 1:
-                tab = 'explore';
-                break;
-            case 3:
-                tab = 'ranking';
-                break;
-            default:
-                tab = 'newTab';
-        }
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.school-detail-'+tab,{schoolId: id, schoolName: name});
     }
 })
