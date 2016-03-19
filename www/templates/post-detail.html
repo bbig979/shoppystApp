@@ -8,6 +8,9 @@
         <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
     </ion-header-bar>
     <ion-content>
+        <div class="update-notification">
+            New features are added. Let's update an app!
+        </div>
         <div class="post-image">
             <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
         </div>
