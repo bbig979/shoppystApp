@@ -1,5 +1,5 @@
-/* line 3, ../../scss/common/_reusable.scss */
-.background-image-handler, #post-detail ion-header-bar .profile-image, #home .post-header .profile-image {
+/* line 3, ../../scss/ryan/_reusable.scss */
+.background-image-handler, .single-post .post-header .profile-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -132,6 +132,62 @@
   padding: 10px;
 }
 
+/* line 3, ../../scss/ryan/style/_single-post.scss */
+.single-post .post-header .profile-image {
+  width: 25px;
+  height: 25px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+  background-clip: padding-box;
+  float: left;
+  margin: 5px;
+}
+/* line 11, ../../scss/ryan/style/_single-post.scss */
+.single-post .post-header .user-name {
+  float: left;
+  padding: 7px;
+}
+/* line 15, ../../scss/ryan/style/_single-post.scss */
+.single-post .post-header .time-ago {
+  float: right;
+  padding: 7px;
+}
+/* line 21, ../../scss/ryan/style/_single-post.scss */
+.single-post .post-image img {
+  width: 100%;
+}
+/* line 26, ../../scss/ryan/style/_single-post.scss */
+.single-post .button-group .button {
+  min-width: 42px;
+}
+/* line 29, ../../scss/ryan/style/_single-post.scss */
+.single-post .button-group .button.button-dark.button-clear.ion-ios-heart {
+  color: #F95D61;
+}
+/* line 33, ../../scss/ryan/style/_single-post.scss */
+.single-post .stats {
+  padding: 10px;
+  font-size: 14px;
+}
+/* line 34, ../../scss/ryan/style/_single-post.scss */
+.single-post .stats .likes-count {
+  color: #F95D61;
+}
+/* line 37, ../../scss/ryan/style/_single-post.scss */
+.single-post .stats .comments-count {
+  color: #aaa;
+  padding-left: 10px;
+}
+/* line 44, ../../scss/ryan/style/_single-post.scss */
+.single-post .content {
+  padding: 0 10px 10px 10px;
+  white-space: normal;
+  font-size: 14px;
+  color: #444;
+}
+
 /* line 1, ../../scss/ryan/style/_global.scss */
 hr {
   -webkit-margin-before: 0;
@@ -197,133 +253,28 @@ ion-tabs .tab-item {
   background-color: #555;
 }
 
-/* line 2, ../../scss/ryan/style/_post-detail.scss */
-#post-detail .main-image {
-  width: 100%;
-}
-/* line 6, ../../scss/ryan/style/_post-detail.scss */
-#post-detail ion-header-bar .profile-image {
-  width: 25px;
-  height: 25px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-  background-clip: padding-box;
-  float: left;
-  margin: 5px;
-}
-/* line 14, ../../scss/ryan/style/_post-detail.scss */
-#post-detail ion-header-bar .user-name {
-  float: left;
-  padding: 7px;
-}
-/* line 18, ../../scss/ryan/style/_post-detail.scss */
-#post-detail ion-header-bar .time-ago {
-  float: right;
-  padding: 7px;
-}
-/* line 22, ../../scss/ryan/style/_post-detail.scss */
-#post-detail ion-header-bar ion-spinner {
+/* line 3, ../../scss/ryan/style/_post-detail.scss */
+#post-detail .post-header ion-spinner {
   float: right;
   padding: 3px;
 }
-/* line 28, ../../scss/ryan/style/_post-detail.scss */
-#post-detail ion-content .button {
-  min-width: 42px;
-}
-/* line 31, ../../scss/ryan/style/_post-detail.scss */
-#post-detail ion-content .button.button-dark.button-clear.ion-ios-heart {
-  color: #F95D61;
-}
-/* line 34, ../../scss/ryan/style/_post-detail.scss */
-#post-detail ion-content .like-count {
-  padding-top: 10px;
-  padding-left: 10px;
-  color: #F95D61;
-}
-/* line 39, ../../scss/ryan/style/_post-detail.scss */
-#post-detail ion-content .content {
-  padding: 0 10px 10px 10px;
-  white-space: normal;
-  font-size: 14px;
-  color: #444;
-}
-/* line 46, ../../scss/ryan/style/_post-detail.scss */
+/* line 8, ../../scss/ryan/style/_post-detail.scss */
 #post-detail form .item-input-inset {
   border: 0;
 }
 
 /* line 2, ../../scss/ryan/style/_home.scss */
-#home .item-content {
-  padding: 0;
-}
-/* line 5, ../../scss/ryan/style/_home.scss */
 #home .post-header {
   height: 45px;
   padding: 5px;
   font-size: 14px;
 }
-/* line 6, ../../scss/ryan/style/_home.scss */
-#home .post-header .profile-image {
-  width: 25px;
-  height: 25px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
-  background-clip: padding-box;
-  float: left;
-  margin: 5px;
-}
-/* line 14, ../../scss/ryan/style/_home.scss */
-#home .post-header .user-name {
-  float: left;
-  padding: 7px;
-}
-/* line 18, ../../scss/ryan/style/_home.scss */
-#home .post-header .time-ago {
-  float: right;
-  padding: 7px;
-}
-/* line 27, ../../scss/ryan/style/_home.scss */
-#home .post-image img {
-  width: 100%;
-}
-/* line 32, ../../scss/ryan/style/_home.scss */
-#home .button-group .button {
-  min-width: 42px;
-}
-/* line 35, ../../scss/ryan/style/_home.scss */
-#home .button-group .button.button-dark.button-clear.ion-ios-heart {
-  color: #F95D61;
-}
-/* line 39, ../../scss/ryan/style/_home.scss */
-#home .stats {
-  padding: 10px;
-  font-size: 14px;
-}
-/* line 40, ../../scss/ryan/style/_home.scss */
-#home .stats .likes-count {
-  color: #F95D61;
-}
-/* line 43, ../../scss/ryan/style/_home.scss */
-#home .stats .comments-count {
-  color: #aaa;
-  padding-left: 10px;
-}
-/* line 50, ../../scss/ryan/style/_home.scss */
+/* line 7, ../../scss/ryan/style/_home.scss */
 #home .divider {
   height: 20px;
   background-color: #d1d1d1;
 }
-/* line 54, ../../scss/ryan/style/_home.scss */
-#home .content {
-  padding: 0 10px 10px 10px;
-  white-space: normal;
-  font-size: 14px;
-}
-/* line 59, ../../scss/ryan/style/_home.scss */
+/* line 11, ../../scss/ryan/style/_home.scss */
 #home ion-item {
   padding: 0;
 }
