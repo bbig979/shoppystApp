@@ -9,9 +9,9 @@
             <div class="user-joined">Joined at <span class="time-ago" am-time-ago="user.created_at | amUtc" ng-if="user"></span></div>
             <div class="account-achievement row">
                 <button class="button button-clear icon account-post-btn ion-camera col" ng-click="goAccountPost(user.id)"><br>{{user.posts_count}}<br>Posts</button>
-                <button class="button button-clear icon account-like-btn ion-ios-heart col" ng-click="goAccountLiked(user.id)"><br>{{user.likes_count}}<br>Likes</button>
-                <button class="button button-clear icon account-followers-btn ion-ios-people col" ng-click="goAccountFollower(user.id)"><br>{{user.follower_count}}<br>Followers</button>
-                <button class="button button-clear icon account-following-btn ion-android-person col" ng-click="goAccountFollowing(user.id)"><br>{{user.following_count}}<br>Following</button>
+                <button class="button button-clear icon account-like-btn ion-ios-heart col" ng-click="goAccountLiked(user.slug)"><br>{{user.likes_count}}<br>Likes</button>
+                <button class="button button-clear icon account-followers-btn ion-ios-people col" ng-click="goAccountFollower(user.slug)"><br>{{user.follower_count}}<br>Followers</button>
+                <button class="button button-clear icon account-following-btn ion-android-person col" ng-click="goAccountFollowing(user.slug)"><br>{{user.following_count}}<br>Following</button>
             </div>
             <div class="account-social-network row">
                 <button class="button button-clear icon col ion-social-facebook account-facebook-btn" ng-click="goAccountSocialNetwork('facebook')" ng-if="user.social_networks.facebook"></button>

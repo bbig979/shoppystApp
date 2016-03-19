@@ -239,16 +239,44 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     })
 
 
-  .state('tab.account', {
-     url: '/account/:accountSlug',
-     views: {
-         'tab-account': {
-             templateUrl: 'templates/tab-account.html',
-             controller: 'AccountCtrl'
-         }
-     }
-  })
-  .state('tab.option-account', {
+    .state('tab.account-home', {
+        url: '/account/:accountSlug/home',
+        views: {
+            'tab-home': {
+                templateUrl: 'templates/tab-account.html',
+                controller: 'AccountCtrl'
+            }
+        }
+    })
+   .state('tab.account-explore', {
+       url: '/account/:accountSlug/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/tab-account.html',
+               controller: 'AccountCtrl'
+           }
+       }
+   })
+   .state('tab.account-ranking', {
+       url: '/account/:accountSlug/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/tab-account.html',
+               controller: 'AccountCtrl'
+           }
+       }
+   })
+   .state('tab.account-account', {
+       url: '/account/:accountSlug/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/tab-account.html',
+               controller: 'AccountCtrl'
+           }
+       }
+   })
+
+    .state('tab.option-account', {
      url: '/option',
      views: {
          'tab-account': {
@@ -256,7 +284,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
              controller: 'OptionCtrl'
          }
      }
-  })
+    })
 
     .state('tab.account-following-home', {
         url: '/account/:userSlug/following/home',

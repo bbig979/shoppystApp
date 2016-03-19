@@ -47,10 +47,12 @@ angular.module('starter.controllers', [])
     }
 
     $rootScope.goMyAccount = function(){
-        $state.go('tab.account');
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.account-'+tab);
     };
     $rootScope.goAccount = function(slug){
-        $state.go('tab.account',{accountSlug: slug});
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.account-'+tab,{accountSlug: slug});
     };
 
     $rootScope.goSchoolDetail = function(id, name){
