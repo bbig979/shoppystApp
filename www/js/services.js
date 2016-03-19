@@ -119,19 +119,19 @@ angular.module('starter.services', [])
         });
     };
 })
-.factory('FetchUser', function($http) {
+.factory('FetchUser', function($http, $rootScope) {
     return {
         get: function(userSlug) {
-            return $http.get("http://localhost:8000/api/"+userSlug).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/"+userSlug).then(function(response){
                 return response.data;
             });
         }
     };
 })
-.factory('FetchUserPosts', function($http) {
+.factory('FetchUserPosts', function($http, $rootScope) {
     return {
         get: function(userSlug, pg) {
-            return $http.get("http://localhost:8000/api/"+userSlug+"/post?page="+pg).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?page="+pg).then(function(response){
                 return response.data;
             });
         }

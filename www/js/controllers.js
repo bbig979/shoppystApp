@@ -1,9 +1,10 @@
 angular.module('starter.controllers', [])
 
 .run(function($rootScope, $ionicTabsDelegate, $state) {
-    $rootScope.baseURL = 'http://localhost:8000';
+    $rootScope.clientVersion = '1.0';
+    $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.photoPath = function(file_name, size) {
-        return helper_generatePhotoPath( file_name, size );
+        return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
     $rootScope.currentTab = function(){
         return $ionicTabsDelegate.selectedIndex();
@@ -46,10 +47,12 @@ angular.module('starter.controllers', [])
     }
 
     $rootScope.goMyAccount = function(){
-        $state.go('tab.account');
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.account-'+tab);
     };
     $rootScope.goAccount = function(slug){
-        $state.go('tab.account',{accountSlug: slug});
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.account-'+tab,{accountSlug: slug});
     };
 
     $rootScope.goSchoolDetail = function(id, name){
@@ -216,6 +219,7 @@ console.log($scope.test);
     $scope.likesCount = 0;
     $scope.commentsHiddenCount = 0;
     $scope.page = 2;
+    $scope.clientVersionUpToDate = true;
     var user = JSON.parse(localStorage.getItem('user'));
 /*
 var test = Modified.get();
@@ -223,7 +227,12 @@ test.index = 0;
 test.like = 1;
 console.log(test);
 */
-
+    $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
+        if(version != $rootScope.clientVersion){
+            $scope.clientVersionUpToDate = false;
+            console.log('update');
+        }
+    });
     FetchPosts.get($stateParams.postId).then(function(post){
         post.latest_ten_comments.reverse();
         var commentsCount = 0;

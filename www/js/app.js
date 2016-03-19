@@ -43,25 +43,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     })
 
   // setup an abstract state for the tabs directive
-  .state('tab', {
-    url: '/tab',
-    abstract: true,
-    templateUrl: 'templates/tabs.html'
-  })
+    .state('tab', {
+        url: '/tab',
+        abstract: true,
+        templateUrl: 'templates/tabs.html'
+    })
 
   // Each tab has its own nav history stack:
 
-  .state('tab.home', {
-    url: '/home',
-    views: {
-      'tab-home': {
-        templateUrl: 'templates/tab-home.html',
-        controller: 'HomeCtrl'
-      }
-    }
-  })
+    .state('tab.home', {
+        url: '/home',
+        views: {
+          'tab-home': {
+            templateUrl: 'templates/tab-home.html',
+            controller: 'HomeCtrl'
+          }
+        }
+    })
 
-   .state('tab.post-detail-home', {
+    .state('tab.post-detail-home', {
        url: '/post/:postId/home',
        views: {
            'tab-home': {
@@ -69,9 +69,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostDetailCtrl'
            }
        }
-   })
-
-   .state('tab.post-detail-explore', {
+    })
+    .state('tab.post-detail-explore', {
        url: '/post/:postId/explore',
        views: {
            'tab-explore': {
@@ -79,9 +78,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostDetailCtrl'
            }
        }
-   })
-
-   .state('tab.post-detail-ranking', {
+    })
+    .state('tab.post-detail-ranking', {
        url: '/post/:postId/ranking',
        views: {
            'tab-ranking': {
@@ -89,9 +87,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostDetailCtrl'
            }
        }
-   })
-
-   .state('tab.post-detail-account', {
+    })
+    .state('tab.post-detail-account', {
        url: '/post/:postId/account',
        views: {
            'tab-account': {
@@ -99,9 +96,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostDetailCtrl'
            }
        }
-   })
+    })
 
-   .state('tab.post-comments-home', {
+    .state('tab.post-comments-home', {
        url: '/post/:postId/comments/home',
        views: {
            'tab-home': {
@@ -109,9 +106,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostDetailCtrl'
            }
        }
-   })
+    })
 
-   .state('tab.post-likers-home', {
+    .state('tab.post-likers-home', {
        url: '/post/:postId/likers/home',
        views: {
            'tab-home': {
@@ -119,9 +116,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostLikersCtrl'
            }
        }
-   })
-
-   .state('tab.post-likers-explore', {
+    })
+    .state('tab.post-likers-explore', {
        url: '/post/:postId/likers/explore',
        views: {
            'tab-explore': {
@@ -129,9 +125,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostLikersCtrl'
            }
        }
-   })
-
-   .state('tab.post-likers-ranking', {
+    })
+    .state('tab.post-likers-ranking', {
        url: '/post/:postId/likers/ranking',
        views: {
            'tab-ranking': {
@@ -139,9 +134,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostLikersCtrl'
            }
        }
-   })
-
-   .state('tab.post-likers-account', {
+    })
+    .state('tab.post-likers-account', {
        url: '/post/:postId/likers/account',
        views: {
            'tab-account': {
@@ -149,9 +143,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostLikersCtrl'
            }
        }
-   })
+    })
 
-   .state('tab.explore-home', {
+    .state('tab.explore-home', {
        url: '/explore/:searchTerm/home',
        views: {
            'tab-home': {
@@ -159,9 +153,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostExploreCtrl'
            }
        }
-   })
-
-   .state('tab.explore-explore', {
+    })
+    .state('tab.explore-explore', {
        url: '/explore/:searchTerm/explore',
        views: {
            'tab-explore': {
@@ -169,9 +162,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostExploreCtrl'
            }
        }
-   })
-
-   .state('tab.explore-ranking', {
+    })
+    .state('tab.explore-ranking', {
        url: '/explore/:searchTerm/ranking',
        views: {
            'tab-ranking': {
@@ -179,9 +171,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostExploreCtrl'
            }
        }
-   })
-
-   .state('tab.explore-account', {
+    })
+    .state('tab.explore-account', {
        url: '/explore/:searchTerm/account',
        views: {
            'tab-account': {
@@ -189,16 +180,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'PostExploreCtrl'
            }
        }
-   })
+    })
 
-  .state('tab.camera', {
+    .state('tab.camera', {
       url: '/camera',
       views: {
         'tab-camera': {
 
         }
       }
-  })
+    })
+
     .state('tab.ranking', {
       url: '/ranking',
       views: {
@@ -209,7 +201,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     })
 
-   .state('tab.school-detail-home', {
+    .state('tab.school-detail-home', {
        url: '/school/:schoolId/:schoolName/home',
        views: {
            'tab-home': {
@@ -217,9 +209,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'SchoolCtrl'
            }
        }
-   })
-
-   .state('tab.school-detail-explore', {
+    })
+    .state('tab.school-detail-explore', {
        url: '/school/:schoolId/:schoolName/explore',
        views: {
            'tab-explore': {
@@ -227,9 +218,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'SchoolCtrl'
            }
        }
-   })
-
-   .state('tab.school-detail-ranking', {
+    })
+    .state('tab.school-detail-ranking', {
        url: '/school/:schoolId/:schoolName/ranking',
        views: {
            'tab-ranking': {
@@ -237,9 +227,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'SchoolCtrl'
            }
        }
-   })
-
-   .state('tab.school-detail-account', {
+    })
+    .state('tab.school-detail-account', {
        url: '/school/:schoolId/:schoolName/account',
        views: {
            'tab-account': {
@@ -247,18 +236,47 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'SchoolCtrl'
            }
        }
+    })
+
+
+    .state('tab.account-home', {
+        url: '/account/:accountSlug/home',
+        views: {
+            'tab-home': {
+                templateUrl: 'templates/tab-account.html',
+                controller: 'AccountCtrl'
+            }
+        }
+    })
+   .state('tab.account-explore', {
+       url: '/account/:accountSlug/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/tab-account.html',
+               controller: 'AccountCtrl'
+           }
+       }
+   })
+   .state('tab.account-ranking', {
+       url: '/account/:accountSlug/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/tab-account.html',
+               controller: 'AccountCtrl'
+           }
+       }
+   })
+   .state('tab.account-account', {
+       url: '/account/:accountSlug/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/tab-account.html',
+               controller: 'AccountCtrl'
+           }
+       }
    })
 
-  .state('tab.account', {
-     url: '/account/:accountSlug',
-     views: {
-         'tab-account': {
-             templateUrl: 'templates/tab-account.html',
-             controller: 'AccountCtrl'
-         }
-     }
-  })
-  .state('tab.option-account', {
+    .state('tab.option-account', {
      url: '/option',
      views: {
          'tab-account': {
@@ -266,36 +284,117 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
              controller: 'OptionCtrl'
          }
      }
-  })
+    })
 
-    .state('tab.account-following-account', {
-        url: '/account/:userSlug/following/account',
+    .state('tab.account-following-home', {
+        url: '/account/:userSlug/following/home',
         views: {
-            'tab-account': {
+            'tab-home': {
                 templateUrl: 'templates/account-following.html',
                 controller: 'FollowingCtrl'
             }
         }
     })
+    .state('tab.account-following-explore', {
+       url: '/account/:userSlug/following/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/account-following.html',
+               controller: 'FollowingCtrl'
+           }
+       }
+    })
+    .state('tab.account-following-ranking', {
+       url: '/account/:userSlug/following/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/account-following.html',
+               controller: 'FollowingCtrl'
+           }
+       }
+    })
+    .state('tab.account-following-account', {
+       url: '/account/:userSlug/following/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/account-following.html',
+               controller: 'FollowingCtrl'
+           }
+       }
+    })
 
-    .state('tab.account-follower-account', {
-        url: '/account/:userSlug/follower/account',
+    .state('tab.account-follower-home', {
+        url: '/account/:userSlug/follower/home',
         views: {
-            'tab-account': {
+            'tab-home': {
                 templateUrl: 'templates/account-follower.html',
                 controller: 'FollowerCtrl'
             }
         }
     })
+    .state('tab.account-follower-explore', {
+       url: '/account/:userSlug/follower/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/account-follower.html',
+               controller: 'FollowerCtrl'
+           }
+       }
+    })
+    .state('tab.account-follower-ranking', {
+       url: '/account/:userSlug/follower/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/account-follower.html',
+               controller: 'FollowerCtrl'
+           }
+       }
+    })
+    .state('tab.account-follower-account', {
+       url: '/account/:userSlug/follower/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/account-follower.html',
+               controller: 'FollowerCtrl'
+           }
+       }
+    })
 
-    .state('tab.account-liked-account', {
-        url: '/account/:userSlug/liked/account',
-        views: {
-            'tab-account': {
-                templateUrl: 'templates/account-liked.html',
-                controller: 'LikedCtrl'
-            }
-        }
+    .state('tab.account-liked-home', {
+       url: '/account/:userSlug/liked/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/account-liked.html',
+               controller: 'LikedCtrl'
+           }
+       }
+    })
+    .state('tab.account-liked-explore', {
+       url: '/account/:userSlug/liked/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/account-liked.html',
+               controller: 'LikedCtrl'
+           }
+       }
+    })
+   .state('tab.account-liked-ranking', {
+       url: '/account/:userSlug/liked/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/account-liked.html',
+               controller: 'LikedCtrl'
+           }
+       }
+   })
+   .state('tab.account-liked-account', {
+       url: '/account/:userSlug/liked/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/account-liked.html',
+               controller: 'LikedCtrl'
+           }
+       }
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');
