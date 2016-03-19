@@ -25,7 +25,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 .config(function($stateProvider, $urlRouterProvider, $authProvider) {
 
-    $authProvider.loginUrl = 'http://localhost:8000/api/authenticate';
+    $authProvider.loginUrl = 'http://localhost:8888/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850'
     });

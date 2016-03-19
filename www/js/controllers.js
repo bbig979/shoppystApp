@@ -230,7 +230,6 @@ console.log(test);
     $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
         if(version != $rootScope.clientVersion){
             $scope.clientVersionUpToDate = false;
-            console.log('update');
         }
     });
     FetchPosts.get($stateParams.postId).then(function(post){

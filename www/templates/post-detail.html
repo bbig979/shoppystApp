@@ -1,14 +1,14 @@
 <ion-view class="comment-list single-post" id="post-detail" view-title="PHOTO">
     <ion-header-bar align-title="left" class="bar-subheader post-header">
         <a href="#">
-            <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )"></div>
+            <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
             <div class="user-name" ng-click="goAccount(post.user.slug)">{{ post.user.first_name }} {{ post.user.last_name }}</div>
         </a>
         <span class="time-ago grey-small-font" am-time-ago="post.created_at | amUtc" ng-if="post"></span>
         <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
     </ion-header-bar>
     <ion-content>
-        <div class="update-notification">
+        <div class="update-notification" ng-if="!clientVersionUpToDate">
             New features are added. Let's update an app!
         </div>
         <div class="post-image">
