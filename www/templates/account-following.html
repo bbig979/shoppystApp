@@ -5,8 +5,8 @@
         </div>
         <ion-list>
             <ion-item class="item item-avatar" ng-repeat="user in users" href="#">
-                <img ng-click="loadProfile(user.slug)" ng-src="{{ photoPath( user.profile_img_path, 's' ) }}" class="profile-image">
-                <div ng-click="loadProfile(user.slug)" class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
+                <img ng-click="goAccount(user.slug)" ng-src="{{ photoPath( user.profile_img_path, 's' ) }}" class="profile-image">
+                <div ng-click="goAccount(user.slug)" class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
                 <button class="button button-small follow-toggle" ng-class="{'following' : user.following_check}" ng-click="followToggle(user)"></button>
             </ion-item>
         </ion-list>
