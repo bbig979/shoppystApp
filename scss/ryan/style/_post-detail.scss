@@ -1,80 +1,8 @@
 #post-detail{
-  .main-image{
-    width: 100%;
-  }
-  ion-header-bar{
-    .profile-image{
-      width: 25px;
-      height: 25px;
-      @extend .background-image-handler;
-      @include border-radius(50%);
-      float: left;
-      margin: 5px;
-    }
-    .user-name{
-      float: left;
-      padding: 7px;
-    }
-    .time-ago{
-      float: right;
-      padding: 7px;
-    }
+  .post-header{
     ion-spinner{
       float: right;
       padding: 3px;
-    }
-  }
-  ion-content{
-    .button{
-      min-width: 42px;
-    }
-    .button.button-dark.button-clear.ion-ios-heart{
-      color: $like-red;
-    }
-    .item{
-      .time-ago{
-        position: absolute;
-        top: 7px;
-        right: 10px;
-        font-size: 13px;
-      }
-      border-color: $grey-light;
-      padding: 7px;
-    }
-    .item-avatar{
-      .profile-image{
-        max-width: 30px;
-        max-height: 30px;
-        left: 10px;
-        top: 10px;
-      }
-      .user-name{
-        font-size: 14px;
-        color: $a-color;
-      }
-      .item-content{
-        padding: 7px;
-        padding-left: 50px;
-        min-height: 55px;
-      }
-      padding: 0;
-      min-height: 55px;
-    }
-    .like-count{
-      padding-top: 10px;
-      color: $primary-color-dark;
-    }
-    .load-more, .like-count{
-      padding-left: 10px;
-    }
-    .load-more{
-      padding-top: 10px;
-    }
-    .content{
-      padding: 0 10px 10px 10px;
-      white-space: normal;
-      font-size: 14px;
-      color: #444;
     }
   }
   form .item-input-inset{
