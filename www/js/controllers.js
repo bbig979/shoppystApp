@@ -125,6 +125,7 @@ angular.module('starter.controllers', [])
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 /*
 $scope.test = Modified.get();
 if($scope.test.index > -1){
@@ -133,6 +134,9 @@ if($scope.test.index > -1){
 console.log($scope.test);
 */
     FetchPosts.following($scope.page).then(function(posts){
+        if(posts.length == 0){
+            $scope.noResult = true;
+        }
         $scope.posts = posts;
         $scope.page++;
     });
@@ -154,6 +158,10 @@ console.log($scope.test);
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(posts.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.likeClicked = function($event,post){

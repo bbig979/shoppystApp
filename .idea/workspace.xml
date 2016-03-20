@@ -23,37 +23,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="post-detail.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/post-detail.html">
+      <file leaf-file-name="tab-home.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/templates/tab-home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="29" selection-start="3210" selection-end="3210" vertical-scroll-proportion="-28.75" vertical-offset="0" max-vertical-offset="855">
+            <state line="6" column="52" selection-start="273" selection-end="273" vertical-scroll-proportion="-3.75" vertical-offset="0" max-vertical-offset="840">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_comment-list.scss" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scss/ryan/style/_comment-list.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="34" column="19" selection-start="595" selection-end="595" vertical-scroll-proportion="0.5622933" vertical-offset="0" max-vertical-offset="907">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="post-comments.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/post-comments.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="20" selection-start="1519" selection-end="1828" vertical-scroll-proportion="-13.125" vertical-offset="0" max-vertical-offset="555">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="controllers.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="controllers.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="260" column="12" selection-start="8988" selection-end="8988" vertical-scroll-proportion="0.0" vertical-offset="3173" max-vertical-offset="9450">
+            <state line="162" column="39" selection-start="5605" selection-end="5605" vertical-scroll-proportion="0.7133891" vertical-offset="1748" max-vertical-offset="9570">
               <folding />
             </state>
           </provider>
@@ -96,7 +78,6 @@
         <option value="$PROJECT_DIR$/scss/ryan/style/_school.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_mansory-post-list.scss" />
         <option value="$PROJECT_DIR$/www/templates/school-detail.html" />
-        <option value="$PROJECT_DIR$/www/templates/tab-home.html" />
         <option value="$PROJECT_DIR$/www/templates/tab-ranking.html" />
         <option value="$PROJECT_DIR$/www/templates/account-likes.html" />
         <option value="$PROJECT_DIR$/www/templates/account-liked.html" />
@@ -108,10 +89,11 @@
         <option value="$PROJECT_DIR$/www/js/services.js" />
         <option value="$PROJECT_DIR$/www/templates/tab-account.html" />
         <option value="$PROJECT_DIR$/www/templates/tab-explore.html" />
-        <option value="$PROJECT_DIR$/www/js/controllers.js" />
         <option value="$PROJECT_DIR$/www/templates/post-comments.html" />
         <option value="$PROJECT_DIR$/www/templates/post-detail.html" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_comment-list.scss" />
+        <option value="$PROJECT_DIR$/www/templates/tab-home.html" />
+        <option value="$PROJECT_DIR$/www/js/controllers.js" />
       </list>
     </option>
   </component>
@@ -634,13 +616,6 @@
         <state line="1" column="16" selection-start="65" selection-end="65" vertical-scroll-proportion="0.024671054" vertical-offset="0" max-vertical-offset="608" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/tab-home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="16" selection-start="79" selection-end="79" vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="810">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/tabs.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="16" column="74" selection-start="604" selection-end="604" vertical-scroll-proportion="0.39473686" vertical-offset="0" max-vertical-offset="608">
@@ -728,30 +703,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
+    <entry file="file://$PROJECT_DIR$/scss/ryan/style/_comment-list.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="260" column="12" selection-start="8988" selection-end="8988" vertical-scroll-proportion="0.0" vertical-offset="3173" max-vertical-offset="9450">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/post-comments.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="20" selection-start="1519" selection-end="1828" vertical-scroll-proportion="-13.125" vertical-offset="0" max-vertical-offset="555">
+        <state line="34" column="19" selection-start="595" selection-end="595" vertical-scroll-proportion="0.5622933" vertical-offset="0" max-vertical-offset="907">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/post-detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="29" selection-start="3210" selection-end="3210" vertical-scroll-proportion="-28.75" vertical-offset="0" max-vertical-offset="855">
+        <state line="46" column="29" selection-start="3210" selection-end="3210" vertical-scroll-proportion="0.74034333" vertical-offset="0" max-vertical-offset="932">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scss/ryan/style/_comment-list.scss">
+    <entry file="file://$PROJECT_DIR$/www/templates/post-comments.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="19" selection-start="595" selection-end="595" vertical-scroll-proportion="0.5622933" vertical-offset="0" max-vertical-offset="907">
+        <state line="21" column="20" selection-start="1519" selection-end="1828" vertical-scroll-proportion="0.33798283" vertical-offset="0" max-vertical-offset="932">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/tab-home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="52" selection-start="273" selection-end="273" vertical-scroll-proportion="-3.75" vertical-offset="0" max-vertical-offset="840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="162" column="39" selection-start="5605" selection-end="5605" vertical-scroll-proportion="0.7133891" vertical-offset="1748" max-vertical-offset="9570">
           <folding />
         </state>
       </provider>
