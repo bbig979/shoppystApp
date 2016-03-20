@@ -48,6 +48,11 @@ angular.module('starter.services', [])
                 return response.data.data;
             });
         },
+        user: function(userSlug, pg) {
+            return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?page="+pg).then(function(response){
+                return response.data.data;
+            });
+        },
         liked: function(slug, pg){
             return $http.get($rootScope.baseURL+"/api/"+slug+"/liked?page="+pg).then(function(response){
                 return response.data.data;

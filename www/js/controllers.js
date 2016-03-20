@@ -422,9 +422,12 @@ console.log(test);
     };
 })
 
-.controller('AccountCtrl', function($scope, $stateParams, FetchUser, FetchUserPosts, $http, $state, $location) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUser, FetchPosts, $http, $state) {
     $scope.page = 1;
     $scope.isMyAccount = false;
+    $scope.posts = [];
+    $scope.noMoreItemsAvailable = false;
+
     var user = JSON.parse(localStorage.getItem('user'));
     if (!$stateParams.accountSlug)
     {
@@ -439,8 +442,9 @@ console.log(test);
     FetchUser.get(slug).then(function(user){
         $scope.user = user;
     });
-    FetchUserPosts.get(slug, $scope.page).then(function(posts){
+    FetchPosts.user(slug, $scope.page).then(function(posts){
         $scope.posts = posts;
+        $scope.page++;
     });
     $scope.goAccountOption = function(id){
         $state.go('tab.option-account',{userId: id});
@@ -476,6 +480,25 @@ console.log(test);
     };
     $scope.notMe = function(like) {
         return !$scope.isMyAccount;
+    };
+    $scope.loadMore = function() {
+        FetchPosts.user($stateParams.accountSlug, $scope.page).then(function(posts){
+            $scope.posts = $scope.posts.concat(posts);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.page = 1;
+        FetchPosts.user($stateParams.accountSlug, $scope.page).then(function(posts){
+            $scope.posts = posts;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+        });
     };
 })
 .controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location) {
