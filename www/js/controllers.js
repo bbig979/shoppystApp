@@ -493,7 +493,7 @@ console.log(test);
         return !$scope.isMyAccount;
     };
     $scope.loadMore = function() {
-        FetchPosts.user($stateParams.accountSlug, $scope.page).then(function(posts){
+        FetchPosts.user(slug, $scope.page).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -504,7 +504,7 @@ console.log(test);
     };
     $scope.doRefresh = function() {
         $scope.page = 1;
-        FetchPosts.user($stateParams.accountSlug, $scope.page).then(function(posts){
+        FetchPosts.user(slug, $scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
