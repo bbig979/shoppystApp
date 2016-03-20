@@ -350,3 +350,13 @@ ion-tabs .tab-item {
 #account-liked ion-content {
   padding-top: 7px;
 }
+
+/* line 2, ../../scss/ryan/style/_login.scss */
+#log-in .facebook-header, #log-in .forgot-password, #log-in .sign-up {
+  text-align: center;
+  padding: 10px 0;
+}
+/* line 6, ../../scss/ryan/style/_login.scss */
+#log-in .ion-social-facebook {
+  background-color: #4e69a2;
+}

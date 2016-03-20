@@ -1,4 +1,4 @@
-<ion-view view-title="Login">
+<ion-view view-title="LOGIN" id="log-in">
     <ion-content>
         <form ng-submit="login()">
             <div class="list">
@@ -12,9 +12,14 @@
                 </label>
                 <label class="item">
                     <button class="button button-block button-positive" type="submit">Log in</button>
+                    <p class="forgot-password"><a>Forgot your password?</a></p>
+                    <p class="sign-up">Don't have an account yet? <a>Sign Up</a></p>
+                </label>
+                <label class="item">
+                    <p class="facebook-header">OR</p>
+                    <button ng-click="authenticate('facebook')" class="button button-block button-positive ion-social-facebook">&nbsp;&nbsp;Login in with Facebook</button>
                 </label>
             </div>
         </form>
-        <button ng-click="authenticate('facebook')">Sign in with Facebook</button>
     </ion-content>
 </ion-view>
