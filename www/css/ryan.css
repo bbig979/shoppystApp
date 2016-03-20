@@ -1,4 +1,4 @@
-/* line 3, ../../scss/ryan/_reusable.scss */
+/* line 3, ../../scss/common/_reusable.scss */
 .background-image-handler, .single-post .post-header .profile-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -130,6 +130,10 @@
 /* line 31, ../../scss/ryan/style/_comment-list.scss */
 .comment-list .load-more {
   padding: 10px;
+}
+/* line 34, ../../scss/ryan/style/_comment-list.scss */
+.comment-list .button-small {
+  line-height: 0;
 }
 
 /* line 3, ../../scss/ryan/style/_single-post.scss */

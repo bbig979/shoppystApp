@@ -39,8 +39,11 @@
                     <label class="item-input-wrapper">
                         <input name="comment" type="text" id="comment" placeholder="Write a comment..." ng-model="comment.content">
                     </label>
-                    <button class="button button-small">
+                    <button class="button button-small" ng-hide="commentSubmitting">
                         Submit
+                    </button>
+                    <button class="button button-small" ng-show="commentSubmitting">
+                        <ion-spinner icon="ios-small"></ion-spinner>
                     </button>
                 </div>
             </div>

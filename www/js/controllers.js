@@ -220,6 +220,7 @@ console.log($scope.test);
     $scope.commentsHiddenCount = 0;
     $scope.page = 2;
     $scope.clientVersionUpToDate = true;
+    $scope.commentSubmitting = false;
     var user = JSON.parse(localStorage.getItem('user'));
 /*
 var test = Modified.get();
@@ -248,6 +249,7 @@ console.log(test);
         }
     });
     $scope.submitComment = function(){
+        $scope.commentSubmitting = true;
         $http({
             method : 'POST',
             url : $rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment/create',
@@ -256,6 +258,7 @@ console.log(test);
         .success(function(response){
             response.user = user;
             $scope.post.latest_ten_comments.push(response);
+            $scope.commentSubmitting = false;
         });
         $scope.comment.content = '';
     };
