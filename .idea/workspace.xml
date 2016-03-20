@@ -32,10 +32,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="controllers.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="controllers.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="0" selection-start="42" selection-end="42" vertical-scroll-proportion="0.0" vertical-offset="810" max-vertical-offset="9600">
+            <state line="75" column="128" selection-start="2873" selection-end="2873" vertical-scroll-proportion="0.015690377" vertical-offset="1110" max-vertical-offset="9720">
               <folding />
             </state>
           </provider>
@@ -59,10 +59,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="login.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="75" selection-start="748" selection-end="748" vertical-scroll-proportion="0.22532189" vertical-offset="0" max-vertical-offset="932">
+            <state line="14" column="75" selection-start="748" selection-end="748" vertical-scroll-proportion="-8.75" vertical-offset="0" max-vertical-offset="450">
               <folding />
             </state>
           </provider>
@@ -154,7 +154,6 @@
         <option value="$PROJECT_DIR$/www/templates/tab-account.html" />
         <option value="$PROJECT_DIR$/www/templates/tab-home.html" />
         <option value="$PROJECT_DIR$/www/js/services.js" />
-        <option value="$PROJECT_DIR$/www/js/controllers.js" />
         <option value="$PROJECT_DIR$/www/js/app.js" />
         <option value="$PROJECT_DIR$/www/lib/jquery/jquery-2.1.0.min.js" />
         <option value="$PROJECT_DIR$/www/lib/masonry/masonry-3.1.2.pkgd.min.js" />
@@ -163,6 +162,7 @@
         <option value="$PROJECT_DIR$/scss/ryan.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_login.scss" />
         <option value="$PROJECT_DIR$/www/templates/login.html" />
+        <option value="$PROJECT_DIR$/www/js/controllers.js" />
       </list>
     </option>
   </component>
@@ -753,13 +753,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="42" selection-end="42" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="9600">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="29" column="35" selection-start="1218" selection-end="1218" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6120">
@@ -824,7 +817,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="75" selection-start="748" selection-end="748" vertical-scroll-proportion="0.22532189" vertical-offset="0" max-vertical-offset="932">
+        <state line="14" column="75" selection-start="748" selection-end="748" vertical-scroll-proportion="-8.75" vertical-offset="0" max-vertical-offset="450">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="75" column="128" selection-start="2873" selection-end="2873" vertical-scroll-proportion="0.015690377" vertical-offset="1110" max-vertical-offset="9720">
           <folding />
         </state>
       </provider>

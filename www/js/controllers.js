@@ -73,7 +73,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
+.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
 
     $scope.loginData = {}
     $scope.loginError = false;
@@ -86,7 +86,13 @@ angular.module('starter.controllers', [])
             password: $scope.loginData.password
         }
 
-        console.log(credentials);
+        $ionicLoading.show({
+            content: 'Loading',
+            animation: 'fade-in',
+            showBackdrop: true,
+            maxWidth: 200,
+            showDelay: 0
+        });
 
         $auth.login(credentials).then(function() {
             // Return an $http request for the authenticated user
@@ -104,6 +110,8 @@ angular.module('starter.controllers', [])
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
+
+                $ionicLoading.hide();
 
                 $state.go('tab.home');
             })
