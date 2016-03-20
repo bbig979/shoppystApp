@@ -14,8 +14,12 @@
             <div class="account-achievement row">
                 <button class="button button-clear icon account-post-btn ion-camera col" ng-click="goAccountPost()"><br>{{user.posts_count}}<br>Posts</button>
                 <button class="button button-clear icon account-like-btn ion-ios-heart col" ng-click="goAccountLiked(user.slug)"><br>{{user.likes_count}}<br>Likes</button>
-                <button class="button button-clear icon account-followers-btn ion-ios-people col" ng-click="goAccountFollower(user.slug)"><br>{{user.follower_count}}<br>Followers</button>
-                <button class="button button-clear icon account-following-btn ion-android-person col" ng-click="goAccountFollowing(user.slug)"><br>{{user.following_count}}<br>Following</button>
+                <button class="button button-clear icon account-followers-btn ion-ios-people col" ng-click="goAccountFollower(user.slug)">
+                    <br><span class="dynamic-follower-count">{{user.follower_count}}</span><br>Followers
+                </button>
+                <button class="button button-clear icon account-following-btn ion-android-person col" ng-click="goAccountFollowing(user.slug)">
+                    <br><span class="dynamic-following-count">{{user.following_count}}</span><br>Following
+                </button>
             </div>
             <div class="account-social-network row">
                 <button class="button button-clear icon col ion-social-facebook account-facebook-btn" ng-click="goAccountSocialNetwork('facebook')" ng-if="user.social_networks.facebook"></button>

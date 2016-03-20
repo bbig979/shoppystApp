@@ -31,7 +31,14 @@
                 <hr size="1" color="#e7e7e7">
                 <div class="stats">
                     <span class="likes-count" ng-click="goPostLikers(post.id)"><i class="ion-ios-heart"></i> {{ post.likes_count.aggregate }} likes</span>
-                    <span class="comments-count" ng-if="post.comments_count.aggregate" ng-click="commentsPage(post.id)"><i class="ion-ios-chatbubble"></i> {{ post.comments_count.aggregate }} comments</span>
+                    <span class="comments-count" ng-if="post.comments_count.aggregate" ng-click="commentsPage(post.id)">
+                        <i class="ion-ios-chatbubble"></i>
+                        <span class="dynamic-comment-count" id="{{post.id}}">{{ post.comments_count.aggregate }}</span> comments
+                    </span>
+                    <span class="comments-count" ng-if="!post.comments_count.aggregate" ng-click="commentsPage(post.id)">
+                        <i class="ion-ios-chatbubble"></i>
+                        <span class="dynamic-comment-count" id="{{post.id}}">0</span> comments
+                    </span>
                 </div>
                 <p class="content" ng-bind-html="linkHashTag(post.content) | unsafe"></p>
                 <div class="divider">

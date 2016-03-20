@@ -267,12 +267,14 @@ console.log(test);
             response.user = user;
             $scope.post.latest_ten_comments.push(response);
             $scope.commentSubmitting = false;
+            $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)+1);
         });
         $scope.comment.content = '';
     };
     $scope.remComment = function($index){
         $http.get($rootScope.baseURL+'/api/comment/'+$scope.post.latest_ten_comments[$index].id+'/delete').success(function(){
             $scope.post.latest_ten_comments.splice($index, 1);
+            $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)-1);
         });
     };
     $scope.loadMoreComments = function(){
@@ -546,12 +548,12 @@ console.log(test);
     $scope.followToggle = function(user) {
         if(user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-
+                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)-1);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-
+                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)+1);
             });
         }
         user.following_check = !user.following_check;
@@ -589,12 +591,12 @@ console.log(test);
     $scope.followToggle = function(user) {
         if(user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-
+                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)-1);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-
+                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)+1);
             });
         }
         user.following_check = !user.following_check;
