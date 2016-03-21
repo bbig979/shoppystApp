@@ -40,12 +40,11 @@ angular.module('starter.controllers', [])
     $rootScope.goPostDetail = function(id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-detail-'+tab,{postId: id});
-    }
+    };
     $rootScope.goPostLikers = function(id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-likers-'+tab,{postId: id});
-    }
-
+    };
     $rootScope.goMyAccount = function(){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-'+tab);
@@ -54,23 +53,30 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-'+tab,{accountSlug: slug});
     };
-
     $rootScope.goSchoolDetail = function(id, name){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.school-detail-'+tab,{schoolId: id, schoolName: name});
-    }
+    };
     $rootScope.goAccountFollowing = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-following-'+tab,{userSlug: slug});
-    }
+    };
     $rootScope.goAccountFollower = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-follower-'+tab,{userSlug: slug});
-    }
+    };
     $rootScope.goAccountLiked = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-liked-'+tab,{userSlug: slug});
-    }
+    };
+    $rootScope.handleHttpError = function(error){
+        if(typeof (error.error) != undefined && error.error == "token_not_provided"){
+            $state.go('auth');
+        }
+        else if(typeof (error.data) != undefined && typeof (error.data.error) != undefined && error.data.error == "token_not_provided"){
+            $state.go('auth');
+        }
+    };
 })
 
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
@@ -115,11 +121,11 @@ angular.module('starter.controllers', [])
 
                 $state.go('tab.home');
             })
-                .error(function(){
-                    $scope.loginError = true;
-                    $scope.loginErrorText = error.data.error;
-                    console.log($scope.loginErrorText);
-                })
+            .error(function(){
+                $scope.loginError = true;
+                $scope.loginErrorText = error.data.error;
+                console.log($scope.loginErrorText);
+            })
         });
     }
 
@@ -142,7 +148,7 @@ if($scope.test.index > -1){
 console.log($scope.test);
 */
     FetchPosts.following($scope.page).then(function(posts){
-        if(posts.length == 0){
+        if(posts && posts.length == 0){
             $scope.noResult = true;
         }
         $scope.posts = posts;
@@ -177,11 +183,17 @@ console.log($scope.test);
         if(post.user_liked){
             post.likes_count.aggregate--;
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             post.likes_count.aggregate++;
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         post.user_liked = !post.user_liked;
@@ -191,18 +203,18 @@ console.log($scope.test);
     };
 })
 
-.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchLikers, $rootScope) {
+.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope) {
     $scope.likes = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     var user = JSON.parse(localStorage.getItem('user'));
 
-    FetchLikers.all($stateParams.postId, $scope.page).then(function(likes){
+    FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
         $scope.likes = likes;
         $scope.page++;
     });
     $scope.loadMore = function() {
-        FetchLikers.all($stateParams.postId, $scope.page).then(function(likes){
+        FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
             $scope.likes = $scope.likes.concat(likes);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -214,10 +226,16 @@ console.log($scope.test);
     $scope.followToggle = function(like) {
         if(like.user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ like.user.slug +'/unfollow').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ like.user.slug +'/follow').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         like.user.following_check = !like.user.following_check;
@@ -276,6 +294,9 @@ console.log(test);
             $scope.post.latest_ten_comments.push(response);
             $scope.commentSubmitting = false;
             $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)+1);
+        })
+        .error(function(error){
+            $rootScope.handleHttpError(error);
         });
         $scope.comment.content = '';
     };
@@ -283,6 +304,9 @@ console.log(test);
         $http.get($rootScope.baseURL+'/api/comment/'+$scope.post.latest_ten_comments[$index].id+'/delete').success(function(){
             $scope.post.latest_ten_comments.splice($index, 1);
             $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)-1);
+        })
+        .error(function(error){
+            $rootScope.handleHttpError(error);
         });
     };
     $scope.loadMoreComments = function(){
@@ -294,6 +318,9 @@ console.log(test);
                     $scope.commentsHiddenCount = 0;
                 }
                 $scope.page++;
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
     };
@@ -307,11 +334,17 @@ console.log(test);
         if($scope.liked){
             $scope.likesCount--;
             $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/unlike').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             $scope.likesCount++;
             $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/like').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         $scope.liked = !$scope.liked;
@@ -323,11 +356,17 @@ console.log(test);
     $scope.saveClicked = function(){
         if($scope.liked){
             $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/unsave').success(function(){
-            });
+            })
+             .error(function(error){
+                $rootScope.handleHttpError(error);
+             });
         }
         else{
             $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/save').success(function(){
-            });
+            })
+             .error(function(error){
+                $rootScope.handleHttpError(error);
+             });
         }
         $scope.saved = !$scope.saved;
     };
@@ -443,7 +482,7 @@ console.log(test);
     };
 })
 
-.controller('AccountCtrl', function($scope, $stateParams, FetchUser, FetchPosts, $http, $state) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state) {
     $scope.page = 1;
     $scope.isMyAccount = false;
     $scope.posts = [];
@@ -460,7 +499,7 @@ console.log(test);
         var slug = $stateParams.accountSlug;
     }
 
-    FetchUser.get(slug).then(function(user){
+    FetchUsers.get(slug).then(function(user){
         $scope.user = user;
     });
     FetchPosts.user(slug, $scope.page).then(function(posts){
@@ -491,10 +530,16 @@ console.log(test);
     $scope.followToggle = function(like) {
         if(like.following_check){
             $http.get('http://localhost:8000/api/'+ like.slug +'/unfollow').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else {
             $http.get('http://localhost:8000/api/'+ like.slug +'/follow').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         like.following_check = !like.following_check;
@@ -557,11 +602,17 @@ console.log(test);
         if(user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
                 $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)-1);
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
                 $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)+1);
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         user.following_check = !user.following_check;
@@ -600,11 +651,17 @@ console.log(test);
         if(user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
                 $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)-1);
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
                 $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)+1);
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         user.following_check = !user.following_check;
