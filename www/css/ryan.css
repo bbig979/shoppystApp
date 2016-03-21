@@ -25,7 +25,8 @@
 }
 /* line 7, ../../scss/ryan/style/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar {
-  padding: 0;
+  padding: 4px;
+  padding-left: 50px;
   min-height: 55px;
 }
 /* line 8, ../../scss/ryan/style/_follow-toggle-user-list.scss */
@@ -63,13 +64,7 @@
   content: "UNFOLLOW";
 }
 /* line 37, ../../scss/ryan/style/_follow-toggle-user-list.scss */
-.follow-toggle-user-list ion-content .item-avatar .item-content {
-  padding: 4px;
-  padding-left: 50px;
-  min-height: 55px;
-}
-/* line 38, ../../scss/ryan/style/_follow-toggle-user-list.scss */
-.follow-toggle-user-list ion-content .item-avatar .item-content .profile-image {
+.follow-toggle-user-list ion-content .item-avatar .profile-image {
   max-width: 30px;
   max-height: 30px;
   left: 10px;

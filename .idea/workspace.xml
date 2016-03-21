@@ -35,16 +35,25 @@
       <file leaf-file-name="post-likers.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/post-likers.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="72" selection-start="321" selection-end="321" vertical-scroll-proportion="-3.75" vertical-offset="0" max-vertical-offset="300">
+            <state line="6" column="39" selection-start="283" selection-end="288" vertical-scroll-proportion="-1.8" vertical-offset="0" max-vertical-offset="300">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="post-detail.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="post-detail.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/post-detail.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="10" selection-start="164" selection-end="164" vertical-scroll-proportion="0.051282052" vertical-offset="0" max-vertical-offset="855">
+            <state line="2" column="10" selection-start="164" selection-end="164" vertical-scroll-proportion="-1.25" vertical-offset="0" max-vertical-offset="855">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_follow-toggle-user-list.scss" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scss/ryan/style/_follow-toggle-user-list.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="44" column="23" selection-start="994" selection-end="994" vertical-scroll-proportion="0.7589286" vertical-offset="235" max-vertical-offset="810">
               <folding />
             </state>
           </provider>
@@ -72,15 +81,6 @@
         <entry file="file://$PROJECT_DIR$/www/templates/post-comments.html">
           <provider selected="true" editor-type-id="text-editor">
             <state line="7" column="109" selection-start="499" selection-end="499" vertical-scroll-proportion="-4.375" vertical-offset="0" max-vertical-offset="555">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="login.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/login.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="14" column="75" selection-start="748" selection-end="748" vertical-scroll-proportion="-8.75" vertical-offset="0" max-vertical-offset="450">
               <folding />
             </state>
           </provider>
@@ -142,7 +142,6 @@
         <option value="$PROJECT_DIR$/www/templates/tabs.html" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_ranking.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_global.scss" />
-        <option value="$PROJECT_DIR$/scss/ryan/style/_follow-toggle-user-list.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_post-likers.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_explore.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_school.scss" />
@@ -172,6 +171,7 @@
         <option value="$PROJECT_DIR$/www/templates/account-following.html" />
         <option value="$PROJECT_DIR$/www/templates/post-comments.html" />
         <option value="$PROJECT_DIR$/www/templates/post-detail.html" />
+        <option value="$PROJECT_DIR$/scss/ryan/style/_follow-toggle-user-list.scss" />
       </list>
     </option>
   </component>
@@ -432,7 +432,7 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3292683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3292683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -625,13 +625,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scss/ryan/style/_follow-toggle-user-list.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="19" selection-start="104" selection-end="104" vertical-scroll-proportion="0.10714286" vertical-offset="0" max-vertical-offset="855">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scss/ryan/style/_post-likers.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="0" selection-start="14" selection-end="14" vertical-scroll-proportion="0.026785715" vertical-offset="0" max-vertical-offset="560">
@@ -807,13 +800,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/post-likers.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="72" selection-start="321" selection-end="321" vertical-scroll-proportion="-3.75" vertical-offset="0" max-vertical-offset="300">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/account-follower.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="72" selection-start="328" selection-end="328" vertical-scroll-proportion="-3.75" vertical-offset="0" max-vertical-offset="300">
@@ -837,7 +823,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/post-detail.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="10" selection-start="164" selection-end="164" vertical-scroll-proportion="0.051282052" vertical-offset="0" max-vertical-offset="855">
+        <state line="2" column="10" selection-start="164" selection-end="164" vertical-scroll-proportion="-1.25" vertical-offset="0" max-vertical-offset="855">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/post-likers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="39" selection-start="283" selection-end="288" vertical-scroll-proportion="-1.8" vertical-offset="0" max-vertical-offset="300">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scss/ryan/style/_follow-toggle-user-list.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="44" column="23" selection-start="994" selection-end="994" vertical-scroll-proportion="0.7589286" vertical-offset="235" max-vertical-offset="810">
           <folding />
         </state>
       </provider>
