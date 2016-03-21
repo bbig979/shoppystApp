@@ -24,10 +24,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 })
 
 .config(function($stateProvider, $urlRouterProvider, $authProvider) {
-
-    $authProvider.loginUrl = 'http://localhost:8888/api/authenticate';
+    var baseURL = 'http://localhost:8888';
+    $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
-        clientId: '932117430193850'
+        clientId: '932117430193850',
+        url: baseURL+'/auth/facebook'
     });
 
   // Ionic uses AngularUI Router which uses the concept of states

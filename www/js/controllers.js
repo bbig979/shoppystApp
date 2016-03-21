@@ -137,10 +137,36 @@ angular.module('starter.controllers', [])
                 console.log($scope.loginErrorText);
             })
         });
-    }
+    };
 
-    $scope.authenticate = function(provider) {
-        $auth.authenticate(provider);
+    $scope.fbLogin = function() {
+        $auth.authenticate('facebook').then(function() {
+            // Return an $http request for the authenticated user
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                // Stringify the retured data
+                var user = JSON.stringify(response.user);
+
+                // Set the stringified user data into local storage
+                localStorage.setItem('user', user);
+
+                // Getting current user data from local storage
+                $rootScope.currentUser = response.user;
+                // $rootScope.currentUser = localStorage.setItem('user');;
+
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                $ionicLoading.hide();
+
+                $state.go('tab.home');
+            })
+                .error(function(){
+                    $scope.loginError = true;
+                    $scope.loginErrorText = error.data.error;
+                    console.log($scope.loginErrorText);
+                })
+        });
     };
 
 })
