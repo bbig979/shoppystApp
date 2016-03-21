@@ -707,7 +707,34 @@ console.log(test);
         });
     };
 })
-.controller('NotificationCtrl', function($scope, $stateParams, FetchPosts) {
+.controller('NotificationCtrl', function($scope, FetchNotifications) {
     var user = JSON.parse(localStorage.getItem('user'));
-    $scope.accountSlug = user.slug;
+    $scope.notifications = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
+
+    FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
+        $scope.notifications = notifications;
+        $scope.page++;
+    });
+
+    $scope.loadMore = function() {
+        FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
+            $scope.notifications = $scope.notifications.concat(notifications);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( notifications.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.page = 1;
+        FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
+            $scope.notifications = notifications;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+        });
+    };
 });

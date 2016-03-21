@@ -1,5 +1,13 @@
 <ion-view class="masonry-post-list" id="account-notification" view-title="NOTIFICATION">
     <ion-content>
-        {{ accountSlug }}
+        <div class="loading-spinner" data-loading ng-if="notifications.length == 0">
+            <ion-spinner></ion-spinner>
+        </div>
+        <ion-list>
+            <ion-item class="item item-avatar" ng-repeat="notification in notifications">
+                {{ notification.contents }}
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
     </ion-content>
 </ion-view>

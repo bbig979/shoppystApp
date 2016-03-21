@@ -126,6 +126,18 @@ angular.module('starter.services', [])
         }
     };
 })
+.factory('FetchNotifications', function($http, $rootScope) {
+    return {
+        new: function(slug, pg) {
+            return $http.get($rootScope.baseURL+'/api/'+slug+'/notification?page='+pg).then(function(response){
+                return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+    };
+})
 .factory('Modified', function() {
     modified = {};
     modified.index = -1;
