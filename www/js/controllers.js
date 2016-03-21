@@ -243,7 +243,7 @@ console.log($scope.test);
     $scope.likes = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
-    var user = $rootScope.currentUser;
+    var user = JSON.parse(localStorage.getItem('user'));
 
     FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
         $scope.likes = likes;
@@ -291,7 +291,7 @@ console.log($scope.test);
     $scope.page = 2;
     $scope.clientVersionUpToDate = true;
     $scope.commentSubmitting = false;
-    var user = $rootScope.currentUser;
+    var user = JSON.parse(localStorage.getItem('user'));
 /*
 var test = Modified.get();
 test.index = 0;
@@ -518,13 +518,13 @@ console.log(test);
     };
 })
 
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state) {
     $scope.page = 1;
     $scope.isMyAccount = false;
     $scope.posts = [];
     $scope.noMoreItemsAvailable = false;
 
-    var user = $rootScope.currentUser;
+    var user = JSON.parse(localStorage.getItem('user'));
     if (!$stateParams.accountSlug)
     {
         var slug = user.slug;
@@ -733,8 +733,8 @@ console.log(test);
         });
     };
 })
-.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope) {
-    var user = $rootScope.currentUser;
+.controller('NotificationCtrl', function($scope, FetchNotifications) {
+    var user = JSON.parse(localStorage.getItem('user'));
     $scope.notifications = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
