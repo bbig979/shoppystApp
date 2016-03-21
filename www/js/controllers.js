@@ -69,6 +69,10 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-liked-'+tab,{userSlug: slug});
     };
+    $rootScope.goAccountNotification = function(){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.account-notification-'+tab);
+    };
     $rootScope.handleHttpError = function(error){
         if(typeof (error.error) != undefined && error.error == "token_not_provided"){
             $state.go('auth');
@@ -77,11 +81,17 @@ angular.module('starter.controllers', [])
             $state.go('auth');
         }
     };
+    $rootScope.showNotification = function(){
+        if($state.current.name === 'auth'){
+            return false;
+        }
+        return true;
+    };
 })
 
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
 
-    $scope.loginData = {}
+    $scope.loginData = {};
     $scope.loginError = false;
     $scope.loginErrorText;
 
@@ -696,4 +706,8 @@ console.log(test);
             $scope.noMoreItemsAvailable = false;
         });
     };
+})
+.controller('NotificationCtrl', function($scope, $stateParams, FetchPosts) {
+    var user = JSON.parse(localStorage.getItem('user'));
+    $scope.accountSlug = user.slug;
 });

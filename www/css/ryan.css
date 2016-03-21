@@ -216,6 +216,11 @@ a {
   border: 1px solid #FFBF00;
 }
 
+/* line 22, ../../scss/ryan/style/_global.scss */
+#notification-icon:before {
+  font-size: 28px;
+}
+
 /* line 1, ../../scss/ryan/style/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;

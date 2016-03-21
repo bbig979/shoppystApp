@@ -395,7 +395,44 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'LikedCtrl'
            }
        }
-    });
+   })
+
+   .state('tab.account-notification-home', {
+       url: '/account/notification/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/account-notification.html',
+               controller: 'NotificationCtrl'
+           }
+       }
+   })
+   .state('tab.account-notification-explore', {
+       url: '/account/notification/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/account-notification.html',
+               controller: 'NotificationCtrl'
+           }
+       }
+   })
+   .state('tab.account-notification-ranking', {
+       url: '/account/notification/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/account-notification.html',
+               controller: 'NotificationCtrl'
+           }
+       }
+   })
+   .state('tab.account-notification-account', {
+       url: '/account/notification/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/account-notification.html',
+               controller: 'NotificationCtrl'
+           }
+       }
+   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');
 
