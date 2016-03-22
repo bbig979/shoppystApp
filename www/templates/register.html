@@ -1,0 +1,22 @@
+<ion-view view-title="SIGN UP" id="register">
+    <ion-content>
+        <form ng-submit="register()">
+            <div class="list">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Email</span>
+                    <input type="text" ng-model="registerData.email" placeholder="Email">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Password</span>
+                    <input type="password" ng-model="registerData.password" placeholder="Password">
+                </label>
+                <div class="padding"></div>
+                <div class="padding">
+                    <button class="button button-block button-positive" type="submit">Create an Account</button>
+                    <p class="facebook-header">OR</p>
+                    <div ng-click="fbLogin()"  class="button button-block button-positive ion-social-facebook">&nbsp;&nbsp;Continue with Facebook</div>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

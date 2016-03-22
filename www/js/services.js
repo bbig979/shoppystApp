@@ -31,35 +31,49 @@ angular.module('starter.services', [])
         following: function(pg) {
             return $http.get($rootScope.baseURL+"/api/home?page="+pg).then(function(response){
                 return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
             });
         },
         school: function(pg, id) {
             return $http.get($rootScope.baseURL+"/api/school/"+id+"/post?page="+pg).then(function(response){
                 return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
             });
         },
         get: function(postID){
             return $http.get($rootScope.baseURL+"/api/post/"+postID).then(function(response){
                 return response.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
             });
         },
         new: function(pg, search_term){
             return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
                 return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
+        },
+        user: function(userSlug, pg) {
+            return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?page="+pg).then(function(response){
+                return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
             });
         },
         liked: function(slug, pg){
             return $http.get($rootScope.baseURL+"/api/"+slug+"/liked?page="+pg).then(function(response){
                 return response.data.data;
-            });
-        }
-    };
-})
-.factory('FetchLikers', function($http, $rootScope) {
-    return {
-        all: function(id, pg) {
-            return $http.get($rootScope.baseURL+'/api/post/'+ id +'/likers?page='+ pg).then(function(response){
-                return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
             });
         }
     };
@@ -69,11 +83,33 @@ angular.module('starter.services', [])
         following: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/'+ slug +'/following?page='+ pg).then(function(response){
                 return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
             });
         },
         follower: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/'+ slug +'/follower?page='+ pg).then(function(response){
                 return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
+        },
+        get: function(userSlug) {
+            return $http.get($rootScope.baseURL+"/api/"+userSlug).then(function(response){
+                return response.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
+        },
+        liker: function(id, pg) {
+            return $http.get($rootScope.baseURL+'/api/post/'+ id +'/likers?page='+ pg).then(function(response){
+                return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
             });
         },
         findFriends: function(pg) {
@@ -88,24 +124,22 @@ angular.module('starter.services', [])
         ranking: function(pg) {
             return $http.get($rootScope.baseURL+'/api/ranking/school?page='+pg).then(function(response){
                 return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
             });
         }
     };
 })
-.factory('Modified', function() {
-    modified = {};
-    modified.index = -1;
-    modified.like = 0;
-    modified.comment = 0;
+.factory('FetchNotifications', function($http, $rootScope) {
     return {
-        get: function(){
-            return modified;
-        },
-        reset: function(){
-            modified = {};
-            modified.index = -1;
-            modified.like = 0;
-            modified.comment = 0;
+        new: function(slug, pg) {
+            return $http.get($rootScope.baseURL+'/api/'+slug+'/notification?page='+pg).then(function(response){
+                return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
         }
     };
 })
@@ -122,23 +156,5 @@ angular.module('starter.services', [])
             if(element)
                 element.focus();
         });
-    };
-})
-.factory('FetchUser', function($http, $rootScope) {
-    return {
-        get: function(userSlug) {
-            return $http.get($rootScope.baseURL+"/api/"+userSlug).then(function(response){
-                return response.data;
-            });
-        }
-    };
-})
-.factory('FetchUserPosts', function($http, $rootScope) {
-    return {
-        get: function(userSlug, pg) {
-            return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?page="+pg).then(function(response){
-                return response.data;
-            });
-        }
     };
 });

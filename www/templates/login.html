@@ -1,20 +1,25 @@
-<ion-view view-title="Login">
+<ion-view view-title="LOG IN" id="log-in">
     <ion-content>
         <form ng-submit="login()">
             <div class="list">
-                <label class="item item-input">
+                <label class="item item-input item-floating-label">
                     <span class="input-label">Email</span>
-                    <input type="text" ng-model="loginData.email">
+                    <input type="text" ng-model="loginData.email" placeholder="Email">
                 </label>
-                <label class="item item-input">
+                <label class="item item-input item-floating-label">
                     <span class="input-label">Password</span>
-                    <input type="password" ng-model="loginData.password">
+                    <input type="password" ng-model="loginData.password" placeholder="Password">
                 </label>
-                <label class="item">
+                <div class="padding"></div>
+                <div class="padding">
                     <button class="button button-block button-positive" type="submit">Log in</button>
-                </label>
+                    <p class="forgot-password"><a>Forgot your password?</a></p>
+                    <p class="sign-up">Don't have an account yet? <a href="#/register">Sign Up</a></p>
+                    <p class="facebook-header">OR</p>
+                    <div ng-click="fbLogin()" class="button button-block button-positive ion-social-facebook">&nbsp;&nbsp;Login in with Facebook</div>
+                </div>
+
             </div>
         </form>
-        <button ng-click="authenticate('facebook')">Sign in with Facebook</button>
     </ion-content>
 </ion-view>

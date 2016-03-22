@@ -1,0 +1,38 @@
+<ion-view view-title="ALMOST DONE" id="register2">
+    <ion-content>
+        <form ng-submit="register2()">
+            <div class="list">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">First name</span>
+                    <input type="text" ng-model="registerData.first_name" placeholder="First name">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Last name</span>
+                    <input type="text" ng-model="registerData.last_name" placeholder="Last name">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">School name</span>
+                    <input type="text" ng-model="registerData.school_name" placeholder="School name">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Grad year ( or expected )</span>
+                    <input type="text" ng-model="registerData.grad_year" placeholder="Grad year ( or expected )">
+                </label>
+                <div class="padding consistent"></div>
+                <label class="item item-input item-select">
+                    <div class="input-label">
+                        Gender
+                    </div>
+                    <select>
+                        <option>Male</option>
+                        <option selected>Female</option>
+                    </select>
+                </label>
+                <div class="padding"></div>
+                <div class="padding">
+                    <button class="button button-block button-positive" type="submit">Create an Account</button>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
