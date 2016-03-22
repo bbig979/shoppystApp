@@ -208,18 +208,12 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('HomeCtrl', function($scope, FetchPosts, $http, Modified, $state, $rootScope) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
-/*
-$scope.test = Modified.get();
-if($scope.test.index > -1){
-    $scope.posts[$scope.test.index].likes_count.aggregate++;
-}
-console.log($scope.test);
-*/
+
     FetchPosts.following($scope.page).then(function(posts){
         if(posts && posts.length == 0){
             $scope.noResult = true;
@@ -318,7 +312,7 @@ console.log($scope.test);
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, Modified, $ionicActionSheet, $ionicHistory, $ionicLoading) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -329,12 +323,7 @@ console.log($scope.test);
     $scope.clientVersionUpToDate = true;
     $scope.commentSubmitting = false;
     var user = $rootScope.getCurrentUser();
-/*
-var test = Modified.get();
-test.index = 0;
-test.like = 1;
-console.log(test);
-*/
+
     $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
         if(version != $rootScope.clientVersion){
             $scope.clientVersionUpToDate = false;
@@ -456,28 +445,9 @@ console.log(test);
             }
         });
     };
-    /*
-    $scope.saveClicked = function(){
-        if($scope.liked){
-            $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/unsave').success(function(){
-            })
-             .error(function(error){
-                $rootScope.handleHttpError(error);
-             });
-        }
-        else{
-            $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/save').success(function(){
-            })
-             .error(function(error){
-                $rootScope.handleHttpError(error);
-             });
-        }
-        $scope.saved = !$scope.saved;
-    };
-    */
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $ionicTabsDelegate) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;

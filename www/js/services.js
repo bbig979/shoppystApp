@@ -138,23 +138,6 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('Modified', function() {
-    modified = {};
-    modified.index = -1;
-    modified.like = 0;
-    modified.comment = 0;
-    return {
-        get: function(){
-            return modified;
-        },
-        reset: function(){
-            modified = {};
-            modified.index = -1;
-            modified.like = 0;
-            modified.comment = 0;
-        }
-    };
-})
 .factory('Focus', function($timeout, $window) {
     return function(id) {
         // http://stackoverflow.com/questions/25596399/set-element-focus-in-angular-way
