@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'satellizer', 'angularMoment', 'wu.masonry'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'satellizer', 'angularMoment', 'wu.masonry', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -24,7 +24,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 })
 
 .config(function($stateProvider, $urlRouterProvider, $authProvider) {
-    var baseURL = 'http://localhost:8888';
+    var baseURL = 'http://appbeta.shoppyst.com';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -42,13 +42,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         templateUrl: 'templates/login.html',
         controller: 'AuthCtrl'
     })
-
+    .state('auth.logout', {
+        url: '/logout',
+        controller: 'AuthLogoutCtrl'
+    })
     .state('register', {
        url: '/register',
        templateUrl: 'templates/register.html',
        controller: 'RegisterCtrl'
     })
-
     .state('register2', {
        url: '/register2',
        templateUrl: 'templates/register2.html',
@@ -199,7 +201,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       url: '/camera',
       views: {
         'tab-camera': {
-
         }
       }
     })
@@ -289,15 +290,60 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
    })
 
-    .state('tab.option-account', {
+  .state('tab.option-account', {
      url: '/option',
      views: {
          'tab-account': {
-             templateUrl: 'templates/tab-option.html',
+             templateUrl: 'templates/account-option.html',
              controller: 'OptionCtrl'
          }
      }
-    })
+  })
+  .state('tab.edit-account', {
+     url: '/option/edit',
+     views: {
+         'tab-account': {
+             templateUrl: 'templates/account-edit.html',
+             controller: 'AccountEditCtrl'
+         }
+     }
+  })
+  .state('tab.change-profile-picture', {
+     url: '/account/profile/upload',
+     views: {
+         'tab-account': {
+             templateUrl: 'templates/account-change-profile-picture.html',
+             controller: 'ChangeProfilePictureCtrl'
+         }
+     }
+  })
+  .state('tab.find-friends', {
+     url: '/find-friends',
+     views: {
+         'tab-account': {
+             templateUrl: 'templates/find-friends.html',
+             controller: 'FindFriendsCtrl'
+         }
+     }
+  })
+  .state('tab.invite-friends', {
+     url: '/invite-friends',
+     views: {
+         'tab-account': {
+             templateUrl: 'templates/invite-friends.html',
+             controller: 'InviteFriendsCtrl'
+         }
+     }
+  })
+  .state('tab.change-password', {
+     url: '/change-passworrd',
+     views: {
+         'tab-account': {
+             templateUrl: 'templates/change-password.html',
+             controller: 'ChangePasswordCtrl'
+         }
+     }
+  })
 
     .state('tab.account-following-home', {
         url: '/account/:userSlug/following/home',

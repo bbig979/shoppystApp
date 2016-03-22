@@ -1,0 +1,16 @@
+<ion-view class="find-friends" id="find-friends" view-title="Find Friends">
+    <ion-content>
+        In maintenance
+        <div class="loading-spinner" data-loading ng-if="users.length == 0">
+            <ion-spinner></ion-spinner>
+        </div>
+        <ion-list ng-if="user">
+            <ion-item class="item item-avatar" ng-repeat="user in users" href="#">
+                <img ng-click="goAccount(user.slug)" ng-src="{{ photoPath( user.profile_img_path, 's' ) }}" class="profile-image">
+                <div ng-click="goAccount(user.slug)" class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
+                <button class="button button-small follow-toggle" ng-class="{'following' : user.following_check}" ng-click="followToggle(user)"></button>
+            </ion-item>
+        </ion-list>
+        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
+    </ion-content>
+</ion-view>

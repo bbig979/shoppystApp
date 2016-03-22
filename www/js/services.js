@@ -111,6 +111,11 @@ angular.module('starter.services', [])
             ,function(error){
                 $rootScope.handleHttpError(error);
             });
+        },
+        findFriends: function(pg) {
+            return $http.get($rootScope.baseURL+'/api/find-friends?page='+ pg).then(function(response){
+                return response.data.data;
+            });
         }
     };
 })

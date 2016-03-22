@@ -7,7 +7,7 @@
         <div class="account-top" style="background-image: url( {{ photoPath( user.cover_img_path, '' ) }} )">
             <button class="button button-clear icon ion-gear-b account-option-btn" ng-click="goAccountOption()" ng-if="isMyAccount"></button>
             <button class="button button-small follow-toggle" ng-class="{'following' : user.following_check}" ng-click="followToggle(user)" ng-if="notMe(user)"></button>
-            <div class="account-image" style="background-image: url( {{ photoPath( user.profile_img_path, 's' ) }} )"></div>
+            <div class="account-image" style="background-image: url( {{ photoPath( user.profile_img_path, 's' ) }} )" ng-click="goChangeProfilePicture()"></div>
             <div class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
             <div class="user-school" ng-click="goSchoolDetail(user.school.id, user.school.name)" ng-if="user.school.id != 0">{{ user.school.name }}</div>
             <div class="user-joined">Joined at <span class="time-ago" am-time-ago="user.created_at | amUtc" ng-if="user"></span></div>

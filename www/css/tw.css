@@ -113,3 +113,61 @@
 #tab-account .following:after {
   content: "UNFOLLOW";
 }
+
+/* line 3, ../../scss/tw/style/_find-friends.scss */
+.find-friends ion-content .item {
+  border-color: #e7e7e7;
+  padding: 7px;
+}
+/* line 7, ../../scss/tw/style/_find-friends.scss */
+.find-friends ion-content .item-avatar {
+  padding: 0;
+  min-height: 55px;
+}
+/* line 8, ../../scss/tw/style/_find-friends.scss */
+.find-friends ion-content .item-avatar .user-name {
+  font-size: 12px;
+  float: left;
+  padding-top: 14px;
+  font-weight: 500;
+}
+/* line 14, ../../scss/tw/style/_find-friends.scss */
+.find-friends ion-content .item-avatar .follow-toggle {
+  font-size: 11px;
+  float: right;
+  margin-top: 8px;
+  padding: 0 20px;
+  margin-right: 5px;
+  background-color: #fff;
+  border-color: #337ab7;
+  color: #337ab7;
+  width: 90px;
+}
+/* line 25, ../../scss/tw/style/_find-friends.scss */
+.find-friends ion-content .item-avatar .follow-toggle:after {
+  padding-top: 7px;
+  content: "FOLLOW";
+}
+/* line 29, ../../scss/tw/style/_find-friends.scss */
+.find-friends ion-content .item-avatar .following {
+  background-color: #F95D61;
+  border-color: #F95D61;
+  color: #fff;
+}
+/* line 34, ../../scss/tw/style/_find-friends.scss */
+.find-friends ion-content .item-avatar .following:after {
+  content: "UNFOLLOW";
+}
+/* line 37, ../../scss/tw/style/_find-friends.scss */
+.find-friends ion-content .item-avatar .item-content {
+  padding: 4px;
+  padding-left: 50px;
+  min-height: 55px;
+}
+/* line 38, ../../scss/tw/style/_find-friends.scss */
+.find-friends ion-content .item-avatar .item-content .profile-image {
+  max-width: 30px;
+  max-height: 30px;
+  left: 10px;
+  top: 13px;
+}
