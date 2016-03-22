@@ -318,7 +318,7 @@ console.log($scope.test);
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, Modified, $ionicActionSheet) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, Modified, $ionicActionSheet, $ionicHistory, $ionicLoading) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -443,8 +443,16 @@ console.log(test);
                 return true;
             },
             destructiveButtonClicked: function() {
-                console.log('DESTRUCT');
-                return true;
+                $ionicLoading.show();
+                $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
+                    $('.item[data-id='+$scope.post.id+']').remove();
+                    $ionicLoading.hide();
+                    $ionicHistory.goBack();
+                    return true;
+                })
+                .error(function(error){
+                    $rootScope.handleHttpError(error);
+                });
             }
         });
     };
