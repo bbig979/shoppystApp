@@ -318,7 +318,7 @@ console.log($scope.test);
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, Modified) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, Modified, $ionicActionSheet) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -400,6 +400,11 @@ console.log(test);
     $scope.ownComment = function($index){
         return user.id == $scope.post.latest_ten_comments[$index].user.id;
     };
+    $scope.ownPost = function(){
+        if($scope.post){
+            return user.id == $scope.post.user.id;
+        }
+    };
     $scope.focusComment = function(){
         Focus('comment');
     };
@@ -422,8 +427,26 @@ console.log(test);
         }
         $scope.liked = !$scope.liked;
     };
-    $scope.loadProfile = function(slug){
-        //$location.path('#/tab/home');
+    $scope.moreOption = function(){
+        $ionicActionSheet.show({
+            titleText: 'More Options',
+            buttons: [
+                { text: 'Edit' },
+            ],
+            destructiveText: 'Delete',
+            cancelText: 'Cancel',
+            cancel: function() {
+                console.log('CANCELLED');
+            },
+            buttonClicked: function(index) {
+                console.log('BUTTON CLICKED', index);
+                return true;
+            },
+            destructiveButtonClicked: function() {
+                console.log('DESTRUCT');
+                return true;
+            }
+        });
     };
     /*
     $scope.saveClicked = function(){

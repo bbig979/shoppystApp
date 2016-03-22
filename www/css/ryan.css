@@ -276,6 +276,10 @@ ion-tabs .tab-item {
 #post-detail form .item-input-inset {
   border: 0;
 }
+/* line 11, ../../scss/ryan/style/_post-detail.scss */
+#post-detail .ion-ios-more-outline {
+  float: right;
+}
 
 /* line 2, ../../scss/ryan/style/_home.scss */
 #home .post-header {
