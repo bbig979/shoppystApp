@@ -69,13 +69,29 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-notification-'+tab);
     };
-    $rootScope.handleHttpError = function(error){
-        if(typeof (error.error) != undefined && error.error == "token_not_provided"){
+    $rootScope.handleHttpError = function(error, status){
+        if(status == 422){
+            // when login error
+            for(var key in error){
+                alert(error[key]);
+                break;
+            }
+        }
+        else if(typeof (error.status) != 'undefined' && error.status == 401){
+            // when validation error
+            for(var key in error.data){
+                alert(error.data[key]);
+                break;
+            }
+        }
+        else if(typeof (error.error) != 'undefined' && error.error == "token_not_provided"){
             $state.go('auth');
         }
-        else if(typeof (error.data) != undefined && typeof (error.data.error) != undefined && error.data.error == "token_not_provided"){
+        else if(typeof (error.data) != 'undefined' && typeof (error.data.error) != 'undefined' && error.data.error == "token_not_provided"){
             $state.go('auth');
         }
+        console.log('status: '+status);
+        console.log(error);
     };
     $rootScope.getCurrentUser = function(){
         var user = JSON.parse(localStorage.getItem('user'));
@@ -128,13 +144,26 @@ angular.module('starter.controllers', [])
 
 
 .controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
+    $scope.registerData = {email:'',password:''};
+    $scope.register = function(registerData){
+        $ionicLoading.show();
+        $http({
+            method : 'POST',
+            url : $rootScope.baseURL+'/api/register',
+            data : {email:registerData.email,password:registerData.password}
+        })
+        .success(function(response){
+            $ionicLoading.hide();
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
 
-    $scope.register = function(){
-        $ionicHistory.nextViewOptions({
-            disableBack: true
+            $state.go('register2');
+        })
+        .error(function(error, status){
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
         });
-
-        $state.go('register2');
     }
     $scope.fbLogin = function() {
         $ionicLoading.show();
@@ -156,9 +185,8 @@ angular.module('starter.controllers', [])
                 $state.go('tab.home');
             })
             .error(function(){
-                $scope.loginError = true;
-                $scope.loginErrorText = error.data.error;
-                console.log($scope.loginErrorText);
+                $ionicLoading.hide();
+                $rootScope.handleHttpError(error, status);
             })
         });
     };
@@ -201,10 +229,13 @@ angular.module('starter.controllers', [])
                 $state.go('tab.home');
             })
             .error(function(){
-                $scope.loginError = true;
-                $scope.loginErrorText = error.data.error;
-                console.log($scope.loginErrorText);
+                $ionicLoading.hide();
+                $rootScope.handleHttpError(error, status);
             })
+        },
+        function(error) {
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
         });
     };
 
@@ -228,9 +259,8 @@ angular.module('starter.controllers', [])
                 $state.go('tab.home');
             })
             .error(function(){
-                $scope.loginError = true;
-                $scope.loginErrorText = error.data.error;
-                console.log($scope.loginErrorText);
+                $ionicLoading.hide();
+                $rootScope.handleHttpError(error, status);
             })
         });
     };
