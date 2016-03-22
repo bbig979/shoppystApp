@@ -98,7 +98,7 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('RegisterCtrl', function($scope, $ionicHistory, $state) {
+.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
 
     $scope.register = function(){
         $ionicHistory.nextViewOptions({
@@ -107,7 +107,32 @@ angular.module('starter.controllers', [])
 
         $state.go('register2');
     }
+    $scope.fbLogin = function() {
+        $ionicLoading.show();
+        $auth.authenticate('facebook').then(function() {
+            // Return an $http request for the authenticated user
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                // Stringify the retured data
+                var user = JSON.stringify(response.user);
 
+                // Set the stringified user data into local storage
+                localStorage.setItem('user', user);
+
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                $ionicLoading.hide();
+
+                $state.go('tab.home');
+            })
+            .error(function(){
+                $scope.loginError = true;
+                $scope.loginErrorText = error.data.error;
+                console.log($scope.loginErrorText);
+            })
+        });
+    };
 })
 
 .controller('Register2Ctrl', function($scope) {
@@ -122,18 +147,12 @@ angular.module('starter.controllers', [])
 
     $scope.login = function() {
 
+        $ionicLoading.show();
+
         var credentials = {
             email: $scope.loginData.email,
             password: $scope.loginData.password
         }
-
-        $ionicLoading.show({
-            content: 'Loading',
-            animation: 'fade-in',
-            showBackdrop: true,
-            maxWidth: 200,
-            showDelay: 0
-        });
 
         $auth.login(credentials).then(function() {
             // Return an $http request for the authenticated user
@@ -161,6 +180,7 @@ angular.module('starter.controllers', [])
     };
 
     $scope.fbLogin = function() {
+        $ionicLoading.show();
         $auth.authenticate('facebook').then(function() {
             // Return an $http request for the authenticated user
             $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
@@ -178,11 +198,11 @@ angular.module('starter.controllers', [])
 
                 $state.go('tab.home');
             })
-                .error(function(){
-                    $scope.loginError = true;
-                    $scope.loginErrorText = error.data.error;
-                    console.log($scope.loginErrorText);
-                })
+            .error(function(){
+                $scope.loginError = true;
+                $scope.loginErrorText = error.data.error;
+                console.log($scope.loginErrorText);
+            })
         });
     };
 
