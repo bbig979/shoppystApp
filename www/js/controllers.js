@@ -89,11 +89,18 @@ angular.module('starter.controllers', [])
         $state.go('auth');
     }
     $rootScope.showNotification = function(){
-        if($state.current.name === 'auth'){
+        var exception = 'auth, register';
+        if(exception.indexOf($state.current.name) > -1){
             return false;
         }
         return true;
     };
+})
+
+
+.controller('RegisterCtrl', function($scope) {
+
+
 })
 
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
