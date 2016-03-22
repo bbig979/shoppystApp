@@ -81,6 +81,13 @@ angular.module('starter.controllers', [])
             $state.go('auth');
         }
     };
+    $rootScope.getCurrentUser = function(){
+        var user = JSON.parse(localStorage.getItem('user'));
+        if(user){
+            return user;
+        }
+        $state.go('auth');
+    }
     $rootScope.showNotification = function(){
         if($state.current.name === 'auth'){
             return false;
@@ -119,10 +126,6 @@ angular.module('starter.controllers', [])
                 // Set the stringified user data into local storage
                 localStorage.setItem('user', user);
 
-                // Getting current user data from local storage
-                $rootScope.currentUser = response.user;
-                // $rootScope.currentUser = localStorage.setItem('user');;
-
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
@@ -148,10 +151,6 @@ angular.module('starter.controllers', [])
 
                 // Set the stringified user data into local storage
                 localStorage.setItem('user', user);
-
-                // Getting current user data from local storage
-                $rootScope.currentUser = response.user;
-                // $rootScope.currentUser = localStorage.setItem('user');;
 
                 $ionicHistory.nextViewOptions({
                     disableBack: true
@@ -243,7 +242,7 @@ console.log($scope.test);
     $scope.likes = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
-    var user = JSON.parse(localStorage.getItem('user'));
+    var user = $rootScope.getCurrentUser();
 
     FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
         $scope.likes = likes;
@@ -291,7 +290,7 @@ console.log($scope.test);
     $scope.page = 2;
     $scope.clientVersionUpToDate = true;
     $scope.commentSubmitting = false;
-    var user = JSON.parse(localStorage.getItem('user'));
+    var user = $rootScope.getCurrentUser();
 /*
 var test = Modified.get();
 test.index = 0;
@@ -518,13 +517,13 @@ console.log(test);
     };
 })
 
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope) {
     $scope.page = 1;
     $scope.isMyAccount = false;
     $scope.posts = [];
     $scope.noMoreItemsAvailable = false;
 
-    var user = JSON.parse(localStorage.getItem('user'));
+    var user = $rootScope.getCurrentUser();
     if (!$stateParams.accountSlug)
     {
         var slug = user.slug;
@@ -733,8 +732,8 @@ console.log(test);
         });
     };
 })
-.controller('NotificationCtrl', function($scope, FetchNotifications) {
-    var user = JSON.parse(localStorage.getItem('user'));
+.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope) {
+    var user = $rootScope.getCurrentUser();
     $scope.notifications = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
