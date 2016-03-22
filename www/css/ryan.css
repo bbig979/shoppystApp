@@ -1,4 +1,4 @@
-/* line 3, ../../scss/ryan/_reusable.scss */
+/* line 3, ../../scss/common/_reusable.scss */
 .background-image-handler, .single-post .post-header .profile-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -25,7 +25,8 @@
 }
 /* line 7, ../../scss/ryan/style/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar {
-  padding: 0;
+  padding: 4px;
+  padding-left: 50px;
   min-height: 55px;
 }
 /* line 8, ../../scss/ryan/style/_follow-toggle-user-list.scss */
@@ -63,13 +64,7 @@
   content: "UNFOLLOW";
 }
 /* line 37, ../../scss/ryan/style/_follow-toggle-user-list.scss */
-.follow-toggle-user-list ion-content .item-avatar .item-content {
-  padding: 4px;
-  padding-left: 50px;
-  min-height: 55px;
-}
-/* line 38, ../../scss/ryan/style/_follow-toggle-user-list.scss */
-.follow-toggle-user-list ion-content .item-avatar .item-content .profile-image {
+.follow-toggle-user-list ion-content .item-avatar .profile-image {
   max-width: 30px;
   max-height: 30px;
   left: 10px;
@@ -130,6 +125,10 @@
 /* line 31, ../../scss/ryan/style/_comment-list.scss */
 .comment-list .load-more {
   padding: 10px;
+}
+/* line 34, ../../scss/ryan/style/_comment-list.scss */
+.comment-list .button-small {
+  line-height: 0;
 }
 
 /* line 3, ../../scss/ryan/style/_single-post.scss */
@@ -217,6 +216,11 @@ a {
   border: 1px solid #FFBF00;
 }
 
+/* line 22, ../../scss/ryan/style/_global.scss */
+#notification-icon:before {
+  font-size: 28px;
+}
+
 /* line 1, ../../scss/ryan/style/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;
@@ -271,6 +275,10 @@ ion-tabs .tab-item {
 /* line 8, ../../scss/ryan/style/_post-detail.scss */
 #post-detail form .item-input-inset {
   border: 0;
+}
+/* line 11, ../../scss/ryan/style/_post-detail.scss */
+#post-detail .ion-ios-more-outline {
+  float: right;
 }
 
 /* line 2, ../../scss/ryan/style/_home.scss */
@@ -345,4 +353,23 @@ ion-tabs .tab-item {
 /* line 2, ../../scss/ryan/style/_account-liked.scss */
 #account-liked ion-content {
   padding-top: 7px;
+}
+
+/* line 2, ../../scss/ryan/style/_login.scss */
+#log-in .facebook-header, #log-in .forgot-password, #log-in .sign-up, #register .facebook-header, #register .forgot-password, #register .sign-up {
+  text-align: center;
+  padding: 10px 0;
+}
+/* line 6, ../../scss/ryan/style/_login.scss */
+#log-in .ion-social-facebook, #register .ion-social-facebook {
+  background-color: #4e69a2;
+}
+
+/* line 2, ../../scss/ryan/style/_register.scss */
+#register2 .padding.consistent {
+  padding: 13px;
+}
+/* line 5, ../../scss/ryan/style/_register.scss */
+#register2 .item-select {
+  border-top: 0;
 }

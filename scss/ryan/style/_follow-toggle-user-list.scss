@@ -34,19 +34,16 @@
       .following:after{
         content: "UNFOLLOW";
       }
-      .item-content{
-        .profile-image{
-          max-width: 30px;
-          max-height: 30px;
-          left: 10px;
-          top: 13px;
-        }
-        padding: 4px;
-        padding-left: 50px;
-        min-height: 55px;
+      .profile-image{
+        max-width: 30px;
+        max-height: 30px;
+        left: 10px;
+        top: 13px;
       }
-      padding: 0;
+      padding: 4px;
+      padding-left: 50px;
       min-height: 55px;
     }
+
   }
 }

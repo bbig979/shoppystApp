@@ -24,10 +24,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 })
 
 .config(function($stateProvider, $urlRouterProvider, $authProvider) {
-
-    $authProvider.loginUrl = 'http://localhost:8000/api/authenticate';
+    var baseURL = 'http://localhost:8888';
+    $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
-        clientId: '932117430193850'
+        clientId: '932117430193850',
+        url: baseURL+'/auth/facebook'
     });
 
   // Ionic uses AngularUI Router which uses the concept of states
@@ -40,6 +41,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/auth',
         templateUrl: 'templates/login.html',
         controller: 'AuthCtrl'
+    })
+
+    .state('register', {
+       url: '/register',
+       templateUrl: 'templates/register.html',
+       controller: 'RegisterCtrl'
+    })
+
+    .state('register2', {
+       url: '/register2',
+       templateUrl: 'templates/register2.html',
+       controller: 'Register2Ctrl'
     })
 
   // setup an abstract state for the tabs directive
@@ -395,7 +408,44 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                controller: 'LikedCtrl'
            }
        }
-    });
+   })
+
+   .state('tab.account-notification-home', {
+       url: '/account/notification/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/account-notification.html',
+               controller: 'NotificationCtrl'
+           }
+       }
+   })
+   .state('tab.account-notification-explore', {
+       url: '/account/notification/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/account-notification.html',
+               controller: 'NotificationCtrl'
+           }
+       }
+   })
+   .state('tab.account-notification-ranking', {
+       url: '/account/notification/ranking',
+       views: {
+           'tab-ranking': {
+               templateUrl: 'templates/account-notification.html',
+               controller: 'NotificationCtrl'
+           }
+       }
+   })
+   .state('tab.account-notification-account', {
+       url: '/account/notification/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/account-notification.html',
+               controller: 'NotificationCtrl'
+           }
+       }
+   });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/tab/home');
 

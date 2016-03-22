@@ -40,12 +40,11 @@ angular.module('starter.controllers', [])
     $rootScope.goPostDetail = function(id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-detail-'+tab,{postId: id});
-    }
+    };
     $rootScope.goPostLikers = function(id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-likers-'+tab,{postId: id});
-    }
-
+    };
     $rootScope.goMyAccount = function(){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-'+tab);
@@ -54,39 +53,106 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-'+tab,{accountSlug: slug});
     };
-
     $rootScope.goSchoolDetail = function(id, name){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.school-detail-'+tab,{schoolId: id, schoolName: name});
-    }
+    };
     $rootScope.goAccountFollowing = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-following-'+tab,{userSlug: slug});
-    }
+    };
     $rootScope.goAccountFollower = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-follower-'+tab,{userSlug: slug});
-    }
+    };
     $rootScope.goAccountLiked = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-liked-'+tab,{userSlug: slug});
+    };
+    $rootScope.goAccountNotification = function(){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.account-notification-'+tab);
+    };
+    $rootScope.handleHttpError = function(error){
+        if(typeof (error.error) != undefined && error.error == "token_not_provided"){
+            $state.go('auth');
+        }
+        else if(typeof (error.data) != undefined && typeof (error.data.error) != undefined && error.data.error == "token_not_provided"){
+            $state.go('auth');
+        }
+    };
+    $rootScope.getCurrentUser = function(){
+        var user = JSON.parse(localStorage.getItem('user'));
+        if(user){
+            return user;
+        }
+        $state.go('auth');
     }
+    $rootScope.showNotification = function(){
+        var exception = 'auth, register, register2';
+        if(exception.indexOf($state.current.name) > -1){
+            return false;
+        }
+        return true;
+    };
 })
 
-.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
 
-    $scope.loginData = {}
+.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
+
+    $scope.register = function(){
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+
+        $state.go('register2');
+    }
+    $scope.fbLogin = function() {
+        $ionicLoading.show();
+        $auth.authenticate('facebook').then(function() {
+            // Return an $http request for the authenticated user
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                // Stringify the retured data
+                var user = JSON.stringify(response.user);
+
+                // Set the stringified user data into local storage
+                localStorage.setItem('user', user);
+
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                $ionicLoading.hide();
+
+                $state.go('tab.home');
+            })
+            .error(function(){
+                $scope.loginError = true;
+                $scope.loginErrorText = error.data.error;
+                console.log($scope.loginErrorText);
+            })
+        });
+    };
+})
+
+.controller('Register2Ctrl', function($scope) {
+
+})
+
+.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
+
+    $scope.loginData = {};
     $scope.loginError = false;
     $scope.loginErrorText;
 
     $scope.login = function() {
 
+        $ionicLoading.show();
+
         var credentials = {
             email: $scope.loginData.email,
             password: $scope.loginData.password
         }
-
-        console.log(credentials);
 
         $auth.login(credentials).then(function() {
             // Return an $http request for the authenticated user
@@ -97,42 +163,61 @@ angular.module('starter.controllers', [])
                 // Set the stringified user data into local storage
                 localStorage.setItem('user', user);
 
-                // Getting current user data from local storage
-                $rootScope.currentUser = response.user;
-                // $rootScope.currentUser = localStorage.setItem('user');;
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                $ionicLoading.hide();
+
+                $state.go('tab.home');
+            })
+            .error(function(){
+                $scope.loginError = true;
+                $scope.loginErrorText = error.data.error;
+                console.log($scope.loginErrorText);
+            })
+        });
+    };
+
+    $scope.fbLogin = function() {
+        $ionicLoading.show();
+        $auth.authenticate('facebook').then(function() {
+            // Return an $http request for the authenticated user
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                // Stringify the retured data
+                var user = JSON.stringify(response.user);
+
+                // Set the stringified user data into local storage
+                localStorage.setItem('user', user);
 
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
 
+                $ionicLoading.hide();
+
                 $state.go('tab.home');
             })
-                .error(function(){
-                    $scope.loginError = true;
-                    $scope.loginErrorText = error.data.error;
-                    console.log($scope.loginErrorText);
-                })
+            .error(function(){
+                $scope.loginError = true;
+                $scope.loginErrorText = error.data.error;
+                console.log($scope.loginErrorText);
+            })
         });
-    }
-
-    $scope.authenticate = function(provider) {
-        $auth.authenticate(provider);
     };
 
 })
 
-.controller('HomeCtrl', function($scope, FetchPosts, $http, Modified, $state, $rootScope) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
-/*
-$scope.test = Modified.get();
-if($scope.test.index > -1){
-    $scope.posts[$scope.test.index].likes_count.aggregate++;
-}
-console.log($scope.test);
-*/
+    $scope.noResult = false;
+
     FetchPosts.following($scope.page).then(function(posts){
+        if(posts && posts.length == 0){
+            $scope.noResult = true;
+        }
         $scope.posts = posts;
         $scope.page++;
     });
@@ -154,6 +239,10 @@ console.log($scope.test);
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(posts.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.likeClicked = function($event,post){
@@ -161,11 +250,17 @@ console.log($scope.test);
         if(post.user_liked){
             post.likes_count.aggregate--;
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             post.likes_count.aggregate++;
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         post.user_liked = !post.user_liked;
@@ -175,18 +270,18 @@ console.log($scope.test);
     };
 })
 
-.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchLikers, $rootScope) {
+.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope) {
     $scope.likes = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
-    var user = JSON.parse(localStorage.getItem('user'));
+    var user = $rootScope.getCurrentUser();
 
-    FetchLikers.all($stateParams.postId, $scope.page).then(function(likes){
+    FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
         $scope.likes = likes;
         $scope.page++;
     });
     $scope.loadMore = function() {
-        FetchLikers.all($stateParams.postId, $scope.page).then(function(likes){
+        FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
             $scope.likes = $scope.likes.concat(likes);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -198,10 +293,16 @@ console.log($scope.test);
     $scope.followToggle = function(like) {
         if(like.user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ like.user.slug +'/unfollow').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ like.user.slug +'/follow').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         like.user.following_check = !like.user.following_check;
@@ -211,7 +312,7 @@ console.log($scope.test);
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, Modified) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -220,17 +321,12 @@ console.log($scope.test);
     $scope.commentsHiddenCount = 0;
     $scope.page = 2;
     $scope.clientVersionUpToDate = true;
-    var user = JSON.parse(localStorage.getItem('user'));
-/*
-var test = Modified.get();
-test.index = 0;
-test.like = 1;
-console.log(test);
-*/
+    $scope.commentSubmitting = false;
+    var user = $rootScope.getCurrentUser();
+
     $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
         if(version != $rootScope.clientVersion){
             $scope.clientVersionUpToDate = false;
-            console.log('update');
         }
     });
     FetchPosts.get($stateParams.postId).then(function(post){
@@ -249,6 +345,7 @@ console.log(test);
         }
     });
     $scope.submitComment = function(){
+        $scope.commentSubmitting = true;
         $http({
             method : 'POST',
             url : $rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment/create',
@@ -257,12 +354,21 @@ console.log(test);
         .success(function(response){
             response.user = user;
             $scope.post.latest_ten_comments.push(response);
+            $scope.commentSubmitting = false;
+            $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)+1);
+        })
+        .error(function(error){
+            $rootScope.handleHttpError(error);
         });
         $scope.comment.content = '';
     };
     $scope.remComment = function($index){
         $http.get($rootScope.baseURL+'/api/comment/'+$scope.post.latest_ten_comments[$index].id+'/delete').success(function(){
             $scope.post.latest_ten_comments.splice($index, 1);
+            $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)-1);
+        })
+        .error(function(error){
+            $rootScope.handleHttpError(error);
         });
     };
     $scope.loadMoreComments = function(){
@@ -274,11 +380,19 @@ console.log(test);
                     $scope.commentsHiddenCount = 0;
                 }
                 $scope.page++;
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
     };
     $scope.ownComment = function($index){
         return user.id == $scope.post.latest_ten_comments[$index].user.id;
+    };
+    $scope.ownPost = function(){
+        if($scope.post){
+            return user.id == $scope.post.user.id;
+        }
     };
     $scope.focusComment = function(){
         Focus('comment');
@@ -287,34 +401,53 @@ console.log(test);
         if($scope.liked){
             $scope.likesCount--;
             $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/unlike').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             $scope.likesCount++;
             $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/like').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         $scope.liked = !$scope.liked;
     };
-    $scope.loadProfile = function(slug){
-        //$location.path('#/tab/home');
+    $scope.moreOption = function(){
+        $ionicActionSheet.show({
+            titleText: 'More Options',
+            buttons: [
+                { text: 'Edit' },
+            ],
+            destructiveText: 'Delete',
+            cancelText: 'Cancel',
+            cancel: function() {
+                console.log('CANCELLED');
+            },
+            buttonClicked: function(index) {
+                console.log('BUTTON CLICKED', index);
+                return true;
+            },
+            destructiveButtonClicked: function() {
+                $ionicLoading.show();
+                $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
+                    $('.item[data-id='+$scope.post.id+']').remove();
+                    $ionicLoading.hide();
+                    $ionicHistory.goBack();
+                    return true;
+                })
+                .error(function(error){
+                    $rootScope.handleHttpError(error);
+                });
+            }
+        });
     };
-    /*
-    $scope.saveClicked = function(){
-        if($scope.liked){
-            $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/unsave').success(function(){
-            });
-        }
-        else{
-            $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/save').success(function(){
-            });
-        }
-        $scope.saved = !$scope.saved;
-    };
-    */
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $ionicTabsDelegate) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -423,10 +556,13 @@ console.log(test);
     };
 })
 
-.controller('AccountCtrl', function($scope, $stateParams, FetchUser, FetchUserPosts, $http, $state, $location) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope) {
     $scope.page = 1;
     $scope.isMyAccount = false;
-    var user = JSON.parse(localStorage.getItem('user'));
+    $scope.posts = [];
+    $scope.noMoreItemsAvailable = false;
+
+    var user = $rootScope.getCurrentUser();
     if (!$stateParams.accountSlug)
     {
         var slug = user.slug;
@@ -437,11 +573,12 @@ console.log(test);
         var slug = $stateParams.accountSlug;
     }
 
-    FetchUser.get(slug).then(function(user){
+    FetchUsers.get(slug).then(function(user){
         $scope.user = user;
     });
-    FetchUserPosts.get(slug, $scope.page).then(function(posts){
+    FetchPosts.user(slug, $scope.page).then(function(posts){
         $scope.posts = posts;
+        $scope.page++;
     });
     $scope.goAccountOption = function(id){
         $state.go('tab.option-account',{userId: id});
@@ -467,16 +604,41 @@ console.log(test);
     $scope.followToggle = function(like) {
         if(like.following_check){
             $http.get('http://localhost:8000/api/'+ like.slug +'/unfollow').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else {
             $http.get('http://localhost:8000/api/'+ like.slug +'/follow').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         like.following_check = !like.following_check;
     };
     $scope.notMe = function(like) {
         return !$scope.isMyAccount;
+    };
+    $scope.loadMore = function() {
+        FetchPosts.user(slug, $scope.page).then(function(posts){
+            $scope.posts = $scope.posts.concat(posts);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.page = 1;
+        FetchPosts.user(slug, $scope.page).then(function(posts){
+            $scope.posts = posts;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+        });
     };
 })
 .controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location) {
@@ -513,12 +675,18 @@ console.log(test);
     $scope.followToggle = function(user) {
         if(user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-
+                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)-1);
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-
+                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)+1);
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         user.following_check = !user.following_check;
@@ -556,12 +724,18 @@ console.log(test);
     $scope.followToggle = function(user) {
         if(user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-
+                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)-1);
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-
+                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)+1);
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
             });
         }
         user.following_check = !user.following_check;
@@ -591,6 +765,37 @@ console.log(test);
         $scope.page = 1;
         FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
             $scope.posts = posts;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+        });
+    };
+})
+.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope) {
+    var user = $rootScope.getCurrentUser();
+    $scope.notifications = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
+
+    FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
+        $scope.notifications = notifications;
+        $scope.page++;
+    });
+
+    $scope.loadMore = function() {
+        FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
+            $scope.notifications = $scope.notifications.concat(notifications);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( notifications.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.page = 1;
+        FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
+            $scope.notifications = notifications;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
