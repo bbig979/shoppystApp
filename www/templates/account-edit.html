@@ -1,0 +1,38 @@
+<ion-view id="account-edit" view-title="Edit Profile">
+    <ion-content>
+        <form ng-submit="updateProfile(user_info)" name="updateProfileForm" ng-if="user">
+            <div class="list">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">First Name</span>
+                    <input type="text" placeholder="First Name" class="form-control" ng-model="user_info.first_name">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Last Name</span>
+                    <input type="text" placeholder="Last Name" class="form-control" ng-model="user_info.last_name">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">User Name</span>
+                    <input type="text" placeholder="User Name" class="form-control" ng-model="user_info.slug">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label"><i class="icon ion-social-facebook placeholder-icon"></i></span>
+                    <input type="text" placeholder="Facebook" class="form-control" ng-model="user_info.facebook">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label"><i class="icon ion-social-twitter placeholder-icon"></i></span>
+                    <input type="text" placeholder="Twitter" class="form-control" ng-model="user_info.twitter">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label"><i class="icon ion-social-instagram-outline placeholder-icon"></i></span>
+                    <input type="text" placeholder="Instagram" class="form-control" ng-model="user_info.instagram">
+                </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label"><i class="icon ion-social-pinterest placeholder-icon"></i></span>
+                    <input type="text" placeholder="Pinterest" class="form-control" ng-model="user_info.pinterest">
+                </label>
+                <div class="padding"></div>
+                <button type="submit" class="button button-block button-positive padding">Update Profile</button>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

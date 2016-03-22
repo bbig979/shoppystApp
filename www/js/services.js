@@ -75,6 +75,11 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+'/api/'+ slug +'/follower?page='+ pg).then(function(response){
                 return response.data.data;
             });
+        },
+        findFriends: function(pg) {
+            return $http.get($rootScope.baseURL+'/api/find-friends?page='+ pg).then(function(response){
+                return response.data.data;
+            });
         }
     };
 })

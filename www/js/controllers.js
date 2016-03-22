@@ -1,8 +1,8 @@
 angular.module('starter.controllers', [])
 
-.run(function($rootScope, $ionicTabsDelegate, $state) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $cordovaImagePicker, $ionicPlatform) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.baseURL = 'http://localhost:8000';
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
@@ -46,10 +46,6 @@ angular.module('starter.controllers', [])
         $state.go('tab.post-likers-'+tab,{postId: id});
     }
 
-    $rootScope.goMyAccount = function(){
-        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-'+tab);
-    };
     $rootScope.goAccount = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-'+tab,{accountSlug: slug});
@@ -70,6 +66,39 @@ angular.module('starter.controllers', [])
     $rootScope.goAccountLiked = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-liked-'+tab,{userSlug: slug});
+    }
+    $rootScope.goAccountOption = function(id){
+        $state.go('tab.option-account',{userId: id});
+    };
+
+
+
+    function UploadPicture(imageURI) {
+        $rootScope.PicSourece  = document.getElementById('smallimage');
+        if (imageURI.substring(0,21)=="content://com.android") {
+            var photo_split=imageURI.split("%3A");
+            imageURI="content://media/external/images/media/"+photo_split[1];
+        }
+        $rootScope.ImageURI =  imageURI;
+        $rootScope.PicSourece.src = $rootScope.ImageURI;
+        $rootScope.apply();
+    }
+    $rootScope.openCamera = function(){
+        var options = {
+            maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
+            width: 800,
+            height: 800,
+            quality: 100            // Higher is better
+        };
+     
+        $cordovaImagePicker.getPictures(options).then(function (results) {
+                    // Loop through acquired images
+            for (var i = 0; i < results.length; i++) {
+                console.log('Image URI: ' + results[i]);   // Print image URI
+            }
+        }, function(error) {
+            console.log('Error: ' + JSON.stringify(error));    // In case of error
+        });
     }
 })
 
@@ -120,7 +149,10 @@ angular.module('starter.controllers', [])
     };
 
 })
-
+.controller('AuthLogoutCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
+    $auth.logout();
+    $state.go('tab.home');
+})
 .controller('HomeCtrl', function($scope, FetchPosts, $http, Modified, $state, $rootScope) {
     $scope.posts = [];
     $scope.page = 1;
@@ -443,8 +475,8 @@ console.log(test);
     FetchUserPosts.get(slug, $scope.page).then(function(posts){
         $scope.posts = posts;
     });
-    $scope.goAccountOption = function(id){
-        $state.go('tab.option-account',{userId: id});
+    $scope.goChangeProfilePicture = function(){
+        $state.go('tab.change-profile-picture');
     };
     $scope.goAccountSocialNetwork = function(type){
         if (type == 'facebook')
@@ -479,7 +511,196 @@ console.log(test);
         return !$scope.isMyAccount;
     };
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup) {
+    $scope.goAccountEdit = function(id){
+        $state.go('tab.edit-account');
+    };
+    $scope.goFindFriends = function(id){
+        $state.go('tab.find-friends');
+    };
+    $scope.goInviteFriends = function(id){
+        $state.go('tab.invite-friends');
+    };
+    $scope.goChangePassword = function(id){
+        $state.go('tab.change-password');
+    };
+    $scope.logout = function(id){
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Log Out',
+            template: 'Are you sure to log out?'
+        });
+
+        confirmPopup.then(function(res) {
+            if(res) {
+                $state.go('auth.logout');
+            }
+        });
+
+
+        
+    };
+})
+.controller('AccountEditCtrl', function($scope, $stateParams, FetchUser, $http, $state, $location, $rootScope, $ionicPopup) {
+    var user = JSON.parse(localStorage.getItem('user'));
+    FetchUser.get(user.slug).then(function(user){
+        $scope.user = user;
+        var data = { first_name : $scope.user.first_name,
+            first_name : $scope.user.first_name,
+            last_name : $scope.user.last_name,
+            slug : $scope.user.slug,
+            facebook : $scope.user.social_networks.facebook,
+            twitter : $scope.user.social_networks.twitter,
+            instagram : $scope.user.social_networks.instagram,
+            pinterest : $scope.user.social_networks.pinterest
+        };
+        $scope.user_info = data;
+    });
+
+    $scope.updateProfile = function(user){
+        Object.toparams = function ObjecttoParams(obj)
+        {
+            var p =[];
+            for (var key in obj)
+            {
+                p.push(key + '=' + encodeURIComponent(obj[key]));
+            }
+            return p.join('&');
+        };
+
+        $http({
+            url: $rootScope.baseURL + '/api/' + $scope.user.slug + '/edit',
+            method: "POST",
+            data: Object.toparams(user),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function (data, status, headers, config)
+        {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Profile Has been updated',
+                template: 'Profile Has been updated'
+            });
+            $ionicHistory.goBack();
+        }).error(function (data, status, headers, config) 
+        {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Error Occurred. Try Again.',
+                template: 'Error Occurred. Try Again.'
+            });
+        });
+    };
+})
+.controller('ChangePasswordCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup, $rootScope) {
+    var user = JSON.parse(localStorage.getItem('user'));
+    $scope.changePassword = function(pwd){
+        Object.toparams = function ObjecttoParams(obj)
+        {
+            var p =[];
+            for (var key in obj)
+            {
+                p.push(key + '=' + encodeURIComponent(obj[key]));
+            }
+            return p.join('&');
+        };
+
+        $http({
+            url: $rootScope.baseURL + '/api/' + user.slug + '/password/edit',
+            method: "POST",
+            data: Object.toparams(pwd),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function (data, status, headers, config)
+        {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Profile Has been updated',
+                template: 'Profile Has been updated'
+            });
+            $ionicHistory.goBack();
+        }).error(function (data, status, headers, config) 
+        {
+            console.log(status);
+            var alertPopup = $ionicPopup.alert({
+                title: 'Error Occurred. Try Again.',
+                template: 'Error Occurred. Try Again.'
+            });
+        });
+    };
+})
+.controller('ChangeProfilePictureCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup) {
+})
+.controller('FindFriendsCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
+    $scope.users = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
+
+    FetchUsers.findFriends($scope.page).then(function(users){
+        $scope.users = users;
+        $scope.page++;
+    });
+
+    $scope.loadMore = function() {
+        FetchUsers.findFriends($scope.page).then(function(users){
+            $scope.users = $scope.users.concat(users);
+            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $scope.page++;
+            if ( users.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.page = 1;
+        FetchUsers.findFriends($scope.page).then(function(users){
+            $scope.users = users;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+        });
+    };
+    $scope.followToggle = function(user) {
+        if(user.following_check){
+            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
+
+            });
+        }
+        else{
+            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
+
+            });
+        }
+        user.following_check = !user.following_check;
+    };
+})
+.controller('InviteFriendsCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup, $rootScope, $ionicHistory) {
+    $scope.sendInvitation = function(email){
+        param = {'email' : email};
+        Object.toparams = function ObjecttoParams(obj)
+        {
+            var p =[];
+            for (var key in obj)
+            {
+                p.push(key + '=' + encodeURIComponent(obj[key]));
+            }
+            return p.join('&');
+        };
+        $http({
+            url: $rootScope.baseURL + '/api/invite-friends',
+            method: "POST",
+            data: Object.toparams(param),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function (data, status, headers, config)
+        {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Invitation has been sent',
+                template: 'Invitation has been sent'
+            });
+            $ionicHistory.goBack();
+        }).error(function (data, status, headers, config) 
+        {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Error Occurred. Try Again.',
+                template: 'Error Occurred. Try Again.'
+            });
+            $ionicHistory.goBack();
+        });
+    };
 })
 .controller('FollowingCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
     $scope.users = [];
