@@ -49,6 +49,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        controller: 'RegisterCtrl'
     })
 
+    .state('register2', {
+       url: '/register2',
+       templateUrl: 'templates/register2.html',
+       controller: 'Register2Ctrl'
+    })
+
   // setup an abstract state for the tabs directive
     .state('tab', {
         url: '/tab',

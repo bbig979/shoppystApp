@@ -352,11 +352,20 @@ ion-tabs .tab-item {
 }
 
 /* line 2, ../../scss/ryan/style/_login.scss */
-#log-in .facebook-header, #log-in .forgot-password, #log-in .sign-up {
+#log-in .facebook-header, #log-in .forgot-password, #log-in .sign-up, #register .facebook-header, #register .forgot-password, #register .sign-up {
   text-align: center;
   padding: 10px 0;
 }
 /* line 6, ../../scss/ryan/style/_login.scss */
-#log-in .ion-social-facebook {
+#log-in .ion-social-facebook, #register .ion-social-facebook {
   background-color: #4e69a2;
+}
+
+/* line 2, ../../scss/ryan/style/_register.scss */
+#register2 .padding.consistent {
+  padding: 13px;
+}
+/* line 5, ../../scss/ryan/style/_register.scss */
+#register2 .item-select {
+  border-top: 0;
 }

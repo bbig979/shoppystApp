@@ -89,7 +89,7 @@ angular.module('starter.controllers', [])
         $state.go('auth');
     }
     $rootScope.showNotification = function(){
-        var exception = 'auth, register';
+        var exception = 'auth, register, register2';
         if(exception.indexOf($state.current.name) > -1){
             return false;
         }
@@ -98,8 +98,19 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('RegisterCtrl', function($scope) {
+.controller('RegisterCtrl', function($scope, $ionicHistory, $state) {
 
+    $scope.register = function(){
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+
+        $state.go('register2');
+    }
+
+})
+
+.controller('Register2Ctrl', function($scope) {
 
 })
 

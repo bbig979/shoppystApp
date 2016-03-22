@@ -23,10 +23,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/www/js/app.js">
+      <file leaf-file-name="register2.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/www/templates/register2.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="49" column="6" selection-start="1823" selection-end="1823" vertical-scroll-proportion="0.57768923" vertical-offset="315" max-vertical-offset="6795">
+            <state line="23" column="30" selection-start="1387" selection-end="1387" vertical-scroll-proportion="0.39071348" vertical-offset="0" max-vertical-offset="883">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_register.scss" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scss/ryan/style/_register.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="15" selection-start="50" selection-end="50" vertical-scroll-proportion="-0.6122449" vertical-offset="0" max-vertical-offset="195">
               <folding />
             </state>
           </provider>
@@ -35,7 +44,16 @@
       <file leaf-file-name="register.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/register.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="29" selection-start="29" selection-end="29" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="405">
+            <state line="6" column="61" selection-start="309" selection-end="321" vertical-scroll-proportion="-1.8" vertical-offset="0" max-vertical-offset="405">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_login.scss" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scss/ryan/style/_login.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="18" selection-start="18" selection-end="18" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="210">
               <folding />
             </state>
           </provider>
@@ -44,7 +62,7 @@
       <file leaf-file-name="account-notification.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/account-notification.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="11" selection-start="620" selection-end="620" vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="270">
+            <state line="12" column="11" selection-start="620" selection-end="620" vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="285">
               <folding />
             </state>
           </provider>
@@ -68,37 +86,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="login.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/login.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="26" selection-start="26" selection-end="26" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="465">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tabs.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/tabs.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="74" selection-start="604" selection-end="604" vertical-scroll-proportion="-10.0" vertical-offset="0" max-vertical-offset="540">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="controllers.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="20" selection-start="3684" selection-end="3684" vertical-scroll-proportion="-50.192307" vertical-offset="120" max-vertical-offset="11670">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="services.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/js/services.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="135" column="50" selection-start="4587" selection-end="4587" vertical-scroll-proportion="0.0" vertical-offset="2025" max-vertical-offset="2655">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ryan.scss" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scss/ryan.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="28" selection-start="603" selection-end="603" vertical-scroll-proportion="-6.122449" vertical-offset="0" max-vertical-offset="390">
               <folding />
             </state>
           </provider>
@@ -123,7 +123,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/scss/ionic.app.scss" />
         <option value="$PROJECT_DIR$/bower.json" />
         <option value="$PROJECT_DIR$/scss/ryan/style/post-detail.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_reusable.scss" />
@@ -155,8 +154,6 @@
         <option value="$PROJECT_DIR$/www/lib/jquery/jquery-2.1.0.min.js" />
         <option value="$PROJECT_DIR$/www/lib/masonry/masonry-3.1.2.pkgd.min.js" />
         <option value="$PROJECT_DIR$/www/lib/masonry/imagesloaded.pkgd.min.js" />
-        <option value="$PROJECT_DIR$/scss/ryan.scss" />
-        <option value="$PROJECT_DIR$/scss/ryan/style/_login.scss" />
         <option value="$PROJECT_DIR$/www/templates/tab-home.html" />
         <option value="$PROJECT_DIR$/www/templates/post-likers.html" />
         <option value="$PROJECT_DIR$/www/templates/account-follower.html" />
@@ -169,17 +166,21 @@
         <option value="$PROJECT_DIR$/www/index.html" />
         <option value="$PROJECT_DIR$/www/templates/account-notification.html" />
         <option value="$PROJECT_DIR$/www/js/services.js" />
-        <option value="$PROJECT_DIR$/www/js/controllers.js" />
-        <option value="$PROJECT_DIR$/www/templates/register.html" />
-        <option value="$PROJECT_DIR$/www/templates/login.html" />
         <option value="$PROJECT_DIR$/www/js/app.js" />
+        <option value="$PROJECT_DIR$/www/js/controllers.js" />
+        <option value="$PROJECT_DIR$/www/templates/login.html" />
+        <option value="$PROJECT_DIR$/scss/ryan.scss" />
+        <option value="$PROJECT_DIR$/scss/ryan/style/_register.scss" />
+        <option value="$PROJECT_DIR$/scss/ryan/style/_login.scss" />
+        <option value="$PROJECT_DIR$/www/templates/register.html" />
+        <option value="$PROJECT_DIR$/www/templates/register2.html" />
       </list>
     </option>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="width" value="1440" />
-    <option name="height" value="900" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -427,7 +428,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -436,7 +437,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37052932" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27582535" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -489,20 +490,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/www/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="4" selection-start="553" selection-end="553" vertical-scroll-proportion="0.0" vertical-offset="240" max-vertical-offset="735">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/functions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="27" selection-start="388" selection-end="388" vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="225">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/js/app.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="23" column="2" selection-start="979" selection-end="979" vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="1485">
@@ -697,13 +684,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scss/ryan.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="18" selection-start="565" selection-end="565" vertical-scroll-proportion="-5.8163266" vertical-offset="0" max-vertical-offset="375">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/account-following.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="72" selection-start="330" selection-end="330" vertical-scroll-proportion="-3.75" vertical-offset="0" max-vertical-offset="300">
@@ -735,13 +715,6 @@
     <entry file="file://$PROJECT_DIR$/www/templates/account-follower.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="6" column="72" selection-start="328" selection-end="328" vertical-scroll-proportion="0.14802632" vertical-offset="0" max-vertical-offset="608">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scss/ryan/style/_login.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="19" selection-start="100" selection-end="100" vertical-scroll-proportion="0.077186964" vertical-offset="0" max-vertical-offset="583">
           <folding />
         </state>
       </provider>
@@ -790,23 +763,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/account-notification.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="11" selection-start="620" selection-end="620" vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="270">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="20" selection-start="3684" selection-end="3684" vertical-scroll-proportion="-50.192307" vertical-offset="120" max-vertical-offset="11670">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/account-liked.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="53" selection-start="0" selection-end="859" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="360">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="40" selection-start="1917" selection-end="1917" vertical-scroll-proportion="0.5378486" vertical-offset="405" max-vertical-offset="6885">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/account-notification.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="11" selection-start="620" selection-end="620" vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="270">
           <folding />
         </state>
       </provider>
@@ -818,23 +791,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/register.html">
+    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="29" selection-start="29" selection-end="29" vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="405">
+        <state line="91" column="50" selection-start="3579" selection-end="3579" vertical-scroll-proportion="-18.461538" vertical-offset="885" max-vertical-offset="11925">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="26" selection-start="26" selection-end="26" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="729">
+        <state line="12" column="16" selection-start="634" selection-end="661" vertical-scroll-proportion="-7.5" vertical-offset="0" max-vertical-offset="465">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/app.js">
+    <entry file="file://$PROJECT_DIR$/scss/ryan.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="6" selection-start="1823" selection-end="1823" vertical-scroll-proportion="0.57768923" vertical-offset="315" max-vertical-offset="6795">
+        <state line="20" column="28" selection-start="603" selection-end="603" vertical-scroll-proportion="-6.122449" vertical-offset="0" max-vertical-offset="390">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scss/ryan/style/_register.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="15" selection-start="50" selection-end="50" vertical-scroll-proportion="-0.6122449" vertical-offset="0" max-vertical-offset="195">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scss/ryan/style/_login.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="18" selection-start="18" selection-end="18" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="884">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/register.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="61" selection-start="309" selection-end="321" vertical-scroll-proportion="-1.8" vertical-offset="0" max-vertical-offset="405">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/register2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="30" selection-start="1387" selection-end="1387" vertical-scroll-proportion="0.39071348" vertical-offset="0" max-vertical-offset="883">
           <folding />
         </state>
       </provider>
