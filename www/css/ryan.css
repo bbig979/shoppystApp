@@ -224,6 +224,7 @@ a {
 /* line 25, ../../scss/ryan/_global.scss */
 .bar-header {
   border-bottom-width: 0px;
+  border: 0;
 }
 
 /* line 1, ../../scss/ryan/_top-bar.scss */
@@ -250,24 +251,25 @@ a {
 .tab-nav {
   background-color: #333 !important;
   padding-top: 0;
+  border: 0;
 }
 
-/* line 5, ../../scss/ryan/_footer-nav.scss */
+/* line 6, ../../scss/ryan/_footer-nav.scss */
 ion-tabs .tab-item {
   color: #fff;
   opacity: 1;
 }
 
-/* line 10, ../../scss/ryan/_footer-nav.scss */
+/* line 11, ../../scss/ryan/_footer-nav.scss */
 .tab-item .icon.ion-trophy {
   font-size: 27px;
 }
-/* line 13, ../../scss/ryan/_footer-nav.scss */
+/* line 14, ../../scss/ryan/_footer-nav.scss */
 .tab-item .icon.ion-camera {
   font-size: 35px;
 }
 
-/* line 17, ../../scss/ryan/_footer-nav.scss */
+/* line 18, ../../scss/ryan/_footer-nav.scss */
 .tab-item-active {
   background-color: #555;
 }
@@ -300,6 +302,7 @@ ion-tabs .tab-item {
 /* line 11, ../../scss/ryan/_home.scss */
 #home ion-item {
   padding: 0;
+  border: 0;
 }
 
 /* line 2, ../../scss/ryan/_explore.scss */
