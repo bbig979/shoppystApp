@@ -221,6 +221,11 @@ a {
   font-size: 28px;
 }
 
+/* line 25, ../../scss/ryan/_global.scss */
+.bar-header {
+  border-bottom-width: 0px;
+}
+
 /* line 1, ../../scss/ryan/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;

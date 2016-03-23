@@ -142,6 +142,25 @@ angular.module('starter.controllers', [])
     };
 })
 
+.controller('RootCtrl',function($rootScope, $state, $ionicHistory){
+    $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        disableBack: true
+    });
+    if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
+
+        var user = $rootScope.getCurrentUser();
+        if(user.age){
+            $state.go('tab.home');
+        }
+        else{
+            $state.go('register2');
+        }
+    }
+    else{
+        $state.go('auth');
+    }
+})
 
 .controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
     $scope.registerData = {email:'',password:''};
@@ -165,7 +184,7 @@ angular.module('starter.controllers', [])
             $rootScope.handleHttpError(error, status);
         });
     }
-    $scope.fbLogin = function() {
+    $scope.fbRegister = function() {
         $ionicLoading.show();
         $auth.authenticate('facebook').then(function() {
             // Return an $http request for the authenticated user
@@ -182,7 +201,13 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                $state.go('tab.home');
+                if(response.user.age){
+                    $state.go('tab.home');
+                }
+                else{
+                    $state.go('register2');
+                }
+
             })
             .error(function(){
                 $ionicLoading.hide();
@@ -193,16 +218,25 @@ angular.module('starter.controllers', [])
 })
 
 .controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state) {
+    $scope.registerData = {};
     var credentials = {
         email: $stateParams.email,
         password: $stateParams.password
     }
 
-    $auth.login(credentials).then(function() {
-    },
-    function(error) {
-        $rootScope.handleHttpError(error, status);
-    });
+    if(!localStorage.getItem('user')){
+        $auth.login(credentials).then(function() {
+        },
+        function(error) {
+            $rootScope.handleHttpError(error, status);
+        });
+    }
+    else{
+        var user = $rootScope.getCurrentUser();
+        $scope.registerData.first_name = user.first_name;
+        $scope.registerData.last_name = user.last_name;
+        $scope.registerData.gender = user.gender;
+    }
 
     $scope.register2 = function(registerData){
         $ionicLoading.show();
@@ -218,16 +252,16 @@ angular.module('starter.controllers', [])
 
                 // Set the stringified user data into local storage
                 localStorage.setItem('user', user);
+                $ionicLoading.hide();
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                $state.go('tab.home',{refresh : true});
             })
             .error(function(){
                 $rootScope.handleHttpError(error, status);
             });
-            $ionicLoading.hide();
-            $ionicHistory.nextViewOptions({
-                disableBack: true
-            });
-
-            $state.go('tab.home');
         })
         .error(function(error, status){
             $ionicLoading.hide();
@@ -278,7 +312,6 @@ angular.module('starter.controllers', [])
             $rootScope.handleHttpError(error, status);
         });
     };
-
     $scope.fbLogin = function() {
         $ionicLoading.show();
         $auth.authenticate('facebook').then(function() {
@@ -296,7 +329,12 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                $state.go('tab.home');
+                if(response.user.age){
+                    $state.go('tab.home');
+                }
+                else{
+                    $state.go('register2');
+                }
             })
             .error(function(){
                 $ionicLoading.hide();
@@ -308,21 +346,27 @@ angular.module('starter.controllers', [])
 })
 .controller('AuthLogoutCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
     $auth.logout();
-    $state.go('tab.home');
+    $state.go('root');
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
 
-    FetchPosts.following($scope.page).then(function(posts){
-        if(posts && posts.length == 0){
-            $scope.noResult = true;
-        }
-        $scope.posts = posts;
-        $scope.page++;
-    });
+    var user = $rootScope.getCurrentUser();
+    if(user.age || $stateParams.refresh){
+        FetchPosts.following($scope.page).then(function(posts){
+            if(posts && posts.length == 0){
+                $scope.noResult = true;
+            }
+            $scope.posts = posts;
+            $scope.page++;
+        });
+    }
+    else{
+        $state.go('register2');
+    }
 
     $scope.loadMore = function() {
         FetchPosts.following($scope.page).then(function(posts){
