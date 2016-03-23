@@ -19,7 +19,7 @@ angular.module('starter.controllers', [])
                 tab = 'explore';
                 break;
             case 3:
-                tab = 'ranking';
+                tab = 'notification';
                 break;
             case 4:
                 tab = 'account';
@@ -133,13 +133,6 @@ angular.module('starter.controllers', [])
             console.log('Error: ' + JSON.stringify(error));    // In case of error
         });
     }
-    $rootScope.showNotification = function(){
-        var exception = 'auth, register, register2, auth.logout';
-        if(exception.indexOf($state.current.name) > -1){
-            return false;
-        }
-        return true;
-    };
 })
 
 .controller('RootCtrl',function($rootScope, $state, $ionicHistory){
