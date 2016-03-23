@@ -150,7 +150,7 @@ angular.module('starter.controllers', [])
         $http({
             method : 'POST',
             url : $rootScope.baseURL+'/api/register',
-            data : {email:registerData.email,password:registerData.password}
+            data : registerData
         })
         .success(function(response){
             $ionicLoading.hide();
@@ -158,7 +158,7 @@ angular.module('starter.controllers', [])
                 disableBack: true
             });
 
-            $state.go('register2');
+            $state.go('register2',registerData);
         })
         .error(function(error, status){
             $ionicLoading.hide();
@@ -192,8 +192,48 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('Register2Ctrl', function($scope) {
+.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state) {
+    var credentials = {
+        email: $stateParams.email,
+        password: $stateParams.password
+    }
 
+    $auth.login(credentials).then(function() {
+    },
+    function(error) {
+        $rootScope.handleHttpError(error, status);
+    });
+
+    $scope.register2 = function(registerData){
+        $ionicLoading.show();
+        $http({
+            method : 'POST',
+            url : $rootScope.baseURL+'/api/register2',
+            data : registerData
+        })
+        .success(function(response){
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                // Stringify the retured data
+                var user = JSON.stringify(response.user);
+
+                // Set the stringified user data into local storage
+                localStorage.setItem('user', user);
+            })
+            .error(function(){
+                $rootScope.handleHttpError(error, status);
+            });
+            $ionicLoading.hide();
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+
+            $state.go('tab.home');
+        })
+        .error(function(error, status){
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
+        });
+    }
 })
 
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
