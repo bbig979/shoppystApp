@@ -18,25 +18,25 @@
   font-size: 0.9em;
 }
 
-/* line 3, ../../scss/ryan/style/_follow-toggle-user-list.scss */
+/* line 3, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item {
   border-color: #e7e7e7;
   padding: 7px;
 }
-/* line 7, ../../scss/ryan/style/_follow-toggle-user-list.scss */
+/* line 7, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar {
   padding: 4px;
   padding-left: 50px;
   min-height: 55px;
 }
-/* line 8, ../../scss/ryan/style/_follow-toggle-user-list.scss */
+/* line 8, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar .user-name {
   font-size: 12px;
   float: left;
   padding-top: 14px;
   font-weight: 500;
 }
-/* line 14, ../../scss/ryan/style/_follow-toggle-user-list.scss */
+/* line 14, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar .follow-toggle {
   font-size: 11px;
   float: right;
@@ -48,22 +48,22 @@
   color: #337ab7;
   width: 90px;
 }
-/* line 25, ../../scss/ryan/style/_follow-toggle-user-list.scss */
+/* line 25, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar .follow-toggle:after {
   padding-top: 7px;
   content: "FOLLOW";
 }
-/* line 29, ../../scss/ryan/style/_follow-toggle-user-list.scss */
+/* line 29, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar .following {
   background-color: #F95D61;
   border-color: #F95D61;
   color: #fff;
 }
-/* line 34, ../../scss/ryan/style/_follow-toggle-user-list.scss */
+/* line 34, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar .following:after {
   content: "UNFOLLOW";
 }
-/* line 37, ../../scss/ryan/style/_follow-toggle-user-list.scss */
+/* line 37, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar .profile-image {
   max-width: 30px;
   max-height: 30px;
@@ -71,67 +71,67 @@
   top: 13px;
 }
 
-/* line 2, ../../scss/ryan/style/_masonry-post-list.scss */
+/* line 2, ../../scss/ryan/_masonry-post-list.scss */
 .masonry-post-list masonry {
   width: 100%;
 }
-/* line 5, ../../scss/ryan/style/_masonry-post-list.scss */
+/* line 5, ../../scss/ryan/_masonry-post-list.scss */
 .masonry-post-list .masonry-brick {
   width: 50%;
   border: 0;
   padding: 3px 6px;
 }
-/* line 6, ../../scss/ryan/style/_masonry-post-list.scss */
+/* line 6, ../../scss/ryan/_masonry-post-list.scss */
 .masonry-post-list .masonry-brick img {
   width: 100%;
   border-radius: 3px;
 }
 
-/* line 2, ../../scss/ryan/style/_comment-list.scss */
+/* line 2, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar {
   padding: 0;
   min-height: 55px;
 }
-/* line 3, ../../scss/ryan/style/_comment-list.scss */
+/* line 3, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar .user-name {
   font-size: 14px;
   color: #337ab7;
 }
-/* line 7, ../../scss/ryan/style/_comment-list.scss */
+/* line 7, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar .item-content {
   padding: 7px;
   padding-left: 50px;
   min-height: 55px;
 }
-/* line 8, ../../scss/ryan/style/_comment-list.scss */
+/* line 8, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar .item-content .profile-image {
   max-width: 35px;
   max-height: 35px;
   left: 5px;
   top: 10px;
 }
-/* line 21, ../../scss/ryan/style/_comment-list.scss */
+/* line 21, ../../scss/ryan/_comment-list.scss */
 .comment-list .item {
   border-color: #e7e7e7;
   padding: 7px;
 }
-/* line 22, ../../scss/ryan/style/_comment-list.scss */
+/* line 22, ../../scss/ryan/_comment-list.scss */
 .comment-list .item .time-ago {
   position: absolute;
   top: 7px;
   right: 10px;
   font-size: 13px;
 }
-/* line 31, ../../scss/ryan/style/_comment-list.scss */
+/* line 31, ../../scss/ryan/_comment-list.scss */
 .comment-list .load-more {
   padding: 10px;
 }
-/* line 34, ../../scss/ryan/style/_comment-list.scss */
+/* line 34, ../../scss/ryan/_comment-list.scss */
 .comment-list .button-small {
   line-height: 0;
 }
 
-/* line 3, ../../scss/ryan/style/_single-post.scss */
+/* line 3, ../../scss/ryan/_single-post.scss */
 .single-post .post-header .profile-image {
   width: 25px;
   height: 25px;
@@ -143,43 +143,43 @@
   float: left;
   margin: 5px;
 }
-/* line 11, ../../scss/ryan/style/_single-post.scss */
+/* line 11, ../../scss/ryan/_single-post.scss */
 .single-post .post-header .user-name {
   float: left;
   padding: 7px;
 }
-/* line 15, ../../scss/ryan/style/_single-post.scss */
+/* line 15, ../../scss/ryan/_single-post.scss */
 .single-post .post-header .time-ago {
   float: right;
   padding: 7px;
 }
-/* line 21, ../../scss/ryan/style/_single-post.scss */
+/* line 21, ../../scss/ryan/_single-post.scss */
 .single-post .post-image img {
   width: 100%;
 }
-/* line 26, ../../scss/ryan/style/_single-post.scss */
+/* line 26, ../../scss/ryan/_single-post.scss */
 .single-post .button-group .button {
   min-width: 42px;
 }
-/* line 29, ../../scss/ryan/style/_single-post.scss */
+/* line 29, ../../scss/ryan/_single-post.scss */
 .single-post .button-group .button.button-dark.button-clear.ion-ios-heart {
   color: #F95D61;
 }
-/* line 33, ../../scss/ryan/style/_single-post.scss */
+/* line 33, ../../scss/ryan/_single-post.scss */
 .single-post .stats {
   padding: 10px;
   font-size: 14px;
 }
-/* line 34, ../../scss/ryan/style/_single-post.scss */
+/* line 34, ../../scss/ryan/_single-post.scss */
 .single-post .stats .likes-count {
   color: #F95D61;
 }
-/* line 37, ../../scss/ryan/style/_single-post.scss */
+/* line 37, ../../scss/ryan/_single-post.scss */
 .single-post .stats .comments-count {
   color: #aaa;
   padding-left: 10px;
 }
-/* line 44, ../../scss/ryan/style/_single-post.scss */
+/* line 44, ../../scss/ryan/_single-post.scss */
 .single-post .content {
   padding: 0 10px 10px 10px;
   white-space: normal;
@@ -187,26 +187,26 @@
   color: #444;
 }
 
-/* line 1, ../../scss/ryan/style/_global.scss */
+/* line 1, ../../scss/ryan/_global.scss */
 hr {
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
   width: 93%;
 }
 
-/* line 6, ../../scss/ryan/style/_global.scss */
+/* line 6, ../../scss/ryan/_global.scss */
 a {
   color: #337ab7;
   text-decoration: none;
 }
 
-/* line 10, ../../scss/ryan/style/_global.scss */
+/* line 10, ../../scss/ryan/_global.scss */
 .loading-spinner {
   padding: 20px 0;
   text-align: center;
 }
 
-/* line 14, ../../scss/ryan/style/_global.scss */
+/* line 14, ../../scss/ryan/_global.scss */
 .update-notification {
   text-align: center;
   padding: 10px;
@@ -216,116 +216,116 @@ a {
   border: 1px solid #FFBF00;
 }
 
-/* line 22, ../../scss/ryan/style/_global.scss */
+/* line 22, ../../scss/ryan/_global.scss */
 #notification-icon:before {
   font-size: 28px;
 }
 
-/* line 1, ../../scss/ryan/style/_top-bar.scss */
+/* line 1, ../../scss/ryan/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;
 }
 
-/* line 4, ../../scss/ryan/style/_top-bar.scss */
+/* line 4, ../../scss/ryan/_top-bar.scss */
 .bar.bar-stable {
   background-color: #FF6D70;
 }
 
-/* line 7, ../../scss/ryan/style/_top-bar.scss */
+/* line 7, ../../scss/ryan/_top-bar.scss */
 .bar.bar-stable .title {
   color: #fff;
 }
 
-/* line 10, ../../scss/ryan/style/_top-bar.scss */
+/* line 10, ../../scss/ryan/_top-bar.scss */
 .bar-stable .button.button-clear {
   color: #fff;
 }
 
-/* line 1, ../../scss/ryan/style/_footer-nav.scss */
+/* line 1, ../../scss/ryan/_footer-nav.scss */
 .tab-nav {
-  background-color: #333;
+  background-color: #333 !important;
   padding-top: 0;
 }
 
-/* line 5, ../../scss/ryan/style/_footer-nav.scss */
+/* line 5, ../../scss/ryan/_footer-nav.scss */
 ion-tabs .tab-item {
   color: #fff;
   opacity: 1;
 }
 
-/* line 10, ../../scss/ryan/style/_footer-nav.scss */
+/* line 10, ../../scss/ryan/_footer-nav.scss */
 .tab-item .icon.ion-trophy {
   font-size: 27px;
 }
-/* line 13, ../../scss/ryan/style/_footer-nav.scss */
+/* line 13, ../../scss/ryan/_footer-nav.scss */
 .tab-item .icon.ion-camera {
   font-size: 35px;
 }
 
-/* line 17, ../../scss/ryan/style/_footer-nav.scss */
+/* line 17, ../../scss/ryan/_footer-nav.scss */
 .tab-item-active {
   background-color: #555;
 }
 
-/* line 3, ../../scss/ryan/style/_post-detail.scss */
+/* line 3, ../../scss/ryan/_post-detail.scss */
 #post-detail .post-header ion-spinner {
   float: right;
   padding: 3px;
 }
-/* line 8, ../../scss/ryan/style/_post-detail.scss */
+/* line 8, ../../scss/ryan/_post-detail.scss */
 #post-detail form .item-input-inset {
   border: 0;
 }
-/* line 11, ../../scss/ryan/style/_post-detail.scss */
+/* line 11, ../../scss/ryan/_post-detail.scss */
 #post-detail .ion-ios-more-outline {
   float: right;
 }
 
-/* line 2, ../../scss/ryan/style/_home.scss */
+/* line 2, ../../scss/ryan/_home.scss */
 #home .post-header {
   height: 45px;
   padding: 5px;
   font-size: 14px;
 }
-/* line 7, ../../scss/ryan/style/_home.scss */
+/* line 7, ../../scss/ryan/_home.scss */
 #home .divider {
   height: 20px;
   background-color: #d1d1d1;
 }
-/* line 11, ../../scss/ryan/style/_home.scss */
+/* line 11, ../../scss/ryan/_home.scss */
 #home ion-item {
   padding: 0;
 }
 
-/* line 2, ../../scss/ryan/style/_explore.scss */
+/* line 2, ../../scss/ryan/_explore.scss */
 #tab-explore .search-header {
   text-align: center;
   padding: 30px 0;
 }
-/* line 3, ../../scss/ryan/style/_explore.scss */
+/* line 3, ../../scss/ryan/_explore.scss */
 #tab-explore .search-header h3 {
   color: #555;
 }
 
-/* line 2, ../../scss/ryan/style/_ranking.scss */
+/* line 2, ../../scss/ryan/_ranking.scss */
 #tab-ranking .ranking-title {
   padding: 25px;
   text-align: center;
   background-color: #f7f7f7;
 }
-/* line 3, ../../scss/ryan/style/_ranking.scss */
+/* line 3, ../../scss/ryan/_ranking.scss */
 #tab-ranking .ranking-title h4 {
   color: #555;
   line-height: 140%;
 }
-/* line 11, ../../scss/ryan/style/_ranking.scss */
+/* line 11, ../../scss/ryan/_ranking.scss */
 #tab-ranking .ranking-list {
   color: #337ab7;
   font-weight: 500;
   font-size: 14px;
   padding: 25px 20px;
 }
-/* line 12, ../../scss/ryan/style/_ranking.scss */
+/* line 12, ../../scss/ryan/_ranking.scss */
 #tab-ranking .ranking-list .ranking-badge {
   padding: 5px;
   margin-right: 5px;
@@ -334,42 +334,42 @@ ion-tabs .tab-item {
   float: left;
   margin-right: 10px;
 }
-/* line 20, ../../scss/ryan/style/_ranking.scss */
+/* line 20, ../../scss/ryan/_ranking.scss */
 #tab-ranking .ranking-list .school-name {
   display: block;
   padding-top: 5px;
 }
 
-/* line 2, ../../scss/ryan/style/_school.scss */
+/* line 2, ../../scss/ryan/_school.scss */
 #school-detail .school-header {
   text-align: center;
   padding: 30px 0;
 }
-/* line 3, ../../scss/ryan/style/_school.scss */
+/* line 3, ../../scss/ryan/_school.scss */
 #school-detail .school-header h4 {
   color: #555;
 }
 
-/* line 2, ../../scss/ryan/style/_account-liked.scss */
+/* line 2, ../../scss/ryan/_account-liked.scss */
 #account-liked ion-content {
   padding-top: 7px;
 }
 
-/* line 2, ../../scss/ryan/style/_login.scss */
+/* line 2, ../../scss/ryan/_login.scss */
 #log-in .facebook-header, #log-in .forgot-password, #log-in .sign-up, #register .facebook-header, #register .forgot-password, #register .sign-up {
   text-align: center;
   padding: 10px 0;
 }
-/* line 6, ../../scss/ryan/style/_login.scss */
+/* line 6, ../../scss/ryan/_login.scss */
 #log-in .ion-social-facebook, #register .ion-social-facebook {
   background-color: #4e69a2;
 }
 
-/* line 2, ../../scss/ryan/style/_register.scss */
+/* line 2, ../../scss/ryan/_register.scss */
 #register2 .padding.consistent {
   padding: 13px;
 }
-/* line 5, ../../scss/ryan/style/_register.scss */
+/* line 5, ../../scss/ryan/_register.scss */
 #register2 .item-select {
   border-top: 0;
 }

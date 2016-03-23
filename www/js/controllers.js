@@ -702,9 +702,9 @@ angular.module('starter.controllers', [])
         
     };
 })
-.controller('AccountEditCtrl', function($scope, $stateParams, FetchUser, $http, $state, $location, $rootScope, $ionicPopup) {
+.controller('AccountEditCtrl', function($scope, $stateParams, FetchUsers, $http, $state, $location, $rootScope, $ionicPopup) {
     var user = JSON.parse(localStorage.getItem('user'));
-    FetchUser.get(user.slug).then(function(user){
+    FetchUsers.get(user.slug).then(function(user){
         $scope.user = user;
         var data = { first_name : $scope.user.first_name,
             first_name : $scope.user.first_name,
