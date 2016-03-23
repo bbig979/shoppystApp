@@ -23,7 +23,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $authProvider) {
+.config(function($stateProvider, $urlRouterProvider, $authProvider, $ionicConfigProvider) {
+    $ionicConfigProvider.tabs.position('bottom');
     var baseURL = 'http://appbeta.shoppyst.com';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({

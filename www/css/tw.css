@@ -18,7 +18,7 @@
   font-size: 0.9em;
 }
 
-/* line 2, ../../scss/tw/style/_account.scss */
+/* line 2, ../../scss/tw/_account.scss */
 #tab-account .account-top {
   color: white;
   position: relative;
@@ -30,7 +30,7 @@
   margin-top: -5px;
   padding-top: 5px;
 }
-/* line 14, ../../scss/tw/style/_account.scss */
+/* line 14, ../../scss/tw/_account.scss */
 #tab-account .account-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -43,50 +43,50 @@
   margin-bottom: 10px;
   clear: both;
 }
-/* line 27, ../../scss/tw/style/_account.scss */
+/* line 27, ../../scss/tw/_account.scss */
 #tab-account .user-name {
   text-align: center;
   font-size: 1.5em;
   margin-bottom: 15px;
 }
-/* line 33, ../../scss/tw/style/_account.scss */
+/* line 33, ../../scss/tw/_account.scss */
 #tab-account .user-school {
   text-align: center;
   margin-bottom: 10px;
   text-decoration: underline;
 }
-/* line 39, ../../scss/tw/style/_account.scss */
+/* line 39, ../../scss/tw/_account.scss */
 #tab-account .user-joined {
   text-align: center;
 }
-/* line 43, ../../scss/tw/style/_account.scss */
+/* line 43, ../../scss/tw/_account.scss */
 #tab-account .account-option-btn {
   color: white;
   float: right;
   margin-right: 10px;
   font-size: 0.8em;
 }
-/* line 50, ../../scss/tw/style/_account.scss */
+/* line 50, ../../scss/tw/_account.scss */
 #tab-account .account-achievement {
   margin-top: 20px;
   font-size: 0.8em;
 }
-/* line 54, ../../scss/tw/style/_account.scss */
+/* line 54, ../../scss/tw/_account.scss */
 #tab-account .account-achievement button {
   color: white;
   line-height: 120%;
   font-weight: 400;
 }
-/* line 61, ../../scss/tw/style/_account.scss */
+/* line 61, ../../scss/tw/_account.scss */
 #tab-account .account-social-network {
   margin-top: 40px;
   font-size: 0.6em;
 }
-/* line 64, ../../scss/tw/style/_account.scss */
+/* line 64, ../../scss/tw/_account.scss */
 #tab-account .account-social-network button {
   color: white;
 }
-/* line 69, ../../scss/tw/style/_account.scss */
+/* line 69, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle {
   font-size: 11px;
   float: right;
@@ -98,40 +98,40 @@
   color: #337ab7;
   width: 90px;
 }
-/* line 80, ../../scss/tw/style/_account.scss */
+/* line 80, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle:after {
   padding-top: 7px;
   content: "FOLLOW";
 }
-/* line 84, ../../scss/tw/style/_account.scss */
+/* line 84, ../../scss/tw/_account.scss */
 #tab-account .following {
   background-color: #F95D61;
   border-color: #F95D61;
   color: #fff;
 }
-/* line 89, ../../scss/tw/style/_account.scss */
+/* line 89, ../../scss/tw/_account.scss */
 #tab-account .following:after {
   content: "UNFOLLOW";
 }
 
-/* line 3, ../../scss/tw/style/_find-friends.scss */
+/* line 3, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item {
   border-color: #e7e7e7;
   padding: 7px;
 }
-/* line 7, ../../scss/tw/style/_find-friends.scss */
+/* line 7, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item-avatar {
   padding: 0;
   min-height: 55px;
 }
-/* line 8, ../../scss/tw/style/_find-friends.scss */
+/* line 8, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item-avatar .user-name {
   font-size: 12px;
   float: left;
   padding-top: 14px;
   font-weight: 500;
 }
-/* line 14, ../../scss/tw/style/_find-friends.scss */
+/* line 14, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item-avatar .follow-toggle {
   font-size: 11px;
   float: right;
@@ -143,28 +143,28 @@
   color: #337ab7;
   width: 90px;
 }
-/* line 25, ../../scss/tw/style/_find-friends.scss */
+/* line 25, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item-avatar .follow-toggle:after {
   padding-top: 7px;
   content: "FOLLOW";
 }
-/* line 29, ../../scss/tw/style/_find-friends.scss */
+/* line 29, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item-avatar .following {
   background-color: #F95D61;
   border-color: #F95D61;
   color: #fff;
 }
-/* line 34, ../../scss/tw/style/_find-friends.scss */
+/* line 34, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item-avatar .following:after {
   content: "UNFOLLOW";
 }
-/* line 37, ../../scss/tw/style/_find-friends.scss */
+/* line 37, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item-avatar .item-content {
   padding: 4px;
   padding-left: 50px;
   min-height: 55px;
 }
-/* line 38, ../../scss/tw/style/_find-friends.scss */
+/* line 38, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item-avatar .item-content .profile-image {
   max-width: 30px;
   max-height: 30px;
