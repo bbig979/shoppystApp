@@ -15,6 +15,6 @@ function helper_generatePhotoPath( base_url, file_name, size ){
         return base_url + path + file_name_without_ext + size + '.' + file_ext;
     }
     else{
-        return '/img/placeholder.png';
+        return 'img/placeholder.png';
     }
 }

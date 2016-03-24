@@ -7,6 +7,10 @@ a{
   color: $a-color;
   text-decoration: none;
 }
+.user-name{
+  color: #444;
+  font-weight: 500;
+}
 .loading-spinner{
   padding: 20px 0;
   text-align: center;
@@ -24,5 +28,16 @@ a{
 }
 .bar-header {
   border-bottom-width: 0px;
-  border: 0;
+}
+.bar{
+  border-top: 0px solid transparent;
+  border-bottom: 0px solid #ddd;
+}
+.button.button-positive {
+  background-color: #FF4C62;
+}
+@media (min--moz-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
+  .bar, .tabs {
+      background-size: 100% 0px;
+  }
 }

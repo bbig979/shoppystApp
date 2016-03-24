@@ -94,8 +94,8 @@
   padding: 0 20px;
   margin-right: 5px;
   background-color: #fff;
-  border-color: #337ab7;
-  color: #337ab7;
+  border-color: #FF4C62;
+  color: #FF4C62;
   width: 90px;
 }
 /* line 80, ../../scss/tw/_account.scss */
@@ -105,8 +105,8 @@
 }
 /* line 84, ../../scss/tw/_account.scss */
 #tab-account .following {
-  background-color: #F95D61;
-  border-color: #F95D61;
+  background-color: #FF4C62;
+  border-color: #FF4C62;
   color: #fff;
 }
 /* line 89, ../../scss/tw/_account.scss */
@@ -139,8 +139,8 @@
   padding: 0 20px;
   margin-right: 5px;
   background-color: #fff;
-  border-color: #337ab7;
-  color: #337ab7;
+  border-color: #FF4C62;
+  color: #FF4C62;
   width: 90px;
 }
 /* line 25, ../../scss/tw/_find-friends.scss */
@@ -150,8 +150,8 @@
 }
 /* line 29, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item-avatar .following {
-  background-color: #F95D61;
-  border-color: #F95D61;
+  background-color: #FF4C62;
+  border-color: #FF4C62;
   color: #fff;
 }
 /* line 34, ../../scss/tw/_find-friends.scss */

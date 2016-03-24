@@ -19,6 +19,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+      StatusBar.styleLightContent();
     }
   });
 })
@@ -26,10 +27,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 .config(function($stateProvider, $urlRouterProvider, $authProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('bottom');
     var baseURL = 'http://appbeta.shoppyst.com';
+    //var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
-        url: baseURL+'/auth/facebook'
+        url: baseURL+'/auth/facebook',
+        redirectUri: 'http://localhost/'
     });
 
   // Ionic uses AngularUI Router which uses the concept of states
