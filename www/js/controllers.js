@@ -338,10 +338,6 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('AuthLogoutCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
-    $auth.logout();
-    $state.go('root');
-})
 .controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams) {
     $scope.posts = [];
     $scope.page = 1;
@@ -781,7 +777,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory) {
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
     };
@@ -802,7 +798,12 @@ angular.module('starter.controllers', [])
 
         confirmPopup.then(function(res) {
             if(res) {
-                $state.go('auth.logout');
+                localStorage.removeItem('user');
+                localStorage.removeItem('satellizer_token');
+                $ionicHistory.clearCache().then(function(){
+                    $ionicHistory.clearHistory();
+                    $state.go('root');
+                });
             }
         });
 
