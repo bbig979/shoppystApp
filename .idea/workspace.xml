@@ -107,7 +107,7 @@
       <file leaf-file-name="_global.scss" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scss/ryan/_global.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="35" column="22" selection-start="559" selection-end="601" vertical-scroll-proportion="-10.714286" vertical-offset="0" max-vertical-offset="810">
+            <state line="35" column="23" selection-start="559" selection-end="602" vertical-scroll-proportion="-10.714286" vertical-offset="0" max-vertical-offset="810">
               <folding />
             </state>
           </provider>
@@ -823,7 +823,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scss/ryan/_global.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="22" selection-start="559" selection-end="601" vertical-scroll-proportion="-10.714286" vertical-offset="0" max-vertical-offset="810">
+        <state line="35" column="23" selection-start="559" selection-end="602" vertical-scroll-proportion="-10.714286" vertical-offset="0" max-vertical-offset="810">
           <folding />
         </state>
       </provider>
