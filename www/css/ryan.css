@@ -155,6 +155,10 @@
 .single-post .post-image img {
   width: 100%;
 }
+/* line 25, ../../scss/ryan/_single-post.scss */
+.single-post .button-group {
+  padding-left: 5px;
+}
 /* line 26, ../../scss/ryan/_single-post.scss */
 .single-post .button-group .button {
   min-width: 42px;
@@ -163,23 +167,24 @@
 .single-post .button-group .button.button-dark.button-clear.ion-ios-heart {
   color: #FF4C62;
 }
-/* line 33, ../../scss/ryan/_single-post.scss */
+/* line 34, ../../scss/ryan/_single-post.scss */
 .single-post .stats {
   padding: 10px;
+  padding-left: 15px;
   font-size: 14px;
 }
-/* line 34, ../../scss/ryan/_single-post.scss */
+/* line 35, ../../scss/ryan/_single-post.scss */
 .single-post .stats .likes-count {
   color: #FF4C62;
 }
-/* line 37, ../../scss/ryan/_single-post.scss */
+/* line 38, ../../scss/ryan/_single-post.scss */
 .single-post .stats .comments-count {
   color: #aaa;
   padding-left: 10px;
 }
-/* line 44, ../../scss/ryan/_single-post.scss */
+/* line 46, ../../scss/ryan/_single-post.scss */
 .single-post .content {
-  padding: 0 10px 10px 10px;
+  padding: 0 15px 20px 15px;
   white-space: normal;
   font-size: 14px;
   color: #444;
@@ -234,20 +239,22 @@ a {
 .bar {
   border-top: 0px solid transparent;
   border-bottom: 0px solid #ddd;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
-/* line 36, ../../scss/ryan/_global.scss */
+/* line 38, ../../scss/ryan/_global.scss */
 .button.button-positive {
   background-color: #FF4C62;
 }
 
-/* line 39, ../../scss/ryan/_global.scss */
+/* line 41, ../../scss/ryan/_global.scss */
 .button.button-positive.activated {
   background-color: #E24256;
 }
 
 @media (min--moz-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
-  /* line 43, ../../scss/ryan/_global.scss */
+  /* line 45, ../../scss/ryan/_global.scss */
   .bar, .tabs {
     background-size: 100% 0px;
   }
@@ -354,13 +361,15 @@ div.tab-nav.tabs {
   height: 45px;
   padding: 5px;
   font-size: 14px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-/* line 7, ../../scss/ryan/_home.scss */
+/* line 9, ../../scss/ryan/_home.scss */
 #home .divider {
   height: 20px;
   background-color: #e7e7e7;
 }
-/* line 11, ../../scss/ryan/_home.scss */
+/* line 13, ../../scss/ryan/_home.scss */
 #home ion-item {
   padding: 0;
   border: 0;
