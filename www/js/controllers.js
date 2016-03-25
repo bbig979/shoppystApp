@@ -2,8 +2,8 @@ angular.module('starter.controllers', [])
 
 .run(function($rootScope, $ionicTabsDelegate, $state, $cordovaImagePicker, $ionicPlatform) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://appbeta.shoppyst.com';
-    //$rootScope.baseURL = 'http://localhost:8888';
+    //$rootScope.baseURL = 'http://appbeta.shoppyst.com';
+    $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
@@ -343,8 +343,10 @@ angular.module('starter.controllers', [])
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
-
     var user = $rootScope.getCurrentUser();
+
+    $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
+
     if(user.age || $stateParams.refresh){
         FetchPosts.following($scope.page).then(function(posts){
             if(posts && posts.length == 0){
