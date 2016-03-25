@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.myapp716282" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>Shoppyst</name>
+<widget id="today.snaplook.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Snaplook</name>
   <description>
         An Ionic Framework and Cordova project.
-    </description>
+  </description>
   <author email="info@shoppyst.com" href="http://www.shoppyst.com/">Shoppyst INC</author>
   <content src="index.html"/>
   <access origin="*"/>

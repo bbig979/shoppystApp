@@ -23,10 +23,19 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="controllers.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="347" column="4" selection-start="11806" selection-end="11806" vertical-scroll-proportion="0.49839228" vertical-offset="4740" max-vertical-offset="17130">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="29" selection-start="2442" selection-end="2461" vertical-scroll-proportion="0.0" vertical-offset="501" max-vertical-offset="1935">
+            <state line="38" column="0" selection-start="1598" selection-end="1598" vertical-scroll-proportion="19.625" vertical-offset="1041" max-vertical-offset="1950">
               <folding />
             </state>
           </provider>
@@ -86,10 +95,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_home.scss" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="_home.scss" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scss/ryan/_home.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="6" column="24" selection-start="128" selection-end="128" vertical-scroll-proportion="0.101809956" vertical-offset="0" max-vertical-offset="884">
+            <state line="6" column="24" selection-start="128" selection-end="128" vertical-scroll-proportion="-3.75" vertical-offset="0" max-vertical-offset="330">
               <folding />
             </state>
           </provider>
@@ -99,15 +108,6 @@
         <entry file="file://$PROJECT_DIR$/scss/ryan/_global.scss">
           <provider selected="true" editor-type-id="text-editor">
             <state line="35" column="22" selection-start="559" selection-end="601" vertical-scroll-proportion="-10.714286" vertical-offset="0" max-vertical-offset="810">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_variable.scss" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scss/common/_variable.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="28" selection-start="215" selection-end="215" vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="465">
               <folding />
             </state>
           </provider>
@@ -167,13 +167,13 @@
         <option value="$PROJECT_DIR$/www/templates/login.html" />
         <option value="$PROJECT_DIR$/www/templates/tab-home.html" />
         <option value="$PROJECT_DIR$/scss/ryan/_top-bar.scss" />
-        <option value="$PROJECT_DIR$/www/index.html" />
-        <option value="$PROJECT_DIR$/www/js/controllers.js" />
         <option value="$PROJECT_DIR$/www/js/app.js" />
         <option value="$PROJECT_DIR$/www/templates/post-detail.html" />
         <option value="$PROJECT_DIR$/scss/ryan/_global.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/_single-post.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/_home.scss" />
+        <option value="$PROJECT_DIR$/www/index.html" />
+        <option value="$PROJECT_DIR$/www/js/controllers.js" />
       </list>
     </option>
   </component>
@@ -800,27 +800,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="4" selection-start="178" selection-end="178" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="17130">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="29" selection-start="2442" selection-end="2461" vertical-scroll-proportion="0.0" vertical-offset="501" max-vertical-offset="1935">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="4" selection-start="1208" selection-end="1208" vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="7320">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/post-detail.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="12" column="14" selection-start="833" selection-end="833" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="870">
@@ -851,7 +830,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scss/ryan/_home.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="24" selection-start="128" selection-end="128" vertical-scroll-proportion="0.101809956" vertical-offset="0" max-vertical-offset="884">
+        <state line="6" column="24" selection-start="128" selection-end="128" vertical-scroll-proportion="-3.75" vertical-offset="0" max-vertical-offset="330">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="4" selection-start="1208" selection-end="1208" vertical-scroll-proportion="0.0" vertical-offset="15" max-vertical-offset="7320">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="0" selection-start="1598" selection-end="1598" vertical-scroll-proportion="19.625" vertical-offset="1041" max-vertical-offset="1950">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="347" column="4" selection-start="11806" selection-end="11806" vertical-scroll-proportion="0.49839228" vertical-offset="4740" max-vertical-offset="17130">
           <folding />
         </state>
       </provider>
