@@ -240,7 +240,7 @@ a {
   border-top: 0px solid transparent;
   border-bottom: 0px solid #ddd;
   padding-left: 10px;
-  padding-right: 100px;
+  padding-right: 10px;
 }
 
 /* line 38, ../../scss/ryan/_global.scss */
@@ -450,4 +450,30 @@ div.tab-nav.tabs {
 /* line 5, ../../scss/ryan/_register.scss */
 #register2 .item-select {
   border-top: 0;
+}
+
+/* line 1, ../../scss/ryan/_intro.scss */
+#intro {
+  color: #fff;
+}
+/* line 2, ../../scss/ryan/_intro.scss */
+#intro .enter {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  z-index: 9;
+}
+/* line 8, ../../scss/ryan/_intro.scss */
+#intro .slider {
+  padding-top: 45px;
+  background-color: #FF986C;
+  height: 100%;
+}
+/* line 13, ../../scss/ryan/_intro.scss */
+#intro .slider-pager {
+  top: 20px;
+}
+/* line 16, ../../scss/ryan/_intro.scss */
+#intro .slider-pager .slider-pager-page {
+  color: #fff;
 }

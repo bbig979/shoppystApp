@@ -66,10 +66,6 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-liked-'+tab,{userSlug: slug});
     };
-    $rootScope.goAccountNotification = function(){
-        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-notification-'+tab);
-    };
     $rootScope.handleHttpError = function(error, status){
         if(status == 422){
             // when login error
@@ -136,23 +132,38 @@ angular.module('starter.controllers', [])
     }
 })
 
+.controller('IntroCtrl',function($scope, $state, $ionicHistory){
+    $scope.enterApplication = function(){
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+        localStorage.setItem('have_seen_intro', true);
+        $state.go('register');
+    }
+})
+
 .controller('RootCtrl',function($rootScope, $state, $ionicHistory){
     $ionicHistory.nextViewOptions({
         disableAnimate: true,
         disableBack: true
     });
-    if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
+    if(localStorage.getItem('have_seen_intro')){
+        if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
 
-        var user = $rootScope.getCurrentUser();
-        if(user.age){
-            $state.go('tab.home');
+            var user = $rootScope.getCurrentUser();
+            if(user.age){
+                $state.go('tab.home');
+            }
+            else{
+                $state.go('register2');
+            }
         }
         else{
-            $state.go('register2');
+            $state.go('auth');
         }
     }
     else{
-        $state.go('auth');
+        $state.go('intro');
     }
 })
 

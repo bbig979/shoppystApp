@@ -40,6 +40,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
    $stateProvider
+    .state('intro', {
+       url: '/intro',
+       templateUrl: 'templates/intro.html',
+       controller: 'IntroCtrl'
+    })
     .state('root', {
         url: '/root',
         controller: 'RootCtrl'
@@ -104,10 +109,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.post-detail-ranking', {
-       url: '/post/:postId/ranking',
+    .state('tab.post-detail-notification', {
+       url: '/post/:postId/notification',
        views: {
-           'tab-ranking': {
+           'tab-notification': {
                templateUrl: 'templates/post-detail.html',
                controller: 'PostDetailCtrl'
            }
@@ -211,16 +216,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       url: '/camera',
       views: {
         'tab-camera': {
-        }
-      }
-    })
-
-    .state('tab.ranking', {
-      url: '/ranking',
-      views: {
-        'tab-ranking': {
-            templateUrl: 'templates/tab-ranking.html',
-            controller: 'RankingCtrl'
         }
       }
     })
