@@ -80,7 +80,7 @@
       document.addEventListener("deviceready", onDeviceReady, false);
 
       function onResume() {
-          //cordova.plugins.notification.badge.clear();
+          cordova.plugins.notification.badge.clear();
       }
 
       function onDeviceReady() {
@@ -100,7 +100,7 @@
               console.log(e.message);
           });
 
-          //cordova.plugins.notification.badge.clear();
+          cordova.plugins.notification.badge.clear();
       }
     </script>
 

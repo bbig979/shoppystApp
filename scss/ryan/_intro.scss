@@ -6,15 +6,63 @@
     z-index: 9;
   }
   .slider{
+    .slider-pager{
+      top: 20px;
+    }
+    .slider-pager .slider-pager-page{
+      color: #fff;
+    }
+    .content{
+      .top{
+        display: block;
+        padding: 0;
+        margin: 10px 15px;
+        /*height: 14%;*/
+        height: 64%;
+        position: relative;
+        h2{
+          display: block;
+          position: absolute;
+          text-align: center;
+          color: #fff;
+          bottom: 25%;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          font-size: 16pt;
+          /*line-height: 16pt;*/
+          line-height: 22pt;
+        }
+        /*@include animate(fadeInDown, 1s, .5s);*/
+        @include animate(fadeInDown, 1s, .1s);
+      }
+      .phone{
+        position: relative;
+        height: 736px;
+        margin: 0 auto;
+        background-image: url(../img/iphone.png);
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 98%;
+        max-width: 407px;
+        min-width: 315px;
+        @include animate(fadeInUp, 1s, .1s);
+        img{
+          display: block;
+          margin: 0 auto;
+          position: relative;
+          width: 79%;
+          top: 11.1%;
+        }
+      }
+      position: relative;
+      height: 100%;
+    }
     padding-top: 45px;
-    background-color: #FF986C;
+    background-image: url(../img/intro_bg.png);
+    background-size: cover;
+    background-color: $primary-color;
     height: 100%;
-  }
-  .slider-pager{
-    top: 20px;
-  }
-  .slider-pager .slider-pager-page{
-    color: #fff;
   }
   color: #fff;
 }

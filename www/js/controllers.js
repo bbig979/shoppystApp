@@ -133,12 +133,19 @@ angular.module('starter.controllers', [])
 })
 
 .controller('IntroCtrl',function($scope, $state, $ionicHistory){
+    $scope.slideIndex = 0;
     $scope.enterApplication = function(){
         $ionicHistory.nextViewOptions({
             disableBack: true
         });
         localStorage.setItem('have_seen_intro', true);
-        $state.go('register');
+        $state.go('auth');
+    }
+    $scope.slideHasChanged = function(index){
+        $scope.slideIndex = index;
+    }
+    $scope.currentSlide = function(index){
+        return $scope.slideIndex == index;
     }
 })
 
