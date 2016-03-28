@@ -430,11 +430,15 @@ angular.module('starter.controllers', [])
     $scope.likes = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
     var user = $rootScope.getCurrentUser();
 
     FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
         $scope.likes = likes;
         $scope.page++;
+        if(likes && likes.length == 0){
+            $scope.noResult = true;
+        }
     });
     $scope.loadMore = function() {
         FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
