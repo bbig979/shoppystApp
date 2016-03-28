@@ -8,6 +8,10 @@
         <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
     </ion-header-bar>
     <ion-content>
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
         <div class="update-notification" ng-if="!clientVersionUpToDate">
             New features are added. Let's update an app!
         </div>

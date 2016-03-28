@@ -605,6 +605,31 @@ angular.module('starter.controllers', [])
             }
         });
     };
+    $scope.doRefresh = function() {
+        $scope.post = 0; // sloppy hack for not loaded check
+        $scope.comment = {};
+        $scope.liked = false;
+        $scope.saved = false;
+        $scope.likesCount = 0;
+        $scope.commentsHiddenCount = 0;
+        $scope.page = 2;
+        FetchPosts.get($stateParams.postId).then(function(post){
+            post.latest_ten_comments.reverse();
+            var commentsCount = 0;
+            if(post.comments_count){
+                commentsCount = post.comments_count.aggregate;
+            }
+            $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
+            $scope.post = post;
+            if(post.user_liked){
+                $scope.liked = true;
+            }
+            if(post.likes_count){
+                $scope.likesCount = post.likes_count.aggregate;
+            }
+            $scope.$broadcast('scroll.refreshComplete');
+        });
+    };
 })
 
 .controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus) {

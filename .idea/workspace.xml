@@ -23,10 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="controllers.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="controllers.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="430" column="20" selection-start="14470" selection-end="14470" vertical-scroll-proportion="-17.692308" vertical-offset="5990" max-vertical-offset="17700">
+            <state line="614" column="19" selection-start="21278" selection-end="21289" vertical-scroll-proportion="0.53142226" vertical-offset="8728" max-vertical-offset="18075">
               <folding />
             </state>
           </provider>
@@ -41,10 +41,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="post-likers.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="post-likers.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/post-likers.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="26" selection-start="173" selection-end="173" vertical-scroll-proportion="0.04828326" vertical-offset="0" max-vertical-offset="932">
+            <state line="3" column="26" selection-start="173" selection-end="173" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="post-detail.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/templates/post-detail.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="24" selection-start="828" selection-end="828" vertical-scroll-proportion="-8.125" vertical-offset="0" max-vertical-offset="930">
               <folding />
             </state>
           </provider>
@@ -53,7 +62,7 @@
       <file leaf-file-name="tab-home.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/tab-home.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="14" selection-start="266" selection-end="393" vertical-scroll-proportion="-5.0" vertical-offset="0" max-vertical-offset="930">
+            <state line="5" column="24" selection-start="126" selection-end="257" vertical-scroll-proportion="-3.125" vertical-offset="0" max-vertical-offset="930">
               <folding />
             </state>
           </provider>
@@ -130,7 +139,6 @@
         <option value="$PROJECT_DIR$/scss/common/_variable.scss" />
         <option value="$PROJECT_DIR$/www/templates/login.html" />
         <option value="$PROJECT_DIR$/scss/ryan/_top-bar.scss" />
-        <option value="$PROJECT_DIR$/www/templates/post-detail.html" />
         <option value="$PROJECT_DIR$/scss/ryan/_single-post.scss" />
         <option value="$PROJECT_DIR$/scss/ryan/_home.scss" />
         <option value="$PROJECT_DIR$/www/templates/account-notification.html" />
@@ -146,6 +154,7 @@
         <option value="$PROJECT_DIR$/www/templates/tab-home.html" />
         <option value="$PROJECT_DIR$/scss/ryan/_global.scss" />
         <option value="$PROJECT_DIR$/www/templates/post-likers.html" />
+        <option value="$PROJECT_DIR$/www/templates/post-detail.html" />
         <option value="$PROJECT_DIR$/www/js/controllers.js" />
       </list>
     </option>
@@ -465,7 +474,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -671,11 +680,6 @@
         <state line="7" column="34" selection-start="362" selection-end="368" vertical-scroll-proportion="0.0" vertical-offset="105" max-vertical-offset="255" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/post-detail.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="14" selection-start="833" selection-end="833" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="870" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scss/ryan/_single-post.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state line="46" column="21" selection-start="803" selection-end="803" vertical-scroll-proportion="0.0" vertical-offset="690" max-vertical-offset="855">
@@ -788,13 +792,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="430" column="20" selection-start="14470" selection-end="14470" vertical-scroll-proportion="-17.692308" vertical-offset="5990" max-vertical-offset="17700">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scss/ryan/_global.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state line="51" column="14" selection-start="1015" selection-end="1015" vertical-scroll-proportion="-15.612245" vertical-offset="0" max-vertical-offset="885">
@@ -809,16 +806,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/tab-home.html">
+    <entry file="file://$PROJECT_DIR$/www/templates/post-likers.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="14" selection-start="266" selection-end="393" vertical-scroll-proportion="-5.0" vertical-offset="0" max-vertical-offset="930">
+        <state line="3" column="26" selection-start="173" selection-end="173" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/post-likers.html">
+    <entry file="file://$PROJECT_DIR$/www/templates/tab-home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="26" selection-start="173" selection-end="173" vertical-scroll-proportion="0.04828326" vertical-offset="0" max-vertical-offset="932">
+        <state line="5" column="24" selection-start="126" selection-end="257" vertical-scroll-proportion="-3.125" vertical-offset="0" max-vertical-offset="930">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/post-detail.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="24" selection-start="828" selection-end="828" vertical-scroll-proportion="-8.125" vertical-offset="0" max-vertical-offset="930">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="614" column="19" selection-start="21278" selection-end="21289" vertical-scroll-proportion="0.53142226" vertical-offset="8728" max-vertical-offset="18075">
           <folding />
         </state>
       </provider>
