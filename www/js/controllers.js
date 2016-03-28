@@ -396,7 +396,7 @@ angular.module('starter.controllers', [])
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
             $scope.noResult = false;
-            if(posts.length == 0){
+            if(posts && posts.length == 0){
                 $scope.noResult = true;
             }
         });
@@ -607,10 +607,14 @@ angular.module('starter.controllers', [])
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
+        if(posts && posts.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -630,6 +634,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(posts && posts.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.submitSearch = function(search_term) {
@@ -1126,10 +1134,14 @@ angular.module('starter.controllers', [])
     $scope.notifications = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
         $scope.notifications = notifications;
         $scope.page++;
+        if(notifications && notifications.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -1149,6 +1161,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(notifications && notifications.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
 });

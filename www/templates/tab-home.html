@@ -4,8 +4,8 @@
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
-        <div class="tab-instruction" ng-if="noResult">
-            Hi Hi yoyoyo
+        <div class="no-result" ng-if="noResult">
+            Check out the explore tab below and start following others.
         </div>
         <div class="loading-spinner" data-loading ng-if="posts.length == 0">
             <ion-spinner></ion-spinner>

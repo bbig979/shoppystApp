@@ -3460,6 +3460,13 @@ a {
     background-size: 100% 0px;
   }
 }
+/* line 49, ../../scss/ryan/_global.scss */
+.no-result {
+  padding: 60px;
+  text-align: center;
+  color: #555;
+}
+
 /* line 1, ../../scss/ryan/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;

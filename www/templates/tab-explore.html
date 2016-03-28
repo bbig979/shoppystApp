@@ -4,6 +4,9 @@
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
+        <div class="no-result" ng-if="noResult">
+            No looks shared in 24 hours. Please invite your friends.
+        </div>
         <form name="searchForm" ng-submit="submitSearch(searchTerm)" ng-show="noSearchTerm()">
             <div class="bar bar-header item-input-inset">
                 <label class="item-input-wrapper">
