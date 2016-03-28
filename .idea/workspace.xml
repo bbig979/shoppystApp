@@ -26,16 +26,7 @@
       <file leaf-file-name="controllers.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="614" column="19" selection-start="21278" selection-end="21289" vertical-scroll-proportion="0.53142226" vertical-offset="8728" max-vertical-offset="18075">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_global.scss" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scss/ryan/_global.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="14" selection-start="1015" selection-end="1015" vertical-scroll-proportion="-15.612245" vertical-offset="0" max-vertical-offset="885">
+            <state line="1100" column="9" selection-start="38021" selection-end="38021" vertical-scroll-proportion="0.29811716" vertical-offset="16215" max-vertical-offset="18315">
               <folding />
             </state>
           </provider>
@@ -44,52 +35,25 @@
       <file leaf-file-name="post-likers.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/post-likers.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="26" selection-start="173" selection-end="173" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
+            <state line="3" column="20" selection-start="167" selection-end="167" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="post-detail.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/post-detail.html">
+      <file leaf-file-name="account-following.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/templates/account-following.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="24" selection-start="828" selection-end="828" vertical-scroll-proportion="-8.125" vertical-offset="0" max-vertical-offset="930">
+            <state line="3" column="24" selection-start="180" selection-end="180" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tab-home.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/tab-home.html">
+      <file leaf-file-name="account-follower.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/www/templates/account-follower.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="24" selection-start="126" selection-end="257" vertical-scroll-proportion="-3.125" vertical-offset="0" max-vertical-offset="930">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tab-notification.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/tab-notification.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="3" column="35" selection-start="191" selection-end="191" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="315">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/js/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="13" selection-start="2387" selection-end="2393" vertical-scroll-proportion="-11.923077" vertical-offset="665" max-vertical-offset="7245">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tab-explore.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www/templates/tab-explore.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="68" selection-start="356" selection-end="356" vertical-scroll-proportion="-4.375" vertical-offset="0" max-vertical-offset="585">
+            <state line="3" column="23" selection-start="177" selection-end="177" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
               <folding />
             </state>
           </provider>
@@ -117,8 +81,6 @@
         <option value="$PROJECT_DIR$/www/lib/jquery/jquery-2.1.0.min.js" />
         <option value="$PROJECT_DIR$/www/lib/masonry/masonry-3.1.2.pkgd.min.js" />
         <option value="$PROJECT_DIR$/www/lib/masonry/imagesloaded.pkgd.min.js" />
-        <option value="$PROJECT_DIR$/www/templates/account-follower.html" />
-        <option value="$PROJECT_DIR$/www/templates/account-following.html" />
         <option value="$PROJECT_DIR$/www/templates/post-comments.html" />
         <option value="$PROJECT_DIR$/scss/ryan/style/_follow-toggle-user-list.scss" />
         <option value="$PROJECT_DIR$/www/templates/notification.html" />
@@ -153,8 +115,10 @@
         <option value="$PROJECT_DIR$/www/templates/tab-notification.html" />
         <option value="$PROJECT_DIR$/www/templates/tab-home.html" />
         <option value="$PROJECT_DIR$/scss/ryan/_global.scss" />
-        <option value="$PROJECT_DIR$/www/templates/post-likers.html" />
         <option value="$PROJECT_DIR$/www/templates/post-detail.html" />
+        <option value="$PROJECT_DIR$/www/templates/account-follower.html" />
+        <option value="$PROJECT_DIR$/www/templates/post-likers.html" />
+        <option value="$PROJECT_DIR$/www/templates/account-following.html" />
         <option value="$PROJECT_DIR$/www/js/controllers.js" />
       </list>
     </option>
@@ -482,7 +446,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973376" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28647497" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28647497" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -565,19 +529,9 @@
         <state line="8" column="24546" selection-start="24682" selection-end="24682" vertical-scroll-proportion="2.4006276" vertical-offset="0" max-vertical-offset="2385" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/account-following.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="72" selection-start="330" selection-end="330" vertical-scroll-proportion="-3.75" vertical-offset="0" max-vertical-offset="300" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/post-comments.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="109" selection-start="499" selection-end="499" vertical-scroll-proportion="-4.375" vertical-offset="0" max-vertical-offset="555" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/account-follower.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="72" selection-start="328" selection-end="328" vertical-scroll-proportion="0.14802632" vertical-offset="0" max-vertical-offset="608" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/www/lib/masonry/imagesloaded.pkgd.min.js">
@@ -792,23 +746,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scss/ryan/_global.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="14" selection-start="1015" selection-end="1015" vertical-scroll-proportion="-15.612245" vertical-offset="0" max-vertical-offset="885">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/tab-notification.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="3" column="35" selection-start="191" selection-end="191" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="315">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/www/templates/post-likers.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="26" selection-start="173" selection-end="173" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
           <folding />
         </state>
       </provider>
@@ -827,9 +767,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scss/ryan/_global.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="51" column="14" selection-start="1015" selection-end="1015" vertical-scroll-proportion="0.84343994" vertical-offset="0" max-vertical-offset="907">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/post-likers.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="20" selection-start="167" selection-end="167" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/account-following.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="24" selection-start="180" selection-end="180" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/templates/account-follower.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="23" selection-start="177" selection-end="177" vertical-scroll-proportion="-1.875" vertical-offset="0" max-vertical-offset="345">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/www/js/controllers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="614" column="19" selection-start="21278" selection-end="21289" vertical-scroll-proportion="0.53142226" vertical-offset="8728" max-vertical-offset="18075">
+        <state line="1100" column="9" selection-start="38021" selection-end="38021" vertical-scroll-proportion="0.29811716" vertical-offset="16215" max-vertical-offset="18315">
           <folding />
         </state>
       </provider>

@@ -1034,10 +1034,14 @@ angular.module('starter.controllers', [])
     $scope.users = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchUsers.following($stateParams.userSlug, $scope.page).then(function(users){
         $scope.users = users;
         $scope.page++;
+        if(users && users.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -1057,6 +1061,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(users && users.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.followToggle = function(user) {
@@ -1083,10 +1091,14 @@ angular.module('starter.controllers', [])
     $scope.users = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
         $scope.users = users;
         $scope.page++;
+        if(users && users.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -1106,6 +1118,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(users && users.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.followToggle = function(user) {
