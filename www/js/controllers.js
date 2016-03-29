@@ -756,6 +756,7 @@ angular.module('starter.controllers', [])
     $scope.isMyAccount = false;
     $scope.posts = [];
     $scope.noMoreItemsAvailable = false;
+    $scope.activatedTab = 'best';
 
     var user = $rootScope.getCurrentUser();
     if (!$stateParams.accountSlug)
@@ -771,9 +772,12 @@ angular.module('starter.controllers', [])
     FetchUsers.get(slug).then(function(user){
         $scope.user = user;
     });
-    FetchPosts.user(slug, $scope.page).then(function(posts){
+    FetchPosts.user(slug, $scope.activatedTab, $scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
+        if ( posts.length == 0 ) {
+            $scope.noMoreItemsAvailable = true;
+        }
     });
     $scope.goChangeProfilePicture = function(){
         $state.go('tab.change-profile-picture');
@@ -817,7 +821,7 @@ angular.module('starter.controllers', [])
         return !$scope.isMyAccount;
     };
     $scope.loadMore = function() {
-        FetchPosts.user(slug, $scope.page).then(function(posts){
+        FetchPosts.user(slug, $scope.activatedTab, $scope.page).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -828,13 +832,31 @@ angular.module('starter.controllers', [])
     };
     $scope.doRefresh = function() {
         $scope.page = 1;
-        FetchPosts.user(slug, $scope.page).then(function(posts){
+        $scope.posts = [];
+        $scope.activatedTab = 'best';
+        FetchPosts.user(slug, 'best', $scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
         });
     };
+    $scope.activateTab = function(tab){
+        $scope.page = 1;
+        $scope.posts = [];
+        $scope.activatedTab = tab;
+        FetchPosts.user(slug, tab, $scope.page).then(function(posts){
+            $scope.posts = posts;
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    }
 })
 .controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory) {
     $scope.goAccountEdit = function(id){
