@@ -1,9 +1,12 @@
 <ion-view id="intro" hide-nav-bar="true">
-    <div class="enter" ng-click="enterApplication()">Enter</div>
+    <div class="enter button button-small button-outline" ng-click="enterApplication()">Enter</div>
     <ion-slide-box on-slide-changed="slideHasChanged($index)" show-pager="true">
         <ion-slide>
             <div class="content" ng-if="currentSlide(0)">
-                <div class="top"><h2>Share looks and<br>create your own lookbook</h2></div>
+                <div class="top">
+                    <h1>POST YOUR LOOK</h1>
+                    <h2>Post looks and find out<br>which looks the best from others</h2>
+                </div>
                 <!--
                 <div class="phone iphone">
                     <img ng-src="img/intro1.jpg" src="img/intro1.jpg">
@@ -13,7 +16,10 @@
         </ion-slide>
         <ion-slide>
             <div class="content" ng-if="currentSlide(1)">
-                <div class="top"><h2>When you share a look, it is<br>visible to others only for a day</h2></div>
+                <div class="top">
+                    <h1>TIMED VISIBILITY</h1>
+                    <h2>Your post is visible to others only for a day. So try differnet styles and be creative without limits</h2>
+                </div>
                 <!--
                 <div class="phone iphone">
                     <img ng-src="img/intro1.jpg" src="img/intro1.jpg">
@@ -23,7 +29,10 @@
         </ion-slide>
         <ion-slide>
             <div class="content" ng-if="currentSlide(2)">
-                <div class="top"><h2>So try unusual styles and be creative without limits</h2></div>
+                <div class="top">
+                    <h1>MY LOOKBOOK</h1>
+                    <h2>With best looks, you can build up your own lookbook</h2>
+                </div>
                 <!--
                 <div class="phone iphone">
                     <img ng-src="img/intro1.jpg" src="img/intro1.jpg">
@@ -33,7 +42,10 @@
         </ion-slide>
         <ion-slide>
             <div class="content" ng-if="currentSlide(3)">
-                <div class="top"><h2>Get inspiration and influence<br>others by exploring new looks</h2></div>
+                <div class="top">
+                    <h1>BROWSE LOOKS</h1>
+                    <h2>Get inspiration and influence others with likes and comments</h2>
+                </div>
                 <!--
                 <div class="phone iphone">
                     <img ng-src="img/intro1.jpg" src="img/intro1.jpg">

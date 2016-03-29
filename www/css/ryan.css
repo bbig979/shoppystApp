@@ -3667,11 +3667,15 @@ div.tab-nav.tabs {
 /* line 2, ../../scss/ryan/_intro.scss */
 #intro .enter {
   position: absolute;
-  top: 20px;
+  top: 24px;
   right: 10px;
   z-index: 9;
+  height: 0;
+  color: #fff;
+  border-color: #fff;
+  padding: 1px 10px;
 }
-/* line 8, ../../scss/ryan/_intro.scss */
+/* line 12, ../../scss/ryan/_intro.scss */
 #intro .slider {
   padding-top: 45px;
   background-image: url(../img/intro_bg.png);
@@ -3679,20 +3683,20 @@ div.tab-nav.tabs {
   background-color: #FF6D70;
   height: 100%;
 }
-/* line 9, ../../scss/ryan/_intro.scss */
+/* line 13, ../../scss/ryan/_intro.scss */
 #intro .slider .slider-pager {
-  top: 20px;
+  top: 30px;
 }
-/* line 12, ../../scss/ryan/_intro.scss */
+/* line 16, ../../scss/ryan/_intro.scss */
 #intro .slider .slider-pager .slider-pager-page {
   color: #fff;
 }
-/* line 15, ../../scss/ryan/_intro.scss */
+/* line 19, ../../scss/ryan/_intro.scss */
 #intro .slider .content {
   position: relative;
   height: 100%;
 }
-/* line 16, ../../scss/ryan/_intro.scss */
+/* line 20, ../../scss/ryan/_intro.scss */
 #intro .slider .content .top {
   display: block;
   padding: 0;
@@ -3724,7 +3728,19 @@ div.tab-nav.tabs {
   animation-fill-mode: both;
   backface-visibility: hidden;
 }
-/* line 23, ../../scss/ryan/_intro.scss */
+/* line 27, ../../scss/ryan/_intro.scss */
+#intro .slider .content .top h1 {
+  display: block;
+  position: absolute;
+  text-align: center;
+  color: #fff;
+  bottom: 53%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 20pt;
+}
+/* line 38, ../../scss/ryan/_intro.scss */
 #intro .slider .content .top h2 {
   display: block;
   position: absolute;
@@ -3737,8 +3753,9 @@ div.tab-nav.tabs {
   font-size: 16pt;
   /*line-height: 16pt;*/
   line-height: 22pt;
+  font-weight: 300;
 }
-/* line 39, ../../scss/ryan/_intro.scss */
+/* line 55, ../../scss/ryan/_intro.scss */
 #intro .slider .content .phone {
   position: relative;
   height: 736px;
@@ -3772,7 +3789,7 @@ div.tab-nav.tabs {
   animation-fill-mode: both;
   backface-visibility: hidden;
 }
-/* line 50, ../../scss/ryan/_intro.scss */
+/* line 66, ../../scss/ryan/_intro.scss */
 #intro .slider .content .phone img {
   display: block;
   margin: 0 auto;
