@@ -7,19 +7,15 @@
         <div class="account-top" style="background-image: url( {{ photoPath( user.cover_img_path, '' ) }} )">
             <button class="button button-clear icon ion-gear-b account-option-btn" ng-click="goAccountOption()" ng-if="isMyAccount"></button>
             <button class="button button-small follow-toggle" ng-class="{'following' : user.following_check}" ng-click="followToggle(user)" ng-if="notMe(user)"></button>
-            <div class="account-image" style="background-image: url( {{ photoPath( user.profile_img_path, 's' ) }} )" ng-click="goChangeProfilePicture()"></div>
+            <div class="account-image" style="background-image: url( {{ photoPath( user.profile_img_path, 's' ) }} )" ng-click="changeProfilePicture()"></div>
             <div class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
             <div class="user-school" ng-click="goSchoolDetail(user.school.id, user.school.name)" ng-if="user.school.id != 0">{{ user.school.name }}</div>
             <div class="user-joined">Joined at <span class="time-ago" am-time-ago="user.created_at | amUtc" ng-if="user"></span></div>
             <div class="account-achievement row">
-                <button class="button button-clear icon account-post-btn ion-camera col" ng-click="goAccountPost()"><br>{{user.posts_count}}<br>Posts</button>
-                <button class="button button-clear icon account-like-btn ion-ios-heart col" ng-click="goAccountLiked(user.slug)"><br>{{user.likes_count}}<br>Likes</button>
-                <button class="button button-clear icon account-followers-btn ion-ios-people col" ng-click="goAccountFollower(user.slug)">
-                    <br><span class="dynamic-follower-count">{{user.follower_count}}</span><br>Followers
-                </button>
-                <button class="button button-clear icon account-following-btn ion-android-person col" ng-click="goAccountFollowing(user.slug)">
-                    <br><span class="dynamic-following-count">{{user.following_count}}</span><br>Following
-                </button>
+                <div class="button button-clear icon account-post-btn ion-camera col" ng-click="goAccountPost()"><br>{{user.posts_count}}<br>Posts</div>
+                <div class="button button-clear icon account-like-btn ion-ios-heart col"><br>{{user.likes_count}}<br>Likes</div>
+                <div class="button button-clear icon account-followers-btn ion-ios-people col" ng-click="goAccountFollower(user.slug)"><br><span class="dynamic-follower-count">{{user.follower_count}}</span><br>Followers</div>
+                <div class="button button-clear icon account-following-btn ion-android-person col" ng-click="goAccountFollowing(user.slug)"><br><span class="dynamic-following-count">{{user.following_count}}</span><br>Following</div>
             </div>
             <div class="account-social-network row">
                 <button class="button button-clear icon col ion-social-facebook account-facebook-btn" ng-click="goAccountSocialNetwork('facebook')" ng-if="user.social_networks.facebook"></button>

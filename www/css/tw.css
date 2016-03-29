@@ -18,6 +18,22 @@
   font-size: 0.9em;
 }
 
+/* line 1, ../../scss/tw/_global.scss */
+.platform-android div.action-sheet-backdrop div.action-sheet-group.action-sheet-options button,
+.platform-android div.action-sheet-backdrop div.action-sheet-group.action-sheet-cancel button {
+  text-indent: 15px;
+}
+
+/* line 6, ../../scss/tw/_global.scss */
+.platform-android .action-sheet-cancel {
+  display: block !important;
+}
+
+/* line 10, ../../scss/tw/_global.scss */
+.platform-android .bar .title.title-left {
+  text-align: center;
+}
+
 /* line 2, ../../scss/tw/_account.scss */
 #tab-account .account-top {
   color: white;
@@ -90,9 +106,9 @@
 #tab-account .follow-toggle {
   font-size: 11px;
   float: right;
-  margin-top: 8px;
+  margin-top: 15px;
   padding: 0 20px;
-  margin-right: 5px;
+  margin-right: 20px;
   background-color: #fff;
   border-color: #337ab7;
   color: #337ab7;
@@ -112,6 +128,11 @@
 /* line 89, ../../scss/tw/_account.scss */
 #tab-account .following:after {
   content: "UNFOLLOW";
+}
+/* line 93, ../../scss/tw/_account.scss */
+#tab-account .account-achievement div {
+  color: white;
+  line-height: 150%;
 }
 
 /* line 3, ../../scss/tw/_find-friends.scss */
@@ -170,4 +191,14 @@
   max-height: 30px;
   left: 10px;
   top: 13px;
+}
+
+/* line 1, ../../scss/tw/_post_create.scss */
+#create-post .photo {
+  width: 100%;
+}
+
+/* line 5, ../../scss/tw/_post_create.scss */
+#create-post .item-input.item-floating-label.caption span {
+  top: -7px;
 }

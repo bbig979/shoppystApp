@@ -1,0 +1,12 @@
+.platform-android div.action-sheet-backdrop div.action-sheet-group.action-sheet-options button,
+.platform-android div.action-sheet-backdrop div.action-sheet-group.action-sheet-cancel button {
+	text-indent: 15px;
+}
+
+.platform-android .action-sheet-cancel {
+    display: block !important;
+}
+
+.platform-android .bar .title.title-left {
+    text-align: center;
+}
