@@ -233,7 +233,7 @@ angular.module('starter.controllers', [])
 
 .controller('RootCtrl',function($rootScope, $state, $ionicHistory){
     // always start as new state
-    window.location.reload(true);
+    //window.location.reload(true);
     $ionicHistory.nextViewOptions({
         disableAnimate: true,
         disableBack: true
