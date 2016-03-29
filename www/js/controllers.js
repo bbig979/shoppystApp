@@ -453,6 +453,7 @@ angular.module('starter.controllers', [])
         FetchPosts.following($scope.page).then(function(posts){
             if(posts && posts.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
             $scope.page++;
@@ -482,6 +483,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(posts && posts.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
@@ -522,6 +524,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(likes && likes.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
     $scope.loadMore = function() {
@@ -530,6 +533,7 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
             if ( likes.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
                 $scope.noMoreItemsAvailable = true;
             }
         });
@@ -727,6 +731,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(posts && posts.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
 
@@ -750,6 +755,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(posts && posts.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
@@ -778,6 +784,9 @@ angular.module('starter.controllers', [])
     FetchSchools.ranking($scope.page).then(function(schools){
         $scope.schools = schools;
         $scope.page++;
+        if ( schools.length == 0 ) {
+            $scope.noMoreItemsAvailable = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -797,6 +806,9 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            if ( schools.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
         });
     };
 })
@@ -810,6 +822,9 @@ angular.module('starter.controllers', [])
     FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
+        if ( posts.length == 0 ) {
+            $scope.noMoreItemsAvailable = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -829,6 +844,9 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
         });
     };
 })
@@ -1202,6 +1220,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(users && users.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
 
@@ -1225,6 +1244,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(users && users.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
@@ -1262,6 +1282,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(users && users.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
 
@@ -1285,6 +1306,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(users && users.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
@@ -1316,6 +1338,9 @@ angular.module('starter.controllers', [])
     FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
+        if ( posts.length == 0 ) {
+            $scope.noMoreItemsAvailable = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -1335,6 +1360,9 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
         });
     };
 })
@@ -1350,6 +1378,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(notifications && notifications.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
 
@@ -1373,6 +1402,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(notifications && notifications.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
