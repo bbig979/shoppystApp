@@ -1,0 +1,17 @@
+<ion-view id="create-post" view-title="Create Post">
+    <ion-content ng-if="picData">
+        <form ng-submit="sharePost(captions)" name="shareForm">
+            <div class="item item-thumbnail-left">
+                <div ng-show="picData" class="item item-image">
+                    <img class="item" ng-src="{{picData}}" />
+                </div>
+                <label class="item-input item-floating-label caption">
+                    <span class="input-label">Caption</span>
+                    <textarea placeholder="Write a Caption" class="form-control" ng-model="captions"></textarea>
+                </label>
+            </div>
+            <div class="padding"></div>
+            <button type="submit" class="button button-block button-positive padding">Share a post</button>
+        </form>
+    </ion-content>
+</ion-view>

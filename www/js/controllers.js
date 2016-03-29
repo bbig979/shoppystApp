@@ -1,8 +1,10 @@
 angular.module('starter.controllers', [])
 
-.run(function($rootScope, $ionicTabsDelegate, $state, $cordovaImagePicker, $ionicPlatform) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://appbeta.shoppyst.com';
+    // $rootScope.baseURL = 'http://localhost:8000';
+    // $rootScope.baseURL = 'http://192.168.56.1:8000';
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
@@ -69,13 +71,32 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-notification-'+tab);
     };
-    $rootScope.handleHttpError = function(error){
-        if(typeof (error.error) != undefined && error.error == "token_not_provided"){
+    $rootScope.handleHttpError = function(error, status){
+        if(status == 422){
+            // when login error
+            for(var key in error){
+                $rootScope.popupMessage('Error', error[key]);
+                break;
+            }
+        }
+        if(status == 500){
+            $state.go('tab.home');
+        }
+        else if(typeof (error.status) != 'undefined' && error.status == 401){
+            // when validation error
+            for(var key in error.data){
+                $rootScope.popupMessage('Error', error.data[key]);
+                break;
+            }
+        }
+        else if(typeof (error.error) != 'undefined' && error.error == "token_not_provided"){
             $state.go('auth');
         }
-        else if(typeof (error.data) != undefined && typeof (error.data.error) != undefined && error.data.error == "token_not_provided"){
+        else if(typeof (error.data) != 'undefined' && typeof (error.data.error) != 'undefined' && error.data.error == "token_not_provided"){
             $state.go('auth');
         }
+        console.log('status: '+status);
+        console.log(error);
     };
     $rootScope.getCurrentUser = function(){
         var user = JSON.parse(localStorage.getItem('user'));
@@ -87,36 +108,71 @@ angular.module('starter.controllers', [])
     $rootScope.goAccountOption = function(id){
         $state.go('tab.option-account',{userId: id});
     };
+    $rootScope.openCameraMenu = function(){
+        // Show the action sheet
+        var navCameraSheet = $ionicActionSheet.show({
+            buttons: [
+                { text: 'Take a Picture' },
+                { text: 'Choose from Gallery' }
+            ],
+            titleText: 'Share Your Look',
+            cancelText: 'Cancel',
+            cancel: function() {
+                // code for cancel if necessary.
+            },
+            buttonClicked: function(index) {
+                switch (index){
+                    case 0 :
+            var options = {
+                quality: 100,
+                destinationType: Camera.DestinationType.FILE_URL,
+                sourceType: Camera.PictureSourceType.CAMERA
+            };
+            $cordovaCamera.getPicture(options).then(
+                function(imageData) {
+                    localStorage.setItem('photo', imageData);
+                    console.log(imageData);
+                    $ionicLoading.show({template: 'Loading Photo', duration:500});
+                    $state.go('tab.camera',{photoUrl: imageData});
+                },
+                function(err){
+                    $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                }
+            )
+                        return true;
+                    case 1 :
+            var options = {
+                quality: 100,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+            };
 
-
-
-    function UploadPicture(imageURI) {
-        $rootScope.PicSourece  = document.getElementById('smallimage');
-        if (imageURI.substring(0,21)=="content://com.android") {
-            var photo_split=imageURI.split("%3A");
-            imageURI="content://media/external/images/media/"+photo_split[1];
-        }
-        $rootScope.ImageURI =  imageURI;
-        $rootScope.PicSourece.src = $rootScope.ImageURI;
-        $rootScope.apply();
-    }
-    $rootScope.openCamera = function(){
-        var options = {
-            maximumImagesCount: 1, // Max number of selected images, I'm using only one for this example
-            width: 800,
-            height: 800,
-            quality: 100            // Higher is better
-        };
-     
-        $cordovaImagePicker.getPictures(options).then(function (results) {
-                    // Loop through acquired images
-            for (var i = 0; i < results.length; i++) {
-                console.log('Image URI: ' + results[i]);   // Print image URI
+            $cordovaCamera.getPicture(options).then(
+                function(imageURI) {
+                    window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
+                        localStorage.setItem('photo', fileEntry.nativeURL);
+                        console.log(fileEntry.nativeURL);
+                        $ionicLoading.show({template: 'Loading Photo', duration:500});
+                        $state.go('tab.camera',{photoUrl: fileEntry.nativeURL});
+                    });
+                },
+                function(err){
+                    $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                }
+            )
+                        //Handle Move Button
+                        return true;
+                }
             }
-        }, function(error) {
-            console.log('Error: ' + JSON.stringify(error));    // In case of error
         });
     }
+    $rootScope.popupMessage = function(title, message){
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: message
+        });
+    };
+
     $rootScope.showNotification = function(){
         var exception = 'auth, register, register2';
         if(exception.indexOf($state.current.name) > -1){
@@ -125,8 +181,41 @@ angular.module('starter.controllers', [])
         return true;
     };
 })
+.controller('PostCreateCtrl', function($scope, $state, $http, $stateParams, $rootScope, $cordovaCamera, $cordovaFile, $ionicLoading) {
+    var user = JSON.parse(localStorage.getItem('user'));
+    $scope.data = { "ImageURI" :  "Select Image" };
+    $scope.picData = $stateParams.photoUrl;
+    console.log($stateParams.photoUrl);
 
+    $scope.sharePost = function(captions) {
+        $ionicLoading.show({template: 'Uploading Photo...', duration:500});
+        var fileURL = $scope.picData;
+        var options = new FileUploadOptions();
+        options.fileKey = "image";
+        options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+        options.mimeType = "image/jpeg";
+        options.chunkedMode = true;
 
+        var params = { 'captions': captions, 'user_id': user.id };
+
+        options.params = params;
+
+        var ft = new FileTransfer();
+        console.dir(options);
+        ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, options);
+
+        // Transfer succeeded
+        function success(r) {
+            $ionicLoading.show({template: 'Upload Success', duration:500});
+            $state.go('tab.post-detail-home',{postId: r.response.id});
+        }
+
+        // Transfer failed
+        function fail(error) {
+            $ionicLoading.show({template: 'Upload Fail', duration:500});
+        }
+    }
+})
 .controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
 
     $scope.register = function(){
@@ -236,7 +325,7 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('AuthLogoutCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
+.controller('AuthLogoutCtrl', function($state, $auth) {
     $auth.logout();
     $state.go('tab.home');
 })
@@ -587,12 +676,13 @@ angular.module('starter.controllers', [])
         });
     };
 })
-
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading) {
     $scope.page = 1;
     $scope.isMyAccount = false;
     $scope.posts = [];
     $scope.noMoreItemsAvailable = false;
+    $scope.data = { "ImageURI" :  "Select Image" };
+    $scope.picData = "";
 
     var user = $rootScope.getCurrentUser();
     if (!$stateParams.accountSlug)
@@ -612,9 +702,99 @@ angular.module('starter.controllers', [])
         $scope.posts = posts;
         $scope.page++;
     });
-    $scope.goChangeProfilePicture = function(){
-        $state.go('tab.change-profile-picture');
-    };
+
+    $scope.changeProfilePicture = function(){
+        // Show the action sheet
+        var navCameraSheet = $ionicActionSheet.show({
+            buttons: [
+                { text: 'Take a Picture' },
+                { text: 'Choose from Gallery' }
+            ],
+            titleText: 'Share Your Look',
+            cancelText: 'Cancel',
+            cancel: function() {
+                // code for cancel if necessary.
+            },
+            buttonClicked: function(index) {
+                switch (index){
+                    case 0 :
+            var options = {
+                quality: 100,
+                destinationType: Camera.DestinationType.FILE_URL,
+                sourceType: Camera.PictureSourceType.CAMERA
+            };
+            $cordovaCamera.getPicture(options).then(
+                function(imageData) {
+                    localStorage.setItem('photo', imageData);
+                    console.log(imageData);
+                    $ionicLoading.show({template: 'Loading Photo', duration:500});
+                    $scope.updateProfilePicture(imageData);
+                },
+                function(err){
+                    $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                }
+            )
+                        return true;
+                    case 1 :
+            var options = {
+                quality: 100,
+                destinationType: Camera.DestinationType.FILE_URI,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+            };
+
+            $cordovaCamera.getPicture(options).then(
+                function(imageURI) {
+                    window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
+                        localStorage.setItem('photo', fileEntry.nativeURL);
+                        console.log(fileEntry.nativeURL);
+                        $ionicLoading.show({template: 'Loading Photo', duration:500});
+                        $scope.updateProfilePicture(fileEntry.nativeURL);
+                    });
+                },
+                function(err){
+                    $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                }
+            )
+                        //Handle Move Button
+                        return true;
+                }
+            }
+        });
+    }
+    $scope.updateProfilePicture = function(picData) {
+        $ionicLoading.show({template: 'Uploading Photo...', duration:500});
+        var fileURL = picData;
+        var options = new FileUploadOptions();
+        options.fileKey = "image";
+        options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+        options.mimeType = "image/jpeg";
+        options.chunkedMode = true;
+
+        var params = {'user_id': user.id };
+
+        options.params = params;
+
+        var ft = new FileTransfer();
+        console.dir(options);
+        ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/'+user.slug+'/editProfilePicture'), success, fail, options);
+
+        function success(r) {
+            console.dir(r);
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+            $ionicLoading.show({template: 'Upload Success', duration:500});
+        }
+
+        // Transfer failed
+        function fail(error) {
+            console.dir(error);
+            $ionicLoading.show({template: 'Upload Fail', duration:500});
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+        }
+    }
+
     $scope.goAccountSocialNetwork = function(type){
         if (type == 'facebook')
         {
@@ -635,14 +815,14 @@ angular.module('starter.controllers', [])
     };
     $scope.followToggle = function(like) {
         if(like.following_check){
-            $http.get('http://localhost:8000/api/'+ like.slug +'/unfollow').success(function(){
+            $http.get($rootScope.baseURL+'/api/'+ like.slug +'/unfollow').success(function(){
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
             });
         }
         else {
-            $http.get('http://localhost:8000/api/'+ like.slug +'/follow').success(function(){
+            $http.get($rootScope.baseURL+'/api/'+ like.slug +'/follow').success(function(){
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
@@ -673,7 +853,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location) {
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
     };
@@ -687,10 +867,7 @@ angular.module('starter.controllers', [])
         $state.go('tab.change-password');
     };
     $scope.logout = function(id){
-        var confirmPopup = $ionicPopup.confirm({
-            title: 'Log Out',
-            template: 'Are you sure to log out?'
-        });
+        $rootScope.popupMessage('Message', 'Are you sure to log out?');
 
         confirmPopup.then(function(res) {
             if(res) {
@@ -702,7 +879,7 @@ angular.module('starter.controllers', [])
         
     };
 })
-.controller('AccountEditCtrl', function($scope, $stateParams, FetchUsers, $http, $state, $location, $rootScope, $ionicPopup) {
+.controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory) {
     var user = JSON.parse(localStorage.getItem('user'));
     FetchUsers.get(user.slug).then(function(user){
         $scope.user = user;
@@ -713,79 +890,47 @@ angular.module('starter.controllers', [])
             facebook : $scope.user.social_networks.facebook,
             twitter : $scope.user.social_networks.twitter,
             instagram : $scope.user.social_networks.instagram,
-            pinterest : $scope.user.social_networks.pinterest
+            pinterest : $scope.user.social_networks.pinterest,
+            age : $scope.user.age,
+            gender : $scope.user.gender
         };
         $scope.user_info = data;
     });
 
     $scope.updateProfile = function(user){
-        Object.toparams = function ObjecttoParams(obj)
-        {
-            var p =[];
-            for (var key in obj)
-            {
-                p.push(key + '=' + encodeURIComponent(obj[key]));
-            }
-            return p.join('&');
-        };
-
         $http({
-            url: $rootScope.baseURL + '/api/' + $scope.user.slug + '/edit',
             method: "POST",
-            data: Object.toparams(user),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).success(function (data, status, headers, config)
-        {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Profile Has been updated',
-                template: 'Profile Has been updated'
-            });
+            url: $rootScope.baseURL + '/api/' + $scope.user.slug + '/edit',
+            data: user
+        })
+        .success(function(response){
+            $rootScope.popupMessage('Message', 'Profile Has been updated');
             $ionicHistory.goBack();
-        }).error(function (data, status, headers, config) 
-        {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Error Occurred. Try Again.',
-                template: 'Error Occurred. Try Again.'
-            });
+        })
+        .error(function(error, status){
+            $rootScope.handleHttpError(error, status);
         });
     };
 })
-.controller('ChangePasswordCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup, $rootScope) {
+.controller('ChangePasswordCtrl', function($scope, $stateParams, $http, $state, $location, $rootScope, $ionicHistory) {
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.changePassword = function(pwd){
-        Object.toparams = function ObjecttoParams(obj)
-        {
-            var p =[];
-            for (var key in obj)
-            {
-                p.push(key + '=' + encodeURIComponent(obj[key]));
-            }
-            return p.join('&');
-        };
-
         $http({
-            url: $rootScope.baseURL + '/api/' + user.slug + '/password/edit',
             method: "POST",
-            data: Object.toparams(pwd),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).success(function (data, status, headers, config)
-        {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Profile Has been updated',
-                template: 'Profile Has been updated'
-            });
+            url: $rootScope.baseURL + '/api/' + user.slug + '/password/edit',
+            data: pwd
+        })
+        .success(function(response){
+            $rootScope.popupMessage('Message', 'Password Has been updated');
             $ionicHistory.goBack();
-        }).error(function (data, status, headers, config) 
-        {
-            console.log(status);
-            var alertPopup = $ionicPopup.alert({
-                title: 'Error Occurred. Try Again.',
-                template: 'Error Occurred. Try Again.'
-            });
+        })
+        .error(function(error, status){
+            $rootScope.handleHttpError(error, status);
         });
     };
 })
 .controller('ChangeProfilePictureCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup) {
+
 })
 .controller('FindFriendsCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
     $scope.users = [];
@@ -830,39 +975,26 @@ angular.module('starter.controllers', [])
         user.following_check = !user.following_check;
     };
 })
-.controller('InviteFriendsCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup, $rootScope, $ionicHistory) {
+.controller('InviteFriendsCtrl', function($scope, $http, $rootScope, $ionicPopup, Focus) {
     $scope.sendInvitation = function(email){
-        param = {'email' : email};
-        Object.toparams = function ObjecttoParams(obj)
-        {
-            var p =[];
-            for (var key in obj)
-            {
-                p.push(key + '=' + encodeURIComponent(obj[key]));
-            }
-            return p.join('&');
-        };
         $http({
-            url: $rootScope.baseURL + '/api/invite-friends',
             method: "POST",
-            data: Object.toparams(param),
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).success(function (data, status, headers, config)
-        {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Invitation has been sent',
-                template: 'Invitation has been sent'
-            });
-            $ionicHistory.goBack();
-        }).error(function (data, status, headers, config) 
-        {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Error Occurred. Try Again.',
-                template: 'Error Occurred. Try Again.'
-            });
-            $ionicHistory.goBack();
+            url: $rootScope.baseURL + '/api/invite-friends',
+            data: {'email' : email }
+        })
+        .success(function(response){
+            $rootScope.popupMessage('Message', 'Invitation has been sent');
+            $( ".email" ).val("");
+        })
+        .error(function(error, status){
+            $rootScope.handleHttpError(error, status);
         });
     };
+
+    $scope.focusEmailInput = function(){
+        Focus('email');
+    }
+
 })
 .controller('FollowingCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
     $scope.users = [];

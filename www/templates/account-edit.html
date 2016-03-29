@@ -30,6 +30,13 @@
                     <span class="input-label"><i class="icon ion-social-pinterest placeholder-icon"></i></span>
                     <input type="text" placeholder="Pinterest" class="form-control" ng-model="user_info.pinterest">
                 </label>
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Age</span>
+                    <input type="text" placeholder="Age" class="form-control" ng-model="user_info.age">
+                </label>
+                <div class="item item-divider ng-binding">Gender</div>
+                <ion-radio ng-model="user_info.gender" ng-value="'male'">Male</ion-radio>
+                <ion-radio ng-model="user_info.gender" ng-value="'female'">Female</ion-radio>
                 <div class="padding"></div>
                 <button type="submit" class="button button-block button-positive padding">Update Profile</button>
             </div>

@@ -26,6 +26,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 .config(function($stateProvider, $urlRouterProvider, $authProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('bottom');
     var baseURL = 'http://appbeta.shoppyst.com';
+    // var baseURL = 'http://localhost:8000';
+    // var baseURL = 'http://192.168.56.1:8000';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -76,7 +78,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           }
         }
     })
-
     .state('tab.post-detail-home', {
        url: '/post/:postId/home',
        views: {
@@ -123,7 +124,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-
     .state('tab.post-likers-home', {
        url: '/post/:postId/likers/home',
        views: {
@@ -197,15 +197,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-
     .state('tab.camera', {
-      url: '/camera',
+      url: '/post/',
+      params: { 'photoUrl': null },
       views: {
         'tab-camera': {
+          templateUrl: 'templates/post-create.html',
+          controller: 'PostCreateCtrl'
         }
       }
     })
-
     .state('tab.ranking', {
       url: '/ranking',
       views: {
@@ -306,15 +307,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
          'tab-account': {
              templateUrl: 'templates/account-edit.html',
              controller: 'AccountEditCtrl'
-         }
-     }
-  })
-  .state('tab.change-profile-picture', {
-     url: '/account/profile/upload',
-     views: {
-         'tab-account': {
-             templateUrl: 'templates/account-change-profile-picture.html',
-             controller: 'ChangeProfilePictureCtrl'
          }
      }
   })
