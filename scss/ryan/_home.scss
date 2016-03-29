@@ -3,12 +3,15 @@
     height: 45px;
     padding: 5px;
     font-size: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   .divider{
     height: 20px;
-    background-color: $grey-regular;
+    background-color: $grey-light;
   }
   ion-item{
     padding: 0;
+    border: 0;
   }
 }

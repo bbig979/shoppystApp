@@ -1,5 +1,8 @@
 <ion-view class="follow-toggle-user-list" id="account-follower" view-title="FOLLOWER">
     <ion-content>
+        <div class="no-result" ng-if="noResult">
+            No follower yet.
+        </div>
         <div class="loading-spinner" data-loading ng-if="users.length == 0">
             <ion-spinner></ion-spinner>
         </div>
@@ -7,7 +10,7 @@
             <ion-item class="item item-avatar" ng-repeat="user in users">
                 <img ng-click="goAccount(user.slug)" ng-src="{{ photoPath( user.profile_img_path, 's' ) }}" class="profile-image">
                 <div ng-click="goAccount(user.slug)" class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
-                <button class="button button-small follow-toggle" ng-class="{'following' : user.following_check}" ng-click="followToggle(user)"></button>
+                <button class="button button-small follow-toggle" ng-class="{'following' : user.following_check}" ng-click="followToggle(user)" ng-if="me.id != user.id"></button>
             </ion-item>
         </ion-list>
         <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>

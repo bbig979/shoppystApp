@@ -5,6 +5,7 @@ angular.module('starter.controllers', [])
     $rootScope.baseURL = 'http://appbeta.shoppyst.com';
     // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
+    // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
@@ -21,7 +22,7 @@ angular.module('starter.controllers', [])
                 tab = 'explore';
                 break;
             case 3:
-                tab = 'ranking';
+                tab = 'notification';
                 break;
             case 4:
                 tab = 'account';
@@ -123,43 +124,41 @@ angular.module('starter.controllers', [])
             buttonClicked: function(index) {
                 switch (index){
                     case 0 :
-            var options = {
-                quality: 100,
-                destinationType: Camera.DestinationType.FILE_URL,
-                sourceType: Camera.PictureSourceType.CAMERA
-            };
-            $cordovaCamera.getPicture(options).then(
-                function(imageData) {
-                    localStorage.setItem('photo', imageData);
-                    console.log(imageData);
-                    $ionicLoading.show({template: 'Loading Photo', duration:500});
-                    $state.go('tab.camera',{photoUrl: imageData});
-                },
-                function(err){
-                    $ionicLoading.show({template: 'Error to Load Photo', duration:500});
-                }
-            )
+                        var options = {
+                            quality: 100,
+                            destinationType: Camera.DestinationType.FILE_URL,
+                            sourceType: Camera.PictureSourceType.CAMERA
+                        };
+                        $cordovaCamera.getPicture(options).then(
+                            function(imageData) {
+                                localStorage.setItem('photo', imageData);
+                                $ionicLoading.show({template: 'Loading Photo', duration:500});
+                                $state.go('tab.camera',{photoUrl: imageData});
+                            },
+                            function(err){
+                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                            }
+                        )
                         return true;
                     case 1 :
-            var options = {
-                quality: 100,
-                destinationType: Camera.DestinationType.FILE_URI,
-                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
-            };
+                        var options = {
+                            quality: 100,
+                            destinationType: Camera.DestinationType.FILE_URI,
+                            sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+                        };
 
-            $cordovaCamera.getPicture(options).then(
-                function(imageURI) {
-                    window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
-                        localStorage.setItem('photo', fileEntry.nativeURL);
-                        console.log(fileEntry.nativeURL);
-                        $ionicLoading.show({template: 'Loading Photo', duration:500});
-                        $state.go('tab.camera',{photoUrl: fileEntry.nativeURL});
-                    });
-                },
-                function(err){
-                    $ionicLoading.show({template: 'Error to Load Photo', duration:500});
-                }
-            )
+                        $cordovaCamera.getPicture(options).then(
+                            function(imageURI) {
+                                window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
+                                    localStorage.setItem('photo', fileEntry.nativeURL);
+                                    $ionicLoading.show({template: 'Loading Photo', duration:500});
+                                    $state.go('tab.camera',{photoUrl: fileEntry.nativeURL});
+                                });
+                            },
+                            function(err){
+                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                            }
+                        )
                         //Handle Move Button
                         return true;
                 }
@@ -185,7 +184,6 @@ angular.module('starter.controllers', [])
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = $stateParams.photoUrl;
-    console.log($stateParams.photoUrl);
 
     $scope.sharePost = function(captions) {
         $ionicLoading.show({template: 'Uploading Photo...', duration:500});
@@ -216,16 +214,73 @@ angular.module('starter.controllers', [])
         }
     }
 })
-.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
-
-    $scope.register = function(){
+.controller('IntroCtrl',function($scope, $state, $ionicHistory){
+    $scope.slideIndex = 0;
+    $scope.enterApplication = function(){
         $ionicHistory.nextViewOptions({
             disableBack: true
         });
-
-        $state.go('register2');
+        localStorage.setItem('have_seen_intro', true);
+        $state.go('auth');
     }
-    $scope.fbLogin = function() {
+    $scope.slideHasChanged = function(index){
+        $scope.slideIndex = index;
+    }
+    $scope.currentSlide = function(index){
+        return $scope.slideIndex == index;
+    }
+})
+
+.controller('RootCtrl',function($rootScope, $state, $ionicHistory){
+    // always start as new state
+    window.location.reload(true);
+    $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        disableBack: true
+    });
+    if(localStorage.getItem('have_seen_intro')){
+        if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
+
+            var user = $rootScope.getCurrentUser();
+            if(user.age){
+                $state.go('tab.home');
+            }
+            else{
+                $state.go('register2');
+            }
+        }
+        else{
+            $state.go('auth');
+        }
+    }
+    else{
+        $state.go('intro');
+    }
+})
+
+.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
+    $scope.registerData = {email:'',password:''};
+    $scope.register = function(registerData){
+        $ionicLoading.show();
+        $http({
+            method : 'POST',
+            url : $rootScope.baseURL+'/api/register',
+            data : registerData
+        })
+        .success(function(response){
+            $ionicLoading.hide();
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+
+            $state.go('register2',registerData);
+        })
+        .error(function(error, status){
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
+        });
+    }
+    $scope.fbRegister = function() {
         $ionicLoading.show();
         $auth.authenticate('facebook').then(function() {
             // Return an $http request for the authenticated user
@@ -242,19 +297,73 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                $state.go('tab.home');
+                if(response.user.age){
+                    $state.go('tab.home');
+                }
+                else{
+                    $state.go('register2');
+                }
+
             })
             .error(function(){
-                $scope.loginError = true;
-                $scope.loginErrorText = error.data.error;
-                console.log($scope.loginErrorText);
+                $ionicLoading.hide();
+                $rootScope.handleHttpError(error, status);
             })
         });
     };
 })
 
-.controller('Register2Ctrl', function($scope) {
+.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state) {
+    $scope.registerData = {};
+    var credentials = {
+        email: $stateParams.email,
+        password: $stateParams.password
+    }
 
+    if(!localStorage.getItem('user')){
+        $auth.login(credentials).then(function() {
+        },
+        function(error) {
+            $rootScope.handleHttpError(error, status);
+        });
+    }
+    else{
+        var user = $rootScope.getCurrentUser();
+        $scope.registerData.first_name = user.first_name;
+        $scope.registerData.last_name = user.last_name;
+        $scope.registerData.gender = user.gender;
+    }
+
+    $scope.register2 = function(registerData){
+        $ionicLoading.show();
+        $http({
+            method : 'POST',
+            url : $rootScope.baseURL+'/api/register2',
+            data : registerData
+        })
+        .success(function(response){
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                // Stringify the retured data
+                var user = JSON.stringify(response.user);
+
+                // Set the stringified user data into local storage
+                localStorage.setItem('user', user);
+                $ionicLoading.hide();
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                $state.go('tab.home',{refresh : true});
+            })
+            .error(function(){
+                $rootScope.handleHttpError(error, status);
+            });
+        })
+        .error(function(error, status){
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
+        });
+    }
 })
 
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
@@ -290,13 +399,15 @@ angular.module('starter.controllers', [])
                 $state.go('tab.home');
             })
             .error(function(){
-                $scope.loginError = true;
-                $scope.loginErrorText = error.data.error;
-                console.log($scope.loginErrorText);
+                $ionicLoading.hide();
+                $rootScope.handleHttpError(error, status);
             })
+        },
+        function(error) {
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
         });
     };
-
     $scope.fbLogin = function() {
         $ionicLoading.show();
         $auth.authenticate('facebook').then(function() {
@@ -314,34 +425,42 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                $state.go('tab.home');
+                if(response.user.age){
+                    $state.go('tab.home');
+                }
+                else{
+                    $state.go('register2');
+                }
             })
             .error(function(){
-                $scope.loginError = true;
-                $scope.loginErrorText = error.data.error;
-                console.log($scope.loginErrorText);
+                $ionicLoading.hide();
+                $rootScope.handleHttpError(error, status);
             })
         });
     };
 
 })
-.controller('AuthLogoutCtrl', function($state, $auth) {
-    $auth.logout();
-    $state.go('tab.home');
-})
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+    var user = $rootScope.getCurrentUser();
 
-    FetchPosts.following($scope.page).then(function(posts){
-        if(posts && posts.length == 0){
-            $scope.noResult = true;
-        }
-        $scope.posts = posts;
-        $scope.page++;
-    });
+    // $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
+
+    if(user.age || $stateParams.refresh){
+        FetchPosts.following($scope.page).then(function(posts){
+            if(posts && posts.length == 0){
+                $scope.noResult = true;
+            }
+            $scope.posts = posts;
+            $scope.page++;
+        });
+    }
+    else{
+        $state.go('register2');
+    }
 
     $scope.loadMore = function() {
         FetchPosts.following($scope.page).then(function(posts){
@@ -361,7 +480,7 @@ angular.module('starter.controllers', [])
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
             $scope.noResult = false;
-            if(posts.length == 0){
+            if(posts && posts.length == 0){
                 $scope.noResult = true;
             }
         });
@@ -395,11 +514,15 @@ angular.module('starter.controllers', [])
     $scope.likes = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
     var user = $rootScope.getCurrentUser();
 
     FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
         $scope.likes = likes;
         $scope.page++;
+        if(likes && likes.length == 0){
+            $scope.noResult = true;
+        }
     });
     $scope.loadMore = function() {
         FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
@@ -566,16 +689,45 @@ angular.module('starter.controllers', [])
             }
         });
     };
+    $scope.doRefresh = function() {
+        $scope.post = 0; // sloppy hack for not loaded check
+        $scope.comment = {};
+        $scope.liked = false;
+        $scope.saved = false;
+        $scope.likesCount = 0;
+        $scope.commentsHiddenCount = 0;
+        $scope.page = 2;
+        FetchPosts.get($stateParams.postId).then(function(post){
+            post.latest_ten_comments.reverse();
+            var commentsCount = 0;
+            if(post.comments_count){
+                commentsCount = post.comments_count.aggregate;
+            }
+            $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
+            $scope.post = post;
+            if(post.user_liked){
+                $scope.liked = true;
+            }
+            if(post.likes_count){
+                $scope.likesCount = post.likes_count.aggregate;
+            }
+            $scope.$broadcast('scroll.refreshComplete');
+        });
+    };
 })
 
 .controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
+        if(posts && posts.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -595,6 +747,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(posts && posts.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.submitSearch = function(search_term) {
@@ -677,28 +833,35 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading) {
+    var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;
     $scope.posts = [];
     $scope.noMoreItemsAvailable = false;
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = "";
+    $scope.currentSlug = "";
 
-    var user = $rootScope.getCurrentUser();
+    console.log($stateParams.accountSlug);
     if (!$stateParams.accountSlug)
     {
-        var slug = user.slug;
-        $scope.isMyAccount = true;
+        $scope.currentSlug = user.slug;
     }
     else
     {
-        var slug = $stateParams.accountSlug;
+        $scope.currentSlug = $stateParams.accountSlug;
     }
 
-    FetchUsers.get(slug).then(function(user){
-        $scope.user = user;
+
+    FetchUsers.get($scope.currentSlug).then(function(account_info){
+        $scope.account_info = account_info;
+
+        if (user.id == $scope.account_info.id)
+        {
+            $scope.isMyAccount = true;
+        }
     });
-    FetchPosts.user(slug, $scope.page).then(function(posts){
+    FetchPosts.user($scope.currentSlug, $scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
     });
@@ -718,43 +881,43 @@ angular.module('starter.controllers', [])
             buttonClicked: function(index) {
                 switch (index){
                     case 0 :
-            var options = {
-                quality: 100,
-                destinationType: Camera.DestinationType.FILE_URL,
-                sourceType: Camera.PictureSourceType.CAMERA
-            };
-            $cordovaCamera.getPicture(options).then(
-                function(imageData) {
-                    localStorage.setItem('photo', imageData);
-                    console.log(imageData);
-                    $ionicLoading.show({template: 'Loading Photo', duration:500});
-                    $scope.updateProfilePicture(imageData);
-                },
-                function(err){
-                    $ionicLoading.show({template: 'Error to Load Photo', duration:500});
-                }
-            )
+                        var options = {
+                            quality: 100,
+                            destinationType: Camera.DestinationType.FILE_URL,
+                            sourceType: Camera.PictureSourceType.CAMERA
+                        };
+                        $cordovaCamera.getPicture(options).then(
+                            function(imageData) {
+                                localStorage.setItem('photo', imageData);
+                                console.log(imageData);
+                                $ionicLoading.show({template: 'Loading Photo', duration:500});
+                                $scope.updateProfilePicture(imageData);
+                            },
+                            function(err){
+                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                            }
+                        )
                         return true;
                     case 1 :
-            var options = {
-                quality: 100,
-                destinationType: Camera.DestinationType.FILE_URI,
-                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
-            };
+                        var options = {
+                            quality: 100,
+                            destinationType: Camera.DestinationType.FILE_URI,
+                            sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+                        };
 
-            $cordovaCamera.getPicture(options).then(
-                function(imageURI) {
-                    window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
-                        localStorage.setItem('photo', fileEntry.nativeURL);
-                        console.log(fileEntry.nativeURL);
-                        $ionicLoading.show({template: 'Loading Photo', duration:500});
-                        $scope.updateProfilePicture(fileEntry.nativeURL);
-                    });
-                },
-                function(err){
-                    $ionicLoading.show({template: 'Error to Load Photo', duration:500});
-                }
-            )
+                        $cordovaCamera.getPicture(options).then(
+                            function(imageURI) {
+                                window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
+                                    localStorage.setItem('photo', fileEntry.nativeURL);
+                                    console.log(fileEntry.nativeURL);
+                                    $ionicLoading.show({template: 'Loading Photo', duration:500});
+                                    $scope.updateProfilePicture(fileEntry.nativeURL);
+                                });
+                            },
+                            function(err){
+                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                            }
+                        )
                         //Handle Move Button
                         return true;
                 }
@@ -798,19 +961,19 @@ angular.module('starter.controllers', [])
     $scope.goAccountSocialNetwork = function(type){
         if (type == 'facebook')
         {
-            window.open('https://www.facebook.com/'+$scope.user.social_networks.facebook, '_system');
+            window.open('https://www.facebook.com/'+$scope.account_info.social_networks.facebook, '_system');
         }
         else if (type == 'twitter')
         {
-            window.open('https://www.twitter.com/'+$scope.user.social_networks.twitter, '_system');
+            window.open('https://www.twitter.com/'+$scope.account_info.social_networks.twitter, '_system');
         }
         else if (type == 'instagram')
         {
-            window.open('https://www.instagram.com/'+$scope.user.social_networks.instagram, '_system');
+            window.open('https://www.instagram.com/'+$scope.account_info.social_networks.instagram, '_system');
         }
         else if (type == 'pinterest')
         {
-            window.open('https://www.pinterest.com/'+$scope.user.social_networks.pinterest, '_system');
+            window.open('https://www.pinterest.com/'+$scope.account_info.social_networks.pinterest, '_system');
         }
     };
     $scope.followToggle = function(like) {
@@ -834,7 +997,7 @@ angular.module('starter.controllers', [])
         return !$scope.isMyAccount;
     };
     $scope.loadMore = function() {
-        FetchPosts.user(slug, $scope.page).then(function(posts){
+        FetchPosts.user($scope.currentSlug, $scope.page).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -845,7 +1008,7 @@ angular.module('starter.controllers', [])
     };
     $scope.doRefresh = function() {
         $scope.page = 1;
-        FetchPosts.user(slug, $scope.page).then(function(posts){
+        FetchPosts.user($scope.currentSlug, $scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
@@ -853,7 +1016,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope) {
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
     };
@@ -867,11 +1030,19 @@ angular.module('starter.controllers', [])
         $state.go('tab.change-password');
     };
     $scope.logout = function(id){
-        $rootScope.popupMessage('Message', 'Are you sure to log out?');
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Log Out',
+            template: 'Are you sure to log out?'
+        });        
 
         confirmPopup.then(function(res) {
             if(res) {
-                $state.go('auth.logout');
+                localStorage.removeItem('user');
+                localStorage.removeItem('satellizer_token');
+                $ionicHistory.clearCache().then(function(){
+                    $ionicHistory.clearHistory();
+                    $state.go('root');
+                });
             }
         });
 
@@ -880,7 +1051,7 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory) {
-    var user = JSON.parse(localStorage.getItem('user'));
+    var user = $rootScope.getCurrentUser();
     FetchUsers.get(user.slug).then(function(user){
         $scope.user = user;
         var data = { first_name : $scope.user.first_name,
@@ -913,7 +1084,7 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('ChangePasswordCtrl', function($scope, $stateParams, $http, $state, $location, $rootScope, $ionicHistory) {
-    var user = JSON.parse(localStorage.getItem('user'));
+    var user = $rootScope.getCurrentUser();
     $scope.changePassword = function(pwd){
         $http({
             method: "POST",
@@ -997,13 +1168,19 @@ angular.module('starter.controllers', [])
 
 })
 .controller('FollowingCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
+    var user = $rootScope.getCurrentUser();
+    $scope.me = user;
     $scope.users = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchUsers.following($stateParams.userSlug, $scope.page).then(function(users){
         $scope.users = users;
         $scope.page++;
+        if(users && users.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -1023,6 +1200,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(users && users.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.followToggle = function(user) {
@@ -1046,13 +1227,20 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('FollowerCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
+    var user = $rootScope.getCurrentUser();
+    $scope.me = user;
     $scope.users = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
+    $scope.userItself = false;
 
     FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
         $scope.users = users;
         $scope.page++;
+        if(users && users.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -1072,6 +1260,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(users && users.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.followToggle = function(user) {
@@ -1129,10 +1321,14 @@ angular.module('starter.controllers', [])
     $scope.notifications = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
         $scope.notifications = notifications;
         $scope.page++;
+        if(notifications && notifications.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -1152,6 +1348,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(notifications && notifications.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
 });

@@ -3,7 +3,7 @@
   padding-top: 0;
 }
 ion-tabs .tab-item {
-  color: #fff;
+  color: $footer-nav-font-color;
   opacity: 1;
 }
 .tab-item{
@@ -14,6 +14,21 @@ ion-tabs .tab-item {
     font-size: 35px;
   }
 }
-.tab-item-active{
-  background-color: $footer-nav-active-color;
+.tab-item[icon-on=ion-home].tab-item-active{
+  color: #FFBD71;
+}
+.tab-item[icon-on=ion-search].tab-item-active{
+  color: #FF986C;
+}
+.tab-item[icon-on=ion-camera].tab-item-active{
+  color: #FF7167;
+}
+.tab-item[icon-on=ion-ios-bell].tab-item-active{
+  color: #FF4B62;
+}
+.tab-item[icon-on=ion-android-person].tab-item-active{
+  color: #FF285D;
+}
+div.tab-nav.tabs{
+  border-top-width: 0px;
 }
