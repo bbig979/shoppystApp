@@ -817,12 +817,14 @@ angular.module('starter.controllers', [])
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
     $scope.schoolName = $stateParams.schoolName;
 
     FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
-        if ( posts.length == 0 ) {
+        if ( posts && posts.length == 0 ) {
+            $scope.noResult = true;
             $scope.noMoreItemsAvailable = true;
         }
     });
@@ -844,7 +846,9 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
-            if ( posts.length == 0 ) {
+            $scope.noResult = false;
+            if ( posts && posts.length == 0 ) {
+                $scope.noResult = true;
                 $scope.noMoreItemsAvailable = true;
             }
         });
