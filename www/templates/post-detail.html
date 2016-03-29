@@ -1,4 +1,4 @@
-<ion-view class="comment-list single-post" id="post-detail" view-title="PHOTO">
+<ion-view class="comment-list single-post" id="post-detail" view-title="LOOK">
     <ion-header-bar align-title="left" class="bar-subheader post-header">
         <a>
             <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
@@ -8,6 +8,10 @@
         <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
     </ion-header-bar>
     <ion-content>
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
         <div class="update-notification" ng-if="!clientVersionUpToDate">
             New features are added. Let's update an app!
         </div>

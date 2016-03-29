@@ -5,7 +5,7 @@ $primary-font-bold: ProximaNova-Medium;
 $primary-font-bolder: ProximaNova-Semibold;
 
 $primary-color: #FF6D70;
-$primary-color-dark: #F95D61;
+$primary-color-dark: #FF4C62;
 
 $secondary-color: #00ccd2;
 $secondary-color-dark: #09B1B7;
@@ -19,7 +19,8 @@ $grey-darker: #777;
 $grey-darkest: #333;
 
 $like-red: $primary-color-dark;
-$a-color: #337ab7;
+$a-color: $primary-color-dark;
 
-$footer-nav-color: #333;
+$footer-nav-color: #fff;
 $footer-nav-active-color: #555;
+$footer-nav-font-color: #999;

@@ -3,6 +3,7 @@ angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $cordovaImagePicker, $ionicPlatform) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://appbeta.shoppyst.com';
+    //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
@@ -19,7 +20,7 @@ angular.module('starter.controllers', [])
                 tab = 'explore';
                 break;
             case 3:
-                tab = 'ranking';
+                tab = 'notification';
                 break;
             case 4:
                 tab = 'account';
@@ -65,17 +66,29 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-liked-'+tab,{userSlug: slug});
     };
-    $rootScope.goAccountNotification = function(){
-        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-notification-'+tab);
-    };
-    $rootScope.handleHttpError = function(error){
-        if(typeof (error.error) != undefined && error.error == "token_not_provided"){
+    $rootScope.handleHttpError = function(error, status){
+        if(status == 422){
+            // when login error
+            for(var key in error){
+                alert(error[key]);
+                break;
+            }
+        }
+        else if(typeof (error.status) != 'undefined' && error.status == 401){
+            // when validation error
+            for(var key in error.data){
+                alert(error.data[key]);
+                break;
+            }
+        }
+        else if(typeof (error.error) != 'undefined' && error.error == "token_not_provided"){
             $state.go('auth');
         }
-        else if(typeof (error.data) != undefined && typeof (error.data.error) != undefined && error.data.error == "token_not_provided"){
+        else if(typeof (error.data) != 'undefined' && typeof (error.data.error) != 'undefined' && error.data.error == "token_not_provided"){
             $state.go('auth');
         }
+        console.log('status: '+status);
+        console.log(error);
     };
     $rootScope.getCurrentUser = function(){
         var user = JSON.parse(localStorage.getItem('user'));
@@ -117,26 +130,75 @@ angular.module('starter.controllers', [])
             console.log('Error: ' + JSON.stringify(error));    // In case of error
         });
     }
-    $rootScope.showNotification = function(){
-        var exception = 'auth, register, register2';
-        if(exception.indexOf($state.current.name) > -1){
-            return false;
-        }
-        return true;
-    };
 })
 
-
-.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
-
-    $scope.register = function(){
+.controller('IntroCtrl',function($scope, $state, $ionicHistory){
+    $scope.slideIndex = 0;
+    $scope.enterApplication = function(){
         $ionicHistory.nextViewOptions({
             disableBack: true
         });
-
-        $state.go('register2');
+        localStorage.setItem('have_seen_intro', true);
+        $state.go('auth');
     }
-    $scope.fbLogin = function() {
+    $scope.slideHasChanged = function(index){
+        $scope.slideIndex = index;
+    }
+    $scope.currentSlide = function(index){
+        return $scope.slideIndex == index;
+    }
+})
+
+.controller('RootCtrl',function($rootScope, $state, $ionicHistory){
+    // always start as new state
+    window.location.reload(true);
+    $ionicHistory.nextViewOptions({
+        disableAnimate: true,
+        disableBack: true
+    });
+    if(localStorage.getItem('have_seen_intro')){
+        if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
+
+            var user = $rootScope.getCurrentUser();
+            if(user.age){
+                $state.go('tab.home');
+            }
+            else{
+                $state.go('register2');
+            }
+        }
+        else{
+            $state.go('auth');
+        }
+    }
+    else{
+        $state.go('intro');
+    }
+})
+
+.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
+    $scope.registerData = {email:'',password:''};
+    $scope.register = function(registerData){
+        $ionicLoading.show();
+        $http({
+            method : 'POST',
+            url : $rootScope.baseURL+'/api/register',
+            data : registerData
+        })
+        .success(function(response){
+            $ionicLoading.hide();
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+
+            $state.go('register2',registerData);
+        })
+        .error(function(error, status){
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
+        });
+    }
+    $scope.fbRegister = function() {
         $ionicLoading.show();
         $auth.authenticate('facebook').then(function() {
             // Return an $http request for the authenticated user
@@ -153,19 +215,73 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                $state.go('tab.home');
+                if(response.user.age){
+                    $state.go('tab.home');
+                }
+                else{
+                    $state.go('register2');
+                }
+
             })
             .error(function(){
-                $scope.loginError = true;
-                $scope.loginErrorText = error.data.error;
-                console.log($scope.loginErrorText);
+                $ionicLoading.hide();
+                $rootScope.handleHttpError(error, status);
             })
         });
     };
 })
 
-.controller('Register2Ctrl', function($scope) {
+.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state) {
+    $scope.registerData = {};
+    var credentials = {
+        email: $stateParams.email,
+        password: $stateParams.password
+    }
 
+    if(!localStorage.getItem('user')){
+        $auth.login(credentials).then(function() {
+        },
+        function(error) {
+            $rootScope.handleHttpError(error, status);
+        });
+    }
+    else{
+        var user = $rootScope.getCurrentUser();
+        $scope.registerData.first_name = user.first_name;
+        $scope.registerData.last_name = user.last_name;
+        $scope.registerData.gender = user.gender;
+    }
+
+    $scope.register2 = function(registerData){
+        $ionicLoading.show();
+        $http({
+            method : 'POST',
+            url : $rootScope.baseURL+'/api/register2',
+            data : registerData
+        })
+        .success(function(response){
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                // Stringify the retured data
+                var user = JSON.stringify(response.user);
+
+                // Set the stringified user data into local storage
+                localStorage.setItem('user', user);
+                $ionicLoading.hide();
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
+
+                $state.go('tab.home',{refresh : true});
+            })
+            .error(function(){
+                $rootScope.handleHttpError(error, status);
+            });
+        })
+        .error(function(error, status){
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
+        });
+    }
 })
 
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
@@ -201,13 +317,15 @@ angular.module('starter.controllers', [])
                 $state.go('tab.home');
             })
             .error(function(){
-                $scope.loginError = true;
-                $scope.loginErrorText = error.data.error;
-                console.log($scope.loginErrorText);
+                $ionicLoading.hide();
+                $rootScope.handleHttpError(error, status);
             })
+        },
+        function(error) {
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
         });
     };
-
     $scope.fbLogin = function() {
         $ionicLoading.show();
         $auth.authenticate('facebook').then(function() {
@@ -225,34 +343,42 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                $state.go('tab.home');
+                if(response.user.age){
+                    $state.go('tab.home');
+                }
+                else{
+                    $state.go('register2');
+                }
             })
             .error(function(){
-                $scope.loginError = true;
-                $scope.loginErrorText = error.data.error;
-                console.log($scope.loginErrorText);
+                $ionicLoading.hide();
+                $rootScope.handleHttpError(error, status);
             })
         });
     };
 
 })
-.controller('AuthLogoutCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope) {
-    $auth.logout();
-    $state.go('tab.home');
-})
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+    var user = $rootScope.getCurrentUser();
 
-    FetchPosts.following($scope.page).then(function(posts){
-        if(posts && posts.length == 0){
-            $scope.noResult = true;
-        }
-        $scope.posts = posts;
-        $scope.page++;
-    });
+    $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
+
+    if(user.age || $stateParams.refresh){
+        FetchPosts.following($scope.page).then(function(posts){
+            if(posts && posts.length == 0){
+                $scope.noResult = true;
+            }
+            $scope.posts = posts;
+            $scope.page++;
+        });
+    }
+    else{
+        $state.go('register2');
+    }
 
     $scope.loadMore = function() {
         FetchPosts.following($scope.page).then(function(posts){
@@ -272,7 +398,7 @@ angular.module('starter.controllers', [])
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
             $scope.noResult = false;
-            if(posts.length == 0){
+            if(posts && posts.length == 0){
                 $scope.noResult = true;
             }
         });
@@ -306,11 +432,15 @@ angular.module('starter.controllers', [])
     $scope.likes = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
     var user = $rootScope.getCurrentUser();
 
     FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
         $scope.likes = likes;
         $scope.page++;
+        if(likes && likes.length == 0){
+            $scope.noResult = true;
+        }
     });
     $scope.loadMore = function() {
         FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
@@ -477,16 +607,45 @@ angular.module('starter.controllers', [])
             }
         });
     };
+    $scope.doRefresh = function() {
+        $scope.post = 0; // sloppy hack for not loaded check
+        $scope.comment = {};
+        $scope.liked = false;
+        $scope.saved = false;
+        $scope.likesCount = 0;
+        $scope.commentsHiddenCount = 0;
+        $scope.page = 2;
+        FetchPosts.get($stateParams.postId).then(function(post){
+            post.latest_ten_comments.reverse();
+            var commentsCount = 0;
+            if(post.comments_count){
+                commentsCount = post.comments_count.aggregate;
+            }
+            $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
+            $scope.post = post;
+            if(post.user_liked){
+                $scope.liked = true;
+            }
+            if(post.likes_count){
+                $scope.likesCount = post.likes_count.aggregate;
+            }
+            $scope.$broadcast('scroll.refreshComplete');
+        });
+    };
 })
 
 .controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
+        if(posts && posts.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -506,6 +665,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(posts && posts.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.submitSearch = function(search_term) {
@@ -673,7 +836,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory) {
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
     };
@@ -694,7 +857,12 @@ angular.module('starter.controllers', [])
 
         confirmPopup.then(function(res) {
             if(res) {
-                $state.go('auth.logout');
+                localStorage.removeItem('user');
+                localStorage.removeItem('satellizer_token');
+                $ionicHistory.clearCache().then(function(){
+                    $ionicHistory.clearHistory();
+                    $state.go('root');
+                });
             }
         });
 
@@ -868,10 +1036,14 @@ angular.module('starter.controllers', [])
     $scope.users = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchUsers.following($stateParams.userSlug, $scope.page).then(function(users){
         $scope.users = users;
         $scope.page++;
+        if(users && users.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -891,6 +1063,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(users && users.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.followToggle = function(user) {
@@ -917,10 +1093,14 @@ angular.module('starter.controllers', [])
     $scope.users = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
         $scope.users = users;
         $scope.page++;
+        if(users && users.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -940,6 +1120,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(users && users.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
     $scope.followToggle = function(user) {
@@ -997,10 +1181,14 @@ angular.module('starter.controllers', [])
     $scope.notifications = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
 
     FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
         $scope.notifications = notifications;
         $scope.page++;
+        if(notifications && notifications.length == 0){
+            $scope.noResult = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -1020,6 +1208,10 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if(notifications && notifications.length == 0){
+                $scope.noResult = true;
+            }
         });
     };
 });

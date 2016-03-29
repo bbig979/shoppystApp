@@ -12,7 +12,7 @@
             <div class="user-school" ng-click="goSchoolDetail(user.school.id, user.school.name)" ng-if="user.school.id != 0">{{ user.school.name }}</div>
             <div class="user-joined">Joined at <span class="time-ago" am-time-ago="user.created_at | amUtc" ng-if="user"></span></div>
             <div class="account-achievement row">
-                <button class="button button-clear icon account-post-btn ion-camera col" ng-click="goAccountPost()"><br>{{user.posts_count}}<br>Posts</button>
+                <div class="button button-clear icon account-post-btn ion-camera col" ng-click="goAccountPost()"><br>{{user.posts_count}}<br>Posts</div>
                 <button class="button button-clear icon account-like-btn ion-ios-heart col" ng-click="goAccountLiked(user.slug)"><br>{{user.likes_count}}<br>Likes</button>
                 <button class="button button-clear icon account-followers-btn ion-ios-people col" ng-click="goAccountFollower(user.slug)">
                     <br><span class="dynamic-follower-count">{{user.follower_count}}</span><br>Followers

@@ -19,6 +19,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+      StatusBar.styleLightContent();
     }
   });
 })
@@ -26,10 +27,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 .config(function($stateProvider, $urlRouterProvider, $authProvider, $ionicConfigProvider) {
     $ionicConfigProvider.tabs.position('bottom');
     var baseURL = 'http://appbeta.shoppyst.com';
+    //var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
-        url: baseURL+'/auth/facebook'
+        url: baseURL+'/auth/facebook',
+        redirectUri: 'http://localhost/'
     });
 
   // Ionic uses AngularUI Router which uses the concept of states
@@ -37,15 +40,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
    $stateProvider
-
+    .state('intro', {
+       url: '/intro',
+       templateUrl: 'templates/intro.html',
+       controller: 'IntroCtrl'
+    })
+    .state('root', {
+        url: '/root',
+        controller: 'RootCtrl'
+    })
     .state('auth', {
         url: '/auth',
         templateUrl: 'templates/login.html',
         controller: 'AuthCtrl'
-    })
-    .state('auth.logout', {
-        url: '/logout',
-        controller: 'AuthLogoutCtrl'
     })
     .state('register', {
        url: '/register',
@@ -55,7 +62,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     .state('register2', {
        url: '/register2',
        templateUrl: 'templates/register2.html',
-       controller: 'Register2Ctrl'
+       controller: 'Register2Ctrl',
+       params: {
+           email: null,
+           password: null
+       }
     })
 
   // setup an abstract state for the tabs directive
@@ -74,6 +85,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             templateUrl: 'templates/tab-home.html',
             controller: 'HomeCtrl'
           }
+        },
+        params: {
+           refresh: null
         }
     })
 
@@ -95,10 +109,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.post-detail-ranking', {
-       url: '/post/:postId/ranking',
+    .state('tab.post-detail-notification', {
+       url: '/post/:postId/notification',
        views: {
-           'tab-ranking': {
+           'tab-notification': {
                templateUrl: 'templates/post-detail.html',
                controller: 'PostDetailCtrl'
            }
@@ -142,10 +156,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.post-likers-ranking', {
-       url: '/post/:postId/likers/ranking',
+    .state('tab.post-likers-notification', {
+       url: '/post/:postId/likers/notification',
        views: {
-           'tab-ranking': {
+           'tab-notification': {
                templateUrl: 'templates/post-likers.html',
                controller: 'PostLikersCtrl'
            }
@@ -179,10 +193,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.explore-ranking', {
-       url: '/explore/:searchTerm/ranking',
+    .state('tab.explore-notification', {
+       url: '/explore/:searchTerm/notification',
        views: {
-           'tab-ranking': {
+           'tab-notification': {
                templateUrl: 'templates/tab-explore.html',
                controller: 'PostExploreCtrl'
            }
@@ -206,16 +220,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     })
 
-    .state('tab.ranking', {
-      url: '/ranking',
-      views: {
-        'tab-ranking': {
-            templateUrl: 'templates/tab-ranking.html',
-            controller: 'RankingCtrl'
-        }
-      }
-    })
-
     .state('tab.school-detail-home', {
        url: '/school/:schoolId/:schoolName/home',
        views: {
@@ -234,10 +238,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.school-detail-ranking', {
-       url: '/school/:schoolId/:schoolName/ranking',
+    .state('tab.school-detail-notification', {
+       url: '/school/:schoolId/:schoolName/notification',
        views: {
-           'tab-ranking': {
+           'tab-notification': {
                templateUrl: 'templates/school-detail.html',
                controller: 'SchoolCtrl'
            }
@@ -272,10 +276,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
    })
-   .state('tab.account-ranking', {
-       url: '/account/:accountSlug/ranking',
+   .state('tab.account-notification', {
+       url: '/account/:accountSlug/notification',
        views: {
-           'tab-ranking': {
+           'tab-notification': {
                templateUrl: 'templates/tab-account.html',
                controller: 'AccountCtrl'
            }
@@ -364,10 +368,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.account-following-ranking', {
-       url: '/account/:userSlug/following/ranking',
+    .state('tab.account-following-notification', {
+       url: '/account/:userSlug/following/notification',
        views: {
-           'tab-ranking': {
+           'tab-notification': {
                templateUrl: 'templates/account-following.html',
                controller: 'FollowingCtrl'
            }
@@ -401,10 +405,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.account-follower-ranking', {
-       url: '/account/:userSlug/follower/ranking',
+    .state('tab.account-follower-notification', {
+       url: '/account/:userSlug/follower/notification',
        views: {
-           'tab-ranking': {
+           'tab-notification': {
                templateUrl: 'templates/account-follower.html',
                controller: 'FollowerCtrl'
            }
@@ -438,10 +442,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-   .state('tab.account-liked-ranking', {
-       url: '/account/:userSlug/liked/ranking',
+   .state('tab.account-liked-notification', {
+       url: '/account/:userSlug/liked/notification',
        views: {
-           'tab-ranking': {
+           'tab-notification': {
                templateUrl: 'templates/account-liked.html',
                controller: 'LikedCtrl'
            }
@@ -457,43 +461,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
    })
 
-   .state('tab.account-notification-home', {
-       url: '/account/notification/home',
+   .state('tab.notification', {
+       url: '/notification',
        views: {
-           'tab-home': {
-               templateUrl: 'templates/account-notification.html',
+           'tab-notification': {
+               templateUrl: 'templates/tab-notification.html',
                controller: 'NotificationCtrl'
            }
        }
    })
-   .state('tab.account-notification-explore', {
-       url: '/account/notification/explore',
-       views: {
-           'tab-explore': {
-               templateUrl: 'templates/account-notification.html',
-               controller: 'NotificationCtrl'
-           }
-       }
-   })
-   .state('tab.account-notification-ranking', {
-       url: '/account/notification/ranking',
-       views: {
-           'tab-ranking': {
-               templateUrl: 'templates/account-notification.html',
-               controller: 'NotificationCtrl'
-           }
-       }
-   })
-   .state('tab.account-notification-account', {
-       url: '/account/notification/account',
-       views: {
-           'tab-account': {
-               templateUrl: 'templates/account-notification.html',
-               controller: 'NotificationCtrl'
-           }
-       }
-   });
+
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/home');
+  $urlRouterProvider.otherwise('/root');
 
 });

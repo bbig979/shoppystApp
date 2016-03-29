@@ -1,5 +1,8 @@
 <ion-view class="follow-toggle-user-list" id="account-following" view-title="FOLLOWING">
     <ion-content>
+        <div class="no-result" ng-if="noResult">
+            No following yet.
+        </div>
         <div class="loading-spinner" data-loading ng-if="users.length == 0">
             <ion-spinner></ion-spinner>
         </div>

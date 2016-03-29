@@ -1,6 +1,6 @@
 <ion-view view-title="ALMOST DONE" id="register2">
     <ion-content>
-        <form ng-submit="register2()">
+        <form ng-submit="register2(registerData)">
             <div class="list">
                 <label class="item item-input item-floating-label">
                     <span class="input-label">First name</span>
@@ -12,20 +12,20 @@
                 </label>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">School name</span>
-                    <input type="text" ng-model="registerData.school_name" placeholder="School name">
+                    <input type="text" ng-model="registerData.school_name" placeholder="School name ( Optional )">
                 </label>
                 <label class="item item-input item-floating-label">
-                    <span class="input-label">Grad year ( or expected )</span>
-                    <input type="text" ng-model="registerData.grad_year" placeholder="Grad year ( or expected )">
+                    <span class="input-label">Age</span>
+                    <input type="text" ng-model="registerData.age" placeholder="Age">
                 </label>
                 <div class="padding consistent"></div>
                 <label class="item item-input item-select">
                     <div class="input-label">
                         Gender
                     </div>
-                    <select>
-                        <option>Male</option>
-                        <option selected>Female</option>
+                    <select name="gender" ng-model="registerData.gender">
+                        <option value="male">Male</option>
+                        <option value="female" selected>Female</option>
                     </select>
                 </label>
                 <div class="padding"></div>
