@@ -474,6 +474,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchPosts.following($scope.page).then(function(posts){
             $scope.posts = posts;
@@ -746,6 +747,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(posts){
             $scope.posts = posts;
@@ -800,6 +802,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchSchools.ranking($scope.page).then(function(schools){
             $scope.schools = schools;
@@ -840,6 +843,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
             $scope.posts = posts;
@@ -1033,6 +1037,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         $scope.posts = [];
         $scope.activatedTab = 'best';
@@ -1168,6 +1173,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchUsers.findFriends($scope.page).then(function(users){
             $scope.users = users;
@@ -1239,6 +1245,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchUsers.following($stateParams.userSlug, $scope.page).then(function(users){
             $scope.users = users;
@@ -1301,6 +1308,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
             $scope.users = users;
@@ -1358,6 +1366,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
             $scope.posts = posts;
@@ -1397,6 +1406,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
             $scope.notifications = notifications;
