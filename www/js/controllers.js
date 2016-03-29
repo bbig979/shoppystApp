@@ -782,6 +782,7 @@ angular.module('starter.controllers', [])
     $scope.isMyAccount = false;
     $scope.posts = [];
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
     $scope.activatedTab = 'best';
 
     var user = $rootScope.getCurrentUser();
@@ -801,8 +802,9 @@ angular.module('starter.controllers', [])
     FetchPosts.user(slug, $scope.activatedTab, $scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
-        if ( posts.length == 0 ) {
+        if ( posts && posts.length == 0 ) {
             $scope.noMoreItemsAvailable = true;
+            $scope.noResult = true;
         }
     });
     $scope.goChangeProfilePicture = function(){
@@ -866,7 +868,9 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
-            if ( posts.length == 0 ) {
+            $scope.noResult = false;
+            if ( posts && posts.length == 0 ) {
+                $scope.noResult = true;
                 $scope.noMoreItemsAvailable = true;
             }
         });
