@@ -138,7 +138,7 @@ angular.module('starter.controllers', [])
                                 $state.go('tab.camera',{photoUrl: imageData});
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         return true;
@@ -160,7 +160,7 @@ angular.module('starter.controllers', [])
                                 });
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         //Handle Move Button
@@ -184,7 +184,7 @@ angular.module('starter.controllers', [])
         return true;
     };
 })
-.controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading) {
+.controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory) {
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = $stateParams.photoUrl;
@@ -220,6 +220,10 @@ angular.module('starter.controllers', [])
         function fail(error) {
             $ionicLoading.show({template: 'Upload Fail', duration:500});
         }
+    }
+
+    $scope.back = function() {
+        $ionicHistory.goBack();
     }
 })
 .controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading) {
@@ -909,7 +913,6 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     $scope.activatedTab = 'best';
 
-    console.log($stateParams.accountSlug);
     if (!$stateParams.accountSlug)
     {
         $scope.currentSlug = user.slug;
@@ -962,7 +965,6 @@ angular.module('starter.controllers', [])
                         $cordovaCamera.getPicture(options).then(
                             function(imageData) {
                                 localStorage.setItem('photo', imageData);
-                                console.log(imageData);
                                 $ionicLoading.show({template: 'Loading Photo', duration:500});
                                 $scope.updateProfilePicture(imageData);
                             },
@@ -984,7 +986,6 @@ angular.module('starter.controllers', [])
                             function(imageURI) {
                                 window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
                                     localStorage.setItem('photo', fileEntry.nativeURL);
-                                    console.log(fileEntry.nativeURL);
                                     $ionicLoading.show({template: 'Loading Photo', duration:500});
                                     $scope.updateProfilePicture(fileEntry.nativeURL);
                                 });
@@ -1013,23 +1014,18 @@ angular.module('starter.controllers', [])
         options.params = params;
 
         var ft = new FileTransfer();
-        console.dir(options);
+
         ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/'+user.slug+'/editProfilePicture'), success, fail, options);
 
         function success(r) {
-            console.dir(r);
-            console.log("Code = " + r.responseCode);
-            console.log("Response = " + r.response);
-            console.log("Sent = " + r.bytesSent);
             $ionicLoading.show({template: 'Upload Success', duration:500});
+            var result = JSON.parse(r.response);
+            $("#tab-account .account-image").css("background-image", "url("+$rootScope.photoPath( result.profile_img_path, 's' )+")"); 
         }
 
         // Transfer failed
         function fail(error) {
-            console.dir(error);
             $ionicLoading.show({template: 'Upload Fail', duration:500});
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
         }
     }
 
