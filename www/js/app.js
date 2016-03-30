@@ -305,6 +305,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/tab-account.html',
                controller: 'AccountCtrl'
            }
+       },
+       params: {
+           refresh: null
        }
    })
 

@@ -213,7 +213,7 @@ angular.module('starter.controllers', [])
         // Transfer succeeded
         function success(r) {
             $ionicLoading.show({template: 'Upload Success', duration:500});
-            $state.go('tab.post-detail-home',{postId: r.response.id});
+            $state.go('tab.account-account',{refresh: options.fileName});
         }
 
         // Transfer failed
@@ -928,14 +928,17 @@ angular.module('starter.controllers', [])
             $scope.isMyAccount = true;
         }
     });
-    FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(posts){
-        $scope.posts = posts;
-        $scope.page++;
-        if ( posts && posts.length == 0 ) {
-            $scope.noMoreItemsAvailable = true;
-            $scope.noResult = true;
-        }
-    });
+
+    if(user.id || $stateParams.refresh){
+        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(posts){
+            $scope.posts = posts;
+            $scope.page++;
+            if ( posts && posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+                $scope.noResult = true;
+            }
+        });
+    }
 
     $scope.changeProfilePicture = function(){
         // Show the action sheet
