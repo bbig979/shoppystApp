@@ -32,6 +32,6 @@
     "cordova-plugin-badge"
   ],
   "cordovaPlatforms": [
-    "ios"
+    "android"
   ]
 }

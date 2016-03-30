@@ -1,7 +1,18 @@
-#create-post .photo {
-	width: 100%;
+#create-post img {
+	max-height: 300px;
+	max-width: 100%;
 }
 
-#create-post .item-input.item-floating-label.caption span {
-	top: -7px;
+#create-post .item-image img:first-child,
+#create-post .item-image .list-img {
+    width: auto;
+    margin: auto;
+}
+
+#create-post .item {
+	border: none;
+}
+
+#create-post .post-image .item {
+	padding: 0px;
 }

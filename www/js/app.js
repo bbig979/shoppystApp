@@ -221,6 +221,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
+    .state('tab.post-edit', {
+      url: '/post/edit',
+      params: { 'postId': null },
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/post-edit.html',
+          controller: 'PostEditCtrl'
+        }
+      }
+    })
     .state('tab.school-detail-home', {
        url: '/school/:schoolId/:schoolName/home',
        views: {

@@ -76,7 +76,7 @@ angular.module('starter.controllers', [])
         if(status == 422){
             // when login error
             for(var key in error){
-                $rootScope.popupMessage('Error', error[key]);
+                $rootScope.popupMessage('', error[key]);
                 break;
             }
         }
@@ -86,7 +86,7 @@ angular.module('starter.controllers', [])
         else if(typeof (error.status) != 'undefined' && error.status == 401){
             // when validation error
             for(var key in error.data){
-                $rootScope.popupMessage('Error', error.data[key]);
+                $rootScope.popupMessage('', error.data[key]);
                 break;
             }
         }
@@ -180,7 +180,7 @@ angular.module('starter.controllers', [])
         return true;
     };
 })
-.controller('PostCreateCtrl', function($scope, $state, $http, $stateParams, $rootScope, $cordovaCamera, $cordovaFile, $ionicLoading) {
+.controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading) {
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = $stateParams.photoUrl;
@@ -189,17 +189,21 @@ angular.module('starter.controllers', [])
         $ionicLoading.show({template: 'Uploading Photo...', duration:500});
         var fileURL = $scope.picData;
         var options = new FileUploadOptions();
+        var param_caption = '';
+        if (typeof captions != 'undefined')
+        {
+            param_caption = captions;
+        }
         options.fileKey = "image";
         options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
         options.mimeType = "image/jpeg";
         options.chunkedMode = true;
 
-        var params = { 'captions': captions, 'user_id': user.id };
+        var params = { 'captions': param_caption, 'user_id': user.id };
 
         options.params = params;
 
         var ft = new FileTransfer();
-        console.dir(options);
         ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, options);
 
         // Transfer succeeded
@@ -213,6 +217,27 @@ angular.module('starter.controllers', [])
             $ionicLoading.show({template: 'Upload Fail', duration:500});
         }
     }
+})
+.controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory) {
+    console.log("PostEditCtrl enter");
+    FetchPosts.get($stateParams.postId).then(function(post){
+        console.log("PostEditCtrl Post has been Fetched");
+        $scope.post = post;
+    });
+
+    $scope.updatePost = function(post){
+        $http({
+            method: "POST",
+            url: $rootScope.baseURL + '/api/post/' + $scope.post.id + '/edit',
+            data: {'content': post.content, 'post-id': $scope.post.id }
+        })
+        .success(function(response){
+            $ionicHistory.goBack();
+        })
+        .error(function(error, status){
+            $rootScope.handleHttpError(error, status);
+        });
+    };
 })
 .controller('IntroCtrl',function($scope, $state, $ionicHistory){
     $scope.slideIndex = 0;
@@ -561,7 +586,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -677,8 +702,11 @@ angular.module('starter.controllers', [])
                 console.log('CANCELLED');
             },
             buttonClicked: function(index) {
-                console.log('BUTTON CLICKED', index);
-                return true;
+                switch (index){
+                    case 0:
+                        $state.go('tab.post-edit',{postId: $scope.post.id});
+                        return true;
+                }
             },
             destructiveButtonClicked: function() {
                 $ionicLoading.show();

@@ -34,6 +34,23 @@
   text-align: center;
 }
 
+/* line 14, ../../scss/tw/_global.scss */
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+/* line 20, ../../scss/tw/_global.scss */
+.clearfix:after {
+  clear: both;
+}
+
+/* line 24, ../../scss/tw/_global.scss */
+.clearfix {
+  *zoom: 1;
+}
+
 /* line 2, ../../scss/tw/_account.scss */
 #tab-account .account-top {
   color: white;
@@ -195,11 +212,47 @@
 }
 
 /* line 1, ../../scss/tw/_post_create.scss */
-#create-post .photo {
-  width: 100%;
+#create-post img {
+  max-height: 300px;
+  max-width: 100%;
 }
 
-/* line 5, ../../scss/tw/_post_create.scss */
-#create-post .item-input.item-floating-label.caption span {
-  top: -7px;
+/* line 6, ../../scss/tw/_post_create.scss */
+#create-post .item-image img:first-child,
+#create-post .item-image .list-img {
+  width: auto;
+  margin: auto;
+}
+
+/* line 12, ../../scss/tw/_post_create.scss */
+#create-post .item {
+  border: none;
+}
+
+/* line 16, ../../scss/tw/_post_create.scss */
+#create-post .post-image .item {
+  padding: 0px;
+}
+
+/* line 1, ../../scss/tw/_post_edit.scss */
+#edit-post img {
+  max-height: 300px;
+  max-width: 100%;
+}
+
+/* line 6, ../../scss/tw/_post_edit.scss */
+#edit-post .item-image img:first-child,
+#edit-post .item-image .list-img {
+  width: auto;
+  margin: auto;
+}
+
+/* line 12, ../../scss/tw/_post_edit.scss */
+#edit-post .item {
+  border: none;
+}
+
+/* line 16, ../../scss/tw/_post_edit.scss */
+#edit-post .post-image .item {
+  padding: 0px;
 }

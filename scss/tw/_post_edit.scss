@@ -1,0 +1,18 @@
+#edit-post img {
+	max-height: 300px;
+	max-width: 100%;
+}
+
+#edit-post .item-image img:first-child,
+#edit-post .item-image .list-img {
+    width: auto;
+    margin: auto;
+}
+
+#edit-post .item {
+	border: none;
+}
+
+#edit-post .post-image .item {
+	padding: 0px;
+}
