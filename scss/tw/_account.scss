@@ -49,20 +49,33 @@
 	}
 
 	.account-achievement {
-		margin-top: 20px;
-		font-size: 0.8em;
+		margin-top: 10px;
 
 		button {
 		  	color: white;
 		  	line-height: 120%;
 		  	font-weight: 400;
 		}
+
+		div {
+			color: white;
+			line-height: 150%;
+			font-size: 1.1em;
+		}
+
+		.ion-camera,
+		.ion-ios-heart,
+		.ion-ios-people,
+		.ion-android-person {
+			font-size: 1.5em;
+		}
 	}
 
 	.account-social-network {
-		margin-top: 40px;
+		margin-top: 30px;
+		margin-bottom: 20px;
 		font-size: 0.6em;
-		button {
+		div {
 			color: white;
 		}
 	}
@@ -89,10 +102,5 @@
 	}
 	.following:after{
 		content: "UNFOLLOW";
-	}
-
-	.account-achievement div {
-		color: white;
-		line-height: 150%;
 	}
 }

@@ -102,25 +102,38 @@
 }
 /* line 51, ../../scss/tw/_account.scss */
 #tab-account .account-achievement {
-  margin-top: 20px;
-  font-size: 0.8em;
+  margin-top: 10px;
 }
-/* line 55, ../../scss/tw/_account.scss */
+/* line 54, ../../scss/tw/_account.scss */
 #tab-account .account-achievement button {
   color: white;
   line-height: 120%;
   font-weight: 400;
 }
-/* line 62, ../../scss/tw/_account.scss */
+/* line 60, ../../scss/tw/_account.scss */
+#tab-account .account-achievement div {
+  color: white;
+  line-height: 150%;
+  font-size: 1.1em;
+}
+/* line 66, ../../scss/tw/_account.scss */
+#tab-account .account-achievement .ion-camera,
+#tab-account .account-achievement .ion-ios-heart,
+#tab-account .account-achievement .ion-ios-people,
+#tab-account .account-achievement .ion-android-person {
+  font-size: 1.5em;
+}
+/* line 74, ../../scss/tw/_account.scss */
 #tab-account .account-social-network {
-  margin-top: 40px;
+  margin-top: 30px;
+  margin-bottom: 20px;
   font-size: 0.6em;
 }
-/* line 65, ../../scss/tw/_account.scss */
-#tab-account .account-social-network button {
+/* line 78, ../../scss/tw/_account.scss */
+#tab-account .account-social-network div {
   color: white;
 }
-/* line 70, ../../scss/tw/_account.scss */
+/* line 83, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle {
   font-size: 11px;
   float: right;
@@ -132,25 +145,20 @@
   color: #FF4C62;
   width: 90px;
 }
-/* line 81, ../../scss/tw/_account.scss */
+/* line 94, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle:after {
   padding-top: 7px;
   content: "FOLLOW";
 }
-/* line 85, ../../scss/tw/_account.scss */
+/* line 98, ../../scss/tw/_account.scss */
 #tab-account .following {
   background-color: #FF4C62;
   border-color: #FF4C62;
   color: #fff;
 }
-/* line 90, ../../scss/tw/_account.scss */
+/* line 103, ../../scss/tw/_account.scss */
 #tab-account .following:after {
   content: "UNFOLLOW";
-}
-/* line 94, ../../scss/tw/_account.scss */
-#tab-account .account-achievement div {
-  color: white;
-  line-height: 150%;
 }
 
 /* line 3, ../../scss/tw/_find-friends.scss */
@@ -247,12 +255,7 @@
   margin: auto;
 }
 
-/* line 12, ../../scss/tw/_post_edit.scss */
-#edit-post .item {
-  border: none;
-}
-
-/* line 16, ../../scss/tw/_post_edit.scss */
+/* line 15, ../../scss/tw/_post_edit.scss */
 #edit-post .post-image .item {
   padding: 0px;
 }

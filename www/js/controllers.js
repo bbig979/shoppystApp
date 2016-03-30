@@ -126,6 +126,8 @@ angular.module('starter.controllers', [])
                     case 0 :
                         var options = {
                             quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
                             destinationType: Camera.DestinationType.FILE_URL,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
@@ -143,6 +145,8 @@ angular.module('starter.controllers', [])
                     case 1 :
                         var options = {
                             quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
                         };
@@ -186,7 +190,7 @@ angular.module('starter.controllers', [])
     $scope.picData = $stateParams.photoUrl;
 
     $scope.sharePost = function(captions) {
-        $ionicLoading.show({template: 'Uploading Photo...', duration:500});
+        $ionicLoading.show({template: 'Uploading Photo...'});
         var fileURL = $scope.picData;
         var options = new FileUploadOptions();
         var param_caption = '';
@@ -584,7 +588,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -707,15 +711,24 @@ angular.module('starter.controllers', [])
                 }
             },
             destructiveButtonClicked: function() {
-                $ionicLoading.show();
-                $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
-                    $('.item[data-id='+$scope.post.id+']').remove();
-                    $ionicLoading.hide();
-                    $ionicHistory.goBack();
-                    return true;
-                })
-                .error(function(error){
-                    $rootScope.handleHttpError(error);
+                var confirmPopup = $ionicPopup.confirm({
+                    title: 'Delete',
+                    template: 'Are you sure to delete post?'
+                });        
+
+                confirmPopup.then(function(res) {
+                    if(res) {
+                        $ionicLoading.show();
+                        $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
+                            $('.item[data-id='+$scope.post.id+']').remove();
+                            $ionicLoading.hide();
+                            $ionicHistory.goBack();
+                            return true;
+                        })
+                        .error(function(error){
+                            $rootScope.handleHttpError(error);
+                        });
+                    }
                 });
             }
         });
@@ -941,6 +954,8 @@ angular.module('starter.controllers', [])
                     case 0 :
                         var options = {
                             quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
                             destinationType: Camera.DestinationType.FILE_URL,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
@@ -952,13 +967,15 @@ angular.module('starter.controllers', [])
                                 $scope.updateProfilePicture(imageData);
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         return true;
                     case 1 :
                         var options = {
                             quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
                         };
@@ -973,7 +990,7 @@ angular.module('starter.controllers', [])
                                 });
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         //Handle Move Button
