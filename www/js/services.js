@@ -60,8 +60,8 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(error);
             });
         },
-        user: function(userSlug, pg) {
-            return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?page="+pg).then(function(response){
+        user: function(userSlug, tab, pg) {
+            return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
                 return response.data.data;
             }
             ,function(error){

@@ -51,3 +51,20 @@ a{
   text-align: center;
   color: #555;
 }
+
+
+/*     account page below      */
+#tab-account{
+  .tabs-striped .tab-item.activated {
+    margin-top: 0px;
+    border-style: solid;
+    border-width: 0 0 0 0;
+    border-color: #444;
+  }
+  .tabs-striped .tab-item.activatedd {
+    margin-bottom: -2px;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: $primary-color-dark;
+  }
+}

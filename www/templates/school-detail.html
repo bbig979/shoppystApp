@@ -1,4 +1,4 @@
-<ion-view class="masonry-post-list" id="school-detail" view-title="COLLEGE">
+<ion-view class="masonry-post-list" id="school-detail" view-title="SCHOOL">
     <ion-content>
         <ion-refresher
                 pulling-text="Pull to refresh..."
@@ -6,6 +6,9 @@
         </ion-refresher>
         <div class="school-header">
             <h4>{{schoolName}}</h4>
+        </div>
+        <div class="no-result" ng-if="noResult">
+            No look in this school
         </div>
         <div class="loading-spinner" data-loading ng-if="posts.length == 0">
             <ion-spinner></ion-spinner>

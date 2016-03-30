@@ -4,9 +4,6 @@
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
-        <div class="no-result" ng-if="noResult">
-            No looks shared in 24 hours. Please invite your friends.
-        </div>
         <form name="searchForm" ng-submit="submitSearch(searchTerm)" ng-show="noSearchTerm()">
             <div class="bar bar-header item-input-inset">
                 <label class="item-input-wrapper">
@@ -18,6 +15,9 @@
         </form>
         <div class="search-header" ng-hide="noSearchTerm()">
             <h3>{{ tagSearchTerm() }}</h3>
+        </div>
+        <div class="no-result" ng-if="noResult">
+            No look shared in 24 hours. Please invite your friends
         </div>
         <div class="loading-spinner" data-loading ng-if="posts.length == 0">
             <ion-spinner></ion-spinner>

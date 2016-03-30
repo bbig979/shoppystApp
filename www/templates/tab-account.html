@@ -27,7 +27,30 @@
                 <button class="button button-clear icon col ion-social-instagram-outline account-instagram-btn" ng-click="goAccountSocialNetwork('instagram')" ng-if="account_info.social_networks.instagram"></button>
                 <button class="button button-clear icon col ion-social-pinterest account-pinterest-btn" ng-click="goAccountSocialNetwork('pinterest')" ng-if="account_info.social_networks.pinterest"></button>
             </div>
-            <ion-spinner icon="ios-small" ng-if="!account_info"></ion-spinner>
+            <div class="tabs-striped">
+                <div class="tabs">
+                    <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
+                        Best
+                    </a>
+                    <a class="tab-item" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
+                        New
+                    </a>
+                </div>
+            </div>
+            <div class="tabs-striped">
+                <div class="tabs">
+                    <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
+                        Best
+                    </a>
+                    <a class="tab-item" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
+                        New
+                    </a>
+                </div>
+            </div>
+            <ion-spinner icon="ios-small" ng-if="!user"></ion-spinner>
+        </div>
+        <div class="no-result" ng-if="noResult">
+            No look posted
         </div>
         <div class="loading-spinner" data-loading ng-if="posts.length == 0">
             <ion-spinner></ion-spinner>

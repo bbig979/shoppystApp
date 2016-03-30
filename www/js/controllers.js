@@ -233,7 +233,7 @@ angular.module('starter.controllers', [])
 
 .controller('RootCtrl',function($rootScope, $state, $ionicHistory){
     // always start as new state
-    window.location.reload(true);
+    //window.location.reload(true);
     $ionicHistory.nextViewOptions({
         disableAnimate: true,
         disableBack: true
@@ -447,12 +447,13 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     var user = $rootScope.getCurrentUser();
 
-    // $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
+    $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
 
     if(user.age || $stateParams.refresh){
         FetchPosts.following($scope.page).then(function(posts){
             if(posts && posts.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
             $scope.page++;
@@ -473,6 +474,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchPosts.following($scope.page).then(function(posts){
             $scope.posts = posts;
@@ -482,6 +484,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(posts && posts.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
@@ -522,6 +525,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(likes && likes.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
     $scope.loadMore = function() {
@@ -530,6 +534,7 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
             if ( likes.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
                 $scope.noMoreItemsAvailable = true;
             }
         });
@@ -727,6 +732,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(posts && posts.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
 
@@ -741,6 +747,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(posts){
             $scope.posts = posts;
@@ -750,6 +757,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(posts && posts.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
@@ -778,6 +786,9 @@ angular.module('starter.controllers', [])
     FetchSchools.ranking($scope.page).then(function(schools){
         $scope.schools = schools;
         $scope.page++;
+        if ( schools.length == 0 ) {
+            $scope.noMoreItemsAvailable = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -791,12 +802,16 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchSchools.ranking($scope.page).then(function(schools){
             $scope.schools = schools;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            if ( schools.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
         });
     };
 })
@@ -805,11 +820,16 @@ angular.module('starter.controllers', [])
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
     $scope.schoolName = $stateParams.schoolName;
 
     FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
+        if ( posts && posts.length == 0 ) {
+            $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -823,12 +843,18 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if ( posts && posts.length == 0 ) {
+                $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
+            }
         });
     };
 })
@@ -841,6 +867,8 @@ angular.module('starter.controllers', [])
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = "";
     $scope.currentSlug = "";
+    $scope.noResult = false;
+    $scope.activatedTab = 'best';
 
     console.log($stateParams.accountSlug);
     if (!$stateParams.accountSlug)
@@ -861,9 +889,13 @@ angular.module('starter.controllers', [])
             $scope.isMyAccount = true;
         }
     });
-    FetchPosts.user($scope.currentSlug, $scope.page).then(function(posts){
+    FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
+        if ( posts && posts.length == 0 ) {
+            $scope.noMoreItemsAvailable = true;
+            $scope.noResult = true;
+        }
     });
 
     $scope.changeProfilePicture = function(){
@@ -997,7 +1029,7 @@ angular.module('starter.controllers', [])
         return !$scope.isMyAccount;
     };
     $scope.loadMore = function() {
-        FetchPosts.user($scope.currentSlug, $scope.page).then(function(posts){
+        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -1007,14 +1039,35 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        FetchPosts.user($scope.currentSlug, $scope.page).then(function(posts){
+        $scope.posts = [];
+        $scope.activatedTab = 'best';
+        FetchPosts.user($scope.currentSlug, 'best', $scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            $scope.noResult = false;
+            if ( posts && posts.length == 0 ) {
+                $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
+            }
         });
     };
+    $scope.activateTab = function(tab){
+        $scope.page = 1;
+        $scope.posts = [];
+        $scope.activatedTab = tab;
+        FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(posts){
+            $scope.posts = posts;
+            $scope.page++;
+            $scope.noMoreItemsAvailable = false;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
+        });
+    }
 })
 .controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope) {
     $scope.goAccountEdit = function(id){
@@ -1124,6 +1177,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchUsers.findFriends($scope.page).then(function(users){
             $scope.users = users;
@@ -1180,6 +1234,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(users && users.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
 
@@ -1194,6 +1249,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchUsers.following($stateParams.userSlug, $scope.page).then(function(users){
             $scope.users = users;
@@ -1203,6 +1259,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(users && users.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
@@ -1240,6 +1297,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(users && users.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
 
@@ -1254,6 +1312,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(users){
             $scope.users = users;
@@ -1263,6 +1322,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(users && users.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
@@ -1294,6 +1354,9 @@ angular.module('starter.controllers', [])
     FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
+        if ( posts.length == 0 ) {
+            $scope.noMoreItemsAvailable = true;
+        }
     });
 
     $scope.loadMore = function() {
@@ -1307,12 +1370,16 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
+            if ( posts.length == 0 ) {
+                $scope.noMoreItemsAvailable = true;
+            }
         });
     };
 })
@@ -1328,6 +1395,7 @@ angular.module('starter.controllers', [])
         $scope.page++;
         if(notifications && notifications.length == 0){
             $scope.noResult = true;
+            $scope.noMoreItemsAvailable = true;
         }
     });
 
@@ -1342,6 +1410,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
             $scope.notifications = notifications;
@@ -1351,6 +1420,7 @@ angular.module('starter.controllers', [])
             $scope.noResult = false;
             if(notifications && notifications.length == 0){
                 $scope.noResult = true;
+                $scope.noMoreItemsAvailable = true;
             }
         });
     };
