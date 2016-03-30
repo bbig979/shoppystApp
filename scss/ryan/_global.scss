@@ -68,3 +68,23 @@ a{
     border-color: $primary-color-dark;
   }
 }
+
+/*   post edit below    */
+#edit-post{
+  .post-image{
+    width: 50%;
+    padding: 10px auto;
+    margin: 12px;
+    img{
+      @include border-radius(3px);
+    }
+  }
+  .post-caption{
+    textarea{
+      width: 100%;
+      border: 1px solid #ddd;
+      padding: 10px;
+      @include border-radius(3px);
+    }
+  }
+}

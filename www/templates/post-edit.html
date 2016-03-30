@@ -1,15 +1,15 @@
 <ion-view id="edit-post" view-title="Edit Post">
-    <ion-content ng-if="post" class="has-header">
+    <ion-content class="has-header">
         <form ng-submit="updatePost(post)" name="shareForm">
-            <div ng-show="post" class="item item-image post-image">
+            <div class="post-image">
                 <img class="item" ng-src="{{ photoPath( post.photos[0].img_path, 'm' ) }}"/>
             </div>
-            <label class="item-input item-floating-label caption">
-                <span class="input-label">Caption</span>
+            <div class="post-caption padding">
                 <textarea placeholder="Write a Caption" class="form-control" ng-model="post.content"></textarea>
-            </label>
-            <div class="padding"></div>
-            <button type="submit" class="button button-block button-positive padding">Update post</button>
+            </div>
+            <div class="padding">
+                <button type="submit" class="button button-block button-positive">Update post</button>
+            </div>
         </form>
     </ion-content>
 </ion-view>
