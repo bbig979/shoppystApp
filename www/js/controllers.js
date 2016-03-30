@@ -190,7 +190,7 @@ angular.module('starter.controllers', [])
     $scope.picData = $stateParams.photoUrl;
 
     $scope.sharePost = function(captions) {
-        $ionicLoading.show({template: 'Uploading Photo...', duration:500});
+        $ionicLoading.show({template: 'Uploading Photo...'});
         var fileURL = $scope.picData;
         var options = new FileUploadOptions();
         var param_caption = '';
@@ -969,7 +969,7 @@ angular.module('starter.controllers', [])
                                 $scope.updateProfilePicture(imageData);
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         return true;
@@ -992,7 +992,7 @@ angular.module('starter.controllers', [])
                                 });
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Error to Load Photo', duration:500});
+                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         //Handle Move Button
