@@ -126,6 +126,8 @@ angular.module('starter.controllers', [])
                     case 0 :
                         var options = {
                             quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
                             destinationType: Camera.DestinationType.FILE_URL,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
@@ -143,6 +145,8 @@ angular.module('starter.controllers', [])
                     case 1 :
                         var options = {
                             quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
                         };
@@ -952,6 +956,8 @@ angular.module('starter.controllers', [])
                     case 0 :
                         var options = {
                             quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
                             destinationType: Camera.DestinationType.FILE_URL,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
@@ -970,6 +976,8 @@ angular.module('starter.controllers', [])
                     case 1 :
                         var options = {
                             quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
                         };
