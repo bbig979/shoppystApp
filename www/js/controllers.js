@@ -138,7 +138,6 @@ angular.module('starter.controllers', [])
                                 $state.go('tab.camera',{photoUrl: imageData});
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         return true;
@@ -160,7 +159,6 @@ angular.module('starter.controllers', [])
                                 });
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         //Handle Move Button
@@ -972,7 +970,6 @@ angular.module('starter.controllers', [])
                                 $scope.updateProfilePicture(imageData);
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         return true;
@@ -994,7 +991,6 @@ angular.module('starter.controllers', [])
                                 });
                             },
                             function(err){
-                                $ionicLoading.show({template: 'Back to Previous Screen', duration:500});
                             }
                         )
                         //Handle Move Button
