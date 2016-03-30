@@ -247,12 +247,7 @@
   margin: auto;
 }
 
-/* line 12, ../../scss/tw/_post_edit.scss */
-#edit-post .item {
-  border: none;
-}
-
-/* line 16, ../../scss/tw/_post_edit.scss */
+/* line 15, ../../scss/tw/_post_edit.scss */
 #edit-post .post-image .item {
   padding: 0px;
 }

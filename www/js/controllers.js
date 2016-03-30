@@ -586,7 +586,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -709,15 +709,24 @@ angular.module('starter.controllers', [])
                 }
             },
             destructiveButtonClicked: function() {
-                $ionicLoading.show();
-                $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
-                    $('.item[data-id='+$scope.post.id+']').remove();
-                    $ionicLoading.hide();
-                    $ionicHistory.goBack();
-                    return true;
-                })
-                .error(function(error){
-                    $rootScope.handleHttpError(error);
+                var confirmPopup = $ionicPopup.confirm({
+                    title: 'Delete',
+                    template: 'Are you sure to delete post?'
+                });        
+
+                confirmPopup.then(function(res) {
+                    if(res) {
+                        $ionicLoading.show();
+                        $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
+                            $('.item[data-id='+$scope.post.id+']').remove();
+                            $ionicLoading.hide();
+                            $ionicHistory.goBack();
+                            return true;
+                        })
+                        .error(function(error){
+                            $rootScope.handleHttpError(error);
+                        });
+                    }
                 });
             }
         });
