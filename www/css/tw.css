@@ -160,6 +160,20 @@
 #tab-account .following:after {
   content: "UNFOLLOW";
 }
+/* line 106, ../../scss/tw/_account.scss */
+#tab-account .tabs-striped .tab-item.activated {
+  margin-top: 0px;
+  border-style: solid;
+  border-width: 0 0 0 0;
+  border-color: #444;
+}
+/* line 112, ../../scss/tw/_account.scss */
+#tab-account .tabs-striped .tab-item.activatedd {
+  margin-bottom: -2px;
+  border-style: solid;
+  border-width: 0 0 2px 0;
+  border-color: #FF4C62;
+}
 
 /* line 3, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item {
@@ -219,43 +233,84 @@
   top: 13px;
 }
 
-/* line 1, ../../scss/tw/_post_create.scss */
+/* line 2, ../../scss/tw/_post_create.scss */
+#create-post .post-image {
+  width: 50%;
+  padding: 10px auto;
+  margin: 12px;
+}
+/* line 6, ../../scss/tw/_post_create.scss */
+#create-post .post-image img {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box;
+}
+/* line 12, ../../scss/tw/_post_create.scss */
+#create-post .post-caption textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box;
+}
+/* line 20, ../../scss/tw/_post_create.scss */
 #create-post img {
   max-height: 300px;
   max-width: 100%;
 }
-
-/* line 6, ../../scss/tw/_post_create.scss */
+/* line 25, ../../scss/tw/_post_create.scss */
 #create-post .item-image img:first-child,
 #create-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-
-/* line 12, ../../scss/tw/_post_create.scss */
-#create-post .item {
-  border: none;
-}
-
-/* line 16, ../../scss/tw/_post_create.scss */
+/* line 31, ../../scss/tw/_post_create.scss */
 #create-post .post-image .item {
   padding: 0px;
 }
 
-/* line 1, ../../scss/tw/_post_edit.scss */
+/* line 2, ../../scss/tw/_post_edit.scss */
+#edit-post .post-image {
+  width: 50%;
+  padding: 10px auto;
+  margin: 12px;
+}
+/* line 6, ../../scss/tw/_post_edit.scss */
+#edit-post .post-image img {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box;
+}
+/* line 12, ../../scss/tw/_post_edit.scss */
+#edit-post .post-caption textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box;
+}
+/* line 20, ../../scss/tw/_post_edit.scss */
 #edit-post img {
   max-height: 300px;
   max-width: 100%;
 }
-
-/* line 6, ../../scss/tw/_post_edit.scss */
+/* line 25, ../../scss/tw/_post_edit.scss */
 #edit-post .item-image img:first-child,
 #edit-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-
-/* line 15, ../../scss/tw/_post_edit.scss */
+/* line 31, ../../scss/tw/_post_edit.scss */
 #edit-post .post-image .item {
   padding: 0px;
 }

@@ -1,17 +1,34 @@
-#edit-post img {
-	max-height: 300px;
-	max-width: 100%;
-}
+#edit-post{
+	.post-image{
+		width: 50%;
+		padding: 10px auto;
+		margin: 12px;
+		img{
+			@include border-radius(3px);
+		}
+	}
 
-#edit-post .item-image img:first-child,
-#edit-post .item-image .list-img {
-    width: auto;
-    margin: auto;
-}
+	.post-caption{
+		textarea{
+			width: 100%;
+			border: 1px solid #ddd;
+			padding: 10px;
+			@include border-radius(3px);
+		}	
+	}
 
-#edit-post .item {
-}
+	img {
+		max-height: 300px;
+		max-width: 100%;
+	}
 
-#edit-post .post-image .item {
-	padding: 0px;
+	.item-image img:first-child,
+	.item-image .list-img {
+	    width: auto;
+	    margin: auto;
+	}
+
+	.post-image .item {
+		padding: 0px;
+	}
 }
