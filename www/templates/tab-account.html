@@ -37,6 +37,16 @@
                     </a>
                 </div>
             </div>
+            <div class="tabs-striped">
+                <div class="tabs">
+                    <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
+                        Best
+                    </a>
+                    <a class="tab-item" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
+                        New
+                    </a>
+                </div>
+            </div>
             <ion-spinner icon="ios-small" ng-if="!user"></ion-spinner>
         </div>
         <div class="no-result" ng-if="noResult">
