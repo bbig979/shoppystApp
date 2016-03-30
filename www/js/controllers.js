@@ -222,20 +222,18 @@ angular.module('starter.controllers', [])
         }
     }
 })
-.controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory) {
-    console.log("PostEditCtrl enter");
-    FetchPosts.get($stateParams.postId).then(function(post){
-        console.log("PostEditCtrl Post has been Fetched");
-        $scope.post = post;
-    });
+.controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading) {
+    $scope.post = $stateParams.post;
 
     $scope.updatePost = function(post){
+        $ionicLoading.show();
         $http({
             method: "POST",
             url: $rootScope.baseURL + '/api/post/' + $scope.post.id + '/edit',
             data: {'content': post.content, 'post-id': $scope.post.id }
         })
         .success(function(response){
+            $ionicLoading.hide();
             $ionicHistory.goBack();
         })
         .error(function(error, status){
@@ -708,7 +706,7 @@ angular.module('starter.controllers', [])
             buttonClicked: function(index) {
                 switch (index){
                     case 0:
-                        $state.go('tab.post-edit',{postId: $scope.post.id});
+                        $state.go('tab.post-edit',{post: $scope.post});
                         return true;
                 }
             },

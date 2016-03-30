@@ -3483,6 +3483,33 @@ a {
   border-color: #FF4C62;
 }
 
+/*   post edit below    */
+/* line 74, ../../scss/ryan/_global.scss */
+#edit-post .post-image {
+  width: 50%;
+  padding: 10px auto;
+  margin: 12px;
+}
+/* line 78, ../../scss/ryan/_global.scss */
+#edit-post .post-image img {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box;
+}
+/* line 83, ../../scss/ryan/_global.scss */
+#edit-post .post-caption textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box;
+}
+
 /* line 1, ../../scss/ryan/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;
