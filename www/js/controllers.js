@@ -447,7 +447,7 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     var user = $rootScope.getCurrentUser();
 
-    // $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
+    $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
 
     if(user.age || $stateParams.refresh){
         FetchPosts.following($scope.page).then(function(posts){
