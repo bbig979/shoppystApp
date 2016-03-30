@@ -889,7 +889,7 @@ angular.module('starter.controllers', [])
             $scope.isMyAccount = true;
         }
     });
-    FetchPosts.user(slug, $scope.activatedTab, $scope.page).then(function(posts){
+    FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(posts){
         $scope.posts = posts;
         $scope.page++;
         if ( posts && posts.length == 0 ) {
@@ -1029,7 +1029,7 @@ angular.module('starter.controllers', [])
         return !$scope.isMyAccount;
     };
     $scope.loadMore = function() {
-        FetchPosts.user(slug, $scope.activatedTab, $scope.page).then(function(posts){
+        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
@@ -1043,7 +1043,7 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         $scope.posts = [];
         $scope.activatedTab = 'best';
-        FetchPosts.user(slug, 'best', $scope.page).then(function(posts){
+        FetchPosts.user($scope.currentSlug, 'best', $scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
@@ -1059,7 +1059,7 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         $scope.posts = [];
         $scope.activatedTab = tab;
-        FetchPosts.user(slug, tab, $scope.page).then(function(posts){
+        FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
