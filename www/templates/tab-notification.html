@@ -11,8 +11,7 @@
             <ion-spinner></ion-spinner>
         </div>
         <ion-list>
-            <ion-item class="item item-avatar" ng-repeat="notification in notifications">
-                {{ notification.contents }}
+            <ion-item class="item item-avatar" ng-repeat="notification in notifications" ng-bind-html="notification.contents | unsafe">
             </ion-item>
         </ion-list>
         <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
