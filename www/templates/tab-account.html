@@ -8,7 +8,10 @@
             <button class="button button-clear icon ion-gear-b account-option-btn" ng-click="goAccountOption()" ng-if="!notMe(account_info)"></button>
             <button class="button button-small follow-toggle" ng-class="{'following' : account_info.following_check}" ng-click="followToggle(account_info)" ng-if="notMe(account_info)"></button>
             <div class="account-image" style="background-image: url( {{ photoPath( account_info.profile_img_path, 's' ) }} )" ng-click="changeProfilePicture()"></div>
-            <div class="user-name">{{ account_info.first_name }} {{ account_info.last_name }}</div>
+            <div class="user-name">
+                <ion-spinner icon="ios-small" ng-if="!account_info"></ion-spinner>
+                {{ account_info.first_name }} {{ account_info.last_name }}
+            </div>
             <div class="user-school" ng-click="goSchoolDetail(account_info.school.id, account_info.school.name)" ng-if="account_info.school.id != 0">{{ account_info.school.name }}</div>
             <div class="user-joined">Joined at <span class="time-ago" am-time-ago="account_info.created_at | amUtc" ng-if="account_info"></span></div>
             <div class="account-achievement row">
@@ -43,7 +46,6 @@
                     </a>
                 </div>
             </div>
-            <ion-spinner icon="ios-small" ng-if="!user"></ion-spinner>
         </div>
         <div class="no-result" ng-if="noResult">
             No look posted
