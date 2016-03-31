@@ -3454,13 +3454,18 @@ a {
   background-color: #E24256;
 }
 
+/* line 44, ../../scss/ryan/_global.scss */
+.button.button-stable {
+  border: 1px solid #ddd;
+}
+
 @media (min--moz-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
-  /* line 45, ../../scss/ryan/_global.scss */
+  /* line 48, ../../scss/ryan/_global.scss */
   .bar, .tabs {
     background-size: 100% 0px;
   }
 }
-/* line 49, ../../scss/ryan/_global.scss */
+/* line 52, ../../scss/ryan/_global.scss */
 .no-result {
   padding: 60px;
   text-align: center;
