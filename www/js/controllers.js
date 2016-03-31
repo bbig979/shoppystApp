@@ -40,9 +40,9 @@ angular.module('starter.controllers', [])
             return str;
         }
     };
-    $rootScope.goPostDetail = function(id){
+    $rootScope.goPostDetail = function(id, user){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.post-detail-'+tab,{postId: id});
+        $state.go('tab.post-detail-'+tab,{postId: id, user: user});
     };
     $rootScope.goPostLikers = function(id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -703,7 +703,7 @@ angular.module('starter.controllers', [])
             destructiveText: 'Delete',
             cancelText: 'Cancel',
             cancel: function() {
-                console.log('CANCELLED');
+                
             },
             buttonClicked: function(index) {
                 switch (index){
@@ -723,6 +723,7 @@ angular.module('starter.controllers', [])
                         $ionicLoading.show();
                         $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
                             $('.item[data-id='+$scope.post.id+']').remove();
+                            $stateParams.user.posts_count--;
                             $ionicLoading.hide();
                             $ionicHistory.goBack();
                             return true;

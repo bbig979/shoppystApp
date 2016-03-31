@@ -126,6 +126,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/post-detail.html',
                controller: 'PostDetailCtrl'
            }
+       },
+       params: {
+           user: null
        }
     })
 

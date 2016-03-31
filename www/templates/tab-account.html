@@ -54,7 +54,7 @@
         <ion-list>
             <div masonry preserve-order>
                 <ion-item ng-repeat="post in posts" class="masonry-brick" data-id="{{ post.id }}">
-                    <img ng-src="{{ photoPath( post.photos[0].img_path, 'm' ) }}" ng-click="goPostDetail(post.id)">
+                    <img ng-src="{{ photoPath( post.photos[0].img_path, 'm' ) }}" ng-click="goPostDetail(post.id, account_info)">
                 </ion-item>
             </div>
         </ion-list>
