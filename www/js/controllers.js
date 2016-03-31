@@ -921,17 +921,15 @@ angular.module('starter.controllers', [])
         $scope.currentSlug = $stateParams.accountSlug;
     }
 
-
-    FetchUsers.get($scope.currentSlug).then(function(account_info){
-        $scope.account_info = account_info;
-
-        if (user.id == $scope.account_info.id)
-        {
-            $scope.isMyAccount = true;
-        }
-    });
-
     if(user.id || $stateParams.refresh){
+        FetchUsers.get($scope.currentSlug).then(function(account_info){
+            $scope.account_info = account_info;
+
+            if (user.id == $scope.account_info.id)
+            {
+                $scope.isMyAccount = true;
+            }
+        });
         FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.page++;
@@ -1082,6 +1080,10 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         $scope.posts = [];
         $scope.activatedTab = 'best';
+
+        FetchUsers.get($scope.currentSlug).then(function(account_info){
+            $scope.account_info = account_info;
+        });
         FetchPosts.user($scope.currentSlug, 'best', $scope.page).then(function(posts){
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
