@@ -3472,6 +3472,19 @@ a {
   color: #555;
 }
 
+/* line 57, ../../scss/ryan/_global.scss */
+.popup-container .popup {
+  border-radius: 3px;
+}
+/* line 58, ../../scss/ryan/_global.scss */
+.popup-container .popup .popup-head {
+  border-bottom: 0;
+}
+/* line 61, ../../scss/ryan/_global.scss */
+.popup-container .popup .popup-body {
+  text-align: center;
+}
+
 /* line 1, ../../scss/ryan/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;

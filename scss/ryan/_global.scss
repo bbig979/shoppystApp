@@ -54,3 +54,12 @@ a{
   text-align: center;
   color: #555;
 }
+.popup-container .popup{
+  .popup-head{
+    border-bottom: 0;
+  }
+  .popup-body{
+    text-align: center;
+  }
+  border-radius: 3px;
+}
