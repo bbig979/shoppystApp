@@ -601,6 +601,7 @@ angular.module('starter.controllers', [])
     $scope.clientVersionUpToDate = true;
     $scope.commentSubmitting = false;
     $scope.lessThanHidingTime = false;
+    $scope.noResult = false;
     var user = $rootScope.getCurrentUser();
 
     $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
@@ -609,21 +610,26 @@ angular.module('starter.controllers', [])
         }
     });
     FetchPosts.get($stateParams.postId).then(function(post){
-        if( (new Date().getTime() - new Date(post.created_at+' UTC')) / 1000 / 60 / 60 < 24){
-            $scope.lessThanHidingTime = true;
+        if(post){
+            if( (new Date().getTime() - new Date(post.created_at+' UTC')) / 1000 / 60 / 60 < 24){
+                $scope.lessThanHidingTime = true;
+            }
+            post.latest_ten_comments.reverse();
+            var commentsCount = 0;
+            if(post.comments_count){
+                commentsCount = post.comments_count.aggregate;
+            }
+            $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
+            $scope.post = post;
+            if(post.user_liked){
+                $scope.liked = true;
+            }
+            if(post.likes_count){
+                $scope.likesCount = post.likes_count.aggregate;
+            }
         }
-        post.latest_ten_comments.reverse();
-        var commentsCount = 0;
-        if(post.comments_count){
-            commentsCount = post.comments_count.aggregate;
-        }
-        $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
-        $scope.post = post;
-        if(post.user_liked){
-            $scope.liked = true;
-        }
-        if(post.likes_count){
-            $scope.likesCount = post.likes_count.aggregate;
+        else{
+            $scope.noResult = true;
         }
     });
     $scope.submitComment = function(){
@@ -748,19 +754,28 @@ angular.module('starter.controllers', [])
         $scope.likesCount = 0;
         $scope.commentsHiddenCount = 0;
         $scope.page = 2;
+        $scope.noResult = false;
         FetchPosts.get($stateParams.postId).then(function(post){
-            post.latest_ten_comments.reverse();
-            var commentsCount = 0;
-            if(post.comments_count){
-                commentsCount = post.comments_count.aggregate;
+            if(post){
+                if( (new Date().getTime() - new Date(post.created_at+' UTC')) / 1000 / 60 / 60 < 24){
+                    $scope.lessThanHidingTime = true;
+                }
+                post.latest_ten_comments.reverse();
+                var commentsCount = 0;
+                if(post.comments_count){
+                    commentsCount = post.comments_count.aggregate;
+                }
+                $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
+                $scope.post = post;
+                if(post.user_liked){
+                    $scope.liked = true;
+                }
+                if(post.likes_count){
+                    $scope.likesCount = post.likes_count.aggregate;
+                }
             }
-            $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
-            $scope.post = post;
-            if(post.user_liked){
-                $scope.liked = true;
-            }
-            if(post.likes_count){
-                $scope.likesCount = post.likes_count.aggregate;
+            else{
+                $scope.noResult = true;
             }
             $scope.$broadcast('scroll.refreshComplete');
         });

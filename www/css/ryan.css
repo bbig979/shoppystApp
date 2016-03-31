@@ -3568,16 +3568,20 @@ div.tab-nav.tabs {
   border-top-width: 0px;
 }
 
-/* line 3, ../../scss/ryan/_post-detail.scss */
+/* line 2, ../../scss/ryan/_post-detail.scss */
+#post-detail .no-result {
+  margin-top: 44px;
+}
+/* line 6, ../../scss/ryan/_post-detail.scss */
 #post-detail .post-header ion-spinner {
   float: right;
   padding: 3px;
 }
-/* line 8, ../../scss/ryan/_post-detail.scss */
+/* line 11, ../../scss/ryan/_post-detail.scss */
 #post-detail form .item-input-inset {
   border: 0;
 }
-/* line 11, ../../scss/ryan/_post-detail.scss */
+/* line 14, ../../scss/ryan/_post-detail.scss */
 #post-detail .ion-ios-more-outline {
   float: right;
 }
