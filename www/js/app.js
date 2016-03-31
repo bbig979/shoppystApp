@@ -128,7 +128,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        },
        params: {
-           user: null
+           user: null,
+           posts: null,
+           index: null,
        }
     })
 
