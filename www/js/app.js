@@ -396,6 +396,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/account-following.html',
                controller: 'FollowingCtrl'
            }
+       },
+       params: {
+           user: null
        }
     })
 
@@ -433,6 +436,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/account-follower.html',
                controller: 'FollowerCtrl'
            }
+       },
+       params: {
+           user: null
        }
     })
 

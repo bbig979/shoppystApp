@@ -14,8 +14,8 @@
             <div class="account-achievement row">
                 <div class="button button-clear icon account-post-btn col clearfix" ng-click="goAccountPost()"><span class="ion-camera"></span><br>{{account_info.posts_count}}<br>Posts</div>
                 <div class="button button-clear icon account-like-btn col clearfix" ng-click="goAccountLiked(account_info.slug)"><span class="ion-ios-heart"></span><br>{{account_info.likes_count}}<br>Likes</div>
-                <div class="button button-clear icon account-followers-btn col clearfix" ng-click="goAccountFollower(account_info.slug)"><span class="ion-ios-people"></span><br><span class="dynamic-follower-count">{{account_info.follower_count}}</span><br>Followers</div>
-                <div class="button button-clear icon account-following-btn col clearfix" ng-click="goAccountFollowing(account_info.slug)"><span class="ion-android-person"></span><br><span class="dynamic-following-count">{{account_info.following_count}}</span><br>Following</div>
+                <div class="button button-clear icon account-followers-btn col clearfix" ng-click="goAccountFollower(account_info.slug, account_info)"><span class="ion-ios-people"></span><br><span class="dynamic-follower-count">{{account_info.follower_count}}</span><br>Followers</div>
+                <div class="button button-clear icon account-following-btn col clearfix" ng-click="goAccountFollowing(account_info.slug,account_info)"><span class="ion-android-person"></span><br><span class="dynamic-following-count">{{account_info.following_count}}</span><br>Following</div>
             </div>
             <div class="account-social-network row">
                 <div class="button button-clear icon col account-facebook-btn clearfix" ng-click="goAccountSocialNetwork('facebook')" ng-if="account_info.social_networks.facebook"><span class="ion-social-facebook"></span></div>

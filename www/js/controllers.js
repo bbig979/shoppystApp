@@ -56,13 +56,13 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.school-detail-'+tab,{schoolId: id, schoolName: name});
     };
-    $rootScope.goAccountFollowing = function(slug){
+    $rootScope.goAccountFollowing = function(slug, user){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-following-'+tab,{userSlug: slug});
+        $state.go('tab.account-following-'+tab,{userSlug: slug, user: user});
     };
-    $rootScope.goAccountFollower = function(slug){
+    $rootScope.goAccountFollower = function(slug, user){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-follower-'+tab,{userSlug: slug});
+        $state.go('tab.account-follower-'+tab,{userSlug: slug, user: user});
     };
     $rootScope.goAccountLiked = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -1305,7 +1305,9 @@ angular.module('starter.controllers', [])
     $scope.followToggle = function(user) {
         if(user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)-1);
+                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
+                    $stateParams.user.following_count--;
+                }
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
@@ -1313,7 +1315,9 @@ angular.module('starter.controllers', [])
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)+1);
+                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
+                    $stateParams.user.following_count++;
+                }
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
@@ -1368,7 +1372,9 @@ angular.module('starter.controllers', [])
     $scope.followToggle = function(user) {
         if(user.following_check){
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)-1);
+                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
+                    $stateParams.user.following_count--;
+                }
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
@@ -1376,7 +1382,9 @@ angular.module('starter.controllers', [])
         }
         else{
             $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-                $('.dynamic-following-count').html(parseInt($('.dynamic-following-count').html(), 10)+1);
+                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
+                    $stateParams.user.following_count++;
+                }
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
