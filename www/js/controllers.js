@@ -600,6 +600,7 @@ angular.module('starter.controllers', [])
     $scope.page = 2;
     $scope.clientVersionUpToDate = true;
     $scope.commentSubmitting = false;
+    $scope.lessThanHidingTime = false;
     var user = $rootScope.getCurrentUser();
 
     $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
@@ -608,6 +609,9 @@ angular.module('starter.controllers', [])
         }
     });
     FetchPosts.get($stateParams.postId).then(function(post){
+        if( (new Date().getTime() - new Date(post.created_at+' UTC')) / 1000 / 60 / 60 < 24){
+            $scope.lessThanHidingTime = true;
+        }
         post.latest_ten_comments.reverse();
         var commentsCount = 0;
         if(post.comments_count){

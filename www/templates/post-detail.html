@@ -19,7 +19,7 @@
             <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
         </div>
         <div class="button-group">
-            <button class= "button button-clear button-dark icon" ng-click="likeClicked()" ng-class="liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
+            <button class= "button button-clear button-dark icon" ng-click="likeClicked()" ng-class="liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'" ng-show="lessThanHidingTime"></button>
             <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="focusComment()"></button>
             <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption()" ng-if="ownPost()"></button>
         </div>
