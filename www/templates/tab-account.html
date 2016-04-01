@@ -39,10 +39,10 @@
             <div class="tabs-striped">
                 <div class="tabs">
                     <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
-                        Best
+                        <span ng-hide="notMe(account_info)">Best</span><span ng-show="account_info && notMe(account_info)">Best 10</span>
                     </a>
                     <a class="tab-item" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
-                        New
+                        <span ng-hide="notMe(account_info)">New</span><span ng-show="account_info && notMe(account_info)">Today</span>
                     </a>
                 </div>
             </div>
