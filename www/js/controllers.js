@@ -528,6 +528,9 @@ angular.module('starter.controllers', [])
         $event.preventDefault();
         if(post.user_liked){
             post.likes_count.aggregate--;
+            if(post.likes_count.aggregate == 0){
+                post.likes_count = null;
+            }
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
             })
             .error(function(error){
@@ -535,7 +538,12 @@ angular.module('starter.controllers', [])
             });
         }
         else{
-            post.likes_count.aggregate++;
+            if(post.likes_count){
+                post.likes_count.aggregate++;
+            }
+            else{
+                post.likes_count = {aggregate: 1};
+            }
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
             })
             .error(function(error){
