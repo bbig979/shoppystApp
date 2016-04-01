@@ -10,7 +10,7 @@
         <div class="no-result" ng-if="noResult">
             No look in this school
         </div>
-        <div class="loading-spinner" data-loading ng-if="posts.length == 0">
+        <div class="loading-spinner" data-loading ng-if="posts.length == 0 && !noMoreItemsAvailable">
             <ion-spinner></ion-spinner>
         </div>
         <ion-list>
