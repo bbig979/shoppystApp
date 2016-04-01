@@ -481,7 +481,7 @@ angular.module('starter.controllers', [])
     if(user.age || $stateParams.refresh){
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             if(posts && posts.length == 0){
@@ -498,7 +498,7 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = $scope.posts.concat(posts);
@@ -512,7 +512,7 @@ angular.module('starter.controllers', [])
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
             $scope.noMoreItemsAvailable = false;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
@@ -558,7 +558,7 @@ angular.module('starter.controllers', [])
 
     FetchUsers.liker($stateParams.postId, $scope.page).then(function(response){
         likes = response.data;
-        if(response.current_page == response.last_page){
+        if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
         }
         $scope.likes = likes;
@@ -570,7 +570,7 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchUsers.liker($stateParams.postId, $scope.page).then(function(response){
             likes = response.data;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.likes = $scope.likes.concat(likes);
@@ -584,7 +584,7 @@ angular.module('starter.controllers', [])
         FetchUsers.liker($stateParams.postId, $scope.page).then(function(response){
             likes = response.data;
             $scope.noMoreItemsAvailable = false;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.likes = likes;
@@ -818,7 +818,7 @@ angular.module('starter.controllers', [])
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
-        if(response.current_page == response.last_page){
+        if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
         }
         $scope.posts = posts;
@@ -831,7 +831,7 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = $scope.posts.concat(posts);
@@ -845,7 +845,7 @@ angular.module('starter.controllers', [])
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
             $scope.noMoreItemsAvailable = false;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
@@ -921,7 +921,7 @@ angular.module('starter.controllers', [])
 
     FetchPosts.school($scope.page, $stateParams.schoolId).then(function(response){
         posts = response.data;
-        if(response.current_page == response.last_page){
+        if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
         }
         $scope.posts = posts;
@@ -934,7 +934,7 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.school($scope.page, $stateParams.schoolId).then(function(response){
             posts = response.data;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = $scope.posts.concat(posts);
@@ -948,7 +948,7 @@ angular.module('starter.controllers', [])
         FetchPosts.school($scope.page, $stateParams.schoolId).then(function(response){
             posts = response.data;
             $scope.noMoreItemsAvailable = false;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
@@ -992,7 +992,7 @@ angular.module('starter.controllers', [])
         });
         FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
             posts = response.data;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
@@ -1131,7 +1131,7 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
             posts = response.data;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = $scope.posts.concat(posts);
@@ -1151,7 +1151,7 @@ angular.module('starter.controllers', [])
         FetchPosts.user($scope.currentSlug, 'best', $scope.page).then(function(response){
             posts = response.data;
             $scope.noMoreItemsAvailable = false;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
@@ -1170,7 +1170,7 @@ angular.module('starter.controllers', [])
         FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(response){
             posts = response.data;
             $scope.noMoreItemsAvailable = false;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
@@ -1340,7 +1340,7 @@ angular.module('starter.controllers', [])
 
     FetchUsers.following($stateParams.userSlug, $scope.page).then(function(response){
         users = response.data;
-        if(response.current_page == response.last_page){
+        if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
         }
         $scope.users = users;
@@ -1353,7 +1353,7 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchUsers.following($stateParams.userSlug, $scope.page).then(function(response){
             users = response.data;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.users = $scope.users.concat(users);
@@ -1367,7 +1367,7 @@ angular.module('starter.controllers', [])
         FetchUsers.following($stateParams.userSlug, $scope.page).then(function(response){
             users = response.data;
             $scope.noMoreItemsAvailable = false;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.users = users;
@@ -1414,7 +1414,7 @@ angular.module('starter.controllers', [])
 
     FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(response){
         users = response.data;
-        if(response.current_page == response.last_page){
+        if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
         }
         $scope.users = users;
@@ -1427,7 +1427,7 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(response){
             users = response.data;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.users = $scope.users.concat(users);
@@ -1441,7 +1441,7 @@ angular.module('starter.controllers', [])
         FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(response){
             users = response.data;
             $scope.noMoreItemsAvailable = false;
-            if(response.current_page == response.last_page){
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.users = users;
