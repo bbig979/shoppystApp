@@ -54,7 +54,7 @@ angular.module('starter.services', [])
         },
         new: function(pg, search_term){
             return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
