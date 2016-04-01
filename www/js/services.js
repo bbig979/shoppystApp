@@ -30,7 +30,7 @@ angular.module('starter.services', [])
     return {
         following: function(pg) {
             return $http.get($rootScope.baseURL+"/api/home?page="+pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
