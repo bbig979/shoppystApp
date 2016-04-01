@@ -62,7 +62,7 @@ angular.module('starter.services', [])
         },
         user: function(userSlug, tab, pg) {
             return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);

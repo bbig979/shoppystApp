@@ -949,11 +949,14 @@ angular.module('starter.controllers', [])
                 $scope.isMyAccount = true;
             }
         });
-        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(posts){
+        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
+            posts = response.data;
+            if(response.current_page == response.last_page){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.posts = posts;
             $scope.page++;
             if ( posts && posts.length == 0 ) {
-                $scope.noMoreItemsAvailable = true;
                 $scope.noResult = true;
             }
         });
@@ -1085,13 +1088,14 @@ angular.module('starter.controllers', [])
         return !$scope.isMyAccount;
     };
     $scope.loadMore = function() {
-        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(posts){
+        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
+            posts = response.data;
+            if(response.current_page == response.last_page){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
-            if ( posts.length == 0 ) {
-                $scope.noMoreItemsAvailable = true;
-            }
         });
     };
     $scope.doRefresh = function() {
@@ -1103,15 +1107,18 @@ angular.module('starter.controllers', [])
         FetchUsers.get($scope.currentSlug).then(function(account_info){
             $scope.account_info = account_info;
         });
-        FetchPosts.user($scope.currentSlug, 'best', $scope.page).then(function(posts){
+        FetchPosts.user($scope.currentSlug, 'best', $scope.page).then(function(response){
+            posts = response.data;
+            $scope.noMoreItemsAvailable = false;
+            if(response.current_page == response.last_page){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
-            $scope.noMoreItemsAvailable = false;
             $scope.noResult = false;
             if ( posts && posts.length == 0 ) {
                 $scope.noResult = true;
-                $scope.noMoreItemsAvailable = true;
             }
         });
     };
@@ -1119,13 +1126,14 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         $scope.posts = [];
         $scope.activatedTab = tab;
-        FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(posts){
-            $scope.posts = posts;
-            $scope.page++;
+        FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(response){
+            posts = response.data;
             $scope.noMoreItemsAvailable = false;
-            if ( posts.length == 0 ) {
+            if(response.current_page == response.last_page){
                 $scope.noMoreItemsAvailable = true;
             }
+            $scope.posts = posts;
+            $scope.page++;
         });
     }
 })
