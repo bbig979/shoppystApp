@@ -2,10 +2,10 @@ angular.module('starter.controllers', [])
 
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading) {
     $rootScope.clientVersion = '1.0';
-    //$rootScope.baseURL = 'http://appbeta.shoppyst.com';
+    $rootScope.baseURL = 'http://appbeta.shoppyst.com';
     // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
-     $rootScope.baseURL = 'http://localhost:8888';
+    // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
