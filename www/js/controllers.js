@@ -556,22 +556,43 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     var user = $rootScope.getCurrentUser();
 
-    FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
+    FetchUsers.liker($stateParams.postId, $scope.page).then(function(response){
+        likes = response.data;
+        if(response.current_page == response.last_page){
+            $scope.noMoreItemsAvailable = true;
+        }
         $scope.likes = likes;
         $scope.page++;
         if(likes && likes.length == 0){
             $scope.noResult = true;
-            $scope.noMoreItemsAvailable = true;
         }
     });
     $scope.loadMore = function() {
-        FetchUsers.liker($stateParams.postId, $scope.page).then(function(likes){
+        FetchUsers.liker($stateParams.postId, $scope.page).then(function(response){
+            likes = response.data;
+            if(response.current_page == response.last_page){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.likes = $scope.likes.concat(likes);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
-            if ( likes.length == 0 ) {
+        });
+    };
+    $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+        $scope.page = 1;
+        FetchUsers.liker($stateParams.postId, $scope.page).then(function(response){
+            likes = response.data;
+            $scope.noMoreItemsAvailable = false;
+            if(response.current_page == response.last_page){
                 $scope.noMoreItemsAvailable = true;
-                $scope.noMoreItemsAvailable = true;
+            }
+            $scope.likes = likes;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.page++;
+            $scope.noResult = false;
+            if(likes && likes.length == 0){
+                $scope.noResult = true;
             }
         });
     };

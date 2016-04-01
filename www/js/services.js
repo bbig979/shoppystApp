@@ -106,7 +106,7 @@ angular.module('starter.services', [])
         },
         liker: function(id, pg) {
             return $http.get($rootScope.baseURL+'/api/post/'+ id +'/likers?page='+ pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
