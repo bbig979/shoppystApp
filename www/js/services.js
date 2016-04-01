@@ -135,7 +135,7 @@ angular.module('starter.services', [])
     return {
         new: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/'+slug+'/notification?page='+pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);

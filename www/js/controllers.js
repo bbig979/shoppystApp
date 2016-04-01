@@ -1521,37 +1521,44 @@ angular.module('starter.controllers', [])
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
 
-    FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
+    FetchNotifications.new(user.slug, $scope.page).then(function(response){
+        notifications = response.data;
+        if(!response.next_page_url){
+            $scope.noMoreItemsAvailable = true;
+        }
         $scope.notifications = notifications;
         $scope.page++;
         if(notifications && notifications.length == 0){
             $scope.noResult = true;
-            $scope.noMoreItemsAvailable = true;
         }
     });
 
     $scope.loadMore = function() {
-        FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
+        FetchNotifications.new(user.slug, $scope.page).then(function(response){
+            notifications = response.data;
+            if(!response.next_page_url){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.notifications = $scope.notifications.concat(notifications);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
-            if ( notifications.length == 0 ) {
-                $scope.noMoreItemsAvailable = true;
-            }
         });
     };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
+        FetchNotifications.new(user.slug, $scope.page).then(function(response){
+            notifications = response.data;
+            $scope.noMoreItemsAvailable = false;
+            if(!response.next_page_url){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.notifications = notifications;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
-            $scope.noMoreItemsAvailable = false;
             $scope.noResult = false;
             if(notifications && notifications.length == 0){
                 $scope.noResult = true;
-                $scope.noMoreItemsAvailable = true;
             }
         });
     };
