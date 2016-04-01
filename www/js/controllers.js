@@ -647,7 +647,7 @@ angular.module('starter.controllers', [])
     });
     FetchPosts.get($stateParams.postId).then(function(post){
         if(post){
-            if( (new Date().getTime() - new Date(post.created_at+' UTC')) / 1000 / 60 / 60 < 24){
+            if(post.is_visible){
                 $scope.lessThanHidingTime = true;
             }
             post.latest_ten_comments.reverse();
@@ -793,7 +793,7 @@ angular.module('starter.controllers', [])
         $scope.noResult = false;
         FetchPosts.get($stateParams.postId).then(function(post){
             if(post){
-                if( (new Date().getTime() - new Date(post.created_at+' UTC')) / 1000 / 60 / 60 < 24){
+                if(post.is_visible){
                     $scope.lessThanHidingTime = true;
                 }
                 post.latest_ten_comments.reverse();
