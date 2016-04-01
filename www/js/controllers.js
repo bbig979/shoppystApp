@@ -1176,9 +1176,10 @@ angular.module('starter.controllers', [])
         $scope.posts = [];
         $scope.activatedTab = tab;
         $scope.noResult = false;
-        $scope.noMoreItemsAvailable = false;
+
         FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(response){
             posts = response.data;
+            $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
