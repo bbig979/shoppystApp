@@ -2,10 +2,10 @@ angular.module('starter.controllers', [])
 
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://appbeta.shoppyst.com';
+    //$rootScope.baseURL = 'http://appbeta.shoppyst.com';
     // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
-    // $rootScope.baseURL = 'http://localhost:8888';
+     $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
@@ -1175,14 +1175,18 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         $scope.posts = [];
         $scope.activatedTab = tab;
+        $scope.noResult = false;
+        $scope.noMoreItemsAvailable = false;
         FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(response){
             posts = response.data;
-            $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
             $scope.page++;
+            if ( posts && posts.length == 0 ) {
+                $scope.noResult = true;
+            }
         });
     }
 })
