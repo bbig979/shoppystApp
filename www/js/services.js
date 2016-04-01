@@ -90,7 +90,7 @@ angular.module('starter.services', [])
         },
         follower: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/'+ slug +'/follower?page='+ pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);

@@ -1,5 +1,9 @@
 <ion-view class="follow-toggle-user-list" id="account-follower" view-title="FOLLOWER">
     <ion-content>
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
         <div class="no-result" ng-if="noResult">
             No follower yet
         </div>
