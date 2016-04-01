@@ -38,7 +38,7 @@ angular.module('starter.services', [])
         },
         school: function(pg, id) {
             return $http.get($rootScope.baseURL+"/api/school/"+id+"/post?page="+pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);

@@ -511,13 +511,13 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
+            $scope.noMoreItemsAvailable = false;
             if(response.current_page == response.last_page){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
-            $scope.noMoreItemsAvailable = false;
             $scope.noResult = false;
             if(posts && posts.length == 0){
                 $scope.noResult = true;
@@ -891,37 +891,43 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     $scope.schoolName = $stateParams.schoolName;
 
-    FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
+    FetchPosts.school($scope.page, $stateParams.schoolId).then(function(response){
+        posts = response.data;
+        if(response.current_page == response.last_page){
+            $scope.noMoreItemsAvailable = true;
+        }
         $scope.posts = posts;
         $scope.page++;
         if ( posts && posts.length == 0 ) {
             $scope.noResult = true;
-            $scope.noMoreItemsAvailable = true;
         }
     });
 
     $scope.loadMore = function() {
-        FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
+        FetchPosts.school($scope.page, $stateParams.schoolId).then(function(response){
+            posts = response.data;
+            if(response.current_page == response.last_page){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.posts = $scope.posts.concat(posts);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
-            if ( posts.length == 0 ) {
-                $scope.noMoreItemsAvailable = true;
-            }
         });
     };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        FetchPosts.school($scope.page, $stateParams.schoolId).then(function(posts){
+        FetchPosts.school($scope.page, $stateParams.schoolId).then(function(response){
+            posts = response.data;
+            $scope.noMoreItemsAvailable = false;
+            if(response.current_page == response.last_page){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
-            $scope.page++;
-            $scope.noMoreItemsAvailable = false;
-            $scope.noResult = false;
+            $scope.page++;$scope.noResult = false;
             if ( posts && posts.length == 0 ) {
                 $scope.noResult = true;
-                $scope.noMoreItemsAvailable = true;
             }
         });
     };
