@@ -1317,37 +1317,44 @@ angular.module('starter.controllers', [])
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
 
-    FetchUsers.following($stateParams.userSlug, $scope.page).then(function(users){
+    FetchUsers.following($stateParams.userSlug, $scope.page).then(function(response){
+        users = response.data;
+        if(response.current_page == response.last_page){
+            $scope.noMoreItemsAvailable = true;
+        }
         $scope.users = users;
         $scope.page++;
         if(users && users.length == 0){
             $scope.noResult = true;
-            $scope.noMoreItemsAvailable = true;
         }
     });
 
     $scope.loadMore = function() {
-        FetchUsers.following($stateParams.userSlug, $scope.page).then(function(users){
+        FetchUsers.following($stateParams.userSlug, $scope.page).then(function(response){
+            users = response.data;
+            if(response.current_page == response.last_page){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.users = $scope.users.concat(users);
             $scope.$broadcast('scroll.infiniteScrollComplete');
             $scope.page++;
-            if ( users.length == 0 ) {
-                $scope.noMoreItemsAvailable = true;
-            }
         });
     };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        FetchUsers.following($stateParams.userSlug, $scope.page).then(function(users){
+        FetchUsers.following($stateParams.userSlug, $scope.page).then(function(response){
+            users = response.data;
+            $scope.noMoreItemsAvailable = false;
+            if(response.current_page == response.last_page){
+                $scope.noMoreItemsAvailable = true;
+            }
             $scope.users = users;
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
-            $scope.noMoreItemsAvailable = false;
             $scope.noResult = false;
             if(users && users.length == 0){
                 $scope.noResult = true;
-                $scope.noMoreItemsAvailable = true;
             }
         });
     };
