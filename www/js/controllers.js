@@ -211,7 +211,7 @@ angular.module('starter.controllers', [])
         // Transfer succeeded
         function success(r) {
             $ionicLoading.show({template: 'Upload Success', duration:500});
-            $state.go('tab.account-account',{refresh: options.fileName});
+            $state.go('tab.account-account', {refresh: options.fileName, activateTab:'new'});
         }
 
         // Transfer failed
@@ -979,6 +979,9 @@ angular.module('starter.controllers', [])
     $scope.currentSlug = "";
     $scope.noResult = false;
     $scope.activatedTab = 'best';
+    if($stateParams.activateTab){
+        $scope.activatedTab = $stateParams.activateTab;
+    }
 
     if (!$stateParams.accountSlug)
     {
@@ -1007,6 +1010,9 @@ angular.module('starter.controllers', [])
             $scope.page++;
             if ( posts && posts.length == 0 ) {
                 $scope.noResult = true;
+            }
+            if( !$scope.isMyAccount && ($scope.activatedTab == 'best') ){
+                $scope.noMoreItemsAvailable = true;
             }
         });
     }
@@ -1169,6 +1175,9 @@ angular.module('starter.controllers', [])
             if ( posts && posts.length == 0 ) {
                 $scope.noResult = true;
             }
+            if( !$scope.isMyAccount && ($scope.activatedTab == 'best') ){
+                $scope.noMoreItemsAvailable = true;
+            }
         });
     };
     $scope.activateTab = function(tab){
@@ -1187,6 +1196,9 @@ angular.module('starter.controllers', [])
             $scope.page++;
             if ( posts && posts.length == 0 ) {
                 $scope.noResult = true;
+            }
+            if( !$scope.isMyAccount && (tab == 'best') ){
+                $scope.noMoreItemsAvailable = true;
             }
         });
     }

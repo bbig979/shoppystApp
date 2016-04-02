@@ -312,7 +312,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        },
        params: {
-           refresh: null
+           refresh: null,
+           activateTab: null
        }
    })
 
