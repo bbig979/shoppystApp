@@ -25,6 +25,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 })
 
 .config(function($stateProvider, $urlRouterProvider, $authProvider, $ionicConfigProvider) {
+    if(ionic.Platform.isAndroid()){
+        $ionicConfigProvider.views.transition('none');
+    }
     $ionicConfigProvider.tabs.position('bottom');
     var baseURL = 'http://appbeta.shoppyst.com';
     // var baseURL = 'http://localhost:8000';
