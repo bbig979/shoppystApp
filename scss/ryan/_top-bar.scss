@@ -17,3 +17,10 @@
 .title-image{
   height: 44px;
 }
+.platform-android .nav-bar-has-subheader .bar.bar-stable{
+  background-color: $primary-color;
+  background: -webkit-linear-gradient(left, #FF1D5C , #FFC772); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #FF1D5C, #FFC772); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #FF1D5C, #FFC772); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #FF1D5C , #FFC772);
+}
