@@ -29,6 +29,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         $ionicConfigProvider.views.transition('none');
     }
     $ionicConfigProvider.tabs.position('bottom');
+    $ionicConfigProvider.navBar.alignTitle('center');
     var baseURL = 'http://appbeta.shoppyst.com';
     // var baseURL = 'http://localhost:8000';
     // var baseURL = 'http://192.168.56.1:8000';
