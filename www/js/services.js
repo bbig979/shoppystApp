@@ -30,7 +30,7 @@ angular.module('starter.services', [])
     return {
         following: function(pg) {
             return $http.get($rootScope.baseURL+"/api/home?page="+pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
@@ -38,7 +38,7 @@ angular.module('starter.services', [])
         },
         school: function(pg, id) {
             return $http.get($rootScope.baseURL+"/api/school/"+id+"/post?page="+pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
@@ -54,7 +54,7 @@ angular.module('starter.services', [])
         },
         new: function(pg, search_term){
             return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
@@ -62,7 +62,7 @@ angular.module('starter.services', [])
         },
         user: function(userSlug, tab, pg) {
             return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
@@ -82,7 +82,7 @@ angular.module('starter.services', [])
     return {
         following: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/'+ slug +'/following?page='+ pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
@@ -90,7 +90,7 @@ angular.module('starter.services', [])
         },
         follower: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/'+ slug +'/follower?page='+ pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
@@ -106,7 +106,7 @@ angular.module('starter.services', [])
         },
         liker: function(id, pg) {
             return $http.get($rootScope.baseURL+'/api/post/'+ id +'/likers?page='+ pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);
@@ -135,7 +135,7 @@ angular.module('starter.services', [])
     return {
         new: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/'+slug+'/notification?page='+pg).then(function(response){
-                return response.data.data;
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);

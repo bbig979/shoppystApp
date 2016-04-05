@@ -25,7 +25,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 })
 
 .config(function($stateProvider, $urlRouterProvider, $authProvider, $ionicConfigProvider) {
+    if(ionic.Platform.isAndroid()){
+        $ionicConfigProvider.views.transition('none');
+    }
     $ionicConfigProvider.tabs.position('bottom');
+    $ionicConfigProvider.navBar.alignTitle('center');
     var baseURL = 'http://appbeta.shoppyst.com';
     // var baseURL = 'http://localhost:8000';
     // var baseURL = 'http://192.168.56.1:8000';
@@ -126,6 +130,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/post-detail.html',
                controller: 'PostDetailCtrl'
            }
+       },
+       params: {
+           user: null,
+           posts: null,
+           index: null,
        }
     })
 
@@ -305,7 +314,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        },
        params: {
-           refresh: null
+           refresh: null,
+           activateTab: null
        }
    })
 
@@ -389,6 +399,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/account-following.html',
                controller: 'FollowingCtrl'
            }
+       },
+       params: {
+           user: null
        }
     })
 
@@ -426,6 +439,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/account-follower.html',
                controller: 'FollowerCtrl'
            }
+       },
+       params: {
+           user: null
        }
     })
 
