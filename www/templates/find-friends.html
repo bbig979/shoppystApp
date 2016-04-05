@@ -1,7 +1,7 @@
 <ion-view class="find-friends" id="find-friends" view-title="Find Friends">
     <ion-content>
         In maintenance
-        <div class="loading-spinner" data-loading ng-if="users.length == 0">
+        <div class="loading-spinner" data-loading ng-if="users.length == 0 && !noMoreItemsAvailable">
             <ion-spinner></ion-spinner>
         </div>
         <ion-list ng-if="user">

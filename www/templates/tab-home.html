@@ -7,7 +7,7 @@
         <div class="no-result" ng-if="noResult">
             Check out the explore tab below and start following others
         </div>
-        <div class="loading-spinner" data-loading ng-if="posts.length == 0">
+        <div class="loading-spinner" data-loading ng-if="posts.length == 0 && !noMoreItemsAvailable">
             <ion-spinner></ion-spinner>
         </div>
         <ion-list>
@@ -30,7 +30,7 @@
                 </div>
                 <hr size="1" color="#e7e7e7">
                 <div class="stats">
-                    <span class="likes-count" ng-click="goPostLikers(post.id)"><i class="ion-ios-heart"></i> {{ post.likes_count.aggregate }} likes</span>
+                    <span class="likes-count" ng-click="goPostLikers(post.id)"><i class="ion-ios-heart"></i> <span ng-hide="post.likes_count.aggregate">0</span>{{ post.likes_count.aggregate }} likes</span>
                     <span class="comments-count" ng-if="post.comments_count.aggregate" ng-click="commentsPage(post.id)">
                         <i class="ion-ios-chatbubble"></i>
                         <span class="dynamic-comment-count" id="{{post.id}}">{{ post.comments_count.aggregate }}</span> comments

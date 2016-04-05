@@ -9,6 +9,7 @@
 		margin-right: -5px;
 		margin-top: -5px;
 		padding-top: 5px;
+        margin-bottom: 5px;
 	}
 
 	.account-image {
@@ -115,4 +116,10 @@
 		border-width: 0 0 2px 0;
 		border-color: $primary-color-dark;
 	}
+    .tabs-striped .tabs {
+      border-bottom: 0px solid #ddd;
+    }
+    ion-list .list{
+      margin-top: -15px;
+    }
 }
