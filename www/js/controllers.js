@@ -750,46 +750,77 @@ angular.module('starter.controllers', [])
         $scope.liked = !$scope.liked;
     };
     $scope.moreOption = function(){
-        $ionicActionSheet.show({
-            titleText: 'More Options',
-            buttons: [
-                { text: 'Edit' },
-            ],
-            destructiveText: 'Delete',
-            cancelText: 'Cancel',
-            cancel: function() {
+        if(user.id == $scope.post.user.id){
+            $ionicActionSheet.show({
+                titleText: 'More Options',
+                buttons: [
+                    { text: 'Edit' },
+                ],
+                destructiveText: 'Delete',
+                cancelText: 'Cancel',
+                cancel: function() {
 
-            },
-            buttonClicked: function(index) {
-                switch (index){
-                    case 0:
-                        $state.go('tab.post-edit',{post: $scope.post});
-                        return true;
-                }
-            },
-            destructiveButtonClicked: function() {
-                var confirmPopup = $ionicPopup.confirm({
-                    title: 'Delete',
-                    template: 'Are you sure to delete post?'
-                });        
-
-                confirmPopup.then(function(res) {
-                    if(res) {
-                        $ionicLoading.show();
-                        $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
-                            $stateParams.posts.splice($stateParams.index,1);
-                            $stateParams.user.posts_count--;
-                            $ionicLoading.hide();
-                            $ionicHistory.goBack();
+                },
+                buttonClicked: function(index) {
+                    switch (index){
+                        case 0:
+                            $state.go('tab.post-edit',{post: $scope.post});
                             return true;
-                        })
-                        .error(function(error){
-                            $rootScope.handleHttpError(error);
-                        });
                     }
-                });
-            }
-        });
+                },
+                destructiveButtonClicked: function() {
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Delete',
+                        template: 'Are you sure to delete post?'
+                    });
+
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            $ionicLoading.show();
+                            $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
+                                $stateParams.posts.splice($stateParams.index,1);
+                                $stateParams.user.posts_count--;
+                                $ionicLoading.hide();
+                                $ionicHistory.goBack();
+                                return true;
+                            })
+                            .error(function(error){
+                                $rootScope.handleHttpError(error);
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        else{
+            $ionicActionSheet.show({
+                titleText: 'More Options',
+                destructiveText: 'Report',
+                cancelText: 'Cancel',
+                cancel: function() {
+
+                },destructiveButtonClicked: function() {
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Report',
+                        template: 'Are you sure to report this post?'
+                    });
+
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            $ionicLoading.show();
+                            $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/report').success(function(){
+                                $ionicLoading.hide();
+                                return true;
+                            })
+                            .error(function(error){
+                                $rootScope.handleHttpError(error);
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
     };
     $scope.doRefresh = function() {
         $scope.post = 0; // sloppy hack for not loaded check
