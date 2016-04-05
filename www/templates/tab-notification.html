@@ -11,9 +11,12 @@
             <ion-spinner></ion-spinner>
         </div>
         <ion-list>
-            <ion-item class="item item-avatar" ng-repeat="notification in notifications">
-                {{ notification.contents }}
+            <ion-item class="item" ng-repeat="notification in notifications" ng-click="goNotificationDetail(notification.target_src)">
+                <span data_id="{{ notification.initiator.slug }}" ng-click="goNotificationProfile(notification.initiator.slug); $event.stopPropagation();"><img src="{{ photoPath( notification.initiator.profile_img_path, 's' ) }}"></span>
+                <span ng-bind-html="notification.contents | unsafe" class="notification-content"></span>
             </ion-item>
+            <a href="#/tab{{ notification.target_src }}/notification">
+            </a>
         </ion-list>
         <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
     </ion-content>

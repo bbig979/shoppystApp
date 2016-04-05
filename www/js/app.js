@@ -211,8 +211,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.camera', {
-      url: '/post/',
+    .state('tab.post-create', {
+      url: '/post/create',
       params: { 'photoUrl': null },
       views: {
         'tab-camera': {
@@ -269,8 +269,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-
-
     .state('tab.account-home', {
         url: '/account/:accountSlug/home',
         views: {
