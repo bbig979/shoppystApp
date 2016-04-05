@@ -30,25 +30,26 @@
 }
 
 /* line 10, ../../scss/tw/_global.scss */
-.platform-android .bar .title.title-left {
-  text-align: center;
-}
-
-/* line 14, ../../scss/tw/_global.scss */
 .clearfix:before,
 .clearfix:after {
   content: " ";
   display: table;
 }
 
-/* line 20, ../../scss/tw/_global.scss */
+/* line 16, ../../scss/tw/_global.scss */
 .clearfix:after {
   clear: both;
 }
 
-/* line 24, ../../scss/tw/_global.scss */
+/* line 20, ../../scss/tw/_global.scss */
 .clearfix {
   *zoom: 1;
+}
+
+/* line 25, ../../scss/tw/_global.scss */
+.platform-android .tabs-striped .tab-item.tab-item-active, .tabs-striped .tab-item.active, .tabs-striped .tab-item.activated {
+  border-style: none;
+  border-color: none;
 }
 
 /* line 2, ../../scss/tw/_account.scss */
@@ -65,9 +66,7 @@
 }
 /* line 14, ../../scss/tw/_account.scss */
 #tab-account .account-image {
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
+  display: block;
   width: 100px;
   height: 100px;
   border-radius: 50px;
@@ -76,64 +75,64 @@
   margin-bottom: 10px;
   clear: both;
 }
-/* line 27, ../../scss/tw/_account.scss */
+/* line 25, ../../scss/tw/_account.scss */
 #tab-account .user-name {
   text-align: center;
   font-size: 1.5em;
   margin-bottom: 15px;
   color: white;
 }
-/* line 34, ../../scss/tw/_account.scss */
+/* line 32, ../../scss/tw/_account.scss */
 #tab-account .user-school {
   text-align: center;
   margin-bottom: 10px;
   text-decoration: underline;
 }
-/* line 40, ../../scss/tw/_account.scss */
+/* line 38, ../../scss/tw/_account.scss */
 #tab-account .user-joined {
   text-align: center;
 }
-/* line 44, ../../scss/tw/_account.scss */
+/* line 42, ../../scss/tw/_account.scss */
 #tab-account .account-option-btn {
   color: white;
   float: right;
   margin-right: 10px;
   font-size: 0.8em;
 }
-/* line 51, ../../scss/tw/_account.scss */
+/* line 49, ../../scss/tw/_account.scss */
 #tab-account .account-achievement {
   margin-top: 10px;
 }
-/* line 54, ../../scss/tw/_account.scss */
+/* line 52, ../../scss/tw/_account.scss */
 #tab-account .account-achievement button {
   color: white;
   line-height: 120%;
   font-weight: 400;
 }
-/* line 60, ../../scss/tw/_account.scss */
+/* line 58, ../../scss/tw/_account.scss */
 #tab-account .account-achievement div {
   color: white;
   line-height: 150%;
   font-size: 1.1em;
 }
-/* line 66, ../../scss/tw/_account.scss */
+/* line 64, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .ion-camera,
 #tab-account .account-achievement .ion-ios-heart,
 #tab-account .account-achievement .ion-ios-people,
 #tab-account .account-achievement .ion-android-person {
   font-size: 1.5em;
 }
-/* line 74, ../../scss/tw/_account.scss */
+/* line 72, ../../scss/tw/_account.scss */
 #tab-account .account-social-network {
   margin-top: 30px;
   margin-bottom: 20px;
   font-size: 0.6em;
 }
-/* line 78, ../../scss/tw/_account.scss */
+/* line 76, ../../scss/tw/_account.scss */
 #tab-account .account-social-network div {
   color: white;
 }
-/* line 83, ../../scss/tw/_account.scss */
+/* line 81, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle {
   font-size: 11px;
   float: right;
@@ -145,29 +144,29 @@
   color: #FF4C62;
   width: 90px;
 }
-/* line 94, ../../scss/tw/_account.scss */
+/* line 92, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle:after {
   padding-top: 7px;
   content: "FOLLOW";
 }
-/* line 98, ../../scss/tw/_account.scss */
+/* line 96, ../../scss/tw/_account.scss */
 #tab-account .following {
   background-color: #FF4C62;
   border-color: #FF4C62;
   color: #fff;
 }
-/* line 103, ../../scss/tw/_account.scss */
+/* line 101, ../../scss/tw/_account.scss */
 #tab-account .following:after {
   content: "UNFOLLOW";
 }
-/* line 106, ../../scss/tw/_account.scss */
+/* line 104, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activated {
   margin-top: 0px;
   border-style: solid;
   border-width: 0 0 0 0;
   border-color: #444;
 }
-/* line 112, ../../scss/tw/_account.scss */
+/* line 110, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activatedd {
   margin-bottom: -2px;
   border-style: solid;
@@ -233,13 +232,29 @@
   top: 13px;
 }
 
-/* line 2, ../../scss/tw/_post_create.scss */
+/* line 3, ../../scss/tw/_notifications.scss */
+#account-notification .item a {
+  color: #666;
+}
+/* line 7, ../../scss/tw/_notifications.scss */
+#account-notification .item img {
+  max-width: 35px;
+  max-height: 35px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+/* line 14, ../../scss/tw/_notifications.scss */
+#account-notification .item .notification-content {
+  margin-left: 5px;
+}
+
+/* line 2, ../../scss/tw/_post-create.scss */
 #create-post .post-image {
   width: 50%;
   padding: 10px auto;
   margin: 12px;
 }
-/* line 6, ../../scss/tw/_post_create.scss */
+/* line 6, ../../scss/tw/_post-create.scss */
 #create-post .post-image img {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -247,7 +262,7 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 12, ../../scss/tw/_post_create.scss */
+/* line 12, ../../scss/tw/_post-create.scss */
 #create-post .post-caption textarea {
   width: 100%;
   border: 1px solid #ddd;
@@ -258,29 +273,29 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 20, ../../scss/tw/_post_create.scss */
+/* line 20, ../../scss/tw/_post-create.scss */
 #create-post img {
   max-height: 300px;
   max-width: 100%;
 }
-/* line 25, ../../scss/tw/_post_create.scss */
+/* line 25, ../../scss/tw/_post-create.scss */
 #create-post .item-image img:first-child,
 #create-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-/* line 31, ../../scss/tw/_post_create.scss */
+/* line 31, ../../scss/tw/_post-create.scss */
 #create-post .post-image .item {
   padding: 0px;
 }
 
-/* line 2, ../../scss/tw/_post_edit.scss */
+/* line 2, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image {
   width: 50%;
   padding: 10px auto;
   margin: 12px;
 }
-/* line 6, ../../scss/tw/_post_edit.scss */
+/* line 6, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image img {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -288,7 +303,7 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 12, ../../scss/tw/_post_edit.scss */
+/* line 12, ../../scss/tw/_post-edit.scss */
 #edit-post .post-caption textarea {
   width: 100%;
   border: 1px solid #ddd;
@@ -299,18 +314,23 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 20, ../../scss/tw/_post_edit.scss */
+/* line 20, ../../scss/tw/_post-edit.scss */
 #edit-post img {
   max-height: 300px;
   max-width: 100%;
 }
-/* line 25, ../../scss/tw/_post_edit.scss */
+/* line 25, ../../scss/tw/_post-edit.scss */
 #edit-post .item-image img:first-child,
 #edit-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-/* line 31, ../../scss/tw/_post_edit.scss */
+/* line 31, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image .item {
   padding: 0px;
+}
+
+/* line 1, ../../scss/tw/_tab-camera.scss */
+#tab-camera {
+  background-color: black;
 }

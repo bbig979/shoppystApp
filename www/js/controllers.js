@@ -1,11 +1,12 @@
 angular.module('starter.controllers', [])
 
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://appbeta.shoppyst.com';
     // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
+
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
@@ -105,7 +106,7 @@ angular.module('starter.controllers', [])
             return user;
         }
         $state.go('auth');
-    }
+    };
     $rootScope.goAccountOption = function(id){
         $state.go('tab.option-account',{userId: id});
     };
@@ -122,12 +123,14 @@ angular.module('starter.controllers', [])
                 // code for cancel if necessary.
             },
             buttonClicked: function(index) {
+                $ionicLoading.show();
                 switch (index){
                     case 0 :
                         var options = {
                             quality: 100,
                             targetWidth: 600,
                             targetHeight: 600,
+                            correctOrientation: true,
                             destinationType: Camera.DestinationType.FILE_URL,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
@@ -135,9 +138,11 @@ angular.module('starter.controllers', [])
                             function(imageData) {
                                 localStorage.setItem('photo', imageData);
                                 $ionicLoading.show({template: 'Loading Photo', duration:500});
-                                $state.go('tab.camera',{photoUrl: imageData});
+                                $ionicLoading.hide();
+                                $state.go('tab.post-create',{photoUrl: imageData});
                             },
                             function(err){
+                                $ionicLoading.hide();
                             }
                         )
                         return true;
@@ -146,6 +151,7 @@ angular.module('starter.controllers', [])
                             quality: 100,
                             targetWidth: 600,
                             targetHeight: 600,
+                            correctOrientation: true,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
                         };
@@ -155,10 +161,12 @@ angular.module('starter.controllers', [])
                                 window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
                                     localStorage.setItem('photo', fileEntry.nativeURL);
                                     $ionicLoading.show({template: 'Loading Photo', duration:500});
-                                    $state.go('tab.camera',{photoUrl: fileEntry.nativeURL});
+                                    $ionicLoading.hide();
+                                    $state.go('tab.post-create',{photoUrl: fileEntry.nativeURL});
                                 });
                             },
                             function(err){
+                                $ionicLoading.hide();
                             }
                         )
                         //Handle Move Button
@@ -166,7 +174,7 @@ angular.module('starter.controllers', [])
                 }
             }
         });
-    }
+    };
     $rootScope.popupMessage = function(title, message){
         var alertPopup = $ionicPopup.alert({
             title: title,
@@ -182,7 +190,8 @@ angular.module('starter.controllers', [])
         return true;
     };
 })
-.controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory) {
+.controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
+    $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = $stateParams.photoUrl;
@@ -906,7 +915,6 @@ angular.module('starter.controllers', [])
     $scope.posts = [];
     $scope.noMoreItemsAvailable = false;
     $scope.data = { "ImageURI" :  "Select Image" };
-    $scope.picData = "";
     $scope.currentSlug = "";
     $scope.noResult = false;
     $scope.activatedTab = 'best';
@@ -923,6 +931,7 @@ angular.module('starter.controllers', [])
 
     FetchUsers.get($scope.currentSlug).then(function(account_info){
         $scope.account_info = account_info;
+        $scope.accountImage = $rootScope.photoPath( account_info.profile_img_path, 's' );
 
         if (user.id == $scope.account_info.id)
         {
@@ -960,6 +969,7 @@ angular.module('starter.controllers', [])
                             quality: 100,
                             targetWidth: 600,
                             targetHeight: 600,
+                            correctOrientation: true,
                             destinationType: Camera.DestinationType.FILE_URL,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
@@ -978,6 +988,7 @@ angular.module('starter.controllers', [])
                             quality: 100,
                             targetWidth: 600,
                             targetHeight: 600,
+                            correctOrientation: true,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
                         };
@@ -1019,7 +1030,7 @@ angular.module('starter.controllers', [])
         function success(r) {
             $ionicLoading.show({template: 'Upload Success', duration:500});
             var result = JSON.parse(r.response);
-            $("#tab-account .account-image").css("background-image", "url("+$rootScope.photoPath( result.profile_img_path, 's' )+")"); 
+            $scope.accountImage = $rootScope.photoPath( result.profile_img_path, 's' );
         }
 
         // Transfer failed
@@ -1421,7 +1432,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope) {
+.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope, $state) {
     var user = $rootScope.getCurrentUser();
     $scope.notifications = [];
     $scope.page = 1;
@@ -1436,7 +1447,20 @@ angular.module('starter.controllers', [])
             $scope.noMoreItemsAvailable = true;
         }
     });
-
+    $scope.goNotificationDetail = function(src) {
+        var data = src.split("/");
+        if (data[1] == "post")
+        {
+            $state.go('tab.post-detail-notification',{postId: data[2]});
+        }
+        else if (data[1] == "account")
+        {
+            $state.go('tab.account-notification',{accountSlug: data[2]});
+        }
+    };
+    $scope.goNotificationProfile = function(slug) {
+        $state.go('tab.account-notification',{accountSlug: slug});
+    };
     $scope.loadMore = function() {
         FetchNotifications.new(user.slug, $scope.page).then(function(notifications){
             $scope.notifications = $scope.notifications.concat(notifications);
