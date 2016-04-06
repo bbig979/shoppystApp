@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://appbeta.shoppyst.com';
     // $rootScope.baseURL = 'http://localhost:8000';
@@ -117,7 +117,6 @@ angular.module('starter.controllers', [])
                 { text: 'Take a Picture' },
                 { text: 'Choose from Gallery' }
             ],
-            titleText: 'Share Your Look',
             cancelText: 'Cancel',
             cancel: function() {
                 // code for cancel if necessary.
@@ -181,13 +180,73 @@ angular.module('starter.controllers', [])
             template: message
         });
     };
-
-    $rootScope.showNotification = function(){
-        var exception = 'auth, register, register2';
-        if(exception.indexOf($state.current.name) > -1){
-            return false;
+    $rootScope.ifOthersProfile = function(){
+        var detect = 'tab.account-home, tab.account-explore, tab.account-notification, tab.account-account';
+        if( detect.indexOf($state.current.name) > -1){
+            var user = $rootScope.getCurrentUser();
+            if($stateParams.accountSlug == ""){
+                return false;
+            }
+            if(user.slug != $stateParams.accountSlug ){
+                return true;
+            }
         }
-        return true;
+        return false;
+    };
+    $rootScope.openOthersProfileMenu = function(){
+        // Show the action sheet
+        $ionicActionSheet.show({
+            buttons: [
+                { text: '<span class="assertive">Block User</span>' },
+                { text: '<span class="assertive">Report</span>' }
+            ],
+            cancelText: 'Cancel',
+            cancel: function() {
+                // code for cancel if necessary.
+            },
+            buttonClicked: function(index) {
+                switch (index){
+                    case 0 :
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: 'Block',
+                            template: 'Are you sure to block this user?'
+                        });
+
+                        confirmPopup.then(function(res) {
+                            if(res) {
+                                $ionicLoading.show();
+                                $http.post($rootScope.baseURL+'/api/'+$stateParams.accountSlug+'/block').success(function(){
+                                    $ionicLoading.hide();
+                                    return true;
+                                })
+                                    .error(function(error){
+                                        $rootScope.handleHttpError(error);
+                                    });
+                            }
+                        });
+                        return true;
+                    case 1 :
+                        var confirmPopup = $ionicPopup.confirm({
+                            title: 'Report',
+                            template: 'Are you sure to report this user?'
+                        });
+
+                        confirmPopup.then(function(res) {
+                            if(res) {
+                                $ionicLoading.show();
+                                $http.post($rootScope.baseURL+'/api/'+$stateParams.accountSlug+'/report').success(function(){
+                                    $ionicLoading.hide();
+                                    return true;
+                                })
+                                    .error(function(error){
+                                        $rootScope.handleHttpError(error);
+                                    });
+                            }
+                        });
+                        return true;
+                }
+            }
+        });
     };
 })
 .controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
@@ -752,7 +811,6 @@ angular.module('starter.controllers', [])
     $scope.moreOption = function(){
         if(user.id == $scope.post.user.id){
             $ionicActionSheet.show({
-                titleText: 'More Options',
                 buttons: [
                     { text: 'Edit' },
                 ],
@@ -794,7 +852,6 @@ angular.module('starter.controllers', [])
         }
         else{
             $ionicActionSheet.show({
-                titleText: 'More Options',
                 destructiveText: 'Report',
                 cancelText: 'Cancel',
                 cancel: function() {
