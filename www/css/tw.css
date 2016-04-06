@@ -241,9 +241,15 @@
   top: 13px;
 }
 
+/* line 2, ../../scss/tw/_notifications.scss */
+#account-notification .item {
+  font-size: 15px;
+  white-space: normal;
+}
 /* line 3, ../../scss/tw/_notifications.scss */
 #account-notification .item a {
-  color: #666;
+  color: #444;
+  font-weight: 500;
 }
 /* line 7, ../../scss/tw/_notifications.scss */
 #account-notification .item img {
@@ -252,9 +258,17 @@
   border-radius: 50%;
   vertical-align: middle;
 }
-/* line 14, ../../scss/tw/_notifications.scss */
+/* line 13, ../../scss/tw/_notifications.scss */
 #account-notification .item .notification-content {
   margin-left: 5px;
+}
+/* line 16, ../../scss/tw/_notifications.scss */
+#account-notification .item div:nth-child(1) {
+  float: left;
+}
+/* line 19, ../../scss/tw/_notifications.scss */
+#account-notification .item div:nth-child(2), #account-notification .item div:nth-child(3) {
+  margin-left: 45px;
 }
 
 /* line 2, ../../scss/tw/_post-create.scss */

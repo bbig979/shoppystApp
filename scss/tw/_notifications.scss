@@ -1,18 +1,25 @@
 #account-notification {
   .item {
     a {
-      color: #666;
+      color: #444;
+      font-weight: 500;
     }
-
     img {
       max-width: 35px;
       max-height: 35px;
       border-radius: 50%;
       vertical-align: middle;
     }
-
     .notification-content {
       margin-left: 5px;
     }
+    div:nth-child(1){
+      float: left;
+    }
+    div:nth-child(2), div:nth-child(3){
+      margin-left: 45px;
+    }
+    font-size: 15px;
+    white-space: normal;
   }
 }

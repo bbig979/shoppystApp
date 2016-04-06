@@ -3616,6 +3616,10 @@ div.tab-nav.tabs {
   padding: 0;
   border: 0;
 }
+/* line 17, ../../scss/ryan/_home.scss */
+#home .ion-ios-more-outline {
+  float: right;
+}
 
 /* line 2, ../../scss/ryan/_explore.scss */
 #tab-explore .search-header {
@@ -3686,10 +3690,21 @@ div.tab-nav.tabs {
 }
 
 /* line 2, ../../scss/ryan/_register.scss */
+#register .eula {
+  text-align: center;
+  padding: 10px 25px 10px 25px;
+  color: #777;
+}
+/* line 3, ../../scss/ryan/_register.scss */
+#register .eula span {
+  color: #FF4C62;
+}
+
+/* line 12, ../../scss/ryan/_register.scss */
 #register2 .padding.consistent {
   padding: 13px;
 }
-/* line 5, ../../scss/ryan/_register.scss */
+/* line 15, ../../scss/ryan/_register.scss */
 #register2 .item-select {
   border-top: 0;
 }

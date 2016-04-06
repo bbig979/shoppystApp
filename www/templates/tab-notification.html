@@ -12,8 +12,9 @@
         </div>
         <ion-list>
             <ion-item class="item" ng-repeat="notification in notifications" ng-click="goNotificationDetail(notification.target_src)">
-                <span data_id="{{ notification.initiator.slug }}" ng-click="goNotificationProfile(notification.initiator.slug); $event.stopPropagation();"><img src="{{ photoPath( notification.initiator.profile_img_path, 's' ) }}"></span>
-                <span ng-bind-html="notification.contents | unsafe" class="notification-content"></span>
+                <div data_id="{{ notification.initiator.slug }}" ng-click="goNotificationProfile(notification.initiator.slug); $event.stopPropagation();"><img ng-src="{{photoPath( notification.initiator.profile_img_path, 's' )}}"></div>
+                <div ng-bind-html="notification.contents | unsafe" class="notification-content"></div>
+                <div class="time-ago grey-small-font" am-time-ago="notification.created_at | amUtc"></div>
             </ion-item>
             <a href="#/tab{{ notification.target_src }}/notification">
             </a>

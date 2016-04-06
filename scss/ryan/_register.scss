@@ -1,3 +1,13 @@
+#register{
+  .eula{
+    span{
+      color: $primary-color-dark;
+    }
+    text-align: center;
+    padding: 10px 25px 10px 25px;
+    color: #777;
+  }
+}
 #register2{
   .padding.consistent{
     padding: 13px;
