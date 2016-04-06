@@ -3616,6 +3616,10 @@ div.tab-nav.tabs {
   padding: 0;
   border: 0;
 }
+/* line 17, ../../scss/ryan/_home.scss */
+#home .ion-ios-more-outline {
+  float: right;
+}
 
 /* line 2, ../../scss/ryan/_explore.scss */
 #tab-explore .search-header {

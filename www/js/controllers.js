@@ -537,7 +537,7 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -622,6 +622,33 @@ angular.module('starter.controllers', [])
     };
     $scope.commentsPage = function(id){
         $state.go('tab.post-comments-home',{postId: id});
+    };
+    $scope.moreOption = function(id){
+        $ionicActionSheet.show({
+            destructiveText: 'Report',
+            cancelText: 'Cancel',
+            cancel: function() {
+
+            },destructiveButtonClicked: function() {
+                var confirmPopup = $ionicPopup.confirm({
+                    title: 'Report',
+                    template: 'Are you sure to report this post?'
+                });
+
+                confirmPopup.then(function(res) {
+                    if(res) {
+                        $ionicLoading.show();
+                        $http.post($rootScope.baseURL+'/api/post/'+id+'/report').success(function(){
+                            $ionicLoading.hide();
+                            return true;
+                        })
+                        .error(function(error){
+                            $rootScope.handleHttpError(error);
+                        });
+                    }
+                });
+            }
+        });
     };
 })
 
