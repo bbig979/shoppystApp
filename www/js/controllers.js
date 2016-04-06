@@ -404,6 +404,27 @@ angular.module('starter.controllers', [])
     }
 })
 
+.controller('ForgetPasswordCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
+    $scope.datas = {email:''};
+    $scope.sendLink = function(datas){
+        $ionicLoading.show({template: 'Sending Password Reset email'});
+        $http({
+            method : 'POST',
+            url : $rootScope.baseURL+'/api/passwordReset',
+            data : datas
+        })
+        .success(function(response){
+            $ionicLoading.hide();
+            $rootScope.popupMessage("", "Email has been sent");
+            $ionicHistory.goBack();
+        })
+        .error(function(error, status){
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(error, status);
+        });
+    }
+})
+
 .controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
 
     $scope.loginData = {};
