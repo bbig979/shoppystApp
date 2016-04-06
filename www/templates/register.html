@@ -11,6 +11,10 @@
                     <input type="password" ng-model="registerData.password" placeholder="Password">
                 </label>
                 <div class="padding"></div>
+                <div class="padding eula">
+                    By tapping to continue, your are indicating that you have read the <span onclick="cordova.InAppBrowser.open('http://app.snaplook.today/doc/privacy_policy', '_blank')">Privacy Policy</span> and agree to the <span onclick="cordova.InAppBrowser.open('http://app.snaplook.today/doc/terms_of_service', '_blank')">Terms of Service</span>.
+                </div>
+                <div class="padding"></div>
                 <div class="padding">
                     <button class="button button-block button-positive" type="submit">Create an Account</button>
                     <p class="facebook-header">OR</p>
