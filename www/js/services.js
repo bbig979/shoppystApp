@@ -4,7 +4,7 @@ angular.module('starter.services', [])
        return $sce.trustAsHtml(val);
    }
 })
-.directive('loading',   ['$http' ,function ($http)
+.directive('loading', ['$http' ,function ($http)
 {
     return {
         restrict: 'A',
@@ -24,7 +24,6 @@ angular.module('starter.services', [])
             });
         }
     };
-
 }])
 .factory('FetchPosts', function($http, $rootScope) {
     return {

@@ -102,6 +102,18 @@
 
           cordova.plugins.notification.badge.clear();
       }
+
+      window.addEventListener('native.keyboardhide', keyboardHideHandler);
+
+      function keyboardShowHandler(e){
+          jQuery(".tabs-icon-middle").addClass('tabs-item-hide');
+      }
+
+      window.addEventListener('native.keyboardshow', keyboardShowHandler);
+
+      function keyboardHideHandler(e){
+          jQuery(".tabs-icon-middle").removeClass('tabs-item-hide');
+      }
     </script>
 
   </head>
