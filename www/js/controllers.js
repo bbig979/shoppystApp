@@ -337,14 +337,7 @@ angular.module('starter.controllers', [])
     });
     if(localStorage.getItem('have_seen_intro')){
         if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
-
-            var user = $rootScope.getCurrentUser();
-            if(user.age){
-                $state.go('tab.home');
-            }
-            else{
-                $state.go('register2');
-            }
+            $state.go('tab.home');
         }
         else{
             $state.go('auth');
@@ -394,7 +387,7 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                if(response.user.age){
+                if(localStorage.getItem('have_seen_register2')){
                     $state.go('tab.home');
                 }
                 else{
@@ -417,6 +410,7 @@ angular.module('starter.controllers', [])
         password: $stateParams.password
     }
 
+    localStorage.setItem('have_seen_register2', true);
     if(!localStorage.getItem('user')){
         $auth.login(credentials).then(function() {
         },
@@ -522,7 +516,7 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                if(response.user.age){
+                if(localStorage.getItem('have_seen_register2')){
                     $state.go('tab.home');
                 }
                 else{
@@ -546,7 +540,7 @@ angular.module('starter.controllers', [])
 
     $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
 
-    if(user.age || $stateParams.refresh){
+    if(user || $stateParams.refresh){
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
             if(!response.next_page_url){
@@ -558,9 +552,6 @@ angular.module('starter.controllers', [])
             $scope.posts = posts;
             $scope.page++;
         });
-    }
-    else{
-        $state.go('register2');
     }
 
     $scope.loadMore = function() {
