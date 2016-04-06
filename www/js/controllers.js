@@ -2,10 +2,10 @@ angular.module('starter.controllers', [])
 
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    //$rootScope.baseURL = 'http://appbeta.shoppyst.com';
+    $rootScope.baseURL = 'http://appbeta.shoppyst.com';
     // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
-     $rootScope.baseURL = 'http://localhost:8888';
+    // $rootScope.baseURL = 'http://localhost:8888';
 
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
@@ -184,11 +184,13 @@ angular.module('starter.controllers', [])
         var detect = 'tab.account-home, tab.account-explore, tab.account-notification, tab.account-account';
         if( detect.indexOf($state.current.name) > -1){
             var user = $rootScope.getCurrentUser();
-            if($stateParams.accountSlug == ""){
-                return false;
-            }
-            if(user.slug != $stateParams.accountSlug ){
-                return true;
+            if(user){
+                if($stateParams.accountSlug == ""){
+                    return false;
+                }
+                if(user.slug != $stateParams.accountSlug ){
+                    return true;
+                }
             }
         }
         return false;
