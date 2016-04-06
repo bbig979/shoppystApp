@@ -352,6 +352,7 @@ angular.module('starter.controllers', [])
 
 .controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
     $scope.registerData = {email:'',password:''};
+    localStorage.removeItem('have_seen_register2');
     $scope.register = function(registerData){
         $ionicLoading.show();
         $http({
