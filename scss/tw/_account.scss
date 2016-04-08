@@ -1,15 +1,22 @@
 #tab-account{
 	.account-top {
-		color: white;
+        .account-option-btn, .follow-toggle{
+          position: absolute;
+          right: 0;
+        }
+        .account-option-btn{
+          color: #ccc;
+        }
+		color: $grey-dark;
 		position: relative;
 		background-position: 50% 50%;
-		min-height: 400px;
 		background-size: auto 100%;
 		margin-left: -5px;
 		margin-right: -5px;
 		margin-top: -5px;
 		padding-top: 5px;
-        margin-bottom: 5px;
+        margin-bottom: 20px;
+        padding-bottom: 50px;
 	}
 
 	.account-image {
@@ -21,13 +28,14 @@
 		margin: auto;
 		margin-bottom: 10px;
 		clear: both;
+        margin-top: 20px;
 	}
 
 	.user-name {
 		text-align: center;
 		font-size: 1.5em;
 		margin-bottom: 15px;
-		color: white;
+		color: $grey-darker;
 	}
 
 	.user-school {
@@ -62,6 +70,23 @@
 			font-size: 1.1em;
 		}
 
+        .col {
+            text-align: center;
+        }
+
+        .col:nth-child(1){
+            color: #FF4B62;
+        }
+        .col:nth-child(2){
+            color: #FF7167;
+        }
+        .col:nth-child(3){
+            color: #FF986C;
+        }
+        .col:nth-child(4){
+            color: #FFBD71;
+        }
+
 		.ion-camera,
 		.ion-ios-heart,
 		.ion-ios-people,
@@ -71,11 +96,9 @@
 	}
 
 	.account-social-network {
-		margin-top: 30px;
-		margin-bottom: 20px;
 		font-size: 0.6em;
 		div {
-			color: white;
+			color: $primary-color-dark;
 		}
 	}
 
