@@ -1159,6 +1159,8 @@ angular.module('starter.controllers', [])
     }
 
     $scope.changeProfilePicture = function(){
+        if ($scope.notMe())
+            return;
         // Show the action sheet
         var navCameraSheet = $ionicActionSheet.show({
             buttons: [
@@ -1347,6 +1349,7 @@ angular.module('starter.controllers', [])
     }
 })
 .controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope) {
+    $scope.user = $rootScope.getCurrentUser();
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
     };

@@ -7,7 +7,7 @@
         <div class="account-top" style="background-image: url( {{ photoPath( account_info.cover_img_path, '' ) }} )">
             <button class="button button-clear icon ion-gear-b account-option-btn" ng-click="goAccountOption()" ng-if="!notMe(account_info)"></button>
             <button class="button button-small follow-toggle" ng-class="{'following' : account_info.following_check}" ng-click="followToggle(account_info)" ng-if="notMe(account_info)"></button>
-            <img class="account-image" ng-src="{{accountImage}}" ng-click="changeProfilePicture()">
+            <div class="account-image" style="background: url({{accountImage}})" ng-click="changeProfilePicture()"></div>
             <div class="user-name">
                 <ion-spinner icon="ios-small" ng-if="!account_info"></ion-spinner>
                 {{ account_info.first_name }} {{ account_info.last_name }}
