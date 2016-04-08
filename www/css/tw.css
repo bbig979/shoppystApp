@@ -54,18 +54,27 @@
 
 /* line 2, ../../scss/tw/_account.scss */
 #tab-account .account-top {
-  color: white;
+  color: #aaa;
   position: relative;
   background-position: 50% 50%;
-  min-height: 400px;
   background-size: auto 100%;
   margin-left: -5px;
   margin-right: -5px;
   margin-top: -5px;
   padding-top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
+  padding-bottom: 50px;
 }
-/* line 15, ../../scss/tw/_account.scss */
+/* line 3, ../../scss/tw/_account.scss */
+#tab-account .account-top .account-option-btn, #tab-account .account-top .follow-toggle {
+  position: absolute;
+  right: 0;
+}
+/* line 7, ../../scss/tw/_account.scss */
+#tab-account .account-top .account-option-btn {
+  color: #ccc;
+}
+/* line 22, ../../scss/tw/_account.scss */
 #tab-account .account-image {
   display: block;
   width: 100px;
@@ -75,65 +84,84 @@
   margin: auto;
   margin-bottom: 10px;
   clear: both;
+  margin-top: 20px;
 }
-/* line 26, ../../scss/tw/_account.scss */
+/* line 34, ../../scss/tw/_account.scss */
 #tab-account .user-name {
   text-align: center;
   font-size: 1.5em;
   margin-bottom: 15px;
-  color: white;
+  color: #777;
 }
-/* line 33, ../../scss/tw/_account.scss */
+/* line 41, ../../scss/tw/_account.scss */
 #tab-account .user-school {
   text-align: center;
   margin-bottom: 10px;
   text-decoration: underline;
 }
-/* line 39, ../../scss/tw/_account.scss */
+/* line 47, ../../scss/tw/_account.scss */
 #tab-account .user-joined {
   text-align: center;
 }
-/* line 43, ../../scss/tw/_account.scss */
+/* line 51, ../../scss/tw/_account.scss */
 #tab-account .account-option-btn {
   color: white;
   float: right;
   margin-right: 10px;
   font-size: 0.8em;
 }
-/* line 50, ../../scss/tw/_account.scss */
+/* line 58, ../../scss/tw/_account.scss */
 #tab-account .account-achievement {
   margin-top: 10px;
 }
-/* line 53, ../../scss/tw/_account.scss */
+/* line 61, ../../scss/tw/_account.scss */
 #tab-account .account-achievement button {
   color: white;
   line-height: 120%;
   font-weight: 400;
 }
-/* line 59, ../../scss/tw/_account.scss */
+/* line 67, ../../scss/tw/_account.scss */
 #tab-account .account-achievement div {
   color: white;
   line-height: 150%;
   font-size: 1.1em;
 }
-/* line 65, ../../scss/tw/_account.scss */
+/* line 73, ../../scss/tw/_account.scss */
+#tab-account .account-achievement .col {
+  text-align: center;
+}
+/* line 77, ../../scss/tw/_account.scss */
+#tab-account .account-achievement .col:nth-child(1) {
+  color: #FF4B62;
+}
+/* line 80, ../../scss/tw/_account.scss */
+#tab-account .account-achievement .col:nth-child(2) {
+  color: #FF7167;
+}
+/* line 83, ../../scss/tw/_account.scss */
+#tab-account .account-achievement .col:nth-child(3) {
+  color: #FF986C;
+}
+/* line 86, ../../scss/tw/_account.scss */
+#tab-account .account-achievement .col:nth-child(4) {
+  color: #FFBD71;
+}
+/* line 90, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .ion-camera,
 #tab-account .account-achievement .ion-ios-heart,
 #tab-account .account-achievement .ion-ios-people,
 #tab-account .account-achievement .ion-android-person {
   font-size: 1.5em;
 }
-/* line 73, ../../scss/tw/_account.scss */
+/* line 98, ../../scss/tw/_account.scss */
 #tab-account .account-social-network {
-  margin-top: 30px;
-  margin-bottom: 20px;
   font-size: 0.6em;
 }
-/* line 77, ../../scss/tw/_account.scss */
+/* line 100, ../../scss/tw/_account.scss */
 #tab-account .account-social-network div {
-  color: white;
+  color: #FF4C62;
 }
-/* line 82, ../../scss/tw/_account.scss */
+/* line 105, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle {
   font-size: 11px;
   float: right;
@@ -145,40 +173,40 @@
   color: #FF4C62;
   width: 90px;
 }
-/* line 93, ../../scss/tw/_account.scss */
+/* line 116, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle:after {
   padding-top: 7px;
   content: "FOLLOW";
 }
-/* line 97, ../../scss/tw/_account.scss */
+/* line 120, ../../scss/tw/_account.scss */
 #tab-account .following {
   background-color: #FF4C62;
   border-color: #FF4C62;
   color: #fff;
 }
-/* line 102, ../../scss/tw/_account.scss */
+/* line 125, ../../scss/tw/_account.scss */
 #tab-account .following:after {
   content: "UNFOLLOW";
 }
-/* line 105, ../../scss/tw/_account.scss */
+/* line 128, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activated {
   margin-top: 0px;
   border-style: solid;
   border-width: 0 0 0 0;
   border-color: #444;
 }
-/* line 111, ../../scss/tw/_account.scss */
+/* line 134, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activatedd {
   margin-bottom: -2px;
   border-style: solid;
   border-width: 0 0 2px 0;
   border-color: #FF4C62;
 }
-/* line 117, ../../scss/tw/_account.scss */
+/* line 140, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tabs {
   border-bottom: 0px solid #ddd;
 }
-/* line 120, ../../scss/tw/_account.scss */
+/* line 143, ../../scss/tw/_account.scss */
 #tab-account ion-list .list {
   margin-top: -15px;
 }
