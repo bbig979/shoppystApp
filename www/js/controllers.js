@@ -2,10 +2,10 @@ angular.module('starter.controllers', [])
 
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    //$rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'http://app.snaplook.today';
     // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
-     $rootScope.baseURL = 'http://localhost:8888';
+    // $rootScope.baseURL = 'http://localhost:8888';
 
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
@@ -350,7 +350,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
+.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading, $q) {
     $scope.registerData = {email:'',password:''};
     localStorage.removeItem('have_seen_register2');
     $scope.register = function(registerData){
@@ -402,6 +402,151 @@ angular.module('starter.controllers', [])
                 $ionicLoading.hide();
                 $rootScope.handleHttpError(error, status);
             })
+        });
+    };
+    var fbLoginSuccess = function(response) {
+        if (!response.authResponse){
+            fbLoginError("Cannot find the authResponse");
+            return;
+        }
+
+        var authResponse = response.authResponse;
+
+        getFacebookProfileInfo(authResponse).then(function(profileInfo) {
+            $http({
+                method : 'POST',
+                url : $rootScope.baseURL+'/api/facebook',
+                data : {profile:profileInfo}
+            })
+                .success(function(response){
+                    localStorage.setItem('satellizer_token', response.token);
+                    $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                        // Stringify the retured data
+                        var user = JSON.stringify(response.user);
+
+                        // Set the stringified user data into local storage
+                        localStorage.setItem('user', user);
+
+                        $ionicHistory.nextViewOptions({
+                            disableBack: true
+                        });
+
+                        $ionicLoading.hide();
+
+                        if(localStorage.getItem('have_seen_register2')){
+                            $state.go('tab.home');
+                        }
+                        else{
+                            $state.go('register2');
+                        }
+                    })
+                        .error(function(){
+                            $ionicLoading.hide();
+                            $rootScope.handleHttpError(error, status);
+                        });
+                })
+                .error(function(error){
+                    $rootScope.handleHttpError(error);
+                });
+        }, function(fail){
+            // Fail get profile info
+            console.log('profile info fail', fail);
+        });
+    };
+
+    // This is the fail callback from the login method
+    var fbLoginError = function(error){
+        console.log('fbLoginError', error);
+        $ionicLoading.hide();
+    };
+
+    // This method is to get the user profile info from the facebook api
+    var getFacebookProfileInfo = function (authResponse) {
+        var info = $q.defer();
+
+        facebookConnectPlugin.api('/me?fields=id,email,first_name,last_name,link,picture.type(large),gender&access_token=' + authResponse.accessToken, null,
+            function (response) {
+                console.log(response);
+                info.resolve(response);
+            },
+            function (response) {
+                console.log(response);
+                info.reject(response);
+            }
+        );
+        return info.promise;
+    };
+
+    //This method is executed when the user press the "Login with facebook" button
+    $scope.facebookSignIn = function() {
+        facebookConnectPlugin.getLoginStatus(function(success){
+            if(success.status === 'connected'){
+                // The user is logged in and has authenticated your app, and response.authResponse supplies
+                // the user's ID, a valid access token, a signed request, and the time the access token
+                // and signed request each expire
+                console.log('getLoginStatus@facebookSignIn-if-connected', success.status);
+
+                $ionicLoading.show({
+                    template: 'Logging in...'
+                });
+
+                getFacebookProfileInfo(success.authResponse).then(function(profileInfo) {
+                    $http({
+                        method : 'POST',
+                        url : $rootScope.baseURL+'/api/facebook',
+                        data : {profile:profileInfo}
+                    })
+                        .success(function(response){
+                            localStorage.setItem('satellizer_token', response.token);
+                            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                                // Stringify the retured data
+                                var user = JSON.stringify(response.user);
+
+                                // Set the stringified user data into local storage
+                                localStorage.setItem('user', user);
+
+                                $ionicHistory.nextViewOptions({
+                                    disableBack: true
+                                });
+
+                                $ionicLoading.hide();
+
+                                if(localStorage.getItem('have_seen_register2')){
+                                    $state.go('tab.home');
+                                }
+                                else{
+                                    $state.go('register2');
+                                }
+                            })
+                                .error(function(){
+                                    $ionicLoading.hide();
+                                    $rootScope.handleHttpError(error, status);
+                                });
+                        })
+                        .error(function(error){
+                            $rootScope.handleHttpError(error);
+                        });
+                }, function(fail){
+                    // Fail get profile info
+                    console.log('profile info fail', fail);
+                });
+
+            } else {
+                // If (success.status === 'not_authorized') the user is logged in to Facebook,
+                // but has not authenticated your app
+                // Else the person is not logged into Facebook,
+                // so we're not sure if they are logged into this app or not.
+
+                console.log('getLoginStatus@facebookSignIn-else-connected', success.status);
+
+                $ionicLoading.show({
+                    template: 'Logging in...'
+                });
+
+                // Ask the permissions you need. You can learn more about
+                // FB permissions here: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
+                facebookConnectPlugin.login(['email', 'public_profile'], fbLoginSuccess, fbLoginError);
+            }
         });
     };
 })
@@ -481,7 +626,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading) {
+.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading, $q) {
 
     $scope.loginData = {};
     $scope.loginError = false;
@@ -551,6 +696,152 @@ angular.module('starter.controllers', [])
                 $ionicLoading.hide();
                 $rootScope.handleHttpError(error, status);
             })
+        });
+    };
+
+    var fbLoginSuccess = function(response) {
+        if (!response.authResponse){
+            fbLoginError("Cannot find the authResponse");
+            return;
+        }
+
+        var authResponse = response.authResponse;
+
+        getFacebookProfileInfo(authResponse).then(function(profileInfo) {
+            $http({
+                method : 'POST',
+                url : $rootScope.baseURL+'/api/facebook',
+                data : {profile:profileInfo}
+            })
+            .success(function(response){
+                localStorage.setItem('satellizer_token', response.token);
+                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                    // Stringify the retured data
+                    var user = JSON.stringify(response.user);
+
+                    // Set the stringified user data into local storage
+                    localStorage.setItem('user', user);
+
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+
+                    $ionicLoading.hide();
+
+                    if(localStorage.getItem('have_seen_register2')){
+                        $state.go('tab.home');
+                    }
+                    else{
+                        $state.go('register2');
+                    }
+                })
+                .error(function(){
+                    $ionicLoading.hide();
+                    $rootScope.handleHttpError(error, status);
+                });
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }, function(fail){
+            // Fail get profile info
+            console.log('profile info fail', fail);
+        });
+    };
+
+    // This is the fail callback from the login method
+    var fbLoginError = function(error){
+        console.log('fbLoginError', error);
+        $ionicLoading.hide();
+    };
+
+    // This method is to get the user profile info from the facebook api
+    var getFacebookProfileInfo = function (authResponse) {
+        var info = $q.defer();
+
+        facebookConnectPlugin.api('/me?fields=id,email,first_name,last_name,link,picture.type(large),gender&access_token=' + authResponse.accessToken, null,
+            function (response) {
+                console.log(response);
+                info.resolve(response);
+            },
+            function (response) {
+                console.log(response);
+                info.reject(response);
+            }
+        );
+        return info.promise;
+    };
+
+    //This method is executed when the user press the "Login with facebook" button
+    $scope.facebookSignIn = function() {
+        facebookConnectPlugin.getLoginStatus(function(success){
+            if(success.status === 'connected'){
+                // The user is logged in and has authenticated your app, and response.authResponse supplies
+                // the user's ID, a valid access token, a signed request, and the time the access token
+                // and signed request each expire
+                console.log('getLoginStatus@facebookSignIn-if-connected', success.status);
+
+                $ionicLoading.show({
+                    template: 'Logging in...'
+                });
+
+                getFacebookProfileInfo(success.authResponse).then(function(profileInfo) {
+                    $http({
+                        method : 'POST',
+                        url : $rootScope.baseURL+'/api/facebook',
+                        data : {profile:profileInfo}
+                    })
+                    .success(function(response){
+                        localStorage.setItem('satellizer_token', response.token);
+                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                            // Stringify the retured data
+                            var user = JSON.stringify(response.user);
+
+                            // Set the stringified user data into local storage
+                            localStorage.setItem('user', user);
+
+                            $ionicHistory.nextViewOptions({
+                                disableBack: true
+                            });
+
+                            $ionicLoading.hide();
+
+                            if(localStorage.getItem('have_seen_register2')){
+                                $state.go('tab.home');
+                            }
+                            else{
+                                $state.go('register2');
+                            }
+                        })
+                        .error(function(){
+                            $ionicLoading.hide();
+                            $rootScope.handleHttpError(error, status);
+                        });
+                    })
+                    .error(function(error){
+                        $rootScope.handleHttpError(error);
+                    });
+                }, function(fail){
+                    // Fail get profile info
+                    console.log('profile info fail', fail);
+                });
+
+            } else {
+                // If (success.status === 'not_authorized') the user is logged in to Facebook,
+                // but has not authenticated your app
+                // Else the person is not logged into Facebook,
+                // so we're not sure if they are logged into this app or not.
+
+                console.log('getLoginStatus@facebookSignIn-else-connected', success.status);
+
+                $ionicLoading.show({
+                    template: 'Logging in...'
+                });
+
+                // Ask the permissions you need. You can learn more about
+                // FB permissions here: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
+                facebookConnectPlugin.login(['email', 'public_profile'], fbLoginSuccess, fbLoginError);
+            }
         });
     };
 
