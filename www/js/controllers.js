@@ -1511,6 +1511,7 @@ angular.module('starter.controllers', [])
             }
         });
     }
+
     $scope.updateProfilePicture = function(picData) {
         $ionicLoading.show({template: 'Uploading Photo...', duration:500});
         var fileURL = picData;
