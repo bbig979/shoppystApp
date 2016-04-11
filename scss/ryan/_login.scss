@@ -6,4 +6,10 @@
   .ion-social-facebook{
     background-color: #4e69a2;
   }
+  .button.button-small.button-clear{
+    line-height: 18px;
+    font-size: 14px;
+    min-height: 20px;
+    color: $primary-color-dark;
+  }
 }
