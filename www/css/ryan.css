@@ -3721,6 +3721,13 @@ div.tab-nav.tabs {
 #log-in .ion-social-facebook, #register .ion-social-facebook {
   background-color: #4e69a2;
 }
+/* line 9, ../../scss/ryan/_login.scss */
+#log-in .button.button-small.button-clear, #register .button.button-small.button-clear {
+  line-height: 18px;
+  font-size: 14px;
+  min-height: 20px;
+  color: #FF4C62;
+}
 
 /* line 2, ../../scss/ryan/_register.scss */
 #register .eula {
