@@ -212,6 +212,11 @@
 #tab-account ion-list .list {
   margin-top: -15px;
 }
+/* line 149, ../../scss/tw/_account.scss */
+#tab-account .profile-post-like-count {
+  color: white;
+  text-align: right;
+}
 
 /* line 3, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item {

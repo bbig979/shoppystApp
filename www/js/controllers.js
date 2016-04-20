@@ -3,6 +3,7 @@ angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://app.snaplook.today';
+    // $rootScope.baseURL = 'http://app.snaplook.today';
     // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
@@ -386,7 +387,7 @@ angular.module('starter.controllers', [])
 
                 $ionicHistory.nextViewOptions({
                     disableBack: true
-                });
+                });ㅌ
 
                 $ionicLoading.hide();
 
