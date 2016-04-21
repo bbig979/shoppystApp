@@ -7,6 +7,8 @@ angular.module('starter.controllers', [])
     // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.sampleCount = 4;
+    $rootScope.minimumCountToShowSample = 4;
 
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
@@ -1251,11 +1253,12 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+    $scope.showSample = false;
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
@@ -1264,9 +1267,18 @@ angular.module('starter.controllers', [])
         }
         $scope.posts = posts;
         $scope.page++;
+        if(posts && posts.length < $rootScope.minimumCountToShowSample){
+            $scope.showSample = true;
+            FetchPosts.sample($rootScope.sampleCount).then(function(response){
+                samples = response.data;
+                $scope.samples = samples;
+            });
+        }
+        /*
         if(posts && posts.length == 0){
             $scope.noResult = true;
         }
+        */
     });
 
     $scope.loadMore = function() {
@@ -1293,9 +1305,26 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noResult = false;
+
+            if(posts && posts.length < $rootScope.minimumCountToShowSample){
+                if ($scope.showSample == true)
+                {
+                    return;
+                }
+                else
+                {
+                    $scope.showSample = true;
+                    FetchPosts.sample($rootScope.sampleCount).then(function(response){
+                        samples = response.data;
+                        $scope.samples = samples;
+                    });
+                }
+            }
+/*
             if(posts && posts.length == 0){
                 $scope.noResult = true;
             }
+*/
         });
     };
     $scope.submitSearch = function(search_term) {
