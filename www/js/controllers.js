@@ -355,7 +355,6 @@ angular.module('starter.controllers', [])
 
 .controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading, $q) {
     $scope.registerData = {email:'',password:''};
-    localStorage.removeItem('have_seen_register2');
     $scope.register = function(registerData){
         $ionicLoading.show();
         $http({
@@ -389,16 +388,11 @@ angular.module('starter.controllers', [])
 
                 $ionicHistory.nextViewOptions({
                     disableBack: true
-                });ㅌ
+                });
 
                 $ionicLoading.hide();
 
-                if(localStorage.getItem('have_seen_register2')){
-                    $state.go('tab.home');
-                }
-                else{
-                    $state.go('register2');
-                }
+                $state.go('tab.home');
 
             })
             .error(function(){
@@ -436,12 +430,7 @@ angular.module('starter.controllers', [])
 
                         $ionicLoading.hide();
 
-                        if(localStorage.getItem('have_seen_register2')){
-                            $state.go('tab.home');
-                        }
-                        else{
-                            $state.go('register2');
-                        }
+                        $state.go('tab.home');
                     })
                         .error(function(){
                             $ionicLoading.hide();
@@ -514,12 +503,7 @@ angular.module('starter.controllers', [])
 
                                 $ionicLoading.hide();
 
-                                if(localStorage.getItem('have_seen_register2')){
-                                    $state.go('tab.home');
-                                }
-                                else{
-                                    $state.go('register2');
-                                }
+                                $state.go('tab.home');
                             })
                                 .error(function(){
                                     $ionicLoading.hide();
@@ -561,7 +545,6 @@ angular.module('starter.controllers', [])
         password: $stateParams.password
     }
 
-    localStorage.setItem('have_seen_register2', true);
     if(!localStorage.getItem('user')){
         $auth.login(credentials).then(function() {
         },
@@ -688,12 +671,7 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                if(localStorage.getItem('have_seen_register2')){
-                    $state.go('tab.home');
-                }
-                else{
-                    $state.go('register2');
-                }
+                $state.go('tab.home');
             })
             .error(function(){
                 $ionicLoading.hide();
@@ -731,12 +709,7 @@ angular.module('starter.controllers', [])
 
                     $ionicLoading.hide();
 
-                    if(localStorage.getItem('have_seen_register2')){
-                        $state.go('tab.home');
-                    }
-                    else{
-                        $state.go('register2');
-                    }
+                    $state.go('tab.home');
                 })
                 .error(function(){
                     $ionicLoading.hide();
@@ -809,12 +782,7 @@ angular.module('starter.controllers', [])
 
                             $ionicLoading.hide();
 
-                            if(localStorage.getItem('have_seen_register2')){
-                                $state.go('tab.home');
-                            }
-                            else{
-                                $state.go('register2');
-                            }
+                            $state.go('tab.home');
                         })
                         .error(function(){
                             $ionicLoading.hide();
