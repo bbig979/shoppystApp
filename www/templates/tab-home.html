@@ -28,6 +28,17 @@
                     <button class= "button button-clear button-dark icon" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                     <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="commentsPage(post.id)"></button>
                     <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption(post.id)"></button>
+                    <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
+                </div>
+                <hr size="1" color="#e7e7e7">
+                <div class="analytics-group">
+                    Male: {{ post.post_analytic[0].male }}<br>
+                    Female: {{ post.post_analytic[0].female }}<br>
+                    10-20: {{ post.post_analytic[0].teens }}<br>
+                    20-30: {{ post.post_analytic[0].twenties }}<br>
+                    30-40: {{ post.post_analytic[0].thirties }}<br>
+                    40-50: {{ post.post_analytic[0].forties }}<br>
+                    50-60: {{ post.post_analytic[0].fifties }}
                 </div>
                 <hr size="1" color="#e7e7e7">
                 <div class="stats">

@@ -218,6 +218,98 @@
   text-align: right;
 }
 
+/* line 2, ../../scss/tw/_explore.scss */
+#tab-explore .add-compare-button {
+  float: right;
+  background-color: #FF4C62;
+  border-color: #FF4C62;
+  color: #fff;
+  min-width: 20px;
+  min-height: 21px;
+  height: 21px;
+  padding-right: 5px;
+}
+/* line 13, ../../scss/tw/_explore.scss */
+#tab-explore .add-compare-button:before {
+  line-height: 20px;
+  font-size: 13px;
+}
+/* line 18, ../../scss/tw/_explore.scss */
+#tab-explore .desc_top_row {
+  height: 30px;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+/* line 23, ../../scss/tw/_explore.scss */
+#tab-explore .desc_top_row .desc_stat {
+  font-size: 13px;
+}
+/* line 28, ../../scss/tw/_explore.scss */
+#tab-explore .desc_bottom_row {
+  height: 30px;
+  padding: 5px;
+}
+/* line 32, ../../scss/tw/_explore.scss */
+#tab-explore .desc_bottom_row .desc_time {
+  float: right;
+  font-size: 13px;
+}
+/* line 37, ../../scss/tw/_explore.scss */
+#tab-explore .desc_bottom_row .desc_name {
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* line 2, ../../scss/tw/_compare.scss */
+#compare .add-compare-button {
+  float: right;
+  background-color: #FF4C62;
+  border-color: #FF4C62;
+  color: #fff;
+  min-width: 20px;
+  min-height: 21px;
+  height: 21px;
+  padding-right: 5px;
+}
+/* line 13, ../../scss/tw/_compare.scss */
+#compare .add-compare-button:before {
+  line-height: 20px;
+  font-size: 13px;
+}
+/* line 18, ../../scss/tw/_compare.scss */
+#compare .desc_top_row {
+  height: 30px;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+/* line 23, ../../scss/tw/_compare.scss */
+#compare .desc_top_row .desc_stat {
+  font-size: 13px;
+}
+/* line 28, ../../scss/tw/_compare.scss */
+#compare .desc_bottom_row {
+  height: 30px;
+  padding: 5px;
+}
+/* line 32, ../../scss/tw/_compare.scss */
+#compare .desc_bottom_row .desc_time {
+  float: right;
+  font-size: 13px;
+}
+/* line 37, ../../scss/tw/_compare.scss */
+#compare .desc_bottom_row .desc_name {
+  font-size: 13px;
+  font-weight: bold;
+}
+/* line 43, ../../scss/tw/_compare.scss */
+#compare .posts {
+  margin-top: 10px;
+}
+/* line 47, ../../scss/tw/_compare.scss */
+#compare .overflow-scroll .scroll {
+  height: auto !important;
+}
+
 /* line 3, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item {
   border-color: #e7e7e7;
@@ -360,6 +452,23 @@
   padding: 0px;
 }
 
+/* line 2, ../../scss/tw/_post-detail.scss */
+#post-detail .add-compare-button {
+  float: right;
+  background-color: #FF4C62;
+  border-color: #FF4C62;
+  color: #fff;
+  min-width: 30px;
+  min-height: 30px;
+  height: 30px;
+  margin-top: 7px;
+}
+/* line 13, ../../scss/tw/_post-detail.scss */
+#post-detail .add-compare-button:before {
+  line-height: 28px;
+  font-size: 17px;
+}
+
 /* line 2, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image {
   width: 50%;
@@ -404,4 +513,21 @@
 /* line 1, ../../scss/tw/_tab-camera.scss */
 #tab-camera {
   background-color: black;
+}
+
+/* line 2, ../../scss/tw/_home.scss */
+#home .add-compare-button {
+  float: right;
+  background-color: #FF4C62;
+  border-color: #FF4C62;
+  color: #fff;
+  min-width: 30px;
+  min-height: 30px;
+  height: 30px;
+  margin-top: 7px;
+}
+/* line 13, ../../scss/tw/_home.scss */
+#home .add-compare-button:before {
+  line-height: 28px;
+  font-size: 17px;
 }

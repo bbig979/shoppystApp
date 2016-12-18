@@ -1,0 +1,17 @@
+#home{
+  .add-compare-button {
+    float: right;
+    background-color: #FF4C62;
+    border-color: #FF4C62;
+    color: #fff;
+    min-width: 30px;
+    min-height: 30px;
+    height: 30px;
+    margin-top: 7px;
+  }
+
+  .add-compare-button:before {
+    line-height: 28px;
+    font-size: 17px;
+  }
+}

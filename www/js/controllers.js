@@ -2,13 +2,16 @@ angular.module('starter.controllers', [])
 
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://app.snaplook.today';
     // $rootScope.baseURL = 'http://app.snaplook.today';
-    // $rootScope.baseURL = 'http://localhost:8000';
+    // $rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
+    $rootScope.compareList = [];
+    $rootScope.compareIndexList = [];
+    $rootScope.nameLengthOnCard = 13;
 
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
@@ -113,6 +116,20 @@ angular.module('starter.controllers', [])
     $rootScope.goAccountOption = function(id){
         $state.go('tab.option-account',{userId: id});
     };
+    $rootScope.getNameOnCard = function(_first_name, _last_name){
+        if (_first_name.length >= $rootScope.nameLengthOnCard - 1)
+        {
+            return _first_name.substring(0, $rootScope.nameLengthOnCard) + "...";
+        }
+        else if (_first_name.length + _last_name.length >= $rootScope.nameLengthOnCard - 1)
+        {
+            return (_first_name + " " +_last_name).substring(0, $rootScope.nameLengthOnCard) + "...";
+        }
+        else
+        {
+            return _first_name + " " +_last_name;
+        }
+    };
     $rootScope.openCameraMenu = function(){
         // Show the action sheet
         var navCameraSheet = $ionicActionSheet.show({
@@ -198,6 +215,102 @@ angular.module('starter.controllers', [])
         }
         return false;
     };
+    $rootScope.getMaxStat = function(stat, index) {
+        stat = stat[0];
+        if (stat === undefined)
+        {
+            return;
+        }
+        if (index == "gender")
+        {
+            if (stat.female === undefined && stat.male === undefined)
+            {
+                return "F " + 0;
+            }
+            else if (stat.female === undefined)
+            {
+                return "M " + stat.male;
+            }
+            else if (stat.male === undefined)
+            {
+                return "F " + stat.female;
+            }
+            else if (stat.female > stat.male)
+            {
+                return "F " + stat.female;
+            }
+            else
+            {
+                return "M " + stat.male;
+            }
+        }
+        else
+        {
+            var age = "";
+            var count = 0;
+            if (stat.teens !== undefined && stat.teens > count)
+            {
+                var age = "10-20";
+                var count = stat.teens;
+            }
+            if (stat.twenties !== undefined && stat.twenties > count)
+            {
+                var age = "20-30";
+                var count = stat.twenties;
+            }
+            if (stat.thirties !== undefined && stat.thirties > count)
+            {
+                var age = "30-40";
+                var count = stat.thirties;
+            }
+            if (stat.forties !== undefined && stat.forties > count)
+            {
+                var age = "40-50";
+                var count = stat.forties;
+            }
+            if (stat.fifties !== undefined && stat.fifties > count)
+            {
+                var age = "50-60";
+                var count = stat.fifties;
+            }
+            return age + " " + count;
+        }
+    };
+    $rootScope.ifNGCompare = function(){
+        var detect = 'tab.compare-home, tab.compare-explore, tab.compare-notification, tab.compare-account, auth, forgetpassword, register, register2, root, intro';
+        if( detect.indexOf($state.current.name) > -1){
+            return true;
+        }
+        return false;
+    };
+    $rootScope.openCompare = function(){
+        if ($rootScope.compareList.length == 1)
+        {
+            $rootScope.popupMessage("Alert", "Please add more than 2 looks to compare");
+        }
+        else
+        {
+            var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+            $state.go('tab.compare-'+tab);
+        }
+    };
+    $rootScope.addCompare = function(_post_id) {
+        if ($rootScope.compareList.indexOf(_post_id) != -1)
+        {
+            $rootScope.compareIndexList[_post_id] = false;
+            $rootScope.compareList.splice($rootScope.compareList.indexOf(_post_id), 1);
+        }
+        else if ($rootScope.compareList.length >= 10)
+        {
+            $rootScope.popupMessage("Alert", "You can add up to 10 looks for compare");
+        }
+        else
+        {
+            $rootScope.compareIndexList[_post_id] = true;
+            $rootScope.compareList.push(_post_id);
+        }
+    };
+
     $rootScope.openOthersProfileMenu = function(){
         // Show the action sheet
         $ionicActionSheet.show({
@@ -829,6 +942,16 @@ angular.module('starter.controllers', [])
     if(user || $stateParams.refresh){
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+            }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -1036,6 +1159,15 @@ angular.module('starter.controllers', [])
             if(post.likes_count){
                 $scope.likesCount = post.likes_count.aggregate;
             }
+
+            if ($rootScope.compareList.indexOf(post.id) == -1)
+            {
+                $rootScope.compareIndexList[post.id] = false;
+            }
+            else
+            {
+                $rootScope.compareIndexList[post.id] = true;
+            }
         }
         else{
             $scope.noResult = true;
@@ -1222,6 +1354,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope) {
+    $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -1235,6 +1368,7 @@ angular.module('starter.controllers', [])
         }
         $scope.posts = posts;
         $scope.page++;
+        /*
         if(posts && posts.length < $rootScope.minimumCountToShowSample){
             $scope.showSample = true;
             FetchPosts.sample($rootScope.sampleCount).then(function(response){
@@ -1242,11 +1376,30 @@ angular.module('starter.controllers', [])
                 $scope.samples = samples;
             });
         }
-        /*
+        */
+        for (index = 0; index < posts.length; ++index) {
+            if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+            {
+                $rootScope.compareIndexList[posts[index].id] = false;
+            }
+            else
+            {
+                $rootScope.compareIndexList[posts[index].id] = true;
+            }
+            posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+            if (Math.floor(60 - posts[index].created_from%60) < 10)
+            {
+                posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":0"+Math.floor(60 - posts[index].created_from%60)
+            }
+            else
+            {
+                posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":"+Math.floor(60 - posts[index].created_from%60)
+            }
+        }
+
         if(posts && posts.length == 0){
             $scope.noResult = true;
         }
-        */
     });
 
     $scope.loadMore = function() {
@@ -1312,6 +1465,194 @@ angular.module('starter.controllers', [])
     }
 })
 
+.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope) {
+    $scope.showInstruction = true;
+    $scope.genderList = [
+        {value: 'male', label: 'Male'},
+        {value: 'female', label: 'Female'}
+    ];
+    $scope.ageList = [
+        {value: '10', label: '10-20'},
+        {value: '20', label: '20-30'},
+        {value: '30', label: '30-40'},
+        {value: '40', label: '40-50'},
+        {value: '50', label: 'Above 50'}
+    ];
+    $scope.tab = $state.current['name'].split("-")[1];
+    if ($rootScope.compareList.length >= 2 )
+    {
+        $scope.showInstruction = false;
+        FetchPosts.compare($rootScope.compareList).then(function(response){
+            posts = response;
+            $scope.posts = posts;
+            for (index = 0; index < posts.length; ++index) {
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (Math.floor(60 - posts[index].created_from%60) < 10)
+                {
+                    posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":0"+Math.floor(60 - posts[index].created_from%60)
+                }
+                else
+                {
+                    posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":"+Math.floor(60 - posts[index].created_from%60)
+                }
+            }
+        });        
+    }
+
+    $scope.$on('$ionicView.enter', function() {
+        $scope.showInstruction = true;
+        if ($rootScope.compareList.length >= 2 )
+        {
+            $scope.showInstruction = false;
+            FetchPosts.compare($rootScope.compareList).then(function(response){
+                posts = response;
+                $scope.posts = posts;
+                for (index = 0; index < posts.length; ++index) {
+                    posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                    if (Math.floor(60 - posts[index].created_from%60) < 10)
+                    {
+                        posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":0"+Math.floor(60 - posts[index].created_from%60)
+                    }
+                    else
+                    {
+                        posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":"+Math.floor(60 - posts[index].created_from%60)
+                    }
+                }
+            });        
+        }
+    });
+    $scope.removeCompare = function(_post) {
+        $(".post_"+_post.id).fadeOut(300, function() {
+            $rootScope.addCompare(_post.id);
+            $(".post_"+_post.id).remove();
+            $scope.posts.splice($scope.posts.indexOf(_post), 1);
+        });
+    }
+    $scope.sortPosts = function(sort, index) {
+        var post_list = $scope.posts;
+        var temp_post = [];
+        var percent_array = [];
+        var analytics;
+        var temp_max;
+        var sort_by_age = false;
+        var sort_by_gender = false;
+        if (sort.age !== undefined && sort.age !== "")
+        {
+            var sort_by_age = true;
+        }
+        if (sort.gender !== undefined && sort.gender !== "")
+        {
+            var sort_by_gender = true;
+        }
+
+        for(i = 0; i < post_list.length; i++)
+        {
+            percent_array[i] = 0;
+            analytics = post_list[i].post_analytic;
+            console.log(analytics);
+            analytics = analytics[0];
+            console.log(percent_array[i]);
+            if (sort_by_gender == true)
+            {
+                percent_array[i] = parseFloat($scope.calculatePercent(analytics, sort.gender));
+                console.log("Calculate Gender:"+percent_array[i]);
+            }
+            if (sort_by_age == true)
+            {
+                percent_array[i] = parseFloat($scope.calculatePercent(analytics, sort.age));
+                console.log("Calculate Age:"+percent_array[i]);
+            }
+            console.log(percent_array[i]);
+        }
+
+        console.log("compare Complete");
+        console.log(percent_array);
+        while(percent_array.length != 0)
+        {
+            temp_max = 0;
+            for(i = 0; i < percent_array.length; i++)
+            {
+                if (temp_max <= percent_array[i])
+                {
+                    temp_max = percent_array[i];
+                }
+            }
+            console.log(percent_array.indexOf(temp_max));
+            console.log(post_list[percent_array.indexOf(temp_max)]);
+            temp_post.push(post_list[percent_array.indexOf(temp_max)]);
+            percent_array.splice(percent_array.indexOf(temp_max), 1);
+        }
+        console.log(temp_post);
+        $scope.posts = temp_post;
+    };
+    $scope.calculatePercent = function(_stat, _index) {
+        _index = _index.value;
+        if (_index === "male")
+        {
+            if (_stat.male == 0)
+            {
+                console.log("Male 0");
+                return 0;
+            }
+            console.log("Male not 0");
+            return Math.round(parseInt(_stat.male)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
+        }
+        else if (_index === "female")
+        {
+            if (_stat.female == 0)
+            {
+                console.log("Female 0");
+                return 0;
+            }
+            console.log("Female not 0");
+            return Math.round(parseInt(_stat.female)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
+        }
+        else if (_index === "10")
+        {
+            if (_stat.teens == 0)
+            {
+                console.log("Teen 0");
+                return 0;
+            }
+            console.log("Teens not 0");
+            return Math.round(parseInt(_stat.teens)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+        else if (_index === "20")
+        {
+            if (_stat.twenties == 0)
+            {
+                console.log("Twenty 0");
+                return 0;
+            }
+            console.log("Twenty not 0");
+            return Math.round(parseInt(_stat.twenties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+        else if (_index === "30")
+        {
+            if (_stat.thirties == 0)
+            {
+                return 0;
+            }
+            return Math.round(parseInt(_stat.thirties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+        else if (_index === "40")
+        {
+            if (_stat.forties == 0)
+            {
+                return 0;
+            }
+            return Math.round(parseInt(_stat.forties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+        else if (_index === "50")
+        {
+            if (_stat.fifties == 0)
+            {
+                return 0;
+            }
+            return Math.round(parseInt(_stat.fifties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+    };
+})
 .controller('RankingCtrl', function($scope, FetchSchools) {
     $scope.schools = [];
     $scope.page = 1;

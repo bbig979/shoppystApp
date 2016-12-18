@@ -82,6 +82,14 @@ angular.module('starter.services', [])
             ,function(error){
                 $rootScope.handleHttpError(error);
             });
+        },
+        compare: function(postIDArray){
+            return $http.get($rootScope.baseURL+"/api/compare/"+postIDArray.join(",")).then(function(response){
+                return response.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
         }
     };
 })
