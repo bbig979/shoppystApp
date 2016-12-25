@@ -22,7 +22,16 @@
 
   	.desc_stat {
   		font-size: 13px;
+      color: #bbb;
+      position: relative;
+      top: -3px;
   	}
+
+    .desc_stat .fa {
+      font-size: 1.6em;
+      position: relative;
+      top: 3px;
+    }
   }
 
   .desc_bottom_row {
@@ -32,6 +41,7 @@
   	.desc_time {
   		float: right;
   		font-size: 13px;
+      color: #bbb;
   	}
 
   	.desc_name {

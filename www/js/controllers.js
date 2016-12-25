@@ -217,63 +217,224 @@ angular.module('starter.controllers', [])
     };
     $rootScope.getMaxStat = function(stat, index) {
         stat = stat[0];
-        if (stat === undefined)
-        {
-            return;
-        }
         if (index == "gender")
         {
-            if (stat.female === undefined && stat.male === undefined)
+            if (stat === undefined || stat.female === undefined && stat.male === undefined)
             {
-                return "F " + 0;
+                return "0";
             }
-            else if (stat.female === undefined)
+            else if (stat.female === undefined || stat.male === undefined)
             {
-                return "M " + stat.male;
-            }
-            else if (stat.male === undefined)
-            {
-                return "F " + stat.female;
+                return "100";
             }
             else if (stat.female > stat.male)
             {
-                return "F " + stat.female;
+                return stat.female/(parseInt(stat.female) + parseInt(stat.male))*100;
             }
             else
             {
-                return "M " + stat.male;
+                return stat.male/(parseInt(stat.female) + parseInt(stat.male))*100;
             }
         }
         else
         {
-            var age = "";
+            if (stat === undefined)
+            {
+                return "10-20 0";
+            }
+
+            var age = "10-20";
             var count = 0;
+            var total = 0;
+            if (stat.teens !== undefined)
+            {
+                total += parseInt(stat.teens);
+            }
+            if (stat.twenties !== undefined)
+            {
+                total += parseInt(stat.twenties);
+            }
+            if (stat.thirties !== undefined)
+            {
+                total += parseInt(stat.thirties);
+            }
+            if (stat.forties !== undefined)
+            {
+                total += parseInt(stat.forties);
+            }
+            if (stat.fifties !== undefined)
+            {
+                total += parseInt(stat.fifties);
+            }
+
             if (stat.teens !== undefined && stat.teens > count)
             {
-                var age = "10-20";
-                var count = stat.teens;
+                age = "10-20";
+                count = stat.teens;
             }
             if (stat.twenties !== undefined && stat.twenties > count)
             {
-                var age = "20-30";
-                var count = stat.twenties;
+                age = "20-30";
+                count = stat.twenties;
             }
             if (stat.thirties !== undefined && stat.thirties > count)
             {
-                var age = "30-40";
-                var count = stat.thirties;
+                age = "30-40";
+                count = stat.thirties;
             }
             if (stat.forties !== undefined && stat.forties > count)
             {
-                var age = "40-50";
-                var count = stat.forties;
+                age = "40-50";
+                count = stat.forties;
             }
             if (stat.fifties !== undefined && stat.fifties > count)
             {
-                var age = "50-60";
-                var count = stat.fifties;
+                age = "50-60";
+                count = stat.fifties;
             }
-            return age + " " + count;
+
+            if(total == 0)
+            {
+                return age + " 0";
+            }
+            else
+            {
+                return age + " " + (count/total*100);
+            }
+        }
+    };
+    $rootScope.getCardGenderStatIcon = function(stat) {
+        if (stat.female === undefined && stat.male === undefined)
+        {
+            return "fa-female";
+        }
+        else if (stat.female === undefined)
+        {
+            return "fa-male";
+        }
+        else if (stat.male === undefined)
+        {
+            return "fa-female";
+        }
+        else if (stat.female > stat.male)
+        {
+            return "fa-female";
+        }
+        else
+        {
+            return "fa-male";
+        }
+    };
+    $rootScope.getStatGenderPercent = function(stat, index) {
+        if (stat === undefined || stat.female === undefined && stat.male === undefined)
+        {
+            return "0";
+        }
+        else if (index == "m")
+        {
+            if (stat.female === undefined)
+            {
+                return "100";
+            }
+            else
+            {
+                return stat.male/(parseInt(stat.female) + parseInt(stat.male))*100;
+            }
+        }
+        else if (index == "f")
+        {
+            if (stat.male === undefined)
+            {
+                return "100";
+            }
+            else
+            {
+                return stat.female/(parseInt(stat.female) + parseInt(stat.male))*100;
+            }
+        }
+    };
+    $rootScope.getStatAgePercent = function(stat, index) {
+        if (stat === undefined)
+        {
+            return "0";
+        }
+
+        var total = 0;
+        if (stat.teens !== undefined)
+        {
+            total += parseInt(stat.teens);
+        }
+        if (stat.twenties !== undefined)
+        {
+            total += parseInt(stat.twenties);
+        }
+        if (stat.thirties !== undefined)
+        {
+            total += parseInt(stat.thirties);
+        }
+        if (stat.forties !== undefined)
+        {
+            total += parseInt(stat.forties);
+        }
+        if (stat.fifties !== undefined)
+        {
+            total += parseInt(stat.fifties);
+        }
+
+        if (index == "10")
+        {
+            if (stat.teens === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.teens/total*100;
+            }
+        }
+        if (index == "20")
+        {
+            if (stat.twenties === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.twenties/total*100;
+            }
+        }
+        if (index == "30")
+        {
+            if (stat.thirties === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.thirties/total*100;
+            }
+        }
+        if (index == "40")
+        {
+            if (stat.forties === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.forties/total*100;
+            }
+        }
+        if (index == "50")
+        {
+            if (stat.fifties === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.fifties/total*100;
+            }
         }
     };
     $rootScope.ifNGCompare = function(){
@@ -951,6 +1112,21 @@ angular.module('starter.controllers', [])
                 {
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
             }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -966,6 +1142,31 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -979,6 +1180,31 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1168,6 +1394,21 @@ angular.module('starter.controllers', [])
             {
                 $rootScope.compareIndexList[post.id] = true;
             }
+
+            post.created_from = Math.floor(((new Date() - new Date(post.created_at)) / 1000 / 60) % 1440);
+            if (post.created_from/60 > 16)
+            {
+                post.time_icon = "fa-hourglass-end";
+            }
+            else if (post.created_from/60 > 8)
+            {
+                post.time_icon = "fa-hourglass-half";
+            }
+            else
+            {
+                post.time_icon = "fa-hourglass-start";
+            }
+            post.created_from = ('0'+Math.floor(24 - post.created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - post.created_from%60)).slice(-2);
         }
         else{
             $scope.noResult = true;
@@ -1387,14 +1628,19 @@ angular.module('starter.controllers', [])
                 $rootScope.compareIndexList[posts[index].id] = true;
             }
             posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
-            if (Math.floor(60 - posts[index].created_from%60) < 10)
+            if (posts[index].created_from/60 > 16)
             {
-                posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":0"+Math.floor(60 - posts[index].created_from%60)
+                posts[index].time_icon = "fa-hourglass-end";
+            }
+            else if (posts[index].created_from/60 > 8)
+            {
+                posts[index].time_icon = "fa-hourglass-half";
             }
             else
             {
-                posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":"+Math.floor(60 - posts[index].created_from%60)
+                posts[index].time_icon = "fa-hourglass-start";
             }
+            posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
         }
 
         if(posts && posts.length == 0){
@@ -1405,6 +1651,31 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
+
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -1418,6 +1689,31 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
+
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1487,14 +1783,19 @@ angular.module('starter.controllers', [])
             $scope.posts = posts;
             for (index = 0; index < posts.length; ++index) {
                 posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
-                if (Math.floor(60 - posts[index].created_from%60) < 10)
+                if (posts[index].created_from/60 > 16)
                 {
-                    posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":0"+Math.floor(60 - posts[index].created_from%60)
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
                 }
                 else
                 {
-                    posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":"+Math.floor(60 - posts[index].created_from%60)
+                    posts[index].time_icon = "fa-hourglass-start";
                 }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
             }
         });        
     }
@@ -1509,14 +1810,19 @@ angular.module('starter.controllers', [])
                 $scope.posts = posts;
                 for (index = 0; index < posts.length; ++index) {
                     posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
-                    if (Math.floor(60 - posts[index].created_from%60) < 10)
+                    if (posts[index].created_from/60 > 16)
                     {
-                        posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":0"+Math.floor(60 - posts[index].created_from%60)
+                        posts[index].time_icon = "fa-hourglass-end";
+                    }
+                    else if (posts[index].created_from/60 > 8)
+                    {
+                        posts[index].time_icon = "fa-hourglass-half";
                     }
                     else
                     {
-                        posts[index].created_from = Math.floor(24 - posts[index].created_from/60)+":"+Math.floor(60 - posts[index].created_from%60)
+                        posts[index].time_icon = "fa-hourglass-start";
                     }
+                    posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
                 }
             });        
         }
