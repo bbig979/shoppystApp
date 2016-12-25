@@ -30,8 +30,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
-    var baseURL = 'http://app.snaplook.today';
-    // var baseURL = 'http://localhost:8000';
+    // var baseURL = 'http://app.snaplook.today';
+    var baseURL = 'http://localhost:8000';
     // var baseURL = 'http://192.168.56.1:8000';
     // var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
@@ -142,7 +142,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            index: null,
        }
     })
-
     .state('tab.post-comments-home', {
        url: '/post/:postId/comments/home',
        views: {
@@ -222,6 +221,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            'tab-account': {
                templateUrl: 'templates/tab-explore.html',
                controller: 'PostExploreCtrl'
+           }
+       }
+    })
+    .state('tab.compare-home', {
+       url: '/compare/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/compare.html',
+               controller: 'CompareCtrl'
+           }
+       }
+    })
+    .state('tab.compare-explore', {
+       url: '/compare/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/compare.html',
+               controller: 'CompareCtrl'
+           }
+       }
+    })
+    .state('tab.compare-account', {
+       url: '/compare/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/compare.html',
+               controller: 'CompareCtrl'
+           }
+       }
+    })
+    .state('tab.compare-notification', {
+       url: '/compare/notification',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/compare.html',
+               controller: 'CompareCtrl'
            }
        }
     })
@@ -361,7 +396,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
      }
   })
   .state('tab.change-password', {
-     url: '/change-passworrd',
+     url: '/change-password',
      views: {
          'tab-account': {
              templateUrl: 'templates/change-password.html',

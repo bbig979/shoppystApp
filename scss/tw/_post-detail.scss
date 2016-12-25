@@ -1,0 +1,63 @@
+#post-detail{
+  .add-compare-button {
+    background-color: #FF4C62;
+    border-color: #FF4C62;
+    color: #fff;
+    min-width: 30px;
+    min-height: 30px;
+    height: 30px;
+    margin-top: 7px;
+    margin-left: 5px;
+  }
+
+  .add-compare-button:before {
+    line-height: 28px;
+    font-size: 17px;
+  }
+
+  .analytics-group {
+    margin: 10px 30px;
+    text-align: center;
+
+    .analytics-gender {
+      float: left;
+      width: 30%;
+      text-align: center;
+
+      .analytics-number {
+        div {
+          float: left;
+          width: 50%;
+        }
+      }
+
+      .analytics-label {
+        clear: both;
+        div {
+          float: left;
+          width: 50%;
+        }
+      }
+    }
+
+    .analytics-age {
+      float: left;
+      width: 70%;
+
+      .analytics-number {
+        div {
+          float: left;
+          width: 20%;
+        }
+      }
+
+      .analytics-label {
+        clear: both;
+        div {
+          float: left;
+          width: 20%;
+        }
+      }
+    }
+  }  
+}

@@ -2,11 +2,16 @@ angular.module('starter.controllers', [])
 
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://app.snaplook.today';
     // $rootScope.baseURL = 'http://app.snaplook.today';
-    // $rootScope.baseURL = 'http://localhost:8000';
+    // $rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.sampleCount = 4;
+    $rootScope.minimumCountToShowSample = 4;
+    $rootScope.compareList = [];
+    $rootScope.compareIndexList = [];
+    $rootScope.nameLengthOnCard = 13;
 
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
@@ -111,6 +116,20 @@ angular.module('starter.controllers', [])
     $rootScope.goAccountOption = function(id){
         $state.go('tab.option-account',{userId: id});
     };
+    $rootScope.getNameOnCard = function(_first_name, _last_name){
+        if (_first_name.length >= $rootScope.nameLengthOnCard - 1)
+        {
+            return _first_name.substring(0, $rootScope.nameLengthOnCard) + "...";
+        }
+        else if (_first_name.length + _last_name.length >= $rootScope.nameLengthOnCard - 1)
+        {
+            return (_first_name + " " +_last_name).substring(0, $rootScope.nameLengthOnCard) + "...";
+        }
+        else
+        {
+            return _first_name + " " +_last_name;
+        }
+    };
     $rootScope.openCameraMenu = function(){
         // Show the action sheet
         var navCameraSheet = $ionicActionSheet.show({
@@ -196,6 +215,263 @@ angular.module('starter.controllers', [])
         }
         return false;
     };
+    $rootScope.getMaxStat = function(stat, index) {
+        stat = stat[0];
+        if (index == "gender")
+        {
+            if (stat === undefined || stat.female === undefined && stat.male === undefined)
+            {
+                return "0";
+            }
+            else if (stat.female === undefined || stat.male === undefined)
+            {
+                return "100";
+            }
+            else if (stat.female > stat.male)
+            {
+                return stat.female/(parseInt(stat.female) + parseInt(stat.male))*100;
+            }
+            else
+            {
+                return stat.male/(parseInt(stat.female) + parseInt(stat.male))*100;
+            }
+        }
+        else
+        {
+            if (stat === undefined)
+            {
+                return "10-20 0";
+            }
+
+            var age = "10-20";
+            var count = 0;
+            var total = 0;
+            if (stat.teens !== undefined)
+            {
+                total += parseInt(stat.teens);
+            }
+            if (stat.twenties !== undefined)
+            {
+                total += parseInt(stat.twenties);
+            }
+            if (stat.thirties !== undefined)
+            {
+                total += parseInt(stat.thirties);
+            }
+            if (stat.forties !== undefined)
+            {
+                total += parseInt(stat.forties);
+            }
+            if (stat.fifties !== undefined)
+            {
+                total += parseInt(stat.fifties);
+            }
+
+            if (stat.teens !== undefined && stat.teens > count)
+            {
+                age = "10-20";
+                count = stat.teens;
+            }
+            if (stat.twenties !== undefined && stat.twenties > count)
+            {
+                age = "20-30";
+                count = stat.twenties;
+            }
+            if (stat.thirties !== undefined && stat.thirties > count)
+            {
+                age = "30-40";
+                count = stat.thirties;
+            }
+            if (stat.forties !== undefined && stat.forties > count)
+            {
+                age = "40-50";
+                count = stat.forties;
+            }
+            if (stat.fifties !== undefined && stat.fifties > count)
+            {
+                age = "50-60";
+                count = stat.fifties;
+            }
+
+            if(total == 0)
+            {
+                return age + " 0";
+            }
+            else
+            {
+                return age + " " + (count/total*100);
+            }
+        }
+    };
+    $rootScope.getCardGenderStatIcon = function(stat) {
+        if (stat.female === undefined && stat.male === undefined)
+        {
+            return "fa-female";
+        }
+        else if (stat.female === undefined)
+        {
+            return "fa-male";
+        }
+        else if (stat.male === undefined)
+        {
+            return "fa-female";
+        }
+        else if (stat.female > stat.male)
+        {
+            return "fa-female";
+        }
+        else
+        {
+            return "fa-male";
+        }
+    };
+    $rootScope.getStatGenderPercent = function(stat, index) {
+        if (stat === undefined || stat.female === undefined && stat.male === undefined)
+        {
+            return "0";
+        }
+        else if (index == "m")
+        {
+            if (stat.female === undefined)
+            {
+                return "100";
+            }
+            else
+            {
+                return stat.male/(parseInt(stat.female) + parseInt(stat.male))*100;
+            }
+        }
+        else if (index == "f")
+        {
+            if (stat.male === undefined)
+            {
+                return "100";
+            }
+            else
+            {
+                return stat.female/(parseInt(stat.female) + parseInt(stat.male))*100;
+            }
+        }
+    };
+    $rootScope.getStatAgePercent = function(stat, index) {
+        if (stat === undefined)
+        {
+            return "0";
+        }
+
+        var total = 0;
+        if (stat.teens !== undefined)
+        {
+            total += parseInt(stat.teens);
+        }
+        if (stat.twenties !== undefined)
+        {
+            total += parseInt(stat.twenties);
+        }
+        if (stat.thirties !== undefined)
+        {
+            total += parseInt(stat.thirties);
+        }
+        if (stat.forties !== undefined)
+        {
+            total += parseInt(stat.forties);
+        }
+        if (stat.fifties !== undefined)
+        {
+            total += parseInt(stat.fifties);
+        }
+
+        if (index == "10")
+        {
+            if (stat.teens === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.teens/total*100;
+            }
+        }
+        if (index == "20")
+        {
+            if (stat.twenties === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.twenties/total*100;
+            }
+        }
+        if (index == "30")
+        {
+            if (stat.thirties === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.thirties/total*100;
+            }
+        }
+        if (index == "40")
+        {
+            if (stat.forties === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.forties/total*100;
+            }
+        }
+        if (index == "50")
+        {
+            if (stat.fifties === undefined)
+            {
+                return "0";
+            }
+            else
+            {
+                return stat.fifties/total*100;
+            }
+        }
+    };
+    $rootScope.ifNGCompare = function(){
+        var detect = 'tab.compare-home, tab.compare-explore, tab.compare-notification, tab.compare-account, auth, forgetpassword, register, register2, root, intro';
+        if( detect.indexOf($state.current.name) > -1){
+            return true;
+        }
+        return false;
+    };
+    $rootScope.openCompare = function(){
+        if ($rootScope.compareList.length == 1)
+        {
+            $rootScope.popupMessage("Alert", "Please add more than 2 looks to compare");
+        }
+        else
+        {
+            var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+            $state.go('tab.compare-'+tab);
+        }
+    };
+    $rootScope.addCompare = function(_post_id) {
+        if ($rootScope.compareList.indexOf(_post_id) != -1)
+        {
+            $rootScope.compareIndexList[_post_id] = false;
+            $rootScope.compareList.splice($rootScope.compareList.indexOf(_post_id), 1);
+        }
+        else if ($rootScope.compareList.length >= 10)
+        {
+            $rootScope.popupMessage("Alert", "You can add up to 10 looks for compare");
+        }
+        else
+        {
+            $rootScope.compareIndexList[_post_id] = true;
+            $rootScope.compareList.push(_post_id);
+        }
+    };
+
     $rootScope.openOthersProfileMenu = function(){
         // Show the action sheet
         $ionicActionSheet.show({
@@ -353,7 +629,6 @@ angular.module('starter.controllers', [])
 
 .controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading, $q) {
     $scope.registerData = {email:'',password:''};
-    localStorage.removeItem('have_seen_register2');
     $scope.register = function(registerData){
         $ionicLoading.show();
         $http({
@@ -387,16 +662,11 @@ angular.module('starter.controllers', [])
 
                 $ionicHistory.nextViewOptions({
                     disableBack: true
-                });ㅌ
+                });
 
                 $ionicLoading.hide();
 
-                if(localStorage.getItem('have_seen_register2')){
-                    $state.go('tab.home');
-                }
-                else{
-                    $state.go('register2');
-                }
+                $state.go('tab.home');
 
             })
             .error(function(){
@@ -434,12 +704,7 @@ angular.module('starter.controllers', [])
 
                         $ionicLoading.hide();
 
-                        if(localStorage.getItem('have_seen_register2')){
-                            $state.go('tab.home');
-                        }
-                        else{
-                            $state.go('register2');
-                        }
+                        $state.go('tab.home');
                     })
                         .error(function(){
                             $ionicLoading.hide();
@@ -512,12 +777,7 @@ angular.module('starter.controllers', [])
 
                                 $ionicLoading.hide();
 
-                                if(localStorage.getItem('have_seen_register2')){
-                                    $state.go('tab.home');
-                                }
-                                else{
-                                    $state.go('register2');
-                                }
+                                $state.go('tab.home');
                             })
                                 .error(function(){
                                     $ionicLoading.hide();
@@ -559,7 +819,6 @@ angular.module('starter.controllers', [])
         password: $stateParams.password
     }
 
-    localStorage.setItem('have_seen_register2', true);
     if(!localStorage.getItem('user')){
         $auth.login(credentials).then(function() {
         },
@@ -686,12 +945,7 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                if(localStorage.getItem('have_seen_register2')){
-                    $state.go('tab.home');
-                }
-                else{
-                    $state.go('register2');
-                }
+                $state.go('tab.home');
             })
             .error(function(){
                 $ionicLoading.hide();
@@ -729,12 +983,7 @@ angular.module('starter.controllers', [])
 
                     $ionicLoading.hide();
 
-                    if(localStorage.getItem('have_seen_register2')){
-                        $state.go('tab.home');
-                    }
-                    else{
-                        $state.go('register2');
-                    }
+                    $state.go('tab.home');
                 })
                 .error(function(){
                     $ionicLoading.hide();
@@ -807,12 +1056,7 @@ angular.module('starter.controllers', [])
 
                             $ionicLoading.hide();
 
-                            if(localStorage.getItem('have_seen_register2')){
-                                $state.go('tab.home');
-                            }
-                            else{
-                                $state.go('register2');
-                            }
+                            $state.go('tab.home');
                         })
                         .error(function(){
                             $ionicLoading.hide();
@@ -859,6 +1103,31 @@ angular.module('starter.controllers', [])
     if(user || $stateParams.refresh){
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -873,6 +1142,31 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -886,6 +1180,31 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1066,6 +1385,30 @@ angular.module('starter.controllers', [])
             if(post.likes_count){
                 $scope.likesCount = post.likes_count.aggregate;
             }
+
+            if ($rootScope.compareList.indexOf(post.id) == -1)
+            {
+                $rootScope.compareIndexList[post.id] = false;
+            }
+            else
+            {
+                $rootScope.compareIndexList[post.id] = true;
+            }
+
+            post.created_from = Math.floor(((new Date() - new Date(post.created_at)) / 1000 / 60) % 1440);
+            if (post.created_from/60 > 16)
+            {
+                post.time_icon = "fa-hourglass-end";
+            }
+            else if (post.created_from/60 > 8)
+            {
+                post.time_icon = "fa-hourglass-half";
+            }
+            else
+            {
+                post.time_icon = "fa-hourglass-start";
+            }
+            post.created_from = ('0'+Math.floor(24 - post.created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - post.created_from%60)).slice(-2);
         }
         else{
             $scope.noResult = true;
@@ -1251,11 +1594,13 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope) {
+    $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+    $scope.showSample = false;
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
@@ -1264,6 +1609,40 @@ angular.module('starter.controllers', [])
         }
         $scope.posts = posts;
         $scope.page++;
+        /*
+        if(posts && posts.length < $rootScope.minimumCountToShowSample){
+            $scope.showSample = true;
+            FetchPosts.sample($rootScope.sampleCount).then(function(response){
+                samples = response.data;
+                $scope.samples = samples;
+            });
+        }
+        */
+        for (index = 0; index < posts.length; ++index) {
+            if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+            {
+                $rootScope.compareIndexList[posts[index].id] = false;
+            }
+            else
+            {
+                $rootScope.compareIndexList[posts[index].id] = true;
+            }
+            posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+            if (posts[index].created_from/60 > 16)
+            {
+                posts[index].time_icon = "fa-hourglass-end";
+            }
+            else if (posts[index].created_from/60 > 8)
+            {
+                posts[index].time_icon = "fa-hourglass-half";
+            }
+            else
+            {
+                posts[index].time_icon = "fa-hourglass-start";
+            }
+            posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+        }
+
         if(posts && posts.length == 0){
             $scope.noResult = true;
         }
@@ -1272,6 +1651,31 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
+
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -1285,6 +1689,31 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
+
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1293,9 +1722,26 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
             $scope.page++;
             $scope.noResult = false;
+
+            if(posts && posts.length < $rootScope.minimumCountToShowSample){
+                if ($scope.showSample == true)
+                {
+                    return;
+                }
+                else
+                {
+                    $scope.showSample = true;
+                    FetchPosts.sample($rootScope.sampleCount).then(function(response){
+                        samples = response.data;
+                        $scope.samples = samples;
+                    });
+                }
+            }
+/*
             if(posts && posts.length == 0){
                 $scope.noResult = true;
             }
+*/
         });
     };
     $scope.submitSearch = function(search_term) {
@@ -1315,6 +1761,204 @@ angular.module('starter.controllers', [])
     }
 })
 
+.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope) {
+    $scope.showInstruction = true;
+    $scope.genderList = [
+        {value: 'male', label: 'Male'},
+        {value: 'female', label: 'Female'}
+    ];
+    $scope.ageList = [
+        {value: '10', label: '10-20'},
+        {value: '20', label: '20-30'},
+        {value: '30', label: '30-40'},
+        {value: '40', label: '40-50'},
+        {value: '50', label: 'Above 50'}
+    ];
+    $scope.tab = $state.current['name'].split("-")[1];
+    if ($rootScope.compareList.length >= 2 )
+    {
+        $scope.showInstruction = false;
+        FetchPosts.compare($rootScope.compareList).then(function(response){
+            posts = response;
+            $scope.posts = posts;
+            for (index = 0; index < posts.length; ++index) {
+                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].created_from/60 > 16)
+                {
+                    posts[index].time_icon = "fa-hourglass-end";
+                }
+                else if (posts[index].created_from/60 > 8)
+                {
+                    posts[index].time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    posts[index].time_icon = "fa-hourglass-start";
+                }
+                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            }
+        });        
+    }
+
+    $scope.$on('$ionicView.enter', function() {
+        $scope.showInstruction = true;
+        if ($rootScope.compareList.length >= 2 )
+        {
+            $scope.showInstruction = false;
+            FetchPosts.compare($rootScope.compareList).then(function(response){
+                posts = response;
+                $scope.posts = posts;
+                for (index = 0; index < posts.length; ++index) {
+                    posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                    if (posts[index].created_from/60 > 16)
+                    {
+                        posts[index].time_icon = "fa-hourglass-end";
+                    }
+                    else if (posts[index].created_from/60 > 8)
+                    {
+                        posts[index].time_icon = "fa-hourglass-half";
+                    }
+                    else
+                    {
+                        posts[index].time_icon = "fa-hourglass-start";
+                    }
+                    posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                }
+            });        
+        }
+    });
+    $scope.removeCompare = function(_post) {
+        $(".post_"+_post.id).fadeOut(300, function() {
+            $rootScope.addCompare(_post.id);
+            $(".post_"+_post.id).remove();
+            $scope.posts.splice($scope.posts.indexOf(_post), 1);
+        });
+    }
+    $scope.sortPosts = function(sort, index) {
+        var post_list = $scope.posts;
+        var temp_post = [];
+        var percent_array = [];
+        var analytics;
+        var temp_max;
+        var sort_by_age = false;
+        var sort_by_gender = false;
+        if (sort.age !== undefined && sort.age !== "")
+        {
+            var sort_by_age = true;
+        }
+        if (sort.gender !== undefined && sort.gender !== "")
+        {
+            var sort_by_gender = true;
+        }
+
+        for(i = 0; i < post_list.length; i++)
+        {
+            percent_array[i] = 0;
+            analytics = post_list[i].post_analytic;
+            console.log(analytics);
+            analytics = analytics[0];
+            console.log(percent_array[i]);
+            if (sort_by_gender == true)
+            {
+                percent_array[i] = parseFloat($scope.calculatePercent(analytics, sort.gender));
+                console.log("Calculate Gender:"+percent_array[i]);
+            }
+            if (sort_by_age == true)
+            {
+                percent_array[i] = parseFloat($scope.calculatePercent(analytics, sort.age));
+                console.log("Calculate Age:"+percent_array[i]);
+            }
+            console.log(percent_array[i]);
+        }
+
+        console.log("compare Complete");
+        console.log(percent_array);
+        while(percent_array.length != 0)
+        {
+            temp_max = 0;
+            for(i = 0; i < percent_array.length; i++)
+            {
+                if (temp_max <= percent_array[i])
+                {
+                    temp_max = percent_array[i];
+                }
+            }
+            console.log(percent_array.indexOf(temp_max));
+            console.log(post_list[percent_array.indexOf(temp_max)]);
+            temp_post.push(post_list[percent_array.indexOf(temp_max)]);
+            percent_array.splice(percent_array.indexOf(temp_max), 1);
+        }
+        console.log(temp_post);
+        $scope.posts = temp_post;
+    };
+    $scope.calculatePercent = function(_stat, _index) {
+        _index = _index.value;
+        if (_index === "male")
+        {
+            if (_stat.male == 0)
+            {
+                console.log("Male 0");
+                return 0;
+            }
+            console.log("Male not 0");
+            return Math.round(parseInt(_stat.male)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
+        }
+        else if (_index === "female")
+        {
+            if (_stat.female == 0)
+            {
+                console.log("Female 0");
+                return 0;
+            }
+            console.log("Female not 0");
+            return Math.round(parseInt(_stat.female)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
+        }
+        else if (_index === "10")
+        {
+            if (_stat.teens == 0)
+            {
+                console.log("Teen 0");
+                return 0;
+            }
+            console.log("Teens not 0");
+            return Math.round(parseInt(_stat.teens)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+        else if (_index === "20")
+        {
+            if (_stat.twenties == 0)
+            {
+                console.log("Twenty 0");
+                return 0;
+            }
+            console.log("Twenty not 0");
+            return Math.round(parseInt(_stat.twenties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+        else if (_index === "30")
+        {
+            if (_stat.thirties == 0)
+            {
+                return 0;
+            }
+            return Math.round(parseInt(_stat.thirties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+        else if (_index === "40")
+        {
+            if (_stat.forties == 0)
+            {
+                return 0;
+            }
+            return Math.round(parseInt(_stat.forties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+        else if (_index === "50")
+        {
+            if (_stat.fifties == 0)
+            {
+                return 0;
+            }
+            return Math.round(parseInt(_stat.fifties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+        }
+    };
+})
 .controller('RankingCtrl', function($scope, FetchSchools) {
     $scope.schools = [];
     $scope.page = 1;

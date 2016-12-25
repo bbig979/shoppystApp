@@ -59,6 +59,14 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(error);
             });
         },
+        sample: function(count){
+            return $http.get($rootScope.baseURL+"/api/explore/sample?count="+count).then(function(response){
+                return response.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
+        },
         user: function(userSlug, tab, pg) {
             return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
                 return response.data;
@@ -70,6 +78,14 @@ angular.module('starter.services', [])
         liked: function(slug, pg){
             return $http.get($rootScope.baseURL+"/api/"+slug+"/liked?page="+pg).then(function(response){
                 return response.data.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
+        },
+        compare: function(postIDArray){
+            return $http.get($rootScope.baseURL+"/api/compare/"+postIDArray.join(",")).then(function(response){
+                return response.data;
             }
             ,function(error){
                 $rootScope.handleHttpError(error);

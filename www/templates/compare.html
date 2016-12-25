@@ -1,0 +1,52 @@
+<ion-view class="masonry-post-list" id="compare" view-title="COMPARE LOOKS">
+    <ion-content ng-show="showInstruction">
+        <div>
+            <h2>How does compare posts work.</h2>
+            <p>1. (Show Compare button on post and point it.) Click compare button on post page. Multiple Page. CART?</p>
+            <p>2. (Show Compare button on the header and point it.) Click compare button on right top corner</p>
+            <p>3. (Show compare screen)You can compare how people like the post.</p>
+            <p>4. (Show sorting button on compare screen and point it.)Click sorting button to show ranking from the compare list.</p>
+        </div>
+    </ion-content>
+    <ion-content ng-show="!showInstruction">
+        <ion-content class="list sort">
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Gender
+                </div>
+                <select ng-model="sort.gender" ng-change="sortPosts(sort)" ng-options="opt.label for opt in genderList">
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Age Group
+                </div>
+                <select ng-model="sort.age" ng-change="sortPosts(sort)" ng-options="opt.label for opt in ageList">
+                    <option value="">Select Age Group</option>
+                </select>
+            </label>
+        </ion-content>
+        <ion-list>
+            <div class="posts">
+                <ion-item ng-repeat="post in posts" class="post item post_{{post.id}}">
+                    <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id)">
+                        <a class="post_img"></a>
+                    </ion-item>
+                    <div>
+                        <div class="desc_top_row">
+                            <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
+                            <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="removeCompare(post)"></button>
+                        </div>
+                        <div class="desc_bottom_row">
+                            <span class="desc_name"><a href="#/tab/account/{{post.user.slug}}/{{tab}}" onclick="event.stopPropagation();">{{getNameOnCard(post.user.first_name, post.user.last_name)}}</a></span>
+                            <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
+                        </div>
+                    </div>
+                </ion-item>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-view>

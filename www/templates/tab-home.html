@@ -18,7 +18,7 @@
                         <div class="profile-image" ng-click="goAccount(post.user.slug)" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )"></div>
                         <div class="user-name" ng-click="goAccount(post.user.slug)">{{ post.user.first_name }} {{ post.user.last_name }}</div>
                     </a>
-                    <span class="time-ago grey-small-font" am-time-ago="post.created_at | amUtc" ng-if="post"></span>
+                    <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
                     <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
                 </div>
                 <div class="post-image">
@@ -28,6 +28,37 @@
                     <button class= "button button-clear button-dark icon" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                     <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="commentsPage(post.id)"></button>
                     <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption(post.id)"></button>
+                    <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
+                </div>
+                <hr size="1" color="#e7e7e7">
+                <div class="analytics-group">
+                    <div class="analytics-gender">
+                        <div class="analytics-number">
+                            <div>{{ getStatGenderPercent(post.post_analytic[0], "m") }}%</div>
+                            <div>{{ getStatGenderPercent(post.post_analytic[0], "f") }}%</div>
+                        </div>
+                        <div class="analytics-label">
+                            <div>Male</div>
+                            <div>Female</div>
+                        </div>
+                    </div>
+                    <div class="analytics-age">
+                        <div class="analytics-number">
+                            <div>{{ getStatAgePercent(post.post_analytic[0], "10") }}%</div>                            
+                            <div>{{ getStatAgePercent(post.post_analytic[0], "20") }}%</div>                            
+                            <div>{{ getStatAgePercent(post.post_analytic[0], "30") }}%</div>                            
+                            <div>{{ getStatAgePercent(post.post_analytic[0], "40") }}%</div>                            
+                            <div>{{ getStatAgePercent(post.post_analytic[0], "50") }}%</div>                            
+                        </div>
+                        <div class="analytics-label">
+                            <div>10-20</div>                            
+                            <div>20-30</div>                            
+                            <div>30-40</div>                            
+                            <div>40-50</div>                            
+                            <div>50-60</div>                            
+                        </div>
+                    </div>
+                    <div class="clear"></div>
                 </div>
                 <hr size="1" color="#e7e7e7">
                 <div class="stats">
