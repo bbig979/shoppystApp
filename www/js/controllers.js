@@ -12,6 +12,8 @@ angular.module('starter.controllers', [])
     $rootScope.compareList = [];
     $rootScope.compareIndexList = [];
     $rootScope.nameLengthOnCard = 13;
+    $rootScope.stat_height = 0;
+    $rootScope.stat_label_height = 0;
 
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
@@ -474,7 +476,7 @@ angular.module('starter.controllers', [])
         return false;
     };
     $rootScope.openCompare = function(){
-        if ($rootScope.compareList.length == 1)
+        if ($rootScope.compareList.length < 2)
         {
             $rootScope.popupMessage("Alert", "Please add more than 2 looks to compare");
         }
@@ -1125,8 +1127,6 @@ angular.module('starter.controllers', [])
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
-    $scope.stat_height = 0;
-    $scope.stat_label_height = 0;
 
     var user = $rootScope.getCurrentUser();
 
@@ -1309,10 +1309,10 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.setAnalyticsHeight = function(){
-        if ($scope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
+        if ($rootScope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
         {
-            $scope.stat_height = $(".analytics-gender-avatar div").height();
-            $scope.stat_label_height = $(".analytics-gender .analytics-number .ng-binding").height();
+            $rootScope.stat_height = $(".analytics-gender-avatar div").height();
+            $rootScope.stat_label_height = $(".analytics-gender .analytics-number .ng-binding").height();
         }
     };
     $scope.getStatAgeHeight = function(stat, index, type) {
@@ -1402,11 +1402,11 @@ angular.module('starter.controllers', [])
 
         if (type == "padding")
         {
-            return $scope.stat_height - $scope.stat_label_height - ($scope.stat_height - $scope.stat_label_height)*val;
+            return $rootScope.stat_height - $rootScope.stat_label_height - ($rootScope.stat_height - $rootScope.stat_label_height)*val;
         }
         else if (type == "block")
         {
-            return ($scope.stat_height - $scope.stat_label_height)*val;
+            return ($rootScope.stat_height - $rootScope.stat_label_height)*val;
         }
     };
 
@@ -1793,10 +1793,10 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.setAnalyticsHeight = function(){
-        if ($scope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
+        if ($rootScope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
         {
-            $scope.stat_height = $(".analytics-gender-avatar div").height();
-            $scope.stat_label_height = $(".analytics-gender .analytics-number .ng-binding").height();
+            $rootScope.stat_height = $(".analytics-gender-avatar div").height();
+            $rootScope.stat_label_height = $(".analytics-gender .analytics-number .ng-binding").height();
         }
     };
     $scope.getStatAgeHeight = function(stat, index, type) {
@@ -1886,11 +1886,11 @@ angular.module('starter.controllers', [])
 
         if (type == "padding")
         {
-            return $scope.stat_height - $scope.stat_label_height - ($scope.stat_height - $scope.stat_label_height)*val;
+            return $rootScope.stat_height - $rootScope.stat_label_height - ($rootScope.stat_height - $rootScope.stat_label_height)*val;
         }
         else if (type == "block")
         {
-            return ($scope.stat_height - $scope.stat_label_height)*val;
+            return ($rootScope.stat_height - $rootScope.stat_label_height)*val;
         }
     };
     $scope.getStatAgeBlockColor = function(stat, index) {

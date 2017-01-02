@@ -609,6 +609,11 @@
   float: left;
   width: 20%;
 }
+/* line 98, ../../scss/tw/_post-detail.scss */
+#post-detail .time-ago i.fa {
+  margin-right: 3px;
+  font-size: 1.2em;
+}
 
 /* line 2, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image {
