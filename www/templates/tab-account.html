@@ -26,7 +26,7 @@
                 <div class="button button-clear icon col ion-social-instagram-outline account-instagram-btn clearfix" ng-click="goAccountSocialNetwork('instagram')" ng-if="account_info.social_networks.instagram"><span class="ion-social-facebook"></span></div>
                 <div class="button button-clear icon col ion-social-pinterest account-pinterest-btn clearfix" ng-click="goAccountSocialNetwork('pinterest')" ng-if="account_info.social_networks.pinterest"><span class="ion-social-facebook"></span></div>
             </div>
-            <div class="tabs-striped">
+            <div class="tabs-striped" ng-hide="notMe(account_info)">
                 <div class="tabs">
                     <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
                         Best
@@ -36,13 +36,13 @@
                     </a>
                 </div>
             </div>
-            <div class="tabs-striped">
+            <div class="tabs-striped" ng-hide="notMe(account_info)">
                 <div class="tabs">
                     <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
-                        <span ng-hide="notMe(account_info)">Best</span><span ng-show="account_info && notMe(account_info)">Best 10</span>
+                        <span ng-hide="notMe(account_info)">Best</span>
                     </a>
                     <a class="tab-item" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
-                        <span ng-hide="notMe(account_info)">New</span><span ng-show="account_info && notMe(account_info)">Today</span>
+                        <span ng-hide="notMe(account_info)">New</span>
                     </a>
                 </div>
             </div>

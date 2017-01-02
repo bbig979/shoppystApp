@@ -353,6 +353,35 @@ angular.module('starter.controllers', [])
             }
         }
     };
+
+    $rootScope.getStatGenderPercentForAvatar = function(stat, index) {
+        if (stat === undefined || stat.female === undefined && stat.male === undefined)
+        {
+            return 0;
+        }
+        else if (index == "m")
+        {
+            if (stat.female === undefined)
+            {
+                return 100;
+            }
+            else
+            {
+                return stat.male/(parseInt(stat.female) + parseInt(stat.male))*100;
+            }
+        }
+        else if (index == "f")
+        {
+            if (stat.male === undefined)
+            {
+                return 100;
+            }
+            else
+            {
+                return stat.female/(parseInt(stat.female) + parseInt(stat.male))*100;
+            }
+        }
+    };
     $rootScope.getStatAgePercent = function(stat, index) {
         if (stat === undefined)
         {
@@ -1096,6 +1125,9 @@ angular.module('starter.controllers', [])
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+    $scope.stat_height = 0;
+    $scope.stat_label_height = 0;
+
     var user = $rootScope.getCurrentUser();
 
     $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
@@ -1138,7 +1170,6 @@ angular.module('starter.controllers', [])
             $scope.page++;
         });
     }
-
     $scope.loadMore = function() {
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
@@ -1277,6 +1308,173 @@ angular.module('starter.controllers', [])
             }
         });
     };
+    $scope.setAnalyticsHeight = function(){
+        if ($scope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
+        {
+            $scope.stat_height = $(".analytics-gender-avatar div").height();
+            $scope.stat_label_height = $(".analytics-gender .analytics-number .ng-binding").height();
+        }
+    };
+    $scope.getStatAgeHeight = function(stat, index, type) {
+        var val = 0;
+        if (stat === undefined)
+        {
+            return "0";
+        }
+
+        var total = 0;
+        if (stat.teens !== undefined)
+        {
+            total += parseInt(stat.teens);
+        }
+        if (stat.twenties !== undefined)
+        {
+            total += parseInt(stat.twenties);
+        }
+        if (stat.thirties !== undefined)
+        {
+            total += parseInt(stat.thirties);
+        }
+        if (stat.forties !== undefined)
+        {
+            total += parseInt(stat.forties);
+        }
+        if (stat.fifties !== undefined)
+        {
+            total += parseInt(stat.fifties);
+        }
+
+        if (index == "10")
+        {
+            if (stat.teens === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.teens/total;
+            }
+        }
+        if (index == "20")
+        {
+            if (stat.twenties === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.twenties/total;
+            }
+        }
+        if (index == "30")
+        {
+            if (stat.thirties === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.thirties/total;
+            }
+        }
+        if (index == "40")
+        {
+            if (stat.forties === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.forties/total;
+            }
+        }
+        if (index == "50")
+        {
+            if (stat.fifties === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.fifties/total;
+            }
+        }
+
+        if (type == "padding")
+        {
+            return $scope.stat_height - $scope.stat_label_height - ($scope.stat_height - $scope.stat_label_height)*val;
+        }
+        else if (type == "block")
+        {
+            return ($scope.stat_height - $scope.stat_label_height)*val;
+        }
+    };
+
+    $scope.getStatAgeBlockColor = function(stat, index) {
+        if (stat === undefined)
+        {
+            return "other";
+        }
+
+        var age = "10";
+        var count = 0;
+        var total = 0;
+        if (stat.teens !== undefined)
+        {
+            total += parseInt(stat.teens);
+        }
+        if (stat.twenties !== undefined)
+        {
+            total += parseInt(stat.twenties);
+        }
+        if (stat.thirties !== undefined)
+        {
+            total += parseInt(stat.thirties);
+        }
+        if (stat.forties !== undefined)
+        {
+            total += parseInt(stat.forties);
+        }
+        if (stat.fifties !== undefined)
+        {
+            total += parseInt(stat.fifties);
+        }
+
+        if (stat.teens !== undefined && stat.teens > count)
+        {
+            age = "10";
+            count = stat.teens;
+        }
+        if (stat.twenties !== undefined && stat.twenties > count)
+        {
+            age = "20";
+            count = stat.twenties;
+        }
+        if (stat.thirties !== undefined && stat.thirties > count)
+        {
+            age = "30";
+            count = stat.thirties;
+        }
+        if (stat.forties !== undefined && stat.forties > count)
+        {
+            age = "40";
+            count = stat.forties;
+        }
+        if (stat.fifties !== undefined && stat.fifties > count)
+        {
+            age = "50";
+            count = stat.fifties;
+        }
+
+        if (age == index)
+        {
+            return "top";
+        }
+        else
+        {
+            return "other";
+        }
+    };
 })
 
 .controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope) {
@@ -1360,6 +1558,8 @@ angular.module('starter.controllers', [])
     $scope.commentSubmitting = false;
     $scope.lessThanHidingTime = false;
     $scope.noResult = false;
+    $scope.stat_height = 0;
+    $scope.stat_label_height = 0;
     var user = $rootScope.getCurrentUser();
 
     $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
@@ -1591,6 +1791,172 @@ angular.module('starter.controllers', [])
             }
             $scope.$broadcast('scroll.refreshComplete');
         });
+    };
+    $scope.setAnalyticsHeight = function(){
+        if ($scope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
+        {
+            $scope.stat_height = $(".analytics-gender-avatar div").height();
+            $scope.stat_label_height = $(".analytics-gender .analytics-number .ng-binding").height();
+        }
+    };
+    $scope.getStatAgeHeight = function(stat, index, type) {
+        var val = 0;
+        if (stat === undefined)
+        {
+            return "0";
+        }
+
+        var total = 0;
+        if (stat.teens !== undefined)
+        {
+            total += parseInt(stat.teens);
+        }
+        if (stat.twenties !== undefined)
+        {
+            total += parseInt(stat.twenties);
+        }
+        if (stat.thirties !== undefined)
+        {
+            total += parseInt(stat.thirties);
+        }
+        if (stat.forties !== undefined)
+        {
+            total += parseInt(stat.forties);
+        }
+        if (stat.fifties !== undefined)
+        {
+            total += parseInt(stat.fifties);
+        }
+
+        if (index == "10")
+        {
+            if (stat.teens === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.teens/total;
+            }
+        }
+        if (index == "20")
+        {
+            if (stat.twenties === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.twenties/total;
+            }
+        }
+        if (index == "30")
+        {
+            if (stat.thirties === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.thirties/total;
+            }
+        }
+        if (index == "40")
+        {
+            if (stat.forties === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.forties/total;
+            }
+        }
+        if (index == "50")
+        {
+            if (stat.fifties === undefined)
+            {
+                val = 0;
+            }
+            else
+            {
+                val = stat.fifties/total;
+            }
+        }
+
+        if (type == "padding")
+        {
+            return $scope.stat_height - $scope.stat_label_height - ($scope.stat_height - $scope.stat_label_height)*val;
+        }
+        else if (type == "block")
+        {
+            return ($scope.stat_height - $scope.stat_label_height)*val;
+        }
+    };
+    $scope.getStatAgeBlockColor = function(stat, index) {
+        if (stat === undefined)
+        {
+            return "other";
+        }
+
+        var age = "10";
+        var count = 0;
+        var total = 0;
+        if (stat.teens !== undefined)
+        {
+            total += parseInt(stat.teens);
+        }
+        if (stat.twenties !== undefined)
+        {
+            total += parseInt(stat.twenties);
+        }
+        if (stat.thirties !== undefined)
+        {
+            total += parseInt(stat.thirties);
+        }
+        if (stat.forties !== undefined)
+        {
+            total += parseInt(stat.forties);
+        }
+        if (stat.fifties !== undefined)
+        {
+            total += parseInt(stat.fifties);
+        }
+
+        if (stat.teens !== undefined && stat.teens > count)
+        {
+            age = "10";
+            count = stat.teens;
+        }
+        if (stat.twenties !== undefined && stat.twenties > count)
+        {
+            age = "20";
+            count = stat.twenties;
+        }
+        if (stat.thirties !== undefined && stat.thirties > count)
+        {
+            age = "30";
+            count = stat.thirties;
+        }
+        if (stat.forties !== undefined && stat.forties > count)
+        {
+            age = "40";
+            count = stat.forties;
+        }
+        if (stat.fifties !== undefined && stat.fifties > count)
+        {
+            age = "50";
+            count = stat.fifties;
+        }
+
+        if (age == index)
+        {
+            return "top";
+        }
+        else
+        {
+            return "other";
+        }
     };
 })
 
@@ -2066,6 +2432,11 @@ angular.module('starter.controllers', [])
     else
     {
         $scope.currentSlug = $stateParams.accountSlug;
+    }
+
+    if (user.slug != $scope.currentSlug)
+    {
+        $scope.activatedTab = 'new';
     }
 
     if (user.id || $stateParams.refresh) {

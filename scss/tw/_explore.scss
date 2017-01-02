@@ -28,7 +28,7 @@
   	}
 
     .desc_stat .fa {
-      font-size: 1.6em;
+      font-size: 1.4em;
       position: relative;
       top: 3px;
     }
@@ -42,6 +42,10 @@
   		float: right;
   		font-size: 13px;
       color: #bbb;
+
+      i.fa {
+        margin-right: 2px;
+      }
   	}
 
   	.desc_name {

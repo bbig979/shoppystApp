@@ -16,13 +16,14 @@
   }
 
   .analytics-group {
-    margin: 10px 30px;
+    margin: 10px 20px;
     text-align: center;
 
     .analytics-gender {
       float: left;
       width: 30%;
       text-align: center;
+      font-size: 0.7em;
 
       .analytics-number {
         div {
@@ -31,23 +32,57 @@
         }
       }
 
-      .analytics-label {
+      .analytics-gender-avatar {
         clear: both;
         div {
           float: left;
           width: 50%;
+          background-image: url('/img/gender-bg.png');
+          background-size: 100%;
+          line-height: 0%;
+
+          img {
+            width: 100%;
+          }
         }
       }
     }
 
+    .analytics-divider {
+      width: 5%;
+      height: 1px;
+      float: left;
+    }
+
     .analytics-age {
       float: left;
-      width: 70%;
+      width: 65%;
+      font-size: 0.7em;
 
-      .analytics-number {
-        div {
-          float: left;
-          width: 20%;
+      .analytics-age-graph-group {
+        float: left;
+        width: 20%;
+        border-bottom: 1px solid #e6e4e6;
+
+        .analytics-padding {
+          width: 100%;
+        }
+
+        .analytics-number {
+          width: 100%;
+        }
+
+        .analytics-block {
+          width: 70%;
+          margin: auto;
+        }
+
+        .analytics-block.top {
+          background-color: #777577;
+        }
+
+        .analytics-block.other {
+          background-color: #e6e4e6;
         }
       }
 
