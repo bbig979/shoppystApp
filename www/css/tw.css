@@ -285,7 +285,7 @@
 }
 /* line 30, ../../scss/tw/_explore.scss */
 #tab-explore .desc_top_row .desc_stat .fa {
-  font-size: 1.6em;
+  font-size: 1.4em;
   position: relative;
   top: 3px;
 }
@@ -300,7 +300,11 @@
   font-size: 13px;
   color: #bbb;
 }
-/* line 47, ../../scss/tw/_explore.scss */
+/* line 46, ../../scss/tw/_explore.scss */
+#tab-explore .desc_bottom_row .desc_time i.fa {
+  margin-right: 2px;
+}
+/* line 51, ../../scss/tw/_explore.scss */
 #tab-explore .desc_bottom_row .desc_name {
   font-size: 13px;
   font-weight: bold;
@@ -526,7 +530,7 @@
 }
 /* line 18, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group {
-  margin: 10px 30px;
+  margin: 10px 20px;
   text-align: center;
 }
 /* line 22, ../../scss/tw/_post-detail.scss */
@@ -534,36 +538,73 @@
   float: left;
   width: 30%;
   text-align: center;
+  font-size: 0.7em;
 }
-/* line 28, ../../scss/tw/_post-detail.scss */
+/* line 29, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-gender .analytics-number div {
   float: left;
   width: 50%;
 }
-/* line 34, ../../scss/tw/_post-detail.scss */
-#post-detail .analytics-group .analytics-gender .analytics-label {
+/* line 35, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-gender .analytics-gender-avatar {
   clear: both;
 }
-/* line 36, ../../scss/tw/_post-detail.scss */
-#post-detail .analytics-group .analytics-gender .analytics-label div {
+/* line 37, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-gender .analytics-gender-avatar div {
   float: left;
   width: 50%;
+  background-image: url("/img/gender-bg.png");
+  background-size: 100%;
+  line-height: 0%;
 }
-/* line 43, ../../scss/tw/_post-detail.scss */
+/* line 44, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-gender .analytics-gender-avatar div img {
+  width: 100%;
+}
+/* line 51, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-divider {
+  width: 5%;
+  height: 1px;
+  float: left;
+}
+/* line 57, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age {
   float: left;
-  width: 70%;
+  width: 65%;
+  font-size: 0.7em;
 }
-/* line 48, ../../scss/tw/_post-detail.scss */
-#post-detail .analytics-group .analytics-age .analytics-number div {
+/* line 62, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-age .analytics-age-graph-group {
   float: left;
   width: 20%;
+  border-bottom: 1px solid #e6e4e6;
 }
-/* line 54, ../../scss/tw/_post-detail.scss */
+/* line 67, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-padding {
+  width: 100%;
+}
+/* line 71, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-number {
+  width: 100%;
+}
+/* line 75, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-block {
+  width: 70%;
+  margin: auto;
+}
+/* line 80, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-block.top {
+  background-color: #777577;
+}
+/* line 84, ../../scss/tw/_post-detail.scss */
+#post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-block.other {
+  background-color: #e6e4e6;
+}
+/* line 89, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-label {
   clear: both;
 }
-/* line 56, ../../scss/tw/_post-detail.scss */
+/* line 91, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-label div {
   float: left;
   width: 20%;
@@ -633,7 +674,7 @@
 }
 /* line 18, ../../scss/tw/_home.scss */
 #home .analytics-group {
-  margin: 10px 30px;
+  margin: 10px 20px;
   text-align: center;
 }
 /* line 22, ../../scss/tw/_home.scss */
@@ -641,37 +682,79 @@
   float: left;
   width: 30%;
   text-align: center;
+  font-size: 0.7em;
 }
-/* line 28, ../../scss/tw/_home.scss */
+/* line 29, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-gender .analytics-number div {
   float: left;
   width: 50%;
 }
-/* line 34, ../../scss/tw/_home.scss */
-#home .analytics-group .analytics-gender .analytics-label {
+/* line 35, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-gender .analytics-gender-avatar {
   clear: both;
 }
-/* line 36, ../../scss/tw/_home.scss */
-#home .analytics-group .analytics-gender .analytics-label div {
+/* line 37, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-gender .analytics-gender-avatar div {
   float: left;
   width: 50%;
+  background-image: url("/img/gender-bg.png");
+  background-size: 100%;
+  line-height: 0%;
 }
-/* line 43, ../../scss/tw/_home.scss */
+/* line 44, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-gender .analytics-gender-avatar div img {
+  width: 100%;
+}
+/* line 51, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-divider {
+  width: 5%;
+  height: 1px;
+  float: left;
+}
+/* line 57, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age {
   float: left;
-  width: 70%;
+  width: 65%;
+  font-size: 0.7em;
 }
-/* line 48, ../../scss/tw/_home.scss */
-#home .analytics-group .analytics-age .analytics-number div {
+/* line 62, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-age .analytics-age-graph-group {
   float: left;
   width: 20%;
+  border-bottom: 1px solid #e6e4e6;
 }
-/* line 54, ../../scss/tw/_home.scss */
+/* line 67, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-age .analytics-age-graph-group .analytics-padding {
+  width: 100%;
+}
+/* line 71, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-age .analytics-age-graph-group .analytics-number {
+  width: 100%;
+}
+/* line 75, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-age .analytics-age-graph-group .analytics-block {
+  width: 70%;
+  margin: auto;
+}
+/* line 80, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-age .analytics-age-graph-group .analytics-block.top {
+  background-color: #777577;
+}
+/* line 84, ../../scss/tw/_home.scss */
+#home .analytics-group .analytics-age .analytics-age-graph-group .analytics-block.other {
+  background-color: #e6e4e6;
+}
+/* line 89, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-label {
   clear: both;
 }
-/* line 56, ../../scss/tw/_home.scss */
+/* line 91, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-label div {
   float: left;
   width: 20%;
+}
+/* line 99, ../../scss/tw/_home.scss */
+#home .time-ago i.fa {
+  margin-right: 3px;
+  font-size: 1.2em;
 }

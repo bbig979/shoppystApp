@@ -37,18 +37,54 @@
                             <div>{{ getStatGenderPercent(post.post_analytic[0], "m") }}%</div>
                             <div>{{ getStatGenderPercent(post.post_analytic[0], "f") }}%</div>
                         </div>
-                        <div class="analytics-label">
-                            <div>Male</div>
-                            <div>Female</div>
+                        <div class="analytics-gender-avatar">
+                            <div style="background-position-y: {{ getStatGenderPercentForAvatar(post.post_analytic[0], 'm') }}%">
+                                <img src="/img/gender-men.png">
+                            </div>
+                            <div style="background-position-y: {{ getStatGenderPercentForAvatar(post.post_analytic[0], 'f') }}%">
+                                <img src="/img/gender-women.png">
+                            </div>
                         </div>
                     </div>
+                    <div class="analytics-divider"></div>
+                    {{ setAnalyticsHeight() }}
                     <div class="analytics-age">
-                        <div class="analytics-number">
-                            <div>{{ getStatAgePercent(post.post_analytic[0], "10") }}%</div>                            
-                            <div>{{ getStatAgePercent(post.post_analytic[0], "20") }}%</div>                            
-                            <div>{{ getStatAgePercent(post.post_analytic[0], "30") }}%</div>                            
-                            <div>{{ getStatAgePercent(post.post_analytic[0], "40") }}%</div>                            
-                            <div>{{ getStatAgePercent(post.post_analytic[0], "50") }}%</div>                            
+                        <div class="analytics-age-graph">
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic[0], '10', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ getStatAgePercent(post.post_analytic[0], "10") }}%</div>                            
+                                </div>
+                                <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic[0], '10') }}" style="height: {{ getStatAgeHeight(post.post_analytic[0], '10', 'block') }}px;"></div>
+                            </div>
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic[0], '20', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ getStatAgePercent(post.post_analytic[0], "20") }}%</div>                            
+                                </div>
+                                <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic[0], '20') }}" style="height: {{ getStatAgeHeight(post.post_analytic[0], '20', 'block') }}px;"></div>
+                            </div>
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic[0], '30', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ getStatAgePercent(post.post_analytic[0], "30") }}%</div>                            
+                                </div>
+                                <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic[0], '30') }}" style="height: {{ getStatAgeHeight(post.post_analytic[0], '30', 'block') }}px;"></div>
+                            </div>
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic[0], '40', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ getStatAgePercent(post.post_analytic[0], "40") }}%</div>                            
+                                </div>
+                                <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic[0], '40') }}" style="height: {{ getStatAgeHeight(post.post_analytic[0], '40', 'block') }}px;"></div>
+                            </div>
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic[0], '50', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ getStatAgePercent(post.post_analytic[0], "50") }}%</div>                            
+                                </div>
+                                <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic[0], '50') }}" style="height: {{ getStatAgeHeight(post.post_analytic[0], '50', 'block') }}px;"></div>
+                            </div>
                         </div>
                         <div class="analytics-label">
                             <div>10-19</div>
