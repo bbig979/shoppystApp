@@ -11,7 +11,7 @@ angular.module('starter.controllers', [])
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.compareList = [];
     $rootScope.compareIndexList = [];
-    $rootScope.nameLengthOnCard = 10-20;
+    $rootScope.nameLengthOnCard = 12;
     $rootScope.stat_height = 0;
     $rootScope.stat_label_height = 0;
 
