@@ -11,7 +11,7 @@ angular.module('starter.controllers', [])
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.compareList = [];
     $rootScope.compareIndexList = [];
-    $rootScope.nameLengthOnCard = 13;
+    $rootScope.nameLengthOnCard = 12;
     $rootScope.stat_height = 0;
     $rootScope.stat_label_height = 0;
 
@@ -2202,17 +2202,39 @@ angular.module('starter.controllers', [])
     }
     $scope.sortPosts = function(sort, index) {
         var post_list = $scope.posts;
-        var temp_post = [];
         var percent_array = [];
         var analytics;
-        var temp_max;
+        var temp_var;
         var sort_by_age = false;
         var sort_by_gender = false;
-        if (sort.age !== undefined && sort.age !== "")
+        if (sort.gender == null && sort.age === undefined || sort.gender == undefined && sort.age === null || sort.gender == null && sort.age === null || sort.gender == undefined && sort.age === undefined)
+        {
+            FetchPosts.compare($rootScope.compareList).then(function(response){
+                posts = response;
+                $scope.posts = posts;
+                for (index = 0; index < posts.length; ++index) {
+                    posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                    if (posts[index].created_from/60 > 16)
+                    {
+                        posts[index].time_icon = "fa-hourglass-end";
+                    }
+                    else if (posts[index].created_from/60 > 8)
+                    {
+                        posts[index].time_icon = "fa-hourglass-half";
+                    }
+                    else
+                    {
+                        posts[index].time_icon = "fa-hourglass-start";
+                    }
+                    posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                }
+            });
+        }
+        if (sort.age !== undefined && sort.age !== "" && sort.age !== null)
         {
             var sort_by_age = true;
         }
-        if (sort.gender !== undefined && sort.gender !== "")
+        if (sort.gender !== undefined && sort.gender !== "" && sort.gender !== null)
         {
             var sort_by_gender = true;
         }
@@ -2220,42 +2242,33 @@ angular.module('starter.controllers', [])
         for(i = 0; i < post_list.length; i++)
         {
             percent_array[i] = 0;
-            analytics = post_list[i].post_analytic;
-            console.log(analytics);
-            analytics = analytics[0];
-            console.log(percent_array[i]);
+            analytics = post_list[i].post_analytic[0];
             if (sort_by_gender == true)
             {
                 percent_array[i] = parseFloat($scope.calculatePercent(analytics, sort.gender));
-                console.log("Calculate Gender:"+percent_array[i]);
             }
             if (sort_by_age == true)
             {
-                percent_array[i] = parseFloat($scope.calculatePercent(analytics, sort.age));
-                console.log("Calculate Age:"+percent_array[i]);
+                percent_array[i] += parseFloat($scope.calculatePercent(analytics, sort.age));
             }
-            console.log(percent_array[i]);
         }
 
-        console.log("compare Complete");
-        console.log(percent_array);
-        while(percent_array.length != 0)
+        for(i = 0; i < percent_array.length; i++)
         {
-            temp_max = 0;
-            for(i = 0; i < percent_array.length; i++)
+            for(j = i; j < percent_array.length; j++)
             {
-                if (temp_max <= percent_array[i])
+                if (percent_array[i] > percent_array[j])
                 {
-                    temp_max = percent_array[i];
+                    temp_var = percent_array[i];
+                    percent_array[i] = percent_array[j];
+                    percent_array[j] = temp_var;
+                    temp_var = post_list[i];
+                    post_list[i] = post_list[j];
+                    post_list[j] = temp_var;
                 }
             }
-            console.log(percent_array.indexOf(temp_max));
-            console.log(post_list[percent_array.indexOf(temp_max)]);
-            temp_post.push(post_list[percent_array.indexOf(temp_max)]);
-            percent_array.splice(percent_array.indexOf(temp_max), 1);
         }
-        console.log(temp_post);
-        $scope.posts = temp_post;
+        $scope.posts = post_list;
     };
     $scope.calculatePercent = function(_stat, _index) {
         _index = _index.value;
