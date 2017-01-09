@@ -2255,7 +2255,7 @@ angular.module('starter.controllers', [])
 
         for(i = 0; i < percent_array.length; i++)
         {
-            for(j = i; j < percent_array.length; j++)
+            for(j = 0; j < percent_array.length; j++)
             {
                 if (percent_array[i] > percent_array[j])
                 {
