@@ -2273,40 +2273,32 @@ angular.module('starter.controllers', [])
         {
             if (_stat.male == 0)
             {
-                console.log("Male 0");
                 return 0;
             }
-            console.log("Male not 0");
             return Math.round(parseInt(_stat.male)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
         }
         else if (_index === "female")
         {
             if (_stat.female == 0)
             {
-                console.log("Female 0");
                 return 0;
             }
-            console.log("Female not 0");
             return Math.round(parseInt(_stat.female)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
         }
         else if (_index === "10")
         {
             if (_stat.teens == 0)
             {
-                console.log("Teen 0");
                 return 0;
             }
-            console.log("Teens not 0");
             return Math.round(parseInt(_stat.teens)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
         }
         else if (_index === "20")
         {
             if (_stat.twenties == 0)
             {
-                console.log("Twenty 0");
                 return 0;
             }
-            console.log("Twenty not 0");
             return Math.round(parseInt(_stat.twenties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
         }
         else if (_index === "30")
