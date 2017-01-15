@@ -1,10 +1,8 @@
 angular.module('starter.controllers', [])
-
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    // $rootScope.baseURL = 'http://app.snaplook.today';
-    // $rootScope.baseURL = 'http://app.snaplook.today';
-    $rootScope.baseURL = 'http://localhost:8000';
+    $rootScope.baseURL = 'http://app.snaplook.today';
+    // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
@@ -2221,24 +2219,18 @@ angular.module('starter.controllers', [])
         {
             percent_array[i] = 0;
             analytics = post_list[i].post_analytic;
-            console.log(analytics);
             analytics = analytics[0];
-            console.log(percent_array[i]);
             if (sort_by_gender == true)
             {
-                percent_array[i] = parseFloat($scope.calculatePercent(analytics, sort.gender));
-                console.log("Calculate Gender:"+percent_array[i]);
+                percent_array[i] += parseFloat($scope.calculatePercent(analytics, sort.gender));
             }
             if (sort_by_age == true)
             {
-                percent_array[i] = parseFloat($scope.calculatePercent(analytics, sort.age));
-                console.log("Calculate Age:"+percent_array[i]);
+                percent_array[i] += parseFloat($scope.calculatePercent(analytics, sort.age));
             }
-            console.log(percent_array[i]);
         }
-
-        console.log("compare Complete");
         console.log(percent_array);
+
         while(percent_array.length != 0)
         {
             temp_max = 0;
@@ -2251,6 +2243,7 @@ angular.module('starter.controllers', [])
             }
             console.log(percent_array.indexOf(temp_max));
             console.log(post_list[percent_array.indexOf(temp_max)]);
+            
             temp_post.push(post_list[percent_array.indexOf(temp_max)]);
             percent_array.splice(percent_array.indexOf(temp_max), 1);
         }
