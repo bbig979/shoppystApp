@@ -1,10 +1,8 @@
 angular.module('starter.controllers', [])
-
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    // $rootScope.baseURL = 'http://app.snaplook.today';
-    // $rootScope.baseURL = 'http://app.snaplook.today';
-    $rootScope.baseURL = 'http://localhost:8000';
+    $rootScope.baseURL = 'http://app.snaplook.today';
+    // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
@@ -2245,14 +2243,13 @@ angular.module('starter.controllers', [])
             analytics = post_list[i].post_analytic[0];
             if (sort_by_gender == true)
             {
-                percent_array[i] = parseFloat($scope.calculatePercent(analytics, sort.gender));
+                percent_array[i] += parseFloat($scope.calculatePercent(analytics, sort.gender));
             }
             if (sort_by_age == true)
             {
                 percent_array[i] += parseFloat($scope.calculatePercent(analytics, sort.age));
             }
         }
-
         for(i = 0; i < percent_array.length; i++)
         {
             for(j = 0; j < percent_array.length; j++)
@@ -2276,40 +2273,32 @@ angular.module('starter.controllers', [])
         {
             if (_stat.male == 0)
             {
-                console.log("Male 0");
                 return 0;
             }
-            console.log("Male not 0");
             return Math.round(parseInt(_stat.male)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
         }
         else if (_index === "female")
         {
             if (_stat.female == 0)
             {
-                console.log("Female 0");
                 return 0;
             }
-            console.log("Female not 0");
             return Math.round(parseInt(_stat.female)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
         }
         else if (_index === "10")
         {
             if (_stat.teens == 0)
             {
-                console.log("Teen 0");
                 return 0;
             }
-            console.log("Teens not 0");
             return Math.round(parseInt(_stat.teens)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
         }
         else if (_index === "20")
         {
             if (_stat.twenties == 0)
             {
-                console.log("Twenty 0");
                 return 0;
             }
-            console.log("Twenty not 0");
             return Math.round(parseInt(_stat.twenties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
         }
         else if (_index === "30")
