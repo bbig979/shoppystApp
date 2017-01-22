@@ -553,7 +553,7 @@
 #post-detail .analytics-group .analytics-gender .analytics-gender-avatar div {
   float: left;
   width: 50%;
-  background-image: url("/img/gender-bg.png");
+  background-image: url("../img/gender-bg.png");
   background-size: 100%;
   line-height: 0%;
 }
@@ -702,7 +702,7 @@
 #home .analytics-group .analytics-gender .analytics-gender-avatar div {
   float: left;
   width: 50%;
-  background-image: url("/img/gender-bg.png");
+  background-image: url("../img/gender-bg.png");
   background-size: 100%;
   line-height: 0%;
 }
