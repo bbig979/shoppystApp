@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="today.snaplook.app" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Snaplook</name>
-  <description>
-        An Ionic Framework and Cordova project.
+  <description>&#xD;
+        An Ionic Framework and Cordova project.&#xD;
   </description>
   <author email="info@shoppyst.com" href="http://www.shoppyst.com/">Shoppyst INC</author>
   <content src="index.html"/>
@@ -12,11 +12,7 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="android-minSdkVersion" value="16"/>
   <preference name="BackupWebStorage" value="none"/>
-  <preference name="orientation" value="portrait" />
-<!--
-  <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="3000"/>
--->
+  <preference name="orientation" value="portrait"/>
   <preference name="SplashScreen" value="none"/>
   <preference name="ShowSplashScreenSpinner" value="false"/>
   <feature name="StatusBar">
@@ -78,4 +74,5 @@
     <splash src="resources/ios/splash/Default@2x~iphone.png" height="960" width="640"/>
     <splash src="resources/ios/splash/Default~iphone.png" height="480" width="320"/>
   </platform>
+  <allow-navigation href="http://192.168.1.240:8100"/>
 </widget>
