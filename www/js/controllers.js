@@ -229,11 +229,11 @@ angular.module('starter.controllers', [])
             }
             else if (stat.female > stat.male)
             {
-                return stat.female/(parseInt(stat.female) + parseInt(stat.male))*100;
+                return Math.round(stat.female/(parseInt(stat.female) + parseInt(stat.male))*100);
             }
             else
             {
-                return stat.male/(parseInt(stat.female) + parseInt(stat.male))*100;
+                return Math.round(stat.male/(parseInt(stat.female) + parseInt(stat.male))*100);
             }
         }
         else
@@ -299,7 +299,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return age + " " + (count/total*100);
+                return age + " " + Math.round(count/total*100*10);
             }
         }
     };
@@ -338,7 +338,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return stat.male/(parseInt(stat.female) + parseInt(stat.male))*100;
+                return Math.round(stat.male/(parseInt(stat.female) + parseInt(stat.male))*100);
             }
         }
         else if (index == "f")
@@ -349,7 +349,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return stat.female/(parseInt(stat.female) + parseInt(stat.male))*100;
+                return Math.round(stat.female/(parseInt(stat.female) + parseInt(stat.male))*100);
             }
         }
     };
@@ -367,7 +367,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return stat.male/(parseInt(stat.female) + parseInt(stat.male))*100;
+                return Math.round(stat.male/(parseInt(stat.female) + parseInt(stat.male))*100);
             }
         }
         else if (index == "f")
@@ -378,7 +378,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return stat.female/(parseInt(stat.female) + parseInt(stat.male))*100;
+                return Math.round(stat.female/(parseInt(stat.female) + parseInt(stat.male))*100);
             }
         }
     };
@@ -418,7 +418,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return stat.teens/total*100;
+                return Math.round(stat.teens/total*100);
             }
         }
         if (index == "20")
@@ -429,7 +429,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return stat.twenties/total*100;
+                return Math.round(stat.twenties/total*100);
             }
         }
         if (index == "30")
@@ -440,7 +440,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return stat.thirties/total*100;
+                return Math.round(stat.thirties/total*100);
             }
         }
         if (index == "40")
@@ -451,7 +451,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return stat.forties/total*100;
+                return Math.round(stat.forties/total*100);
             }
         }
         if (index == "50")
@@ -462,7 +462,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return stat.fifties/total*100;
+                return Math.round(stat.fifties/total*100);
             }
         }
     };
