@@ -299,7 +299,7 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                return age + " " + Math.round(count/total*100*10);
+                return age + " " + Math.round(count/total*100);
             }
         }
     };
@@ -326,6 +326,7 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.getStatGenderPercent = function(stat, index) {
+        console.log(stat);
         if (stat === undefined || stat.female === undefined && stat.male === undefined)
         {
             return "0";
@@ -2271,7 +2272,7 @@ angular.module('starter.controllers', [])
         _index = _index.value;
         if (_index === "male")
         {
-            if (_stat.male == 0)
+            if (_stat.male == 0 || _stat.male == 'undefined' || _stat.male == null)
             {
                 return 0;
             }
@@ -2279,7 +2280,7 @@ angular.module('starter.controllers', [])
         }
         else if (_index === "female")
         {
-            if (_stat.female == 0)
+            if (_stat.female == 0 || _stat.female == 'undefined' || _stat.female == null)
             {
                 return 0;
             }
@@ -2287,7 +2288,7 @@ angular.module('starter.controllers', [])
         }
         else if (_index === "10")
         {
-            if (_stat.teens == 0)
+            if (_stat.teens == 0 || _stat.teens == 'undefined' || _stat.teens == null)
             {
                 return 0;
             }
@@ -2295,7 +2296,7 @@ angular.module('starter.controllers', [])
         }
         else if (_index === "20")
         {
-            if (_stat.twenties == 0)
+            if (_stat.twenties == 0 || _stat.twenties == 'undefined' || _stat.twenties == null)
             {
                 return 0;
             }
@@ -2303,7 +2304,7 @@ angular.module('starter.controllers', [])
         }
         else if (_index === "30")
         {
-            if (_stat.thirties == 0)
+            if (_stat.thirties == 0 || _stat.thirties == 'undefined' || _stat.thirties == null)
             {
                 return 0;
             }
@@ -2311,7 +2312,7 @@ angular.module('starter.controllers', [])
         }
         else if (_index === "40")
         {
-            if (_stat.forties == 0)
+            if (_stat.forties == 0 || _stat.forties == 'undefined' || _stat.forties == null)
             {
                 return 0;
             }
@@ -2319,7 +2320,7 @@ angular.module('starter.controllers', [])
         }
         else if (_index === "50")
         {
-            if (_stat.fifties == 0)
+            if (_stat.fifties == 0 || _stat.fifties == 'undefined' || _stat.fifties == null)
             {
                 return 0;
             }
