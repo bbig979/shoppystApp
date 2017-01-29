@@ -2270,9 +2270,13 @@ angular.module('starter.controllers', [])
     };
     $scope.calculatePercent = function(_stat, _index) {
         _index = _index.value;
+        if (_stat === undefined)
+        {
+            return 0;
+        }
         if (_index === "male")
         {
-            if (_stat.male == 0 || _stat.male == 'undefined' || _stat.male == null)
+            if (_stat.male === undefined || _stat.male === null || _stat.male == 0)
             {
                 return 0;
             }
