@@ -326,31 +326,42 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.getStatGenderPercent = function(stat, index) {
-        console.log(stat);
         if (stat === undefined || stat.female === undefined && stat.male === undefined)
         {
             return "0";
         }
-        else if (index == "m")
+
+        var male_stat = parseInt(stat.male);
+        var female_stat = parseInt(stat.female);
+        if (index == "m")
         {
-            if (stat.female === undefined)
+            if (male_stat === 0)
+            {
+                return "0";
+            }
+            else if (female_stat === undefined || female_stat === null || female_stat === 0)
             {
                 return "100";
             }
             else
             {
-                return Math.round(stat.male/(parseInt(stat.female) + parseInt(stat.male))*100);
+                return Math.round(male_stat/(female_stat + male_stat)*100);
             }
         }
         else if (index == "f")
         {
-            if (stat.male === undefined)
+            if (female_stat === 0)
+            {
+                return "0";
+            }
+            else if (male_stat === undefined || male_stat === null || male_stat === 0)
             {
                 return "100";
             }
             else
             {
-                return Math.round(stat.female/(parseInt(stat.female) + parseInt(stat.male))*100);
+                console.log(parseInt(stat.male));
+                return Math.round(female_stat/(female_stat + male_stat)*100);
             }
         }
     };
@@ -360,26 +371,37 @@ angular.module('starter.controllers', [])
         {
             return 0;
         }
-        else if (index == "m")
+        var male_stat = parseInt(stat.male);
+        var female_stat = parseInt(stat.female);
+        if (index == "m")
         {
-            if (stat.female === undefined)
+            if (male_stat === 0)
+            {
+                return 0;
+            }
+            else if (female_stat === undefined || female_stat === null || female_stat === 0)
             {
                 return 100;
             }
             else
             {
-                return Math.round(stat.male/(parseInt(stat.female) + parseInt(stat.male))*100);
+                return Math.round(male_stat/(female_stat + male_stat)*100);
             }
         }
         else if (index == "f")
         {
-            if (stat.male === undefined)
+            if (female_stat === 0)
+            {
+                return 0;
+            }
+            else if (male_stat === undefined || male_stat === null || male_stat === 0)
             {
                 return 100;
             }
             else
             {
-                return Math.round(stat.female/(parseInt(stat.female) + parseInt(stat.male))*100);
+                console.log(parseInt(stat.male));
+                return Math.round(female_stat/(female_stat + male_stat)*100);
             }
         }
     };
