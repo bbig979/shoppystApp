@@ -15,7 +15,7 @@
                     Gender
                 </div>
                 <select ng-model="sort.gender" ng-change="sortPosts(sort)" ng-options="opt.label for opt in genderList">
-                    <option value="">Select Gender</option>
+                    <option value="">All Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                 </select>
@@ -25,7 +25,7 @@
                     Age Group
                 </div>
                 <select ng-model="sort.age" ng-change="sortPosts(sort)" ng-options="opt.label for opt in ageList">
-                    <option value="">Select Age Group</option>
+                    <option value="">All Age Group</option>
                 </select>
             </label>
         </ion-content>
