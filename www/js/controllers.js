@@ -1166,6 +1166,14 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
+                if (posts[index].post_analytic.length == 0)
+                {
+                    posts[index].show_stat = false;
+                }
+                else
+                {
+                    posts[index].show_stat = true;
+                }
                 posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
                 if (posts[index].created_from/60 > 16)
                 {
@@ -1615,6 +1623,22 @@ angular.module('starter.controllers', [])
             {
                 $rootScope.compareIndexList[post.id] = true;
             }
+
+            if (post.post_analytic.length == 0)
+            {
+                post.show_stat = false;
+            }
+            else
+            {
+                post.show_stat = true;
+            }
+
+            if (post.created_from === undefined || post.created_from == "")
+            {
+                post.created_from = 0;
+            }
+
+            post.created_from = ('0'+Math.floor(24 - post.created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - post.created_from%60)).slice(-2);
 
             post.created_from = Math.floor(((new Date() - new Date(post.created_at)) / 1000 / 60) % 1440);
             if (post.created_from/60 > 16)

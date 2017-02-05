@@ -29,7 +29,7 @@
                 <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption()"></button>
             </div>
             <hr size="1" color="#e7e7e7">
-            <div class="analytics-group">
+            <div class="analytics-group" ng-show="post.show_stat">
                 <div class="analytics-gender">
                     <div class="analytics-number">
                         <div>{{ getStatGenderPercent(post.post_analytic[0], "m") }}%</div>
