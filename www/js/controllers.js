@@ -1174,7 +1174,11 @@ angular.module('starter.controllers', [])
                 {
                     posts[index].show_stat = true;
                 }
-                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+
+                var t = posts[index].created_at.split(/[- :]/);
+                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
                 if (posts[index].created_from/60 > 16)
                 {
                     posts[index].time_icon = "fa-hourglass-end";
@@ -1212,7 +1216,19 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].post_analytic.length == 0)
+                {
+                    posts[index].show_stat = false;
+                }
+                else
+                {
+                    posts[index].show_stat = true;
+                }
+
+                var t = posts[index].created_at.split(/[- :]/);
+                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
                 if (posts[index].created_from/60 > 16)
                 {
                     posts[index].time_icon = "fa-hourglass-end";
@@ -1250,7 +1266,19 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                if (posts[index].post_analytic.length == 0)
+                {
+                    posts[index].show_stat = false;
+                }
+                else
+                {
+                    posts[index].show_stat = true;
+                }
+
+                var t = posts[index].created_at.split(/[- :]/);
+                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
                 if (posts[index].created_from/60 > 16)
                 {
                     posts[index].time_icon = "fa-hourglass-end";
@@ -1633,14 +1661,10 @@ angular.module('starter.controllers', [])
                 post.show_stat = true;
             }
 
-            if (post.created_from === undefined || post.created_from == "")
-            {
-                post.created_from = 0;
-            }
+            var t = post.created_at.split(/[- :]/);
+            t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
 
-            post.created_from = ('0'+Math.floor(24 - post.created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - post.created_from%60)).slice(-2);
-
-            post.created_from = Math.floor(((new Date() - new Date(post.created_at)) / 1000 / 60) % 1440);
+            post.created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
             if (post.created_from/60 > 16)
             {
                 post.time_icon = "fa-hourglass-end";
@@ -2038,7 +2062,11 @@ angular.module('starter.controllers', [])
             {
                 $rootScope.compareIndexList[posts[index].id] = true;
             }
-            posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+
+            var t = posts[index].created_at.split(/[- :]/);
+            t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+            posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
             if (posts[index].created_from/60 > 16)
             {
                 posts[index].time_icon = "fa-hourglass-end";
@@ -2071,7 +2099,11 @@ angular.module('starter.controllers', [])
                 {
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
-                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+
+                var t = posts[index].created_at.split(/[- :]/);
+                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
                 if (posts[index].created_from/60 > 16)
                 {
                     posts[index].time_icon = "fa-hourglass-end";
@@ -2109,7 +2141,11 @@ angular.module('starter.controllers', [])
                 {
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
-                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+
+                var t = posts[index].created_at.split(/[- :]/);
+                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
                 if (posts[index].created_from/60 > 16)
                 {
                     posts[index].time_icon = "fa-hourglass-end";
@@ -2193,7 +2229,11 @@ angular.module('starter.controllers', [])
             posts = response;
             $scope.posts = posts;
             for (index = 0; index < posts.length; ++index) {
-                posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                var t = posts[index].created_at.split(/[- :]/);
+                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
+
                 if (posts[index].created_from/60 > 16)
                 {
                     posts[index].time_icon = "fa-hourglass-end";
@@ -2220,7 +2260,10 @@ angular.module('starter.controllers', [])
                 posts = response;
                 $scope.posts = posts;
                 for (index = 0; index < posts.length; ++index) {
-                    posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                    var t = posts[index].created_at.split(/[- :]/);
+                    t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+                    posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
                     if (posts[index].created_from/60 > 16)
                     {
                         posts[index].time_icon = "fa-hourglass-end";
@@ -2258,7 +2301,10 @@ angular.module('starter.controllers', [])
                 posts = response;
                 $scope.posts = posts;
                 for (index = 0; index < posts.length; ++index) {
-                    posts[index].created_from = Math.floor(((new Date() - new Date(posts[index].created_at)) / 1000 / 60) % 1440);
+                    var t = posts[index].created_at.split(/[- :]/);
+                    t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+                    posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
                     if (posts[index].created_from/60 > 16)
                     {
                         posts[index].time_icon = "fa-hourglass-end";
