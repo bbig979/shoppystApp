@@ -7,6 +7,14 @@
     display: block !important;
 }
 
+.bar.item-input-inset .item-input-wrapper {
+    margin-top: 0px;
+}
+
+.platform-ios.platform-cordova:not(.fullscreen) #tab-explore .bar-header:not(.bar-subheader).item-input-inset .item-input-wrapper {
+    margin-top: 0px !important;
+}
+
 .clearfix:before,
 .clearfix:after {
   content: " ";

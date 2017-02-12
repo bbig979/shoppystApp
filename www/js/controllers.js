@@ -513,10 +513,10 @@ angular.module('starter.controllers', [])
             $rootScope.compareIndexList[_post_id] = false;
             $rootScope.compareList.splice($rootScope.compareList.indexOf(_post_id), 1);
         }
-        else if ($rootScope.compareList.length >= 10)
+/*        else if ($rootScope.compareList.length >= 10)
         {
             $rootScope.popupMessage("Alert", "You can add up to 10 looks for compare");
-        }
+        }*/
         else
         {
             $rootScope.compareIndexList[_post_id] = true;
@@ -1854,6 +1854,42 @@ angular.module('starter.controllers', [])
                 if(post.likes_count){
                     $scope.likesCount = post.likes_count.aggregate;
                 }
+
+                if ($rootScope.compareList.indexOf(post.id) == -1)
+                {
+                    $rootScope.compareIndexList[post.id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[post.id] = true;
+                }
+
+                if (post.post_analytic.length == 0)
+                {
+                    post.show_stat = false;
+                }
+                else
+                {
+                    post.show_stat = true;
+                }
+
+                var t = post.created_at.split(/[- :]/);
+                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+                post.created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
+                if (post.created_from/60 > 16)
+                {
+                    post.time_icon = "fa-hourglass-end";
+                }
+                else if (post.created_from/60 > 8)
+                {
+                    post.time_icon = "fa-hourglass-half";
+                }
+                else
+                {
+                    post.time_icon = "fa-hourglass-start";
+                }
+                post.created_from = ('0'+Math.floor(24 - post.created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - post.created_from%60)).slice(-2);
             }
             else{
                 $scope.noResult = true;
