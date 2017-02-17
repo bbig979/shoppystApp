@@ -489,6 +489,36 @@ angular.module('starter.controllers', [])
             }
         }
     };
+    $rootScope.calculateCreatedFrom = function(val){
+        var t = val.split(/[- :]/);
+        t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+
+        return Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
+    };
+    $rootScope.calculateGetTimeIcon = function(val){
+        if (val/60 > 16)
+        {
+            return "fa-hourglass-end";
+        }
+        else if (val/60 > 8)
+        {
+            return "fa-hourglass-half";
+        }
+        else
+        {
+            return "fa-hourglass-start";
+        }   
+    };
+    $rootScope.manipulateCreatedFrom = function(val){
+        if (Math.floor(24 - val/60) > 0)
+        {
+            return Math.floor(24 - val/60) + "h";
+        }
+        else
+        {
+            return Math.floor(60 - val%60) + "m";
+        }
+    };
     $rootScope.ifNGCompare = function(){
         var detect = 'tab.compare-home, tab.compare-explore, tab.compare-notification, tab.compare-account, auth, forgetpassword, register, register2, root, intro';
         if( detect.indexOf($state.current.name) > -1){
@@ -1175,23 +1205,9 @@ angular.module('starter.controllers', [])
                     posts[index].show_stat = true;
                 }
 
-                var t = posts[index].created_at.split(/[- :]/);
-                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-                if (posts[index].created_from/60 > 16)
-                {
-                    posts[index].time_icon = "fa-hourglass-end";
-                }
-                else if (posts[index].created_from/60 > 8)
-                {
-                    posts[index].time_icon = "fa-hourglass-half";
-                }
-                else
-                {
-                    posts[index].time_icon = "fa-hourglass-start";
-                }
-                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1225,23 +1241,9 @@ angular.module('starter.controllers', [])
                     posts[index].show_stat = true;
                 }
 
-                var t = posts[index].created_at.split(/[- :]/);
-                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-                if (posts[index].created_from/60 > 16)
-                {
-                    posts[index].time_icon = "fa-hourglass-end";
-                }
-                else if (posts[index].created_from/60 > 8)
-                {
-                    posts[index].time_icon = "fa-hourglass-half";
-                }
-                else
-                {
-                    posts[index].time_icon = "fa-hourglass-start";
-                }
-                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1275,23 +1277,9 @@ angular.module('starter.controllers', [])
                     posts[index].show_stat = true;
                 }
 
-                var t = posts[index].created_at.split(/[- :]/);
-                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-                if (posts[index].created_from/60 > 16)
-                {
-                    posts[index].time_icon = "fa-hourglass-end";
-                }
-                else if (posts[index].created_from/60 > 8)
-                {
-                    posts[index].time_icon = "fa-hourglass-half";
-                }
-                else
-                {
-                    posts[index].time_icon = "fa-hourglass-start";
-                }
-                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
@@ -1660,24 +1648,9 @@ angular.module('starter.controllers', [])
             {
                 post.show_stat = true;
             }
-
-            var t = post.created_at.split(/[- :]/);
-            t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-            post.created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-            if (post.created_from/60 > 16)
-            {
-                post.time_icon = "fa-hourglass-end";
-            }
-            else if (post.created_from/60 > 8)
-            {
-                post.time_icon = "fa-hourglass-half";
-            }
-            else
-            {
-                post.time_icon = "fa-hourglass-start";
-            }
-            post.created_from = ('0'+Math.floor(24 - post.created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - post.created_from%60)).slice(-2);
+            post.created_from = $rootScope.calculateCreatedFrom(post.created_at);
+            post.time_icon = $rootScope.calculateGetTimeIcon(post.created_from);
+            post.created_from = $rootScope.manipulateCreatedFrom(post.created_from);
         }
         else{
             $scope.noResult = true;
@@ -1873,23 +1846,9 @@ angular.module('starter.controllers', [])
                     post.show_stat = true;
                 }
 
-                var t = post.created_at.split(/[- :]/);
-                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-                post.created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-                if (post.created_from/60 > 16)
-                {
-                    post.time_icon = "fa-hourglass-end";
-                }
-                else if (post.created_from/60 > 8)
-                {
-                    post.time_icon = "fa-hourglass-half";
-                }
-                else
-                {
-                    post.time_icon = "fa-hourglass-start";
-                }
-                post.created_from = ('0'+Math.floor(24 - post.created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - post.created_from%60)).slice(-2);
+                post.created_from = $rootScope.calculateCreatedFrom(post.created_at);
+                post.time_icon = $rootScope.calculateGetTimeIcon(post.created_from);
+                post.created_from = $rootScope.manipulateCreatedFrom(post.created_from);
             }
             else{
                 $scope.noResult = true;
@@ -2099,23 +2058,9 @@ angular.module('starter.controllers', [])
                 $rootScope.compareIndexList[posts[index].id] = true;
             }
 
-            var t = posts[index].created_at.split(/[- :]/);
-            t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-            posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-            if (posts[index].created_from/60 > 16)
-            {
-                posts[index].time_icon = "fa-hourglass-end";
-            }
-            else if (posts[index].created_from/60 > 8)
-            {
-                posts[index].time_icon = "fa-hourglass-half";
-            }
-            else
-            {
-                posts[index].time_icon = "fa-hourglass-start";
-            }
-            posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+            posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+            posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+            posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
         }
 
         if(posts && posts.length == 0){
@@ -2136,23 +2081,9 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                var t = posts[index].created_at.split(/[- :]/);
-                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-                if (posts[index].created_from/60 > 16)
-                {
-                    posts[index].time_icon = "fa-hourglass-end";
-                }
-                else if (posts[index].created_from/60 > 8)
-                {
-                    posts[index].time_icon = "fa-hourglass-half";
-                }
-                else
-                {
-                    posts[index].time_icon = "fa-hourglass-start";
-                }
-                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
 
             if(!response.next_page_url){
@@ -2178,23 +2109,9 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                var t = posts[index].created_at.split(/[- :]/);
-                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-                if (posts[index].created_from/60 > 16)
-                {
-                    posts[index].time_icon = "fa-hourglass-end";
-                }
-                else if (posts[index].created_from/60 > 8)
-                {
-                    posts[index].time_icon = "fa-hourglass-half";
-                }
-                else
-                {
-                    posts[index].time_icon = "fa-hourglass-start";
-                }
-                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
 
             $scope.noMoreItemsAvailable = false;
@@ -2265,24 +2182,9 @@ angular.module('starter.controllers', [])
             posts = response;
             $scope.posts = posts;
             for (index = 0; index < posts.length; ++index) {
-                var t = posts[index].created_at.split(/[- :]/);
-                t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-                posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-
-                if (posts[index].created_from/60 > 16)
-                {
-                    posts[index].time_icon = "fa-hourglass-end";
-                }
-                else if (posts[index].created_from/60 > 8)
-                {
-                    posts[index].time_icon = "fa-hourglass-half";
-                }
-                else
-                {
-                    posts[index].time_icon = "fa-hourglass-start";
-                }
-                posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
         });        
     }
@@ -2296,23 +2198,9 @@ angular.module('starter.controllers', [])
                 posts = response;
                 $scope.posts = posts;
                 for (index = 0; index < posts.length; ++index) {
-                    var t = posts[index].created_at.split(/[- :]/);
-                    t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-                    posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-                    if (posts[index].created_from/60 > 16)
-                    {
-                        posts[index].time_icon = "fa-hourglass-end";
-                    }
-                    else if (posts[index].created_from/60 > 8)
-                    {
-                        posts[index].time_icon = "fa-hourglass-half";
-                    }
-                    else
-                    {
-                        posts[index].time_icon = "fa-hourglass-start";
-                    }
-                    posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
                 }
             });        
         }
@@ -2337,23 +2225,9 @@ angular.module('starter.controllers', [])
                 posts = response;
                 $scope.posts = posts;
                 for (index = 0; index < posts.length; ++index) {
-                    var t = posts[index].created_at.split(/[- :]/);
-                    t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-                    posts[index].created_from = Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-                    if (posts[index].created_from/60 > 16)
-                    {
-                        posts[index].time_icon = "fa-hourglass-end";
-                    }
-                    else if (posts[index].created_from/60 > 8)
-                    {
-                        posts[index].time_icon = "fa-hourglass-half";
-                    }
-                    else
-                    {
-                        posts[index].time_icon = "fa-hourglass-start";
-                    }
-                    posts[index].created_from = ('0'+Math.floor(24 - posts[index].created_from/60)).slice(-2)+":"+('0'+Math.floor(60 - posts[index].created_from%60)).slice(-2);
+                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
                 }
             });
         }
