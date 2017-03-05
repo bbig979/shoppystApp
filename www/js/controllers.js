@@ -48,6 +48,9 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.goPostDetail = function(id, user, posts, index){
+        if (!$rootScope.canClickInList()) {
+            return;
+        }
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-detail-'+tab,{postId: id, user: user, posts: posts, index: index});
     };
@@ -56,6 +59,9 @@ angular.module('starter.controllers', [])
         $state.go('tab.post-likers-'+tab,{postId: id});
     };
     $rootScope.goAccount = function(slug){
+        if (!$rootScope.canClickInList()) {
+            return;
+        }
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-'+tab,{accountSlug: slug});
     };
@@ -304,19 +310,23 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.getCardGenderStatIcon = function(stat) {
-        if (stat.female === undefined && stat.male === undefined)
+        if (stat == undefined || stat.length == 0)
+        {
+            return;
+        }
+        if (stat[0].female === undefined && stat[0].male === undefined)
         {
             return "fa-female";
         }
-        else if (stat.female === undefined)
+        else if (stat[0].female === undefined)
         {
             return "fa-male";
         }
-        else if (stat.male === undefined)
+        else if (stat[0].male === undefined)
         {
             return "fa-female";
         }
-        else if (stat.female > stat.male)
+        else if (stat[0].female > stat[0].male)
         {
             return "fa-female";
         }
@@ -538,6 +548,9 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.addCompare = function(_post_id) {
+        if (!$rootScope.canClickInList()) {
+            return;
+        }
         if ($rootScope.compareList.indexOf(_post_id) != -1)
         {
             $rootScope.compareIndexList[_post_id] = false;
@@ -608,6 +621,18 @@ angular.module('starter.controllers', [])
                 }
             }
         });
+    };
+    $rootScope.lastScrolling = new Date().getTime();
+    $rootScope.scrollList = function() {
+        $rootScope.lastScrolling = new Date().getTime();
+    };
+    $rootScope.canClickInList = function() {
+        var diff =  new Date().getTime() - $rootScope.lastScrolling;
+        if (diff > 200) {
+            return true;
+        } else {
+            return false;
+        }
     };
 })
 .controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
