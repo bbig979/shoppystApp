@@ -37,7 +37,6 @@
                             <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
                         </div>
                         <div class="desc_row">
-                            <span class="desc_name" ng-click="goAccount(post.user.slug)">{{getNameOnCard(post.user.first_name, post.user.last_name)}}</span>
                             <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
                         </div>
                         <div class="add_to_compare">
