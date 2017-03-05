@@ -25,6 +25,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 })
 
 .config(function($stateProvider, $urlRouterProvider, $authProvider, $ionicConfigProvider) {
+    if(!(ionic.Platform.isIOS() && ionic.Platform.version() < 9)){
+      $ionicConfigProvider.scrolling.jsScrolling(false);
+    }
     if(ionic.Platform.isAndroid()){
         $ionicConfigProvider.views.transition('none');
     }
