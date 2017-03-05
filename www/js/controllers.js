@@ -222,6 +222,10 @@ angular.module('starter.controllers', [])
         return false;
     };
     $rootScope.getMaxStat = function(stat, index) {
+        if (stat === undefined)
+        {
+            return 0;
+        }
         stat = stat[0];
         if (index == "gender")
         {
@@ -229,7 +233,7 @@ angular.module('starter.controllers', [])
             {
                 return "0";
             }
-            else if (stat.female === undefined || stat.male === undefined)
+            else if (stat.female === undefined || stat.male === undefined || stat.female == 0 || stat.male == 0)
             {
                 return "100";
             }
@@ -336,13 +340,34 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.getStatGenderPercent = function(stat, index) {
-        if (stat === undefined || stat.female === undefined && stat.male === undefined)
+        if (stat === undefined)
+        {
+            return "0";
+        }
+        stat = stat[0];
+
+        if (stat.female === undefined && stat.male === undefined)
         {
             return "0";
         }
 
-        var male_stat = parseInt(stat.male);
-        var female_stat = parseInt(stat.female);
+        if (stat.male === undefined)
+        {
+            var male_stat = 0;
+        }
+        else
+        {
+            var male_stat = parseInt(stat.male);
+        }
+        if (stat.female === undefined)
+        {
+            var female_stat = 0;
+        }
+        else
+        {
+            var female_stat = parseInt(stat.female);
+        }
+
         if (index == "m")
         {
             if (male_stat === 0)
@@ -370,19 +395,39 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                console.log(parseInt(stat.male));
                 return Math.round(female_stat/(female_stat + male_stat)*100);
             }
         }
     };
 
     $rootScope.getStatGenderPercentForAvatar = function(stat, index) {
-        if (stat === undefined || stat.female === undefined && stat.male === undefined)
+        if (stat === undefined)
         {
             return 0;
         }
-        var male_stat = parseInt(stat.male);
-        var female_stat = parseInt(stat.female);
+        stat = stat[0];
+
+        if (stat.female === undefined && stat.male === undefined)
+        {
+            return 0;
+        }
+
+        if (stat.male === undefined)
+        {
+            var male_stat = 0;
+        }
+        else
+        {
+            var male_stat = parseInt(stat.male);
+        }
+        if (stat.female === undefined)
+        {
+            var female_stat = 0;
+        }
+        else
+        {
+            var female_stat = parseInt(stat.female);
+        }
         if (index == "m")
         {
             if (male_stat === 0)
@@ -420,6 +465,7 @@ angular.module('starter.controllers', [])
         {
             return "0";
         }
+        stat = stat[0];
 
         var total = 0;
         if (stat.teens !== undefined)
@@ -443,7 +489,11 @@ angular.module('starter.controllers', [])
             total += parseInt(stat.fifties);
         }
 
-        if (index == "10")
+        if (total == 0)
+        {
+            return "0";
+        }
+        else if (index == "10")
         {
             if (stat.teens === undefined)
             {
@@ -497,6 +547,180 @@ angular.module('starter.controllers', [])
             {
                 return Math.round(stat.fifties/total*100);
             }
+        }
+    };
+    $rootScope.setAnalyticsHeight = function(){
+        if ($rootScope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
+        {
+            $rootScope.stat_height = $(".analytics-gender-avatar div").height();
+            $rootScope.stat_label_height = $(".analytics-gender .analytics-number .ng-binding").height();
+        }
+    };
+    $rootScope.getStatAgeHeight = function(stat, index, type) {
+        if (stat === undefined)
+        {
+            return "0";
+        }
+        stat = stat[0];
+
+        var val = 0;
+        var total = 0;
+        if (stat.teens !== undefined)
+        {
+            total += parseInt(stat.teens);
+        }
+        if (stat.twenties !== undefined)
+        {
+            total += parseInt(stat.twenties);
+        }
+        if (stat.thirties !== undefined)
+        {
+            total += parseInt(stat.thirties);
+        }
+        if (stat.forties !== undefined)
+        {
+            total += parseInt(stat.forties);
+        }
+        if (stat.fifties !== undefined)
+        {
+            total += parseInt(stat.fifties);
+        }
+
+        if (total == 0)
+        {
+            val = 0;
+        }
+        else
+        {
+            if (index == "10")
+            {
+                if (stat.teens === undefined)
+                {
+                    val = 0;
+                }
+                else
+                {
+                    val = stat.teens/total;
+                }
+            }
+            if (index == "20")
+            {
+                if (stat.twenties === undefined)
+                {
+                    val = 0;
+                }
+                else
+                {
+                    val = stat.twenties/total;
+                }
+            }
+            if (index == "30")
+            {
+                if (stat.thirties === undefined)
+                {
+                    val = 0;
+                }
+                else
+                {
+                    val = stat.thirties/total;
+                }
+            }
+            if (index == "40")
+            {
+                if (stat.forties === undefined)
+                {
+                    val = 0;
+                }
+                else
+                {
+                    val = stat.forties/total;
+                }
+            }
+            if (index == "50")
+            {
+                if (stat.fifties === undefined)
+                {
+                    val = 0;
+                }
+                else
+                {
+                    val = stat.fifties/total;
+                }
+            }
+        }
+        if (type == "padding")
+        {
+            return $rootScope.stat_height - $rootScope.stat_label_height - ($rootScope.stat_height - $rootScope.stat_label_height)*val;
+        }
+        else if (type == "block")
+        {
+            return ($rootScope.stat_height - $rootScope.stat_label_height)*val;
+        }
+    };
+    $rootScope.getStatAgeBlockColor = function(stat, index) {
+        if (stat === undefined)
+        {
+            return "other";
+        }
+        stat = stat[0];
+
+        var age = "10";
+        var count = 0;
+        var total = 0;
+        if (stat.teens !== undefined)
+        {
+            total += parseInt(stat.teens);
+        }
+        if (stat.twenties !== undefined)
+        {
+            total += parseInt(stat.twenties);
+        }
+        if (stat.thirties !== undefined)
+        {
+            total += parseInt(stat.thirties);
+        }
+        if (stat.forties !== undefined)
+        {
+            total += parseInt(stat.forties);
+        }
+        if (stat.fifties !== undefined)
+        {
+            total += parseInt(stat.fifties);
+        }
+
+        if (stat.teens !== undefined && stat.teens > count)
+        {
+            age = "10";
+            count = stat.teens;
+        }
+        if (stat.twenties !== undefined && stat.twenties > count)
+        {
+            age = "20";
+            count = stat.twenties;
+        }
+        if (stat.thirties !== undefined && stat.thirties > count)
+        {
+            age = "30";
+            count = stat.thirties;
+        }
+        if (stat.forties !== undefined && stat.forties > count)
+        {
+            age = "40";
+            count = stat.forties;
+        }
+        if (stat.fifties !== undefined && stat.fifties > count)
+        {
+            age = "50";
+            count = stat.fifties;
+        }
+
+        if (age == index)
+        {
+            return "top";
+        }
+        else
+        {
+            return "other";
         }
     };
     $rootScope.calculateCreatedFrom = function(val){
@@ -633,7 +857,7 @@ angular.module('starter.controllers', [])
         } else {
             return false;
         }
-    };
+    };  
 })
 .controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
     $location.replace('tab.camera');
@@ -1378,173 +1602,6 @@ angular.module('starter.controllers', [])
             }
         });
     };
-    $scope.setAnalyticsHeight = function(){
-        if ($rootScope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
-        {
-            $rootScope.stat_height = $(".analytics-gender-avatar div").height();
-            $rootScope.stat_label_height = $(".analytics-gender .analytics-number .ng-binding").height();
-        }
-    };
-    $scope.getStatAgeHeight = function(stat, index, type) {
-        var val = 0;
-        if (stat === undefined)
-        {
-            return "0";
-        }
-
-        var total = 0;
-        if (stat.teens !== undefined)
-        {
-            total += parseInt(stat.teens);
-        }
-        if (stat.twenties !== undefined)
-        {
-            total += parseInt(stat.twenties);
-        }
-        if (stat.thirties !== undefined)
-        {
-            total += parseInt(stat.thirties);
-        }
-        if (stat.forties !== undefined)
-        {
-            total += parseInt(stat.forties);
-        }
-        if (stat.fifties !== undefined)
-        {
-            total += parseInt(stat.fifties);
-        }
-
-        if (index == "10")
-        {
-            if (stat.teens === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.teens/total;
-            }
-        }
-        if (index == "20")
-        {
-            if (stat.twenties === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.twenties/total;
-            }
-        }
-        if (index == "30")
-        {
-            if (stat.thirties === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.thirties/total;
-            }
-        }
-        if (index == "40")
-        {
-            if (stat.forties === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.forties/total;
-            }
-        }
-        if (index == "50")
-        {
-            if (stat.fifties === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.fifties/total;
-            }
-        }
-
-        if (type == "padding")
-        {
-            return $rootScope.stat_height - $rootScope.stat_label_height - ($rootScope.stat_height - $rootScope.stat_label_height)*val;
-        }
-        else if (type == "block")
-        {
-            return ($rootScope.stat_height - $rootScope.stat_label_height)*val;
-        }
-    };
-
-    $scope.getStatAgeBlockColor = function(stat, index) {
-        if (stat === undefined)
-        {
-            return "other";
-        }
-
-        var age = "10";
-        var count = 0;
-        var total = 0;
-        if (stat.teens !== undefined)
-        {
-            total += parseInt(stat.teens);
-        }
-        if (stat.twenties !== undefined)
-        {
-            total += parseInt(stat.twenties);
-        }
-        if (stat.thirties !== undefined)
-        {
-            total += parseInt(stat.thirties);
-        }
-        if (stat.forties !== undefined)
-        {
-            total += parseInt(stat.forties);
-        }
-        if (stat.fifties !== undefined)
-        {
-            total += parseInt(stat.fifties);
-        }
-
-        if (stat.teens !== undefined && stat.teens > count)
-        {
-            age = "10";
-            count = stat.teens;
-        }
-        if (stat.twenties !== undefined && stat.twenties > count)
-        {
-            age = "20";
-            count = stat.twenties;
-        }
-        if (stat.thirties !== undefined && stat.thirties > count)
-        {
-            age = "30";
-            count = stat.thirties;
-        }
-        if (stat.forties !== undefined && stat.forties > count)
-        {
-            age = "40";
-            count = stat.forties;
-        }
-        if (stat.fifties !== undefined && stat.fifties > count)
-        {
-            age = "50";
-            count = stat.fifties;
-        }
-
-        if (age == index)
-        {
-            return "top";
-        }
-        else
-        {
-            return "other";
-        }
-    };
 })
 
 .controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope) {
@@ -1880,172 +1937,6 @@ angular.module('starter.controllers', [])
             }
             $scope.$broadcast('scroll.refreshComplete');
         });
-    };
-    $scope.setAnalyticsHeight = function(){
-        if ($rootScope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
-        {
-            $rootScope.stat_height = $(".analytics-gender-avatar div").height();
-            $rootScope.stat_label_height = $(".analytics-gender .analytics-number .ng-binding").height();
-        }
-    };
-    $scope.getStatAgeHeight = function(stat, index, type) {
-        var val = 0;
-        if (stat === undefined)
-        {
-            return "0";
-        }
-
-        var total = 0;
-        if (stat.teens !== undefined)
-        {
-            total += parseInt(stat.teens);
-        }
-        if (stat.twenties !== undefined)
-        {
-            total += parseInt(stat.twenties);
-        }
-        if (stat.thirties !== undefined)
-        {
-            total += parseInt(stat.thirties);
-        }
-        if (stat.forties !== undefined)
-        {
-            total += parseInt(stat.forties);
-        }
-        if (stat.fifties !== undefined)
-        {
-            total += parseInt(stat.fifties);
-        }
-
-        if (index == "10")
-        {
-            if (stat.teens === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.teens/total;
-            }
-        }
-        if (index == "20")
-        {
-            if (stat.twenties === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.twenties/total;
-            }
-        }
-        if (index == "30")
-        {
-            if (stat.thirties === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.thirties/total;
-            }
-        }
-        if (index == "40")
-        {
-            if (stat.forties === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.forties/total;
-            }
-        }
-        if (index == "50")
-        {
-            if (stat.fifties === undefined)
-            {
-                val = 0;
-            }
-            else
-            {
-                val = stat.fifties/total;
-            }
-        }
-
-        if (type == "padding")
-        {
-            return $rootScope.stat_height - $rootScope.stat_label_height - ($rootScope.stat_height - $rootScope.stat_label_height)*val;
-        }
-        else if (type == "block")
-        {
-            return ($rootScope.stat_height - $rootScope.stat_label_height)*val;
-        }
-    };
-    $scope.getStatAgeBlockColor = function(stat, index) {
-        if (stat === undefined)
-        {
-            return "other";
-        }
-
-        var age = "10";
-        var count = 0;
-        var total = 0;
-        if (stat.teens !== undefined)
-        {
-            total += parseInt(stat.teens);
-        }
-        if (stat.twenties !== undefined)
-        {
-            total += parseInt(stat.twenties);
-        }
-        if (stat.thirties !== undefined)
-        {
-            total += parseInt(stat.thirties);
-        }
-        if (stat.forties !== undefined)
-        {
-            total += parseInt(stat.forties);
-        }
-        if (stat.fifties !== undefined)
-        {
-            total += parseInt(stat.fifties);
-        }
-
-        if (stat.teens !== undefined && stat.teens > count)
-        {
-            age = "10";
-            count = stat.teens;
-        }
-        if (stat.twenties !== undefined && stat.twenties > count)
-        {
-            age = "20";
-            count = stat.twenties;
-        }
-        if (stat.thirties !== undefined && stat.thirties > count)
-        {
-            age = "30";
-            count = stat.thirties;
-        }
-        if (stat.forties !== undefined && stat.forties > count)
-        {
-            age = "40";
-            count = stat.forties;
-        }
-        if (stat.fifties !== undefined && stat.fifties > count)
-        {
-            age = "50";
-            count = stat.fifties;
-        }
-
-        if (age == index)
-        {
-            return "top";
-        }
-        else
-        {
-            return "other";
-        }
     };
 })
 
