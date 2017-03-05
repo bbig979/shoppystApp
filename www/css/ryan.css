@@ -3313,44 +3313,23 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
-/* line 34, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post:nth-child(even),
-#compare.masonry-post-list .post:nth-child(even) {
-  margin-top: -41%;
-}
-/* line 37, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post:nth-child(1),
-#compare.masonry-post-list .post:nth-child(1) {
-  margin-top: 0px;
-  padding-top: 0%;
-}
-/* line 40, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post:nth-child(1) .item,
-#compare.masonry-post-list .post:nth-child(1) .item {
-  padding-top: 56%;
-}
-/* line 44, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post:nth-child(2),
-#compare.masonry-post-list .post:nth-child(2) {
-  margin-top: 0%;
-}
 
-/* line 50, ../../scss/ryan/_masonry-post-list.scss */
+/* line 37, ../../scss/ryan/_masonry-post-list.scss */
 #tab-account.masonry-post-list masonry {
   width: 100%;
 }
-/* line 53, ../../scss/ryan/_masonry-post-list.scss */
+/* line 40, ../../scss/ryan/_masonry-post-list.scss */
 #tab-account.masonry-post-list .masonry-brick {
   width: 50%;
   border: 0;
   padding: 3px 6px;
 }
-/* line 54, ../../scss/ryan/_masonry-post-list.scss */
+/* line 41, ../../scss/ryan/_masonry-post-list.scss */
 #tab-account.masonry-post-list .masonry-brick img {
   width: 100%;
   border-radius: 3px;
 }
-/* line 62, ../../scss/ryan/_masonry-post-list.scss */
+/* line 49, ../../scss/ryan/_masonry-post-list.scss */
 #tab-account.masonry-post-list .post {
   width: 48%;
   border: 0;
@@ -3361,25 +3340,25 @@
   float: left;
   margin: 1%;
 }
-/* line 63, ../../scss/ryan/_masonry-post-list.scss */
+/* line 50, ../../scss/ryan/_masonry-post-list.scss */
 #tab-account.masonry-post-list .post a {
   display: block;
   width: 100%;
   padding-top: 100%;
 }
-/* line 77, ../../scss/ryan/_masonry-post-list.scss */
+/* line 64, ../../scss/ryan/_masonry-post-list.scss */
 #tab-account.masonry-post-list .post:nth-child(even) {
   margin-top: -30%;
 }
-/* line 80, ../../scss/ryan/_masonry-post-list.scss */
+/* line 67, ../../scss/ryan/_masonry-post-list.scss */
 #tab-account.masonry-post-list .post:nth-child(1) {
   margin-top: 0%;
 }
-/* line 83, ../../scss/ryan/_masonry-post-list.scss */
+/* line 70, ../../scss/ryan/_masonry-post-list.scss */
 #tab-account.masonry-post-list .post:nth-child(1) {
   padding-top: 28%;
 }
-/* line 86, ../../scss/ryan/_masonry-post-list.scss */
+/* line 73, ../../scss/ryan/_masonry-post-list.scss */
 #tab-account.masonry-post-list .post:nth-child(2) {
   margin-top: 0%;
 }

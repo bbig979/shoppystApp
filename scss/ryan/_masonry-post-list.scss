@@ -31,19 +31,6 @@
       background-size: cover;
     }
   }
-  .post:nth-child(even){
-    margin-top:-41%;
-  }
-  .post:nth-child(1){
-    margin-top: 0px;
-    padding-top: 0%;
-    .item {
-      padding-top: 56%;
-    }
-  }
-  .post:nth-child(2){
-    margin-top:0%;
-  }
 }
 
 #tab-account.masonry-post-list {
