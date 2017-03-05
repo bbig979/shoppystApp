@@ -1,9 +1,8 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    // $rootScope.baseURL = 'http://app.snaplook.today';
-    // $rootScope.baseURL = 'http://app.snaplook.today';
-    $rootScope.baseURL = 'http://localhost:8000';
+    $rootScope.baseURL = 'http://app.snaplook.today';
+    // $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
@@ -223,9 +222,9 @@ angular.module('starter.controllers', [])
         return false;
     };
     $rootScope.getMaxStat = function(stat, index) {
-        if (stat === undefined)
+        if (stat === undefined || stat.length == 0)
         {
-            return 0;
+            return "0";
         }
         stat = stat[0];
         if (index == "gender")
@@ -341,7 +340,7 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.getStatGenderPercent = function(stat, index) {
-        if (stat === undefined)
+        if (stat === undefined || stat.length == 0)
         {
             return "0";
         }
@@ -402,7 +401,7 @@ angular.module('starter.controllers', [])
     };
 
     $rootScope.getStatGenderPercentForAvatar = function(stat, index) {
-        if (stat === undefined)
+        if (stat === undefined || stat.length == 0)
         {
             return 0;
         }
@@ -462,7 +461,7 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.getStatAgePercent = function(stat, index) {
-        if (stat === undefined)
+        if (stat === undefined || stat.length == 0)
         {
             return "0";
         }
@@ -558,7 +557,7 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.getStatAgeHeight = function(stat, index, type) {
-        if (stat === undefined)
+        if (stat === undefined || stat.length == 0)
         {
             return "0";
         }
@@ -659,7 +658,7 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.getStatAgeBlockColor = function(stat, index) {
-        if (stat === undefined)
+        if (stat === undefined || stat.length == 0)
         {
             return "other";
         }
@@ -858,7 +857,7 @@ angular.module('starter.controllers', [])
         } else {
             return false;
         }
-    };  
+    };
 })
 .controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
     $location.replace('tab.camera');
