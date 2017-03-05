@@ -18,18 +18,53 @@
       width: 100%;
       padding-top: 100%;
     }
-    width: 48%;
+    width: 98%;
     border-radius: 3px;
     float: left;
     margin: 1%;
     padding: 0px;
-
+    position: relative;
     ion-item {
       border: 0;
       background-position: 50% 50%;
       background-repeat: no-repeat;
       background-size: cover;
+      width: 50%;
+      float: left;
     }
+    .desc_row{
+      float: left;
+      width: 50%;
+      font-size: 14px;
+      color: $grey-dark;
+      padding: 5px 5px 0px 10px;
+    }
+    .add_to_compare{
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+    }
+    .profile-image{
+      width: 25px;
+      height: 25px;
+      @extend .background-image-handler;
+      @include border-radius(50%);
+      float: left;
+      margin-right: 5px;
+    }
+  }
+  .post:nth-child(even){
+    margin-top:-41%;
+  }
+  .post:nth-child(1){
+    margin-top: 0px;
+    padding-top: 0%;
+    .item {
+      padding-top: 56%;
+    }
+  }
+  .post:nth-child(2){
+    margin-top:0%;
   }
 }
 

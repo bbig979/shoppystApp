@@ -1,8 +1,9 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://app.snaplook.today';
-    // $rootScope.baseURL = 'http://localhost:8000';
+    // $rootScope.baseURL = 'http://app.snaplook.today';
+    // $rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
@@ -1422,7 +1423,7 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -1498,7 +1499,9 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = $scope.posts.concat(posts);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
         });
     };
@@ -1604,7 +1607,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope) {
+.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope, $timeout) {
     $scope.likes = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -1629,7 +1632,9 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.likes = $scope.likes.concat(likes);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
         });
     };
@@ -1940,7 +1945,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
@@ -2006,7 +2011,9 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = $scope.posts.concat(posts);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
         });
     };
@@ -2102,7 +2109,7 @@ angular.module('starter.controllers', [])
                 posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
                 posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
-        });        
+        });
     }
 
     $scope.$on('$ionicView.enter', function() {
@@ -2118,7 +2125,7 @@ angular.module('starter.controllers', [])
                     posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
                     posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
                 }
-            });        
+            });
         }
     });
     $scope.removeCompare = function(_post) {
@@ -2250,7 +2257,7 @@ angular.module('starter.controllers', [])
         }
     };
 })
-.controller('RankingCtrl', function($scope, FetchSchools) {
+.controller('RankingCtrl', function($scope, FetchSchools, $timeout) {
     $scope.schools = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -2266,7 +2273,9 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchSchools.ranking($scope.page).then(function(schools){
             $scope.schools = $scope.schools.concat(schools);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
             if ( schools.length == 0 ) {
                 $scope.noMoreItemsAvailable = true;
@@ -2288,7 +2297,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('SchoolCtrl', function($scope, FetchPosts, $stateParams) {
+.controller('SchoolCtrl', function($scope, FetchPosts, $stateParams, $timeout) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -2314,7 +2323,9 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = $scope.posts.concat(posts);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
         });
     };
@@ -2336,7 +2347,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout) {
     var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;
@@ -2527,7 +2538,9 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = $scope.posts.concat(posts);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
         });
     };
@@ -2599,7 +2612,7 @@ angular.module('starter.controllers', [])
         var confirmPopup = $ionicPopup.confirm({
             title: 'Log Out',
             template: 'Are you sure to log out?'
-        });        
+        });
 
         confirmPopup.then(function(res) {
             if(res) {
@@ -2613,7 +2626,7 @@ angular.module('starter.controllers', [])
         });
 
 
-        
+
     };
 })
 .controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory) {
@@ -2669,7 +2682,7 @@ angular.module('starter.controllers', [])
 .controller('ChangeProfilePictureCtrl', function($scope, $stateParams, $http, $state, $location, $ionicPopup) {
 
 })
-.controller('FindFriendsCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
+.controller('FindFriendsCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope, $timeout) {
     $scope.users = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -2682,7 +2695,9 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchUsers.findFriends($scope.page).then(function(users){
             $scope.users = $scope.users.concat(users);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
             if ( users.length == 0 ) {
                 $scope.noMoreItemsAvailable = true;
@@ -2734,7 +2749,7 @@ angular.module('starter.controllers', [])
     }
 
 })
-.controller('FollowingCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
+.controller('FollowingCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope, $timeout) {
     var user = $rootScope.getCurrentUser();
     $scope.me = user;
     $scope.users = [];
@@ -2761,7 +2776,9 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.users = $scope.users.concat(users);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
         });
     };
@@ -2807,7 +2824,7 @@ angular.module('starter.controllers', [])
         user.following_check = !user.following_check;
     };
 })
-.controller('FollowerCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope) {
+.controller('FollowerCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope, $timeout) {
     var user = $rootScope.getCurrentUser();
     $scope.me = user;
     $scope.users = [];
@@ -2835,7 +2852,9 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.users = $scope.users.concat(users);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
         });
     };
@@ -2881,7 +2900,7 @@ angular.module('starter.controllers', [])
         user.following_check = !user.following_check;
     };
 })
-.controller('LikedCtrl', function($scope, $stateParams, FetchPosts) {
+.controller('LikedCtrl', function($scope, $stateParams, FetchPosts, $timeout) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -2897,7 +2916,9 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
             $scope.posts = $scope.posts.concat(posts);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
             if ( posts.length == 0 ) {
                 $scope.noMoreItemsAvailable = true;
@@ -2918,7 +2939,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope, $state) {
+.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope, $state, $timeout) {
     var user = $rootScope.getCurrentUser();
     $scope.notifications = [];
     $scope.page = 1;
@@ -2957,7 +2978,9 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.notifications = $scope.notifications.concat(notifications);
-            $scope.$broadcast('scroll.infiniteScrollComplete');
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
         });
     };
