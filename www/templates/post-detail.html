@@ -51,35 +51,35 @@
                         <div class="analytics-age-graph-group">
                             <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '10', 'padding') }}px"></div>
                             <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "10") }}%</div>                            
+                                <div>{{ getStatAgePercent(post.post_analytic, "10") }}%</div>
                             </div>
                             <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '10') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '10', 'block') }}px;"></div>
                         </div>
                         <div class="analytics-age-graph-group">
                             <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '20', 'padding') }}px"></div>
                             <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "20") }}%</div>                            
+                                <div>{{ getStatAgePercent(post.post_analytic, "20") }}%</div>
                             </div>
                             <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '20') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '20', 'block') }}px;"></div>
                         </div>
                         <div class="analytics-age-graph-group">
                             <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '30', 'padding') }}px"></div>
                             <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "30") }}%</div>                            
+                                <div>{{ getStatAgePercent(post.post_analytic, "30") }}%</div>
                             </div>
                             <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '30') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '30', 'block') }}px;"></div>
                         </div>
                         <div class="analytics-age-graph-group">
                             <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '40', 'padding') }}px"></div>
                             <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "40") }}%</div>                            
+                                <div>{{ getStatAgePercent(post.post_analytic, "40") }}%</div>
                             </div>
                             <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '40') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '40', 'block') }}px;"></div>
                         </div>
                         <div class="analytics-age-graph-group">
                             <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '50', 'padding') }}px"></div>
                             <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "50") }}%</div>                            
+                                <div>{{ getStatAgePercent(post.post_analytic, "50") }}%</div>
                             </div>
                             <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '50') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '50', 'block') }}px;"></div>
                         </div>
@@ -102,8 +102,8 @@
             <p class="load-more grey-small-font" ng-click="loadMoreComments()" ng-if="commentsHiddenCount">load previous comments ({{ commentsHiddenCount }})</p>
             <ion-list>
                 <ion-item class="item item-avatar item-text-wrap" ng-repeat="comment in post.latest_ten_comments">
-                    <img ng-click="goAccount(comment.user.slug)" ng-src="{{ photoPath( comment.user.profile_img_path, 's' ) }}" class="profile-image">
-                    <div ng-click="goAccount(comment.user.slug)" class="user-name">{{ comment.user.first_name }} {{ comment.user.last_name }}</div>
+                    <div class="profile-image" style="background-image: url( {{ photoPath( comment.user.profile_img_path, 's' ) }} )" ng-click="goAccount(comment.user.slug)"></div>
+                    <div class="user-name" ng-click="goAccount(comment.user.slug)">{{ comment.user.first_name }} {{ comment.user.last_name }}</div>
                     <p>{{ comment.content }}</p>
                     <span class="time-ago grey-small-font" am-time-ago="comment.created_at | amUtc"></span>
                     <ion-option-button class="button-assertive" ng-click="remComment($index)" ng-if="ownComment($index)">Delete</ion-option-button>

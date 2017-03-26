@@ -31,7 +31,7 @@
                     <div>
                         <div class="desc_row">
                             <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
-                            <span class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.first_name}} {{post.user.last_name}}</span>
+                            <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.first_name}} {{post.user.last_name}}</div>
                         </div>
                         <div class="desc_row">
                             <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>

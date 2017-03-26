@@ -3228,7 +3228,6 @@
 /* line 7, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar {
   padding: 4px;
-  padding-left: 50px;
   min-height: 55px;
 }
 /* line 8, ../../scss/ryan/_follow-toggle-user-list.scss */
@@ -3266,10 +3265,8 @@
 }
 /* line 36, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar .profile-image {
-  max-width: 30px;
-  max-height: 30px;
-  left: 10px;
-  top: 13px;
+  float: left;
+  margin: 10px;
 }
 
 /* line 1, ../../scss/ryan/_masonry-post-list.scss */
@@ -3427,33 +3424,32 @@
 /* line 6, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar .item-content {
   padding: 7px;
-  padding-left: 50px;
   min-height: 55px;
 }
 /* line 7, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar .item-content .profile-image {
-  max-width: 35px;
-  max-height: 35px;
-  left: 5px;
-  top: 10px;
+  width: 35px;
+  height: 35px;
+  float: left;
+  margin: 3px 6px 0 0;
 }
-/* line 20, ../../scss/ryan/_comment-list.scss */
+/* line 19, ../../scss/ryan/_comment-list.scss */
 .comment-list .item {
   border-color: #e7e7e7;
   padding: 7px;
 }
-/* line 21, ../../scss/ryan/_comment-list.scss */
+/* line 20, ../../scss/ryan/_comment-list.scss */
 .comment-list .item .time-ago {
   position: absolute;
   top: 7px;
   right: 10px;
   font-size: 13px;
 }
-/* line 30, ../../scss/ryan/_comment-list.scss */
+/* line 29, ../../scss/ryan/_comment-list.scss */
 .comment-list .load-more {
   padding: 10px;
 }
-/* line 33, ../../scss/ryan/_comment-list.scss */
+/* line 32, ../../scss/ryan/_comment-list.scss */
 .comment-list .button-small {
   line-height: 0;
 }
@@ -3539,12 +3535,26 @@ a {
 }
 
 /* line 14, ../../scss/ryan/_global.scss */
+.profile-image {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+  background-clip: padding-box;
+}
+
+/* line 22, ../../scss/ryan/_global.scss */
 .loading-spinner {
   padding: 20px 0;
   text-align: center;
 }
 
-/* line 18, ../../scss/ryan/_global.scss */
+/* line 26, ../../scss/ryan/_global.scss */
 .update-notification {
   text-align: center;
   padding: 10px;
@@ -3554,21 +3564,21 @@ a {
   border: 1px solid #FFBF00;
 }
 
-/* line 26, ../../scss/ryan/_global.scss */
+/* line 34, ../../scss/ryan/_global.scss */
 #notification-icon:before {
   font-size: 28px;
 }
 
-/* line 29, ../../scss/ryan/_global.scss */
+/* line 37, ../../scss/ryan/_global.scss */
 .bar-header {
   border-bottom-width: 0px;
 }
-/* line 30, ../../scss/ryan/_global.scss */
+/* line 38, ../../scss/ryan/_global.scss */
 .bar-header i {
   font-size: 17px;
 }
 
-/* line 35, ../../scss/ryan/_global.scss */
+/* line 43, ../../scss/ryan/_global.scss */
 .bar {
   border-top: 0px solid transparent;
   border-bottom: 0px solid #ddd;
@@ -3576,43 +3586,43 @@ a {
   padding-right: 10px;
 }
 
-/* line 41, ../../scss/ryan/_global.scss */
+/* line 49, ../../scss/ryan/_global.scss */
 .button.button-positive {
   background-color: #FF4C62;
 }
 
-/* line 44, ../../scss/ryan/_global.scss */
+/* line 52, ../../scss/ryan/_global.scss */
 .button.button-positive.activated {
   background-color: #E24256;
 }
 
-/* line 47, ../../scss/ryan/_global.scss */
+/* line 55, ../../scss/ryan/_global.scss */
 .button.button-stable {
   border: 1px solid #ddd;
 }
 
 @media (min--moz-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
-  /* line 51, ../../scss/ryan/_global.scss */
+  /* line 59, ../../scss/ryan/_global.scss */
   .bar, .tabs {
     background-size: 100% 0px;
   }
 }
-/* line 55, ../../scss/ryan/_global.scss */
+/* line 63, ../../scss/ryan/_global.scss */
 .no-result {
   padding: 60px;
   text-align: center;
   color: #555;
 }
 
-/* line 60, ../../scss/ryan/_global.scss */
+/* line 68, ../../scss/ryan/_global.scss */
 .popup-container .popup {
   border-radius: 3px;
 }
-/* line 61, ../../scss/ryan/_global.scss */
+/* line 69, ../../scss/ryan/_global.scss */
 .popup-container .popup .popup-head {
   border-bottom: 0;
 }
-/* line 64, ../../scss/ryan/_global.scss */
+/* line 72, ../../scss/ryan/_global.scss */
 .popup-container .popup .popup-body {
   text-align: center;
 }
