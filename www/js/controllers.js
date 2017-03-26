@@ -762,7 +762,7 @@ angular.module('starter.controllers', [])
     $rootScope.openCompare = function(){
         if ($rootScope.compareList.length < 2)
         {
-            $rootScope.popupMessage("Alert", "Please add more than 2 looks to compare");
+            $rootScope.popupMessage("Oops", "Please add more than 2 looks to compare");
         }
         else
         {
