@@ -8,10 +8,10 @@
                 <textarea placeholder="Write a Caption" class="form-control" ng-model="captions"></textarea>
             </div>
             <div class="padding">
-                <button type="submit" class="button button-block button-positive">Share a post</button>
+                <button type="submit" class="button button-block button-positive" ng-disabled="submitted">Share a post</button>
             </div>
             <div class="padding">
-                <button type="button" class="button button-block button-stable" ng-click="back()">Cancel</button>
+                <button type="button" class="button button-block button-stable" ng-click="back()" ng-disabled="submitted">Cancel</button>
             </div>
         </form>
     </ion-content>
