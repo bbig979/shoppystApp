@@ -42,7 +42,7 @@
     .add_to_compare{
       position: absolute;
       bottom: 5px;
-      right: 5px;
+      right: 8px;
     }
     .profile-image{
       width: 25px;
@@ -51,6 +51,9 @@
       @include border-radius(50%);
       float: left;
       margin-right: 5px;
+    }
+    .user-name{
+      padding: 2px;
     }
   }
   /*
