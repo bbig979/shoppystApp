@@ -11,6 +11,15 @@ a{
   color: #444;
   font-weight: 500;
 }
+.profile-image{
+  background-color: $grey-lighter;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  @include border-radius(50%);
+}
 .loading-spinner{
   padding: 20px 0;
   text-align: center;

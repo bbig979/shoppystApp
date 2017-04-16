@@ -124,7 +124,7 @@
         </ion-nav-back-button>
         <ion-nav-buttons side="right">
             <i class="button button-clear icon ion-ios-more" ng-show="ifOthersProfile()" ng-click="openOthersProfileMenu()"></i>
-            <span class="small-badge" ng-hide="compareList.length == 0">{{compareList.length}}</span>
+            <span class="small-badge" ng-hide="compareList.length == 0" ng-click="openCompare()">{{compareList.length}}</span>
             <button class="compare-button" ng-hide="ifOthersProfile() || ifNGCompare()" ng-click="openCompare()"><i class="fa fa-list-ol" aria-hidden="true"></i></button>
         </ion-nav-buttons>
     </ion-nav-bar>

@@ -1,4 +1,4 @@
-<ion-view class="masonry-post-list" id="tab-explore" view-title="TODAY'S LOOKS">
+<ion-view class="post-list" id="tab-explore" view-title="TEST OUTFITS">
     <ion-content on-scroll="scrollList()">
         <ion-refresher
                 pulling-text="Pull to refresh..."
@@ -10,7 +10,7 @@
                     <i class="icon ion-ios-search placeholder-icon"></i>
                     <input type="search" id="search" placeholder="Search hashtags" ng-model="searchTerm">
                 </label>
-                <div ng-click="searchTerm='';focusSearch();" class="button button-clear" ng-show="searchTerm.length">X</div>
+                <div ng-click="searchTerm='';focusSearch();" class="button button-clear search-clear" ng-show="searchTerm.length">X</div>
             </div>
         </form>
         <div class="search-header" ng-hide="noSearchTerm()">
@@ -31,7 +31,10 @@
                     <div>
                         <div class="desc_row">
                             <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
-                            <span class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.first_name}} {{post.user.last_name}}</span>
+                            <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.first_name}} {{post.user.last_name}}</div>
+                        </div>
+                        <div class="desc_row">
+                            <span class="likes-count"><i class="ion-ios-heart"></i> <span ng-hide="post.likes_count.aggregate">0</span>{{ post.likes_count.aggregate }} likes</span>
                         </div>
                         <div class="desc_row">
                             <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
@@ -40,6 +43,7 @@
                             <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
                         </div>
                         <div class="add_to_compare">
+                            <button class= "button button-clear button-dark icon like-button" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                             <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
                         </div>
                     </div>

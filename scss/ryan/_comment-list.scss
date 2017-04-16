@@ -5,13 +5,12 @@
     }
     .item-content{
       .profile-image{
-        max-width: 35px;
-        max-height: 35px;
-        left: 5px;
-        top: 10px;
+        width: 35px;
+        height: 35px;
+        float: left;
+        margin: 3px 6px 0 0;
       }
       padding: 7px;
-      padding-left: 50px;
       min-height: 55px;
     }
     padding: 0;
