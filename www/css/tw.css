@@ -93,7 +93,7 @@
   line-height: 100%;
   height: 18px;
   position: relative;
-  left: 75px;
+  left: 48px;
   top: -3px;
   z-index: 10000;
 }
@@ -120,7 +120,14 @@
 #tab-account .account-top .account-option-btn {
   color: #ccc;
 }
-/* line 22, ../../scss/tw/_account.scss */
+/* line 10, ../../scss/tw/_account.scss */
+#tab-account .account-top .user-name {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #777;
+}
+/* line 28, ../../scss/tw/_account.scss */
 #tab-account .account-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -134,82 +141,75 @@
   clear: both;
   margin-top: 20px;
 }
-/* line 36, ../../scss/tw/_account.scss */
-#tab-account .user-name {
-  text-align: center;
-  font-size: 1.5em;
-  margin-bottom: 15px;
-  color: #777;
-}
-/* line 43, ../../scss/tw/_account.scss */
+/* line 42, ../../scss/tw/_account.scss */
 #tab-account .user-school {
   text-align: center;
   margin-bottom: 10px;
   text-decoration: underline;
 }
-/* line 49, ../../scss/tw/_account.scss */
+/* line 48, ../../scss/tw/_account.scss */
 #tab-account .user-joined {
   text-align: center;
 }
-/* line 53, ../../scss/tw/_account.scss */
+/* line 52, ../../scss/tw/_account.scss */
 #tab-account .account-option-btn {
   color: white;
   float: right;
   margin-right: 10px;
   font-size: 0.8em;
 }
-/* line 60, ../../scss/tw/_account.scss */
+/* line 59, ../../scss/tw/_account.scss */
 #tab-account .account-achievement {
   margin-top: 10px;
 }
-/* line 63, ../../scss/tw/_account.scss */
+/* line 62, ../../scss/tw/_account.scss */
 #tab-account .account-achievement button {
   color: white;
   line-height: 120%;
   font-weight: 400;
 }
-/* line 69, ../../scss/tw/_account.scss */
+/* line 68, ../../scss/tw/_account.scss */
 #tab-account .account-achievement div {
   color: white;
   line-height: 150%;
   font-size: 1.1em;
 }
-/* line 75, ../../scss/tw/_account.scss */
+/* line 74, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col {
   text-align: center;
 }
-/* line 79, ../../scss/tw/_account.scss */
+/* line 78, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(1) {
   color: #FF4B62;
 }
-/* line 82, ../../scss/tw/_account.scss */
+/* line 81, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(2) {
   color: #FF7167;
 }
-/* line 85, ../../scss/tw/_account.scss */
+/* line 84, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(3) {
   color: #FF986C;
 }
-/* line 88, ../../scss/tw/_account.scss */
+/* line 87, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(4) {
   color: #FFBD71;
 }
-/* line 92, ../../scss/tw/_account.scss */
+/* line 91, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .ion-camera,
 #tab-account .account-achievement .ion-ios-heart,
 #tab-account .account-achievement .ion-ios-people,
 #tab-account .account-achievement .ion-android-person {
   font-size: 1.5em;
 }
-/* line 100, ../../scss/tw/_account.scss */
+/* line 99, ../../scss/tw/_account.scss */
 #tab-account .account-social-network {
   font-size: 0.6em;
 }
-/* line 102, ../../scss/tw/_account.scss */
+/* line 101, ../../scss/tw/_account.scss */
 #tab-account .account-social-network div {
   color: #FF4C62;
 }
-/* line 107, ../../scss/tw/_account.scss */
+/* line 106, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle {
   font-size: 11px;
   float: right;
@@ -221,100 +221,84 @@
   color: #FF4C62;
   width: 90px;
 }
-/* line 118, ../../scss/tw/_account.scss */
+/* line 117, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle:after {
   padding-top: 7px;
   content: "FOLLOW";
 }
-/* line 122, ../../scss/tw/_account.scss */
+/* line 121, ../../scss/tw/_account.scss */
 #tab-account .following {
   background-color: #FF4C62;
   border-color: #FF4C62;
   color: #fff;
 }
-/* line 127, ../../scss/tw/_account.scss */
+/* line 126, ../../scss/tw/_account.scss */
 #tab-account .following:after {
   content: "UNFOLLOW";
 }
-/* line 130, ../../scss/tw/_account.scss */
+/* line 129, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activated {
   margin-top: 0px;
   border-style: solid;
   border-width: 0 0 0 0;
   border-color: #444;
 }
-/* line 136, ../../scss/tw/_account.scss */
+/* line 135, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activatedd {
   margin-bottom: -2px;
   border-style: solid;
   border-width: 0 0 2px 0;
   border-color: #FF4C62;
 }
-/* line 142, ../../scss/tw/_account.scss */
+/* line 141, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tabs {
   border-bottom: 0px solid #ddd;
 }
-/* line 145, ../../scss/tw/_account.scss */
+/* line 144, ../../scss/tw/_account.scss */
 #tab-account ion-list .list {
   margin-top: -15px;
 }
-/* line 149, ../../scss/tw/_account.scss */
+/* line 148, ../../scss/tw/_account.scss */
 #tab-account .profile-post-like-count {
   color: white;
   text-align: right;
 }
 
 /* line 2, ../../scss/tw/_explore.scss */
-#tab-explore .add-compare-button {
-  float: right;
-  background-color: #FF4C62;
-  border-color: #FF4C62;
-  color: #fff;
-  min-width: 20px;
-  min-height: 21px;
-  height: 21px;
-  padding-right: 5px;
-}
-/* line 13, ../../scss/tw/_explore.scss */
-#tab-explore .add-compare-button:before {
-  line-height: 20px;
-  font-size: 13px;
-}
-/* line 18, ../../scss/tw/_explore.scss */
 #tab-explore .desc_top_row {
   height: 30px;
   padding: 5px;
   border-bottom: 1px solid #ddd;
 }
-/* line 23, ../../scss/tw/_explore.scss */
+/* line 7, ../../scss/tw/_explore.scss */
 #tab-explore .desc_top_row .desc_stat {
   font-size: 13px;
   color: #bbb;
   position: relative;
   top: -3px;
 }
-/* line 30, ../../scss/tw/_explore.scss */
+/* line 14, ../../scss/tw/_explore.scss */
 #tab-explore .desc_top_row .desc_stat .fa {
   font-size: 1.4em;
   position: relative;
   top: 3px;
 }
-/* line 37, ../../scss/tw/_explore.scss */
+/* line 21, ../../scss/tw/_explore.scss */
 #tab-explore .desc_bottom_row {
   height: 30px;
   padding: 5px;
 }
-/* line 41, ../../scss/tw/_explore.scss */
+/* line 25, ../../scss/tw/_explore.scss */
 #tab-explore .desc_bottom_row .desc_time {
   float: right;
   font-size: 13px;
   color: #bbb;
 }
-/* line 46, ../../scss/tw/_explore.scss */
+/* line 30, ../../scss/tw/_explore.scss */
 #tab-explore .desc_bottom_row .desc_time i.fa {
   margin-right: 2px;
 }
-/* line 51, ../../scss/tw/_explore.scss */
+/* line 35, ../../scss/tw/_explore.scss */
 #tab-explore .desc_bottom_row .desc_name {
   font-size: 13px;
   font-weight: bold;
@@ -322,63 +306,73 @@
 }
 
 /* line 2, ../../scss/tw/_compare.scss */
-#compare .add-compare-button {
-  float: right;
-  background-color: #FF4C62;
-  border-color: #FF4C62;
-  color: #fff;
-  min-width: 20px;
-  min-height: 21px;
-  height: 21px;
-  padding-right: 5px;
-}
-/* line 13, ../../scss/tw/_compare.scss */
-#compare .add-compare-button:before {
-  line-height: 20px;
-  font-size: 13px;
-}
-/* line 18, ../../scss/tw/_compare.scss */
 #compare .desc_top_row {
   height: 30px;
   padding: 5px;
   border-bottom: 1px solid #ddd;
 }
-/* line 23, ../../scss/tw/_compare.scss */
+/* line 7, ../../scss/tw/_compare.scss */
 #compare .desc_top_row .desc_stat {
   font-size: 13px;
   color: #bbb;
   position: relative;
   top: -3px;
 }
-/* line 30, ../../scss/tw/_compare.scss */
+/* line 14, ../../scss/tw/_compare.scss */
 #compare .desc_top_row .desc_stat .fa {
   font-size: 1.6em;
   position: relative;
   top: 3px;
 }
-/* line 37, ../../scss/tw/_compare.scss */
+/* line 21, ../../scss/tw/_compare.scss */
 #compare .desc_bottom_row {
   height: 30px;
   padding: 5px;
 }
-/* line 41, ../../scss/tw/_compare.scss */
+/* line 25, ../../scss/tw/_compare.scss */
 #compare .desc_bottom_row .desc_time {
   float: right;
   font-size: 13px;
   color: #bbb;
 }
-/* line 47, ../../scss/tw/_compare.scss */
+/* line 31, ../../scss/tw/_compare.scss */
 #compare .desc_bottom_row .desc_name {
   font-size: 13px;
   font-weight: bold;
 }
-/* line 53, ../../scss/tw/_compare.scss */
-#compare .posts {
-  margin-top: 10px;
-}
-/* line 57, ../../scss/tw/_compare.scss */
+/* line 37, ../../scss/tw/_compare.scss */
 #compare .overflow-scroll .scroll {
   height: auto !important;
+}
+/* line 41, ../../scss/tw/_compare.scss */
+#compare .item {
+  position: relative;
+}
+/* line 43, ../../scss/tw/_compare.scss */
+#compare .item .ranking {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #fff;
+  background-color: #000;
+  width: 23px;
+  height: 23px;
+  text-align: center;
+  font-size: 12px;
+  border: 2px solid #fff;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+  background-clip: padding-box;
+}
+/* line 56, ../../scss/tw/_compare.scss */
+#compare .item .button.button-dark.button-clear.ion-ios-heart {
+  color: #FF4C62;
+}
+/* line 60, ../../scss/tw/_compare.scss */
+#compare .sort {
+  margin-bottom: 0;
 }
 
 /* line 3, ../../scss/tw/_find-friends.scss */
@@ -528,39 +522,40 @@
   background-color: #FF4C62;
   border-color: #FF4C62;
   color: #fff;
-  min-width: 30px;
-  min-height: 30px;
-  height: 30px;
-  margin-top: 7px;
+  min-width: 24px;
+  min-height: 22px;
+  height: 22px;
+  width: 24px;
+  margin-top: 12px;
   margin-left: 5px;
 }
-/* line 13, ../../scss/tw/_post-detail.scss */
+/* line 14, ../../scss/tw/_post-detail.scss */
 #post-detail .add-compare-button:before {
-  line-height: 28px;
-  font-size: 17px;
+  line-height: 20px;
+  font-size: 13px;
 }
-/* line 18, ../../scss/tw/_post-detail.scss */
+/* line 19, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group {
   margin: 10px 20px;
   text-align: center;
 }
-/* line 22, ../../scss/tw/_post-detail.scss */
+/* line 23, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-gender {
   float: left;
   width: 30%;
   text-align: center;
   font-size: 0.7em;
 }
-/* line 29, ../../scss/tw/_post-detail.scss */
+/* line 30, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-gender .analytics-number div {
   float: left;
   width: 50%;
 }
-/* line 35, ../../scss/tw/_post-detail.scss */
+/* line 36, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-gender .analytics-gender-avatar {
   clear: both;
 }
-/* line 37, ../../scss/tw/_post-detail.scss */
+/* line 38, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-gender .analytics-gender-avatar div {
   float: left;
   width: 50%;
@@ -568,59 +563,59 @@
   background-size: 100%;
   line-height: 0%;
 }
-/* line 44, ../../scss/tw/_post-detail.scss */
+/* line 45, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-gender .analytics-gender-avatar div img {
   width: 100%;
 }
-/* line 51, ../../scss/tw/_post-detail.scss */
+/* line 52, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-divider {
   width: 5%;
   height: 1px;
   float: left;
 }
-/* line 57, ../../scss/tw/_post-detail.scss */
+/* line 58, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age {
   float: left;
   width: 65%;
   font-size: 0.7em;
 }
-/* line 62, ../../scss/tw/_post-detail.scss */
+/* line 63, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-age-graph-group {
   float: left;
   width: 20%;
   border-bottom: 1px solid #e6e4e6;
 }
-/* line 67, ../../scss/tw/_post-detail.scss */
+/* line 68, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-padding {
   width: 100%;
 }
-/* line 71, ../../scss/tw/_post-detail.scss */
+/* line 72, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-number {
   width: 100%;
 }
-/* line 75, ../../scss/tw/_post-detail.scss */
+/* line 76, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-block {
   width: 70%;
   margin: auto;
 }
-/* line 80, ../../scss/tw/_post-detail.scss */
+/* line 81, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-block.top {
   background-color: #777577;
 }
-/* line 84, ../../scss/tw/_post-detail.scss */
+/* line 85, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-age-graph-group .analytics-block.other {
   background-color: #e6e4e6;
 }
-/* line 89, ../../scss/tw/_post-detail.scss */
+/* line 90, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-label {
   clear: both;
 }
-/* line 91, ../../scss/tw/_post-detail.scss */
+/* line 92, ../../scss/tw/_post-detail.scss */
 #post-detail .analytics-group .analytics-age .analytics-label div {
   float: left;
   width: 20%;
 }
-/* line 98, ../../scss/tw/_post-detail.scss */
+/* line 99, ../../scss/tw/_post-detail.scss */
 #post-detail .time-ago i.fa {
   margin-right: 3px;
   font-size: 1.2em;
@@ -677,39 +672,40 @@
   background-color: #FF4C62;
   border-color: #FF4C62;
   color: #fff;
-  min-width: 30px;
-  min-height: 30px;
-  height: 30px;
-  margin-top: 7px;
+  min-width: 24px;
+  min-height: 22px;
+  height: 22px;
+  width: 24px;
+  margin-top: 12px;
   margin-left: 5px;
 }
-/* line 13, ../../scss/tw/_home.scss */
+/* line 14, ../../scss/tw/_home.scss */
 #home .add-compare-button:before {
-  line-height: 28px;
-  font-size: 17px;
+  line-height: 20px;
+  font-size: 13px;
 }
-/* line 18, ../../scss/tw/_home.scss */
+/* line 19, ../../scss/tw/_home.scss */
 #home .analytics-group {
   margin: 10px 20px;
   text-align: center;
 }
-/* line 22, ../../scss/tw/_home.scss */
+/* line 23, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-gender {
   float: left;
   width: 30%;
   text-align: center;
   font-size: 0.7em;
 }
-/* line 29, ../../scss/tw/_home.scss */
+/* line 30, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-gender .analytics-number div {
   float: left;
   width: 50%;
 }
-/* line 35, ../../scss/tw/_home.scss */
+/* line 36, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-gender .analytics-gender-avatar {
   clear: both;
 }
-/* line 37, ../../scss/tw/_home.scss */
+/* line 38, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-gender .analytics-gender-avatar div {
   float: left;
   width: 50%;
@@ -717,59 +713,59 @@
   background-size: 100%;
   line-height: 0%;
 }
-/* line 44, ../../scss/tw/_home.scss */
+/* line 45, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-gender .analytics-gender-avatar div img {
   width: 100%;
 }
-/* line 51, ../../scss/tw/_home.scss */
+/* line 52, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-divider {
   width: 5%;
   height: 1px;
   float: left;
 }
-/* line 57, ../../scss/tw/_home.scss */
+/* line 58, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age {
   float: left;
   width: 65%;
   font-size: 0.7em;
 }
-/* line 62, ../../scss/tw/_home.scss */
+/* line 63, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-age-graph-group {
   float: left;
   width: 20%;
   border-bottom: 1px solid #e6e4e6;
 }
-/* line 67, ../../scss/tw/_home.scss */
+/* line 68, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-age-graph-group .analytics-padding {
   width: 100%;
 }
-/* line 71, ../../scss/tw/_home.scss */
+/* line 72, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-age-graph-group .analytics-number {
   width: 100%;
 }
-/* line 75, ../../scss/tw/_home.scss */
+/* line 76, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-age-graph-group .analytics-block {
   width: 70%;
   margin: auto;
 }
-/* line 80, ../../scss/tw/_home.scss */
+/* line 81, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-age-graph-group .analytics-block.top {
   background-color: #777577;
 }
-/* line 84, ../../scss/tw/_home.scss */
+/* line 85, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-age-graph-group .analytics-block.other {
   background-color: #e6e4e6;
 }
-/* line 89, ../../scss/tw/_home.scss */
+/* line 90, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-label {
   clear: both;
 }
-/* line 91, ../../scss/tw/_home.scss */
+/* line 92, ../../scss/tw/_home.scss */
 #home .analytics-group .analytics-age .analytics-label div {
   float: left;
   width: 20%;
 }
-/* line 99, ../../scss/tw/_home.scss */
+/* line 100, ../../scss/tw/_home.scss */
 #home .time-ago i.fa {
   margin-right: 3px;
   font-size: 1.2em;

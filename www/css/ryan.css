@@ -1,6 +1,5 @@
 /* line 3, ../../scss/common/_reusable.scss */
-.background-image-handler, #tab-explore.masonry-post-list .post .profile-image,
-#compare.masonry-post-list .post .profile-image, .single-post .post-header .profile-image {
+.background-image-handler, .post-list .post .profile-image, .single-post .post-header .profile-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -3228,7 +3227,6 @@
 /* line 7, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar {
   padding: 4px;
-  padding-left: 50px;
   min-height: 55px;
 }
 /* line 8, ../../scss/ryan/_follow-toggle-user-list.scss */
@@ -3266,52 +3264,12 @@
 }
 /* line 36, ../../scss/ryan/_follow-toggle-user-list.scss */
 .follow-toggle-user-list ion-content .item-avatar .profile-image {
-  max-width: 30px;
-  max-height: 30px;
-  left: 10px;
-  top: 13px;
+  float: left;
+  margin: 10px;
 }
 
-/* line 1, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list,
-#compare.masonry-post-list {
-  /*
-  .post:nth-child(even){
-    margin-top:-41%;
-  }
-  .post:nth-child(1){
-    margin-top: 0px;
-    padding-top: 0%;
-    .item {
-      padding-top: 56%;
-    }
-  }
-  .post:nth-child(2){
-    margin-top:0%;
-  }
-  */
-}
-/* line 3, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list masonry,
-#compare.masonry-post-list masonry {
-  width: 100%;
-}
-/* line 6, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .masonry-brick,
-#compare.masonry-post-list .masonry-brick {
-  width: 50%;
-  border: 0;
-  padding: 3px 6px;
-}
-/* line 7, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .masonry-brick img,
-#compare.masonry-post-list .masonry-brick img {
-  width: 100%;
-  border-radius: 3px;
-}
-/* line 15, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post,
-#compare.masonry-post-list .post {
+/* line 2, ../../scss/ryan/_post-list.scss */
+.post-list .post {
   width: 98%;
   border-radius: 3px;
   float: left;
@@ -3319,42 +3277,51 @@
   padding: 0px;
   position: relative;
 }
-/* line 16, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post .post_img,
-#compare.masonry-post-list .post .post_img {
+/* line 3, ../../scss/ryan/_post-list.scss */
+.post-list .post .post_img {
   display: block;
   width: 100%;
   padding-top: 100%;
 }
-/* line 27, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post ion-item,
-#compare.masonry-post-list .post ion-item {
+/* line 14, ../../scss/ryan/_post-list.scss */
+.post-list .post ion-item {
   border: 0;
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
   width: 50%;
   float: left;
+  background-color: #f0f0f0;
 }
-/* line 35, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post .desc_row,
-#compare.masonry-post-list .post .desc_row {
+/* line 23, ../../scss/ryan/_post-list.scss */
+.post-list .post .desc_row {
   float: left;
   width: 50%;
   font-size: 14px;
   color: #aaa;
   padding: 5px 5px 0px 10px;
 }
-/* line 42, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post .add_to_compare,
-#compare.masonry-post-list .post .add_to_compare {
+/* line 30, ../../scss/ryan/_post-list.scss */
+.post-list .post .add_to_compare {
   position: absolute;
   bottom: 5px;
-  right: 5px;
+  right: 8px;
 }
-/* line 47, ../../scss/ryan/_masonry-post-list.scss */
-#tab-explore.masonry-post-list .post .profile-image,
-#compare.masonry-post-list .post .profile-image {
+/* line 35, ../../scss/ryan/_post-list.scss */
+.post-list .post .like-button {
+  min-width: 20px;
+  min-height: 21px;
+  height: 21px;
+  padding-right: 5px;
+  margin-right: 10px;
+}
+/* line 42, ../../scss/ryan/_post-list.scss */
+.post-list .post .like-button:before {
+  line-height: 20px;
+  font-size: 25px;
+}
+/* line 46, ../../scss/ryan/_post-list.scss */
+.post-list .post .profile-image {
   width: 25px;
   height: 25px;
   -webkit-border-radius: 50%;
@@ -3365,54 +3332,26 @@
   float: left;
   margin-right: 5px;
 }
-
-/* line 74, ../../scss/ryan/_masonry-post-list.scss */
-#tab-account.masonry-post-list masonry {
-  width: 100%;
+/* line 54, ../../scss/ryan/_post-list.scss */
+.post-list .post .user-name {
+  padding: 2px;
 }
-/* line 77, ../../scss/ryan/_masonry-post-list.scss */
-#tab-account.masonry-post-list .masonry-brick {
-  width: 50%;
-  border: 0;
-  padding: 3px 6px;
+/* line 57, ../../scss/ryan/_post-list.scss */
+.post-list .post .add-compare-button {
+  float: right;
+  background-color: #FF4C62;
+  border-color: #FF4C62;
+  color: #fff;
+  min-width: 20px;
+  min-height: 21px;
+  height: 21px;
+  padding-right: 6px;
+  margin-right: 6px;
 }
-/* line 78, ../../scss/ryan/_masonry-post-list.scss */
-#tab-account.masonry-post-list .masonry-brick img {
-  width: 100%;
-  border-radius: 3px;
-}
-/* line 86, ../../scss/ryan/_masonry-post-list.scss */
-#tab-account.masonry-post-list .post {
-  width: 48%;
-  border: 0;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  border-radius: 3px;
-  float: left;
-  margin: 1%;
-}
-/* line 87, ../../scss/ryan/_masonry-post-list.scss */
-#tab-account.masonry-post-list .post a {
-  display: block;
-  width: 100%;
-  padding-top: 100%;
-}
-/* line 101, ../../scss/ryan/_masonry-post-list.scss */
-#tab-account.masonry-post-list .post:nth-child(even) {
-  margin-top: -30%;
-}
-/* line 104, ../../scss/ryan/_masonry-post-list.scss */
-#tab-account.masonry-post-list .post:nth-child(1) {
-  margin-top: 0%;
-}
-/* line 107, ../../scss/ryan/_masonry-post-list.scss */
-#tab-account.masonry-post-list .post:nth-child(1) {
-  padding-top: 28%;
-}
-/* line 110, ../../scss/ryan/_masonry-post-list.scss */
-#tab-account.masonry-post-list .post:nth-child(2) {
-  margin-top: 0%;
+/* line 68, ../../scss/ryan/_post-list.scss */
+.post-list .post .add-compare-button:before {
+  line-height: 20px;
+  font-size: 13px;
 }
 
 /* line 2, ../../scss/ryan/_comment-list.scss */
@@ -3427,33 +3366,32 @@
 /* line 6, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar .item-content {
   padding: 7px;
-  padding-left: 50px;
   min-height: 55px;
 }
 /* line 7, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar .item-content .profile-image {
-  max-width: 35px;
-  max-height: 35px;
-  left: 5px;
-  top: 10px;
+  width: 35px;
+  height: 35px;
+  float: left;
+  margin: 3px 6px 0 0;
 }
-/* line 20, ../../scss/ryan/_comment-list.scss */
+/* line 19, ../../scss/ryan/_comment-list.scss */
 .comment-list .item {
   border-color: #e7e7e7;
   padding: 7px;
 }
-/* line 21, ../../scss/ryan/_comment-list.scss */
+/* line 20, ../../scss/ryan/_comment-list.scss */
 .comment-list .item .time-ago {
   position: absolute;
   top: 7px;
   right: 10px;
   font-size: 13px;
 }
-/* line 30, ../../scss/ryan/_comment-list.scss */
+/* line 29, ../../scss/ryan/_comment-list.scss */
 .comment-list .load-more {
   padding: 10px;
 }
-/* line 33, ../../scss/ryan/_comment-list.scss */
+/* line 32, ../../scss/ryan/_comment-list.scss */
 .comment-list .button-small {
   line-height: 0;
 }
@@ -3539,12 +3477,27 @@ a {
 }
 
 /* line 14, ../../scss/ryan/_global.scss */
+.profile-image {
+  background-color: #f0f0f0;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+  background-clip: padding-box;
+}
+
+/* line 23, ../../scss/ryan/_global.scss */
 .loading-spinner {
   padding: 20px 0;
   text-align: center;
 }
 
-/* line 18, ../../scss/ryan/_global.scss */
+/* line 27, ../../scss/ryan/_global.scss */
 .update-notification {
   text-align: center;
   padding: 10px;
@@ -3554,21 +3507,21 @@ a {
   border: 1px solid #FFBF00;
 }
 
-/* line 26, ../../scss/ryan/_global.scss */
+/* line 35, ../../scss/ryan/_global.scss */
 #notification-icon:before {
   font-size: 28px;
 }
 
-/* line 29, ../../scss/ryan/_global.scss */
+/* line 38, ../../scss/ryan/_global.scss */
 .bar-header {
   border-bottom-width: 0px;
 }
-/* line 30, ../../scss/ryan/_global.scss */
+/* line 39, ../../scss/ryan/_global.scss */
 .bar-header i {
   font-size: 17px;
 }
 
-/* line 35, ../../scss/ryan/_global.scss */
+/* line 44, ../../scss/ryan/_global.scss */
 .bar {
   border-top: 0px solid transparent;
   border-bottom: 0px solid #ddd;
@@ -3576,43 +3529,43 @@ a {
   padding-right: 10px;
 }
 
-/* line 41, ../../scss/ryan/_global.scss */
+/* line 50, ../../scss/ryan/_global.scss */
 .button.button-positive {
   background-color: #FF4C62;
 }
 
-/* line 44, ../../scss/ryan/_global.scss */
+/* line 53, ../../scss/ryan/_global.scss */
 .button.button-positive.activated {
   background-color: #E24256;
 }
 
-/* line 47, ../../scss/ryan/_global.scss */
+/* line 56, ../../scss/ryan/_global.scss */
 .button.button-stable {
   border: 1px solid #ddd;
 }
 
 @media (min--moz-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
-  /* line 51, ../../scss/ryan/_global.scss */
+  /* line 60, ../../scss/ryan/_global.scss */
   .bar, .tabs {
     background-size: 100% 0px;
   }
 }
-/* line 55, ../../scss/ryan/_global.scss */
+/* line 64, ../../scss/ryan/_global.scss */
 .no-result {
   padding: 60px;
   text-align: center;
   color: #555;
 }
 
-/* line 60, ../../scss/ryan/_global.scss */
+/* line 69, ../../scss/ryan/_global.scss */
 .popup-container .popup {
   border-radius: 3px;
 }
-/* line 61, ../../scss/ryan/_global.scss */
+/* line 70, ../../scss/ryan/_global.scss */
 .popup-container .popup .popup-head {
   border-bottom: 0;
 }
-/* line 64, ../../scss/ryan/_global.scss */
+/* line 73, ../../scss/ryan/_global.scss */
 .popup-container .popup .popup-body {
   text-align: center;
 }
@@ -3739,16 +3692,20 @@ div.tab-nav.tabs {
   padding-right: 10px;
 }
 /* line 9, ../../scss/ryan/_home.scss */
+#home .post-image {
+  background-color: #f0f0f0;
+}
+/* line 12, ../../scss/ryan/_home.scss */
 #home .divider {
   height: 20px;
   background-color: #e7e7e7;
 }
-/* line 13, ../../scss/ryan/_home.scss */
+/* line 16, ../../scss/ryan/_home.scss */
 #home ion-item {
   padding: 0;
   border: 0;
 }
-/* line 17, ../../scss/ryan/_home.scss */
+/* line 20, ../../scss/ryan/_home.scss */
 #home .ion-ios-more-outline {
   float: right;
 }
@@ -3761,6 +3718,10 @@ div.tab-nav.tabs {
 /* line 3, ../../scss/ryan/_explore.scss */
 #tab-explore .search-header h3 {
   color: #555;
+}
+/* line 9, ../../scss/ryan/_explore.scss */
+#tab-explore .search-clear {
+  margin-top: 0;
 }
 
 /* line 2, ../../scss/ryan/_ranking.scss */
