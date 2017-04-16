@@ -741,7 +741,7 @@ angular.module('starter.controllers', [])
         else
         {
             return "fa-hourglass-start";
-        }   
+        }
     };
     $rootScope.manipulateCreatedFrom = function(val){
         if (Math.floor(24 - val/60) > 0)
@@ -2084,6 +2084,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope) {
+    var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
     $scope.genderList = [
         {value: 'male', label: 'Male'},
@@ -2103,6 +2104,7 @@ angular.module('starter.controllers', [])
         FetchPosts.compare($rootScope.compareList).then(function(response){
             posts = response;
             $scope.posts = posts;
+            $scope.original_posts = posts;
             for (index = 0; index < posts.length; ++index) {
                 posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
                 posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
@@ -2110,7 +2112,7 @@ angular.module('starter.controllers', [])
             }
         });
     }
-
+/*
     $scope.$on('$ionicView.enter', function() {
         $scope.showInstruction = true;
         if ($rootScope.compareList.length >= 2 )
@@ -2127,12 +2129,10 @@ angular.module('starter.controllers', [])
             });
         }
     });
+*/
     $scope.removeCompare = function(_post) {
-        $(".post_"+_post.id).fadeOut(300, function() {
-            $rootScope.addCompare(_post.id);
-            $(".post_"+_post.id).remove();
-            $scope.posts.splice($scope.posts.indexOf(_post), 1);
-        });
+        $rootScope.addCompare(_post.id);
+        $scope.posts.splice($scope.posts.indexOf(_post), 1);
     }
     $scope.sortPosts = function(sort, index) {
         var post_list = $scope.posts;
@@ -2143,6 +2143,7 @@ angular.module('starter.controllers', [])
         var sort_by_gender = false;
         if (sort.gender == null && sort.age === undefined || sort.gender == undefined && sort.age === null || sort.gender == null && sort.age === null || sort.gender == undefined && sort.age === undefined)
         {
+            /*
             FetchPosts.compare($rootScope.compareList).then(function(response){
                 posts = response;
                 $scope.posts = posts;
@@ -2152,6 +2153,8 @@ angular.module('starter.controllers', [])
                     posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
                 }
             });
+            */
+            post_list = $scope.original_posts;
         }
         if (sort.age !== undefined && sort.age !== "" && sort.age !== null)
         {
@@ -2254,6 +2257,9 @@ angular.module('starter.controllers', [])
             }
             return Math.round(parseInt(_stat.fifties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
         }
+    };
+    $scope.notMe = function(post) {
+        return (post.user.id != user.id);
     };
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {
@@ -2531,17 +2537,19 @@ angular.module('starter.controllers', [])
         return !$scope.isMyAccount;
     };
     $scope.loadMore = function() {
-        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
-            posts = response.data;
-            if(!response.next_page_url){
-                $scope.noMoreItemsAvailable = true;
-            }
-            $scope.posts = $scope.posts.concat(posts);
-            $timeout(function() {
-              $scope.$broadcast('scroll.infiniteScrollComplete');
+        if(!$scope.activatingTab){
+            FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
+                posts = response.data;
+                if(!response.next_page_url){
+                    $scope.noMoreItemsAvailable = true;
+                }
+                $scope.posts = $scope.posts.concat(posts);
+                $timeout(function() {
+                  $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+                $scope.page++;
             });
-            $scope.page++;
-        });
+        }
     };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -2571,6 +2579,7 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.activateTab = function(tab){
+        $scope.activatingTab = true;
         $scope.page = 1;
         $scope.posts = [];
         $scope.activatedTab = tab;
@@ -2590,6 +2599,7 @@ angular.module('starter.controllers', [])
             if( !$scope.isMyAccount && (tab == 'best') ){
                 $scope.noMoreItemsAvailable = true;
             }
+            $scope.activatingTab = false;
         });
     }
 })

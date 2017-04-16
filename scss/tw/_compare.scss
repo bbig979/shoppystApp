@@ -1,20 +1,4 @@
 #compare {
-  .add-compare-button {
-    float: right;
-    background-color: #FF4C62;
-    border-color: #FF4C62;
-    color: #fff;
-    min-width: 20px;
-    min-height: 21px;
-    height: 21px;
-    padding-right: 5px;
-  }
-
-  .add-compare-button:before {
-    line-height: 20px;
-    font-size: 13px;
-  }
-
   .desc_top_row {
   	height: 30px;
   	padding: 5px;
@@ -50,11 +34,30 @@
   	}
   }
 
-  .posts {
-    margin-top: 10px;
-  }
-
   .overflow-scroll .scroll {
     height: auto !important;
+  }
+
+  .item{
+    position: relative;
+    .ranking{
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: #fff;
+      background-color: #000;
+      width: 23px;
+      height: 23px;
+      text-align: center;
+      font-size: 12px;
+      border: 2px solid #fff;
+      @include border-radius(50%);
+    }
+    .button.button-dark.button-clear.ion-ios-heart {
+      color: #FF4C62;
+    }
+  }
+  .sort{
+    margin-bottom: 0;
   }
 }
