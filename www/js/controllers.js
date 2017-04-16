@@ -455,7 +455,6 @@ angular.module('starter.controllers', [])
             }
             else
             {
-                console.log(parseInt(stat.male));
                 return Math.round(female_stat/(female_stat + male_stat)*100);
             }
         }
@@ -763,7 +762,7 @@ angular.module('starter.controllers', [])
     $rootScope.openCompare = function(){
         if ($rootScope.compareList.length < 2)
         {
-            $rootScope.popupMessage("Alert", "Please add more than 2 looks to compare");
+            $rootScope.popupMessage("Oops", "Please add more than 2 looks to compare");
         }
         else
         {
@@ -860,12 +859,14 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
+    $scope.submitted = false;
     $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = $stateParams.photoUrl;
 
     $scope.sharePost = function(captions) {
+        $scope.submitted = true;
         $ionicLoading.show({template: 'Uploading Photo...'});
         var fileURL = $scope.picData;
         var options = new FileUploadOptions();
@@ -1445,7 +1446,7 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                if (posts[index].post_analytic.length == 0)
+                if (posts[index].post_analytic == undefined || posts[index].post_analytic.length == 0)
                 {
                     posts[index].show_stat = false;
                 }
@@ -1481,7 +1482,7 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                if (posts[index].post_analytic.length == 0)
+                if (posts[index].post_analytic == undefined || posts[index].post_analytic.length == 0)
                 {
                     posts[index].show_stat = false;
                 }
@@ -1519,7 +1520,7 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                if (posts[index].post_analytic.length == 0)
+                if (posts[index].post_analytic == undefined || posts[index].post_analytic.length == 0)
                 {
                     posts[index].show_stat = false;
                 }
@@ -1726,7 +1727,7 @@ angular.module('starter.controllers', [])
                 $rootScope.compareIndexList[post.id] = true;
             }
 
-            if (post.post_analytic.length == 0)
+            if (post.post_analytic == undefined || post.post_analytic.length == 0)
             {
                 post.show_stat = false;
             }
