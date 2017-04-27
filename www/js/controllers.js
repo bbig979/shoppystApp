@@ -1945,7 +1945,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
@@ -1955,6 +1955,7 @@ angular.module('starter.controllers', [])
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
+        console.log(posts);
         if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
         }
@@ -2082,6 +2083,34 @@ angular.module('starter.controllers', [])
             return '#'+temp.join(' #');
         }
     }
+    $scope.likeClicked = function($event,post){
+        $event.preventDefault();
+        if(post.user_liked){
+            post.likes_count.aggregate--;
+            if(post.likes_count.aggregate == 0){
+                post.likes_count = null;
+            }
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        else{
+            if(post.likes_count){
+                post.likes_count.aggregate++;
+            }
+            else{
+                post.likes_count = {aggregate: 1};
+            }
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        post.user_liked = !post.user_liked;
+    };
 })
 
 .controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope) {
@@ -2404,6 +2433,21 @@ angular.module('starter.controllers', [])
             if( !$scope.isMyAccount && ($scope.activatedTab == 'best') ){
                 $scope.noMoreItemsAvailable = true;
             }
+
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+
+                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
+            }
         });
     }
 
@@ -2549,6 +2593,21 @@ angular.module('starter.controllers', [])
                   $scope.$broadcast('scroll.infiniteScrollComplete');
                 });
                 $scope.page++;
+
+                for (index = 0; index < posts.length; ++index) {
+                    if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                    {
+                        $rootScope.compareIndexList[posts[index].id] = false;
+                    }
+                    else
+                    {
+                        $rootScope.compareIndexList[posts[index].id] = true;
+                    }
+
+                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
+                }
             });
         }
     };
@@ -2577,6 +2636,21 @@ angular.module('starter.controllers', [])
             if( !$scope.isMyAccount && ($scope.activatedTab == 'best') ){
                 $scope.noMoreItemsAvailable = true;
             }
+
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+
+                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
+            }
         });
     };
     $scope.activateTab = function(tab){
@@ -2601,6 +2675,21 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.activatingTab = false;
+
+            for (index = 0; index < posts.length; ++index) {
+                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
+                {
+                    $rootScope.compareIndexList[posts[index].id] = false;
+                }
+                else
+                {
+                    $rootScope.compareIndexList[posts[index].id] = true;
+                }
+
+                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
+                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
+                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
+            }
         });
     }
 })
