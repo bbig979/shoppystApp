@@ -2134,7 +2134,7 @@ angular.module('starter.controllers', [])
         FetchPosts.compare($rootScope.compareList).then(function(response){
             posts = response;
             $scope.posts = posts;
-            $scope.original_posts = posts;
+            $scope.original_posts = $scope.cloneObj(posts);
             for (index = 0; index < posts.length; ++index) {
                 posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
                 posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
@@ -2160,32 +2160,30 @@ angular.module('starter.controllers', [])
         }
     });
 */
+    $scope.cloneObj = function(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+    $scope.indexOfObj = function(arr, obj) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].id == obj.id) {
+                return i;
+            }
+        }
+        return -1;
+    }
     $scope.removeCompare = function(_post) {
         $rootScope.addCompare(_post.id);
         $scope.posts.splice($scope.posts.indexOf(_post), 1);
+        $scope.original_posts.splice($scope.indexOfObj($scope.original_posts, _post), 1);
     }
     $scope.sortPosts = function(sort, index) {
-        var post_list = $scope.posts;
+        var post_list = $scope.cloneObj($scope.original_posts);
         var percent_array = [];
         var analytics;
         var temp_var;
         var sort_by_age = false;
         var sort_by_gender = false;
-        if (sort.gender == null && sort.age === undefined || sort.gender == undefined && sort.age === null || sort.gender == null && sort.age === null || sort.gender == undefined && sort.age === undefined)
-        {
-            /*
-            FetchPosts.compare($rootScope.compareList).then(function(response){
-                posts = response;
-                $scope.posts = posts;
-                for (index = 0; index < posts.length; ++index) {
-                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-                }
-            });
-            */
-            post_list = $scope.original_posts;
-        }
+
         if (sort.age !== undefined && sort.age !== "" && sort.age !== null)
         {
             var sort_by_age = true;
