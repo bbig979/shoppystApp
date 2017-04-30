@@ -1955,7 +1955,6 @@ angular.module('starter.controllers', [])
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
-        console.log(posts);
         if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
         }
@@ -2134,12 +2133,12 @@ angular.module('starter.controllers', [])
         FetchPosts.compare($rootScope.compareList).then(function(response){
             posts = response;
             $scope.posts = posts;
-            $scope.original_posts = $scope.cloneObj(posts);
             for (index = 0; index < posts.length; ++index) {
                 posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
                 posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
                 posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
+            $scope.original_posts = $scope.cloneObj(posts);
         });
     }
 /*
