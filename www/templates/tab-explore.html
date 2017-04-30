@@ -43,7 +43,7 @@
                             <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
                         </div>
                         <div class="add_to_compare">
-                            <button class= "button button-clear button-dark icon like-button" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
+                            <button class="button button-clear button-dark icon like-button" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                             <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
                         </div>
                     </div>
