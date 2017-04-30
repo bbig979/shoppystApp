@@ -1,0 +1,73 @@
+.post-list {
+  .post {
+    .post_img {
+      display: block;
+      width: 100%;
+      padding-top: 100%;
+    }
+    width: 98%;
+    border-radius: 3px;
+    float: left;
+    margin: 1%;
+    padding: 0px;
+    position: relative;
+    ion-item {
+      border: 0;
+      background-position: 50% 50%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 50%;
+      float: left;
+      background-color: $grey-lighter;
+    }
+    .desc_row{
+      float: left;
+      width: 50%;
+      font-size: 14px;
+      color: $grey-dark;
+      padding: 5px 5px 0px 10px;
+    }
+    .add_to_compare{
+      position: absolute;
+      bottom: 5px;
+      right: 8px;
+    }
+    .like-button{
+      min-width: 20px;
+      min-height: 21px;
+      height: 21px;
+      padding-right: 5px;
+      margin-right: 10px;
+    }
+    .like-button:before{
+      line-height: 20px;
+      font-size: 25px;
+    }
+    .profile-image{
+      width: 25px;
+      height: 25px;
+      @extend .background-image-handler;
+      @include border-radius(50%);
+      float: left;
+      margin-right: 5px;
+    }
+    .user-name{
+      padding: 2px;
+    }
+    .add-compare-button {
+      float: right;
+      background-color: #FF4C62;
+      border-color: #FF4C62;
+      color: #fff;
+      min-width: 20px;
+      min-height: 21px;
+      height: 21px;
+      padding-right: 6px;
+      margin-right: 6px;
+    }
+    .add-compare-button:before {
+      line-height: 20px;
+      font-size: 13px;
+    }
+  }
+}
