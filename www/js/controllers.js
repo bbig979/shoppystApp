@@ -2112,7 +2112,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope) {
+.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
     $scope.genderList = [
@@ -2287,6 +2287,36 @@ angular.module('starter.controllers', [])
     };
     $scope.notMe = function(post) {
         return (post.user.id != user.id);
+    };
+    $scope.likeClicked = function($event,post){
+        var original_post_index = $scope.indexOfObj($scope.original_posts, post);
+        $event.preventDefault();
+        if(post.user_liked){
+            post.likes_count.aggregate--;
+            if(post.likes_count.aggregate == 0){
+                post.likes_count = null;
+            }
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        else{
+            if(post.likes_count){
+                post.likes_count.aggregate++;
+            }
+            else{
+                post.likes_count = {aggregate: 1};
+            }
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        post.user_liked = !post.user_liked;
+        $scope.original_posts[original_post_index] = post;
     };
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {
