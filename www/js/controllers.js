@@ -2177,7 +2177,7 @@ angular.module('starter.controllers', [])
     }
     $scope.sortPosts = function(sort, index) {
         var post_list = $scope.cloneObj($scope.original_posts);
-        var percent_array = [];
+        var like_count_array = [];
         var analytics;
         var temp_var;
         var sort_by_age = false;
@@ -2194,26 +2194,26 @@ angular.module('starter.controllers', [])
 
         for(i = 0; i < post_list.length; i++)
         {
-            percent_array[i] = 0;
+            like_count_array[i] = 0;
             analytics = post_list[i].post_analytic[0];
             if (sort_by_gender == true)
             {
-                percent_array[i] += parseFloat($scope.calculatePercent(analytics, sort.gender));
+                like_count_array[i] += parseFloat($scope.getLikeCount(analytics, sort.gender));
             }
             if (sort_by_age == true)
             {
-                percent_array[i] += parseFloat($scope.calculatePercent(analytics, sort.age));
+                like_count_array[i] += parseFloat($scope.getLikeCount(analytics, sort.age));
             }
         }
-        for(i = 0; i < percent_array.length; i++)
+        for(i = 0; i < like_count_array.length; i++)
         {
-            for(j = 0; j < percent_array.length; j++)
+            for(j = 0; j < like_count_array.length; j++)
             {
-                if (percent_array[i] > percent_array[j])
+                if (like_count_array[i] > like_count_array[j])
                 {
-                    temp_var = percent_array[i];
-                    percent_array[i] = percent_array[j];
-                    percent_array[j] = temp_var;
+                    temp_var = like_count_array[i];
+                    like_count_array[i] = like_count_array[j];
+                    like_count_array[j] = temp_var;
                     temp_var = post_list[i];
                     post_list[i] = post_list[j];
                     post_list[j] = temp_var;
@@ -2222,7 +2222,7 @@ angular.module('starter.controllers', [])
         }
         $scope.posts = post_list;
     };
-    $scope.calculatePercent = function(_stat, _index) {
+    $scope.getLikeCount = function(_stat, _index) {
         _index = _index.value;
         if (_stat === undefined)
         {
@@ -2234,7 +2234,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.male)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
+            return parseInt(_stat.male);
         }
         else if (_index === "female")
         {
@@ -2242,7 +2242,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.female)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
+            return parseInt(_stat.female);
         }
         else if (_index === "10")
         {
@@ -2250,7 +2250,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.teens)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.teens);
         }
         else if (_index === "20")
         {
@@ -2258,7 +2258,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.twenties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.twenties);
         }
         else if (_index === "30")
         {
@@ -2266,7 +2266,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.thirties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.thirties);
         }
         else if (_index === "40")
         {
@@ -2274,7 +2274,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.forties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.forties);
         }
         else if (_index === "50")
         {
@@ -2282,7 +2282,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.fifties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.fifties);
         }
     };
     $scope.notMe = function(post) {
