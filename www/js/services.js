@@ -93,6 +93,18 @@ angular.module('starter.services', [])
         }
     };
 })
+.factory('FetchOccasions', function($http, $rootScope) {
+    return {
+        get: function() {
+            return $http.get($rootScope.baseURL+'/api/occasion').then(function(response){
+                return response.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+    };
+})
 .factory('FetchUsers', function($http, $rootScope) {
     return {
         following: function(slug, pg) {

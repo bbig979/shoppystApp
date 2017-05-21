@@ -1,8 +1,8 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://app.snaplook.today';
-    // $rootScope.baseURL = 'http://localhost:8000';
+    // $rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
@@ -858,14 +858,23 @@ angular.module('starter.controllers', [])
         }
     };
 })
-.controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
     $scope.submitted = false;
     $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = $stateParams.photoUrl;
+    $scope.occasionList = new Array();
 
-    $scope.sharePost = function(captions) {
+    FetchOccasions.get().then(function(response){
+        occasions = response;
+        for (index = 0; index < occasions.length; ++index) {
+            $scope.occasionList.push({value: occasions[index].id, label: occasions[index].name});
+        }
+        $scope.occasionList.push({value: 'other', label: 'Other'});
+    });
+
+    $scope.sharePost = function(captions, occasion) {
         $scope.submitted = true;
         $ionicLoading.show({template: 'Uploading Photo...'});
         var fileURL = $scope.picData;

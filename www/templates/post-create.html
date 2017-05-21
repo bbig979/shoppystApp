@@ -1,11 +1,25 @@
 <ion-view id="create-post" view-title="POST">
     <ion-content class="has-header">
-        <form ng-submit="sharePost(captions)" name="shareForm">
+        <form ng-submit="sharePost(captions, occasion, other)" name="shareForm">
             <div class="post-image">
                 <img class="item" ng-src="{{picData}}" />
             </div>
             <div class="post-caption padding">
                 <textarea placeholder="Write a Caption" class="form-control" ng-model="captions"></textarea>
+            </div>
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Occasion
+                </div>
+                <select ng-model="occasion" ng-change="checkOccasion(occasion)" ng-options="opt.label for opt in occasionList">
+                    <option value="">(optional)</option>
+                </select>
+            </label>
+            <div class="padding occasion_optional">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Please fill out occasion</span>
+                    <input type="text" placeholder="Please fill out occasion" class="form-control" ng-model="other">
+                </label>
             </div>
             <div class="padding">
                 <button type="submit" class="button button-block button-positive" ng-disabled="submitted">Share a post</button>
