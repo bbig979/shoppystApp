@@ -865,6 +865,7 @@ angular.module('starter.controllers', [])
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = $stateParams.photoUrl;
     $scope.occasionList = new Array();
+    $scope.shopOptionalOccasion = false;
 
     FetchOccasions.get().then(function(response){
         occasions = response;
@@ -874,7 +875,7 @@ angular.module('starter.controllers', [])
         $scope.occasionList.push({value: 'other', label: 'Other'});
     });
 
-    $scope.sharePost = function(captions, occasion) {
+    $scope.sharePost = function(captions, occasion, other) {
         $scope.submitted = true;
         $ionicLoading.show({template: 'Uploading Photo...'});
         var fileURL = $scope.picData;
@@ -884,12 +885,16 @@ angular.module('starter.controllers', [])
         {
             param_caption = captions;
         }
+        if (typeof occasion != 'undefined')
+        {
+            occasion = null;
+        }
         options.fileKey = "image";
         options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
         options.mimeType = "image/jpeg";
         options.chunkedMode = true;
 
-        var params = { 'captions': param_caption, 'user_id': user.id };
+        var params = { 'captions': param_caption, 'user_id': user.id, 'occasion': occasion, 'other': other };
 
         options.params = params;
 
@@ -907,7 +912,16 @@ angular.module('starter.controllers', [])
             $ionicLoading.show({template: 'Upload Fail', duration:500});
         }
     }
-
+    $scope.checkOccasion = function(_occasion) {
+        if (_occasion != null && _occasion.value == "other")
+        {
+            $scope.shopOptionalOccasion = true;
+        }
+        else
+        {
+            $scope.shopOptionalOccasion = false;
+        }
+    }
     $scope.back = function() {
         $ionicHistory.goBack();
     }

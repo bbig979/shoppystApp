@@ -1,6 +1,6 @@
 <ion-view id="create-post" view-title="POST">
     <ion-content class="has-header">
-        <form ng-submit="sharePost(captions, occasion, other)" name="shareForm">
+        <form ng-submit="sharePost(captions, occasion.value, other)" name="shareForm">
             <div class="post-image">
                 <img class="item" ng-src="{{picData}}" />
             </div>
@@ -15,7 +15,7 @@
                     <option value="">(optional)</option>
                 </select>
             </label>
-            <div class="padding occasion_optional">
+            <div class="padding occasion_optional" ng-show="shopOptionalOccasion">
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Please fill out occasion</span>
                     <input type="text" placeholder="Please fill out occasion" class="form-control" ng-model="other">
