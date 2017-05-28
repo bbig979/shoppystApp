@@ -1,8 +1,8 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://app.snaplook.today';
-    // $rootScope.baseURL = 'http://localhost:8000';
+    // $rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
@@ -926,14 +926,24 @@ angular.module('starter.controllers', [])
             )
     }
 })
-.controller('PostCreateCtrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
     $scope.submitted = false;
     $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.picData = $stateParams.photoUrl;
+    $scope.occasionList = new Array();
+    $scope.shopOptionalOccasion = false;
 
-    $scope.sharePost = function(captions) {
+    FetchOccasions.get().then(function(response){
+        occasions = response;
+        for (index = 0; index < occasions.length; ++index) {
+            $scope.occasionList.push({value: occasions[index].id, label: occasions[index].name});
+        }
+        $scope.occasionList.push({value: 'other', label: 'Other'});
+    });
+
+    $scope.sharePost = function(captions, occasion, other) {
         $scope.submitted = true;
         $ionicLoading.show({template: 'Uploading Photo...'});
         var fileURL = $scope.picData;
@@ -943,12 +953,16 @@ angular.module('starter.controllers', [])
         {
             param_caption = captions;
         }
+        if (typeof occasion != 'undefined')
+        {
+            occasion = null;
+        }
         options.fileKey = "image";
         options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
         options.mimeType = "image/jpeg";
         options.chunkedMode = true;
 
-        var params = { 'captions': param_caption, 'user_id': user.id };
+        var params = { 'captions': param_caption, 'user_id': user.id, 'occasion': occasion, 'other': other };
 
         options.params = params;
 
@@ -966,7 +980,16 @@ angular.module('starter.controllers', [])
             $ionicLoading.show({template: 'Upload Fail', duration:500});
         }
     }
-
+    $scope.checkOccasion = function(_occasion) {
+        if (_occasion != null && _occasion.value == "other")
+        {
+            $scope.shopOptionalOccasion = true;
+        }
+        else
+        {
+            $scope.shopOptionalOccasion = false;
+        }
+    }
     $scope.back = function() {
         $ionicHistory.goBack();
     }
@@ -1966,7 +1989,6 @@ angular.module('starter.controllers', [])
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
-        console.log(posts);
         if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
         }
@@ -2124,6 +2146,7 @@ angular.module('starter.controllers', [])
                 posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
                 $scope.originalPostOrder.push(posts[index].id);
             }
+            $scope.original_posts = $scope.cloneObj(posts);
         });
     }
 /*
@@ -2181,26 +2204,26 @@ angular.module('starter.controllers', [])
 
         for(i = 0; i < post_list.length; i++)
         {
-            percent_array[i] = 0;
+            like_count_array[i] = 0;
             analytics = post_list[i].post_analytic[0];
             if (sort_by_gender == true)
             {
-                percent_array[i] += parseFloat($scope.calculatePercent(analytics, sort.gender));
+                like_count_array[i] += parseFloat($scope.getLikeCount(analytics, sort.gender));
             }
             if (sort_by_age == true)
             {
-                percent_array[i] += parseFloat($scope.calculatePercent(analytics, sort.age));
+                like_count_array[i] += parseFloat($scope.getLikeCount(analytics, sort.age));
             }
         }
-        for(i = 0; i < percent_array.length; i++)
+        for(i = 0; i < like_count_array.length; i++)
         {
-            for(j = 0; j < percent_array.length; j++)
+            for(j = 0; j < like_count_array.length; j++)
             {
-                if (percent_array[i] > percent_array[j])
+                if (like_count_array[i] > like_count_array[j])
                 {
-                    temp_var = percent_array[i];
-                    percent_array[i] = percent_array[j];
-                    percent_array[j] = temp_var;
+                    temp_var = like_count_array[i];
+                    like_count_array[i] = like_count_array[j];
+                    like_count_array[j] = temp_var;
                     temp_var = post_list[i];
                     post_list[i] = post_list[j];
                     post_list[j] = temp_var;
@@ -2209,7 +2232,7 @@ angular.module('starter.controllers', [])
         }
         $scope.posts = post_list;
     };
-    $scope.calculatePercent = function(_stat, _index) {
+    $scope.getLikeCount = function(_stat, _index) {
         _index = _index.value;
         if (_stat === undefined)
         {
@@ -2221,7 +2244,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.male)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
+            return parseInt(_stat.male);
         }
         else if (_index === "female")
         {
@@ -2229,7 +2252,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.female)/(parseInt(_stat.male)+parseInt(_stat.female))*10000)/100;
+            return parseInt(_stat.female);
         }
         else if (_index === "10")
         {
@@ -2237,7 +2260,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.teens)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.teens);
         }
         else if (_index === "20")
         {
@@ -2245,7 +2268,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.twenties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.twenties);
         }
         else if (_index === "30")
         {
@@ -2253,7 +2276,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.thirties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.thirties);
         }
         else if (_index === "40")
         {
@@ -2261,7 +2284,7 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.forties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.forties);
         }
         else if (_index === "50")
         {
@@ -2269,11 +2292,41 @@ angular.module('starter.controllers', [])
             {
                 return 0;
             }
-            return Math.round(parseInt(_stat.fifties)/(parseInt(_stat.teens)+parseInt(_stat.twenties)+parseInt(_stat.thirties)+parseInt(_stat.forties)+parseInt(_stat.fifties))*10000)/100;
+            return parseInt(_stat.fifties);
         }
     };
     $scope.notMe = function(post) {
         return (post.user.id != user.id);
+    };
+    $scope.likeClicked = function($event,post){
+        var original_post_index = $scope.indexOfObj($scope.original_posts, post);
+        $event.preventDefault();
+        if(post.user_liked){
+            post.likes_count.aggregate--;
+            if(post.likes_count.aggregate == 0){
+                post.likes_count = null;
+            }
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        else{
+            if(post.likes_count){
+                post.likes_count.aggregate++;
+            }
+            else{
+                post.likes_count = {aggregate: 1};
+            }
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        post.user_liked = !post.user_liked;
+        $scope.original_posts[original_post_index] = post;
     };
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {
