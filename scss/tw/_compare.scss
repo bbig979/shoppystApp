@@ -1,43 +1,4 @@
 #compare {
-  .desc_top_row {
-  	height: 30px;
-  	padding: 5px;
-    border-bottom: 1px solid #ddd;
-
-  	.desc_stat {
-  		font-size: 13px;
-      color: #bbb;
-      position: relative;
-      top: -3px;
-  	}
-
-    .desc_stat .fa {
-      font-size: 1.6em;
-      position: relative;
-      top: 3px;
-    }
-  }
-
-  .desc_bottom_row {
-  	height: 30px;
-  	padding: 5px;
-
-  	.desc_time {
-  		float: right;
-  		font-size: 13px;
-      color: #bbb;
-  	}
-
-  	.desc_name {
-  		font-size: 13px;
-  		font-weight: bold;
-  	}
-  }
-
-  .overflow-scroll .scroll {
-    height: auto !important;
-  }
-
   .item{
     position: relative;
     .ranking{
@@ -52,9 +13,6 @@
       font-size: 12px;
       border: 2px solid #fff;
       @include border-radius(50%);
-    }
-    .button.button-dark.button-clear.ion-ios-heart {
-      color: #FF4C62;
     }
   }
   .sort{

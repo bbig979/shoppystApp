@@ -3353,6 +3353,10 @@
   line-height: 20px;
   font-size: 13px;
 }
+/* line 72, ../../scss/ryan/_post-list.scss */
+.post-list .post .button.button-dark.button-clear.ion-ios-heart {
+  color: #FF4C62;
+}
 
 /* line 2, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar {
@@ -3708,6 +3712,12 @@ div.tab-nav.tabs {
 /* line 20, ../../scss/ryan/_home.scss */
 #home .ion-ios-more-outline {
   float: right;
+}
+/* line 23, ../../scss/ryan/_home.scss */
+#home .ion-search {
+  font-size: 2em;
+  color: #FF986C;
+  padding: 5px;
 }
 
 /* line 2, ../../scss/ryan/_explore.scss */
