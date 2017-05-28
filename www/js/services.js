@@ -26,9 +26,13 @@ angular.module('starter.services', [])
     };
 }])
 .factory('FetchPosts', function($http, $rootScope) {
+    var _addToPostTrackArray = function(pagingInfo) {
+        $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
+    };
     return {
         following: function(pg) {
             return $http.get($rootScope.baseURL+"/api/home?page="+pg).then(function(response){
+                _addToPostTrackArray(response.data);
                 return response.data;
             }
             ,function(error){
@@ -45,6 +49,7 @@ angular.module('starter.services', [])
         },
         get: function(postID){
             return $http.get($rootScope.baseURL+"/api/post/"+postID).then(function(response){
+                _addToPostTrackArray({data:response.data});
                 return response.data;
             }
             ,function(error){
@@ -53,6 +58,7 @@ angular.module('starter.services', [])
         },
         new: function(pg, search_term){
             return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
+                _addToPostTrackArray(response.data);
                 return response.data;
             }
             ,function(error){
@@ -69,6 +75,7 @@ angular.module('starter.services', [])
         },
         user: function(userSlug, tab, pg) {
             return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
+                _addToPostTrackArray(response.data);
                 return response.data;
             }
             ,function(error){
@@ -85,6 +92,7 @@ angular.module('starter.services', [])
         },
         compare: function(postIDArray){
             return $http.get($rootScope.baseURL+"/api/compare/"+postIDArray.join(",")).then(function(response){
+                _addToPostTrackArray({data:response.data});
                 return response.data;
             }
             ,function(error){

@@ -306,49 +306,10 @@
 }
 
 /* line 2, ../../scss/tw/_compare.scss */
-#compare .desc_top_row {
-  height: 30px;
-  padding: 5px;
-  border-bottom: 1px solid #ddd;
-}
-/* line 7, ../../scss/tw/_compare.scss */
-#compare .desc_top_row .desc_stat {
-  font-size: 13px;
-  color: #bbb;
-  position: relative;
-  top: -3px;
-}
-/* line 14, ../../scss/tw/_compare.scss */
-#compare .desc_top_row .desc_stat .fa {
-  font-size: 1.6em;
-  position: relative;
-  top: 3px;
-}
-/* line 21, ../../scss/tw/_compare.scss */
-#compare .desc_bottom_row {
-  height: 30px;
-  padding: 5px;
-}
-/* line 25, ../../scss/tw/_compare.scss */
-#compare .desc_bottom_row .desc_time {
-  float: right;
-  font-size: 13px;
-  color: #bbb;
-}
-/* line 31, ../../scss/tw/_compare.scss */
-#compare .desc_bottom_row .desc_name {
-  font-size: 13px;
-  font-weight: bold;
-}
-/* line 37, ../../scss/tw/_compare.scss */
-#compare .overflow-scroll .scroll {
-  height: auto !important;
-}
-/* line 41, ../../scss/tw/_compare.scss */
 #compare .item {
   position: relative;
 }
-/* line 43, ../../scss/tw/_compare.scss */
+/* line 4, ../../scss/tw/_compare.scss */
 #compare .item .ranking {
   position: absolute;
   top: 10px;
@@ -366,11 +327,7 @@
   border-radius: 50%;
   background-clip: padding-box;
 }
-/* line 56, ../../scss/tw/_compare.scss */
-#compare .item .button.button-dark.button-clear.ion-ios-heart {
-  color: #FF4C62;
-}
-/* line 60, ../../scss/tw/_compare.scss */
+/* line 18, ../../scss/tw/_compare.scss */
 #compare .sort {
   margin-bottom: 0;
 }

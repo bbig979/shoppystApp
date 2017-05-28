@@ -12,6 +12,7 @@ angular.module('starter.controllers', [])
     $rootScope.nameLengthOnCard = 12;
     $rootScope.stat_height = 0;
     $rootScope.stat_label_height = 0;
+    $rootScope.postTrackArray = [];
 
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
@@ -237,7 +238,7 @@ angular.module('starter.controllers', [])
             {
                 return "100";
             }
-            else if (stat.female > stat.male)
+            else if (parseInt(stat.female) > parseInt(stat.male))
             {
                 return Math.round(stat.female/(parseInt(stat.female) + parseInt(stat.male))*100);
             }
@@ -277,30 +278,30 @@ angular.module('starter.controllers', [])
                 total += parseInt(stat.fifties);
             }
 
-            if (stat.teens !== undefined && stat.teens > count)
+            if (stat.teens !== undefined && parseInt(stat.teens) > count)
             {
                 age = "10-20";
-                count = stat.teens;
+                count = parseInt(stat.teens);
             }
-            if (stat.twenties !== undefined && stat.twenties > count)
+            if (stat.twenties !== undefined && parseInt(stat.twenties) > count)
             {
                 age = "20-30";
-                count = stat.twenties;
+                count = parseInt(stat.twenties);
             }
-            if (stat.thirties !== undefined && stat.thirties > count)
+            if (stat.thirties !== undefined && parseInt(stat.thirties) > count)
             {
                 age = "30-40";
-                count = stat.thirties;
+                count = parseInt(stat.thirties);
             }
-            if (stat.forties !== undefined && stat.forties > count)
+            if (stat.forties !== undefined && parseInt(stat.forties) > count)
             {
                 age = "40-50";
-                count = stat.forties;
+                count = parseInt(stat.forties);
             }
-            if (stat.fifties !== undefined && stat.fifties > count)
+            if (stat.fifties !== undefined && parseInt(stat.fifties) > count)
             {
                 age = "50-60";
-                count = stat.fifties;
+                count = parseInt(stat.fifties);
             }
 
             if(total == 0)
@@ -330,7 +331,7 @@ angular.module('starter.controllers', [])
         {
             return "fa-female";
         }
-        else if (stat[0].female > stat[0].male)
+        else if (parseInt(stat[0].female) > parseInt(stat[0].male))
         {
             return "fa-female";
         }
@@ -687,30 +688,30 @@ angular.module('starter.controllers', [])
             total += parseInt(stat.fifties);
         }
 
-        if (stat.teens !== undefined && stat.teens > count)
+        if (stat.teens !== undefined && parseInt(stat.teens) > count)
         {
             age = "10";
-            count = stat.teens;
+            count = parseInt(stat.teens);
         }
-        if (stat.twenties !== undefined && stat.twenties > count)
+        if (stat.twenties !== undefined && parseInt(stat.twenties) > count)
         {
             age = "20";
-            count = stat.twenties;
+            count = parseInt(stat.twenties);
         }
-        if (stat.thirties !== undefined && stat.thirties > count)
+        if (stat.thirties !== undefined && parseInt(stat.thirties) > count)
         {
             age = "30";
-            count = stat.thirties;
+            count = parseInt(stat.thirties);
         }
-        if (stat.forties !== undefined && stat.forties > count)
+        if (stat.forties !== undefined && parseInt(stat.forties) > count)
         {
             age = "40";
-            count = stat.forties;
+            count = parseInt(stat.forties);
         }
-        if (stat.fifties !== undefined && stat.fifties > count)
+        if (stat.fifties !== undefined && parseInt(stat.fifties) > count)
         {
             age = "50";
-            count = stat.fifties;
+            count = parseInt(stat.fifties);
         }
 
         if (age == index)
@@ -857,6 +858,73 @@ angular.module('starter.controllers', [])
             return false;
         }
     };
+    $rootScope.toggleLike = function(post){
+      if(post.user_liked){
+          post.likes_count.aggregate--;
+          if(post.likes_count.aggregate == 0){
+              post.likes_count = null;
+          }
+      }
+      else{
+          if(post.likes_count){
+              post.likes_count.aggregate++;
+          }
+          else{
+              post.likes_count = {aggregate: 1};
+          }
+      }
+      post.user_liked = !post.user_liked;
+    }
+    $rootScope.likeClicked = function($event,clickedPost){
+        $event.preventDefault();
+        if(clickedPost.user_liked){
+            $http.get($rootScope.baseURL+'/api/post/'+clickedPost.id+'/unlike').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        else{
+            $http.get($rootScope.baseURL+'/api/post/'+clickedPost.id+'/like').success(function(){
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        for(i = 0; i < $rootScope.postTrackArray.length; i++){
+            post = $rootScope.postTrackArray[i];
+            if(post.id == clickedPost.id){
+              $rootScope.toggleLike(post);
+            }
+        }
+    };
+    $rootScope.likesCount = function(post){
+        if(post.likes_count){
+            return post.likes_count.aggregate;
+        }
+        else{
+            return 0;
+        }
+    }
+    $rootScope.cloneObj = function(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+    $rootScope.indexOfObj = function(arr, obj) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].id == obj.id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    $rootScope.isStatNotAvailable = function(post) {
+        return post.post_analytic == undefined ||
+            post.post_analytic.length == 0 ||
+            (
+                post.post_analytic[0].male == 0 &&
+                post.post_analytic[0].female == 0
+            )
+    }
 })
 .controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
     $scope.submitted = false;
@@ -1469,7 +1537,7 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                if (posts[index].post_analytic == undefined || posts[index].post_analytic.length == 0)
+                if ($rootScope.isStatNotAvailable(posts[index]))
                 {
                     posts[index].show_stat = false;
                 }
@@ -1505,7 +1573,7 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                if (posts[index].post_analytic == undefined || posts[index].post_analytic.length == 0)
+                if ($rootScope.isStatNotAvailable(posts[index]))
                 {
                     posts[index].show_stat = false;
                 }
@@ -1543,7 +1611,7 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[posts[index].id] = true;
                 }
 
-                if (posts[index].post_analytic == undefined || posts[index].post_analytic.length == 0)
+                if ($rootScope.isStatNotAvailable(posts[index]))
                 {
                     posts[index].show_stat = false;
                 }
@@ -1568,34 +1636,6 @@ angular.module('starter.controllers', [])
                 $scope.noResult = true;
             }
         });
-    };
-    $scope.likeClicked = function($event,post){
-        $event.preventDefault();
-        if(post.user_liked){
-            post.likes_count.aggregate--;
-            if(post.likes_count.aggregate == 0){
-                post.likes_count = null;
-            }
-            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            if(post.likes_count){
-                post.likes_count.aggregate++;
-            }
-            else{
-                post.likes_count = {aggregate: 1};
-            }
-            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        post.user_liked = !post.user_liked;
     };
     $scope.commentsPage = function(id){
         $state.go('tab.post-comments-home',{postId: id});
@@ -1706,7 +1746,6 @@ angular.module('starter.controllers', [])
     $scope.comment = {};
     $scope.liked = false;
     $scope.saved = false;
-    $scope.likesCount = 0;
     $scope.commentsHiddenCount = 0;
     $scope.page = 2;
     $scope.clientVersionUpToDate = true;
@@ -1737,10 +1776,6 @@ angular.module('starter.controllers', [])
             if(post.user_liked){
                 $scope.liked = true;
             }
-            if(post.likes_count){
-                $scope.likesCount = post.likes_count.aggregate;
-            }
-
             if ($rootScope.compareList.indexOf(post.id) == -1)
             {
                 $rootScope.compareIndexList[post.id] = false;
@@ -1750,7 +1785,7 @@ angular.module('starter.controllers', [])
                 $rootScope.compareIndexList[post.id] = true;
             }
 
-            if (post.post_analytic == undefined || post.post_analytic.length == 0)
+            if ($rootScope.isStatNotAvailable(post))
             {
                 post.show_stat = false;
             }
@@ -1818,25 +1853,6 @@ angular.module('starter.controllers', [])
     };
     $scope.focusComment = function(){
         Focus('comment');
-    };
-    $scope.likeClicked = function(){
-        if($scope.liked){
-            $scope.likesCount--;
-            $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/unlike').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            $scope.likesCount++;
-            $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/like').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        $scope.liked = !$scope.liked;
     };
     $scope.moreOption = function(){
         if(user.id == $scope.post.user.id){
@@ -1915,7 +1931,6 @@ angular.module('starter.controllers', [])
         $scope.comment = {};
         $scope.liked = false;
         $scope.saved = false;
-        $scope.likesCount = 0;
         $scope.commentsHiddenCount = 0;
         $scope.page = 2;
         $scope.noResult = false;
@@ -1934,10 +1949,6 @@ angular.module('starter.controllers', [])
                 if(post.user_liked){
                     $scope.liked = true;
                 }
-                if(post.likes_count){
-                    $scope.likesCount = post.likes_count.aggregate;
-                }
-
                 if ($rootScope.compareList.indexOf(post.id) == -1)
                 {
                     $rootScope.compareIndexList[post.id] = false;
@@ -1947,7 +1958,7 @@ angular.module('starter.controllers', [])
                     $rootScope.compareIndexList[post.id] = true;
                 }
 
-                if (post.post_analytic.length == 0)
+                if ($rootScope.isStatNotAvailable(post))
                 {
                     post.show_stat = false;
                 }
@@ -2105,34 +2116,6 @@ angular.module('starter.controllers', [])
             return '#'+temp.join(' #');
         }
     }
-    $scope.likeClicked = function($event,post){
-        $event.preventDefault();
-        if(post.user_liked){
-            post.likes_count.aggregate--;
-            if(post.likes_count.aggregate == 0){
-                post.likes_count = null;
-            }
-            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            if(post.likes_count){
-                post.likes_count.aggregate++;
-            }
-            else{
-                post.likes_count = {aggregate: 1};
-            }
-            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        post.user_liked = !post.user_liked;
-    };
 })
 
 .controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http) {
@@ -2150,6 +2133,7 @@ angular.module('starter.controllers', [])
         {value: '50', label: 'Above 50'}
     ];
     $scope.tab = $state.current['name'].split("-")[1];
+    $scope.originalPostOrder = [];
     if ($rootScope.compareList.length >= 2 )
     {
         $scope.showInstruction = false;
@@ -2160,6 +2144,7 @@ angular.module('starter.controllers', [])
                 posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
                 posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
                 posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
+                $scope.originalPostOrder.push(posts[index].id);
             }
             $scope.original_posts = $scope.cloneObj(posts);
         });
@@ -2182,25 +2167,27 @@ angular.module('starter.controllers', [])
         }
     });
 */
-    $scope.cloneObj = function(obj) {
-      return JSON.parse(JSON.stringify(obj));
-    }
-    $scope.indexOfObj = function(arr, obj) {
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i].id == obj.id) {
-                return i;
-            }
-        }
-        return -1;
-    }
     $scope.removeCompare = function(_post) {
         $rootScope.addCompare(_post.id);
         $scope.posts.splice($scope.posts.indexOf(_post), 1);
-        $scope.original_posts.splice($scope.indexOfObj($scope.original_posts, _post), 1);
+    }
+    $scope.sortPostsToOriginalOrder = function(posts) {
+        var temp_var;
+        var found_index;
+        var dummy_obj = {id:0};
+        for(i = 0; i < $scope.originalPostOrder.length; i++)
+        {
+            dummy_obj.id = $scope.originalPostOrder[i];
+            found_index = $rootScope.indexOfObj(posts, dummy_obj);
+            temp_var = posts[i];
+            posts[i] = posts[found_index];
+            posts[found_index] = temp_var;
+        }
+        return posts;
     }
     $scope.sortPosts = function(sort, index) {
-        var post_list = $scope.cloneObj($scope.original_posts);
-        var like_count_array = [];
+        var post_list = $scope.sortPostsToOriginalOrder($scope.posts);
+        var percent_array = [];
         var analytics;
         var temp_var;
         var sort_by_age = false;

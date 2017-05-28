@@ -5,7 +5,7 @@
                 on-refresh="doRefresh()">
         </ion-refresher>
         <div class="no-result" ng-if="noResult">
-            Check out the explore tab below and start following others
+            Check out the <i class="icon ion-search"></i> tab below and start following others
         </div>
         <div class="loading-spinner" data-loading ng-if="posts.length == 0 && !noMoreItemsAvailable">
             <ion-spinner></ion-spinner>
@@ -24,7 +24,7 @@
                     <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
                 </div>
                 <div class="button-group">
-                    <button class= "button button-clear button-dark icon" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
+                    <button class= "button button-clear button-dark icon heart-for-post-{{post.id}}" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                     <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="commentsPage(post.id)"></button>
                     <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption(post.id)"></button>
                     <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
@@ -97,7 +97,10 @@
                 </div>
                 <hr size="1" color="#e7e7e7">
                 <div class="stats">
-                    <span class="likes-count" ng-click="goPostLikers(post.id)"><i class="ion-ios-heart"></i> <span ng-hide="post.likes_count.aggregate">0</span>{{ post.likes_count.aggregate }} likes</span>
+                    <span class="likes-count" ng-click="goPostLikers(post.id)">
+                      <i class="ion-ios-heart"></i>
+                      <span class="like-count-for-post-{{post.id}}">{{ likesCount(post) }}</span> likes
+                    </span>
                     <span class="comments-count" ng-if="post.comments_count.aggregate" ng-click="commentsPage(post.id)">
                         <i class="ion-ios-chatbubble"></i>
                         <span class="dynamic-comment-count" id="{{post.id}}">{{ post.comments_count.aggregate }}</span> comments

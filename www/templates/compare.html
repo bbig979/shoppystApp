@@ -31,7 +31,7 @@
                             <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.first_name}} {{post.user.last_name}}</div>
                         </div>
                         <div class="desc_row">
-                            <span class="likes-count"><i class="ion-ios-heart"></i> <span ng-hide="post.likes_count.aggregate">0</span>{{ post.likes_count.aggregate }} likes</span>
+                            <span class="likes-count"><i class="ion-ios-heart"></i> {{ likesCount(post) }} likes</span>
                         </div>
                         <div class="desc_row">
                             <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>

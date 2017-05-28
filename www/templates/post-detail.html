@@ -23,7 +23,7 @@
                 <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
             </div>
             <div class="button-group">
-                <button class= "button button-clear button-dark icon" ng-click="likeClicked()" ng-class="liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'" ng-show="lessThanHidingTime"></button>
+                <button class= "button button-clear button-dark icon heart-for-post-{{post.id}}" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                 <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="focusComment()"></button>
                 <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
                 <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption()"></button>
@@ -96,7 +96,9 @@
             </div>
             <hr size="1" color="#e7e7e7">
             <div class="stats">
-                <p class="likes-count" ng-click="goPostLikers(post.id)"><i class="ion-ios-heart"></i> {{ likesCount }} likes</p>
+                <p class="likes-count" ng-click="goPostLikers(post.id)">
+                  <i class="ion-ios-heart"></i> <span class="like-count-for-post-{{post.id}}">{{ likesCount(post) }}</span> likes
+                </p>
             </div>
             <p class="content" ng-bind-html="linkHashTag(post.content) | unsafe"></p>
             <p class="load-more grey-small-font" ng-click="loadMoreComments()" ng-if="commentsHiddenCount">load previous comments ({{ commentsHiddenCount }})</p>
