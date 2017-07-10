@@ -1,8 +1,8 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
     $rootScope.clientVersion = '1.0';
-    // $rootScope.baseURL = 'http://app.snaplook.today';
-    $rootScope.baseURL = 'http://localhost:8000';
+    $rootScope.baseURL = 'http://app.snaplook.today';
+    //$rootScope.baseURL = 'http://localhost:8000';
     // $rootScope.baseURL = 'http://192.168.56.1:8000';
     // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
@@ -114,11 +114,13 @@ angular.module('starter.controllers', [])
         console.log(error);
     };
     $rootScope.getCurrentUser = function(){
-        var user = JSON.parse(localStorage.getItem('user'));
-        if(user){
-            return user;
+        if($state.current.name){
+            var user = JSON.parse(localStorage.getItem('user'));
+            if(user){
+                return user;
+            }
+            $state.go('auth');
         }
-        $state.go('auth');
     };
     $rootScope.goAccountOption = function(id){
         $state.go('tab.option-account',{userId: id});
@@ -2188,6 +2190,7 @@ angular.module('starter.controllers', [])
     $scope.sortPosts = function(sort, index) {
         var post_list = $scope.sortPostsToOriginalOrder($scope.posts);
         var percent_array = [];
+        var like_count_array = [];
         var analytics;
         var temp_var;
         var sort_by_age = false;
