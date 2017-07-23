@@ -3,8 +3,8 @@ angular.module('starter.controllers', [])
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
-    // $rootScope.baseURL = 'http://192.168.56.1:8000';
-    // $rootScope.baseURL = 'http://localhost:8888';
+    //$rootScope.baseURL = 'http://192.168.56.1:8000';
+    //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.compareList = [];
@@ -13,6 +13,8 @@ angular.module('starter.controllers', [])
     $rootScope.stat_height = 0;
     $rootScope.stat_label_height = 0;
     $rootScope.postTrackArray = [];
+    $rootScope.userTrackArray = [];
+    $rootScope.currentUser = null;
 
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
@@ -70,13 +72,13 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.school-detail-'+tab,{schoolId: id, schoolName: name});
     };
-    $rootScope.goAccountFollowing = function(slug, user){
+    $rootScope.goAccountFollowing = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-following-'+tab,{userSlug: slug, user: user});
+        $state.go('tab.account-following-'+tab,{userSlug: slug});
     };
-    $rootScope.goAccountFollower = function(slug, user){
+    $rootScope.goAccountFollower = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-follower-'+tab,{userSlug: slug, user: user});
+        $state.go('tab.account-follower-'+tab,{userSlug: slug});
     };
     $rootScope.goAccountLiked = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -115,9 +117,15 @@ angular.module('starter.controllers', [])
     };
     $rootScope.getCurrentUser = function(){
         if($state.current.name){
-            var user = JSON.parse(localStorage.getItem('user'));
-            if(user){
-                return user;
+            if($rootScope.currentUser){
+                return $rootScope.currentUser;
+            }
+            else{
+                var user = JSON.parse(localStorage.getItem('user'));
+                if(user){
+                    $rootScope.currentUser = user;
+                    return $rootScope.currentUser;
+                }
             }
             $state.go('auth');
         }
@@ -860,46 +868,46 @@ angular.module('starter.controllers', [])
             return false;
         }
     };
-    $rootScope.toggleLike = function(post){
-      if(post.user_liked){
-          post.likes_count.aggregate--;
-          if(post.likes_count.aggregate == 0){
-              post.likes_count = null;
-          }
-      }
-      else{
-          if(post.likes_count){
-              post.likes_count.aggregate++;
-          }
-          else{
-              post.likes_count = {aggregate: 1};
-          }
-      }
-      post.user_liked = !post.user_liked;
-    }
-    $rootScope.likeClicked = function($event,clickedPost){
+    $rootScope.toggleLike = function($event,post){
         $event.preventDefault();
-        if(clickedPost.user_liked){
-            $http.get($rootScope.baseURL+'/api/post/'+clickedPost.id+'/unlike').success(function(){
+        if(post.user_liked){
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
             });
         }
         else{
-            $http.get($rootScope.baseURL+'/api/post/'+clickedPost.id+'/like').success(function(){
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
             });
         }
+        $rootScope.trackAndUpdateLike(post);
+    };
+    $rootScope.trackAndUpdateLike = function(post){
         for(i = 0; i < $rootScope.postTrackArray.length; i++){
-            post = $rootScope.postTrackArray[i];
-            if(post.id == clickedPost.id){
-              $rootScope.toggleLike(post);
+            thisPost = $rootScope.postTrackArray[i];
+            if(post.id == thisPost.id){
+                if(thisPost.user_liked){
+                    thisPost.likes_count.aggregate--;
+                    if(thisPost.likes_count.aggregate == 0){
+                        thisPost.likes_count = null;
+                    }
+                }
+                else{
+                    if(thisPost.likes_count){
+                        thisPost.likes_count.aggregate++;
+                    }
+                    else{
+                        thisPost.likes_count = {aggregate: 1};
+                    }
+                }
+                thisPost.user_liked = !thisPost.user_liked;
             }
         }
-    };
+    }
     $rootScope.likesCount = function(post){
         if(post.likes_count){
             return post.likes_count.aggregate;
@@ -927,6 +935,47 @@ angular.module('starter.controllers', [])
                 post.post_analytic[0].female == 0
             )
     }
+    $rootScope.toggleFollow = function(user) {
+        var current_user = $rootScope.getCurrentUser();
+        if(user.following_check){
+            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
+                current_user.following_count--;
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        else{
+            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
+                current_user.following_count++;
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        $rootScope.trackAndUpdateFollow(user);
+    };
+    $rootScope.trackAndUpdateFollow = function(user) {
+        for(i = 0; i < $rootScope.userTrackArray.length; i++){
+            thisUser = $rootScope.userTrackArray[i];
+            if(thisUser.id == user.id){
+                if(thisUser.following_check){
+                    if(thisUser.follower_count){
+                        thisUser.follower_count--;
+                    }
+                }
+                else{
+                    if(thisUser.follower_count){
+                        thisUser.follower_count++;
+                    }
+                    else{
+                        thisUser.follower_count = 1;
+                    }
+                }
+                thisUser.following_check = !thisUser.following_check;
+            }
+        }
+    };
 })
 .controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
     $scope.submitted = false;
@@ -1721,23 +1770,6 @@ angular.module('starter.controllers', [])
             }
         });
     };
-    $scope.followToggle = function(like) {
-        if(like.user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ like.user.slug +'/unfollow').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            $http.get($rootScope.baseURL+'/api/'+ like.user.slug +'/follow').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        like.user.following_check = !like.user.following_check;
-    };
     $scope.notMe = function(like) {
         return (like.user.id != user.id);
     };
@@ -2301,36 +2333,6 @@ angular.module('starter.controllers', [])
     $scope.notMe = function(post) {
         return (post.user.id != user.id);
     };
-    $scope.likeClicked = function($event,post){
-        var original_post_index = $scope.indexOfObj($scope.original_posts, post);
-        $event.preventDefault();
-        if(post.user_liked){
-            post.likes_count.aggregate--;
-            if(post.likes_count.aggregate == 0){
-                post.likes_count = null;
-            }
-            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            if(post.likes_count){
-                post.likes_count.aggregate++;
-            }
-            else{
-                post.likes_count = {aggregate: 1};
-            }
-            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        post.user_liked = !post.user_liked;
-        $scope.original_posts[original_post_index] = post;
-    };
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {
     $scope.schools = [];
@@ -2458,6 +2460,7 @@ angular.module('starter.controllers', [])
             if (user.id == $scope.account_info.id)
             {
                 $scope.isMyAccount = true;
+                $rootScope.currentUser = $scope.account_info;
             }
         });
         FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
@@ -2601,23 +2604,6 @@ angular.module('starter.controllers', [])
             window.open('https://www.pinterest.com/'+$scope.account_info.social_networks.pinterest, '_system');
         }
     };
-    $scope.followToggle = function(like) {
-        if(like.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ like.slug +'/unfollow').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else {
-            $http.get($rootScope.baseURL+'/api/'+ like.slug +'/follow').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        like.following_check = !like.following_check;
-    };
     $scope.notMe = function(like) {
         return !$scope.isMyAccount;
     };
@@ -2659,6 +2645,10 @@ angular.module('starter.controllers', [])
 
         FetchUsers.get($scope.currentSlug).then(function(account_info){
             $scope.account_info = account_info;
+            if (user.id == account_info.id)
+            {
+                $rootScope.currentUser = account_info;
+            }
         });
         FetchPosts.user($scope.currentSlug, 'best', $scope.page).then(function(response){
             posts = response.data;
@@ -2853,19 +2843,6 @@ angular.module('starter.controllers', [])
             $scope.noMoreItemsAvailable = false;
         });
     };
-    $scope.followToggle = function(user) {
-        if(user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-
-            });
-        }
-        else{
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-
-            });
-        }
-        user.following_check = !user.following_check;
-    };
 })
 .controller('InviteFriendsCtrl', function($scope, $http, $rootScope, $ionicPopup, Focus) {
     $scope.sendInvitation = function(email){
@@ -2939,29 +2916,6 @@ angular.module('starter.controllers', [])
             }
         });
     };
-    $scope.followToggle = function(user) {
-        if(user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
-                    $stateParams.user.following_count--;
-                }
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
-                    $stateParams.user.following_count++;
-                }
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        user.following_check = !user.following_check;
-    };
 })
 .controller('FollowerCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope, $timeout) {
     var user = $rootScope.getCurrentUser();
@@ -3014,29 +2968,6 @@ angular.module('starter.controllers', [])
                 $scope.noResult = true;
             }
         });
-    };
-    $scope.followToggle = function(user) {
-        if(user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
-                    $stateParams.user.following_count--;
-                }
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
-                    $stateParams.user.following_count++;
-                }
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        user.following_check = !user.following_check;
     };
 })
 .controller('LikedCtrl', function($scope, $stateParams, FetchPosts, $timeout) {

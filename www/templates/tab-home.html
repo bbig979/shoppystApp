@@ -24,7 +24,7 @@
                     <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
                 </div>
                 <div class="button-group">
-                    <button class= "button button-clear button-dark icon heart-for-post-{{post.id}}" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
+                    <button class= "button button-clear button-dark icon heart-for-post-{{post.id}}" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                     <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="commentsPage(post.id)"></button>
                     <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption(post.id)"></button>
                     <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>

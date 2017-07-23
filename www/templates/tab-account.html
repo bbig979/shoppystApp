@@ -6,7 +6,7 @@
         </ion-refresher>
         <div class="account-top">
             <button class="button button-clear icon ion-gear-b account-option-btn" ng-click="goAccountOption()" ng-if="!notMe(account_info)"></button>
-            <button class="button button-small follow-toggle" ng-class="{'following' : account_info.following_check}" ng-click="followToggle(account_info)" ng-if="notMe(account_info)"></button>
+            <button class="button button-small follow-toggle" ng-class="{'following' : account_info.following_check}" ng-click="toggleFollow(account_info)" ng-if="notMe(account_info)"></button>
             <div class="account-image" style="background: url({{accountImage}})" ng-click="changeProfilePicture()"></div>
             <div class="user-name">
                 <ion-spinner icon="ios-small" ng-if="!account_info"></ion-spinner>
@@ -16,8 +16,8 @@
             <div class="account-achievement row">
                 <div class="account-post-btn col" ng-click="goAccountPost()"><span class="ion-camera"></span><br>{{account_info.posts_count}}<br>Posts</div>
                 <div class="account-like-btn col"><span class="ion-ios-heart"></span><br>{{account_info.likes_count}}<br>Likes</div>
-                <div class="account-followers-btn col" ng-click="goAccountFollower(account_info.slug, account_info)"><span class="ion-ios-people"></span><br><span class="dynamic-follower-count">{{account_info.follower_count}}</span><br>Followers</div>
-                <div class="account-following-btn col" ng-click="goAccountFollowing(account_info.slug,account_info)"><span class="ion-android-person"></span><br><span class="dynamic-following-count">{{account_info.following_count}}</span><br>Following</div>
+                <div class="account-followers-btn col" ng-click="goAccountFollower(account_info.slug)"><span class="ion-ios-people"></span><br><span class="dynamic-follower-count">{{account_info.follower_count}}</span><br>Followers</div>
+                <div class="account-following-btn col" ng-click="goAccountFollowing(account_info.slug)"><span class="ion-android-person"></span><br><span class="dynamic-following-count">{{account_info.following_count}}</span><br>Following</div>
             </div>
             <div class="account-social-network row">
                 <div class="button button-clear icon col account-facebook-btn clearfix" ng-click="goAccountSocialNetwork('facebook')" ng-if="account_info.social_networks.facebook"><span class="ion-social-facebook"></span></div>
@@ -75,7 +75,7 @@
                             <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
                         </div>
                         <div class="add_to_compare">
-                            <button class= "button button-clear button-dark icon like-button heart-for-post-{{post.id}}" ng-click="likeClicked($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'" ng-if="notMe(account_info)"></button>
+                            <button class= "button button-clear button-dark icon like-button heart-for-post-{{post.id}}" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'" ng-if="notMe(account_info)"></button>
                             <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
                         </div>
                     </div>

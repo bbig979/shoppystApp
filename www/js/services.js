@@ -114,9 +114,13 @@ angular.module('starter.services', [])
     };
 })
 .factory('FetchUsers', function($http, $rootScope) {
+    var _addToUserTrackArray = function(pagingInfo) {
+        $rootScope.userTrackArray = $rootScope.userTrackArray.concat(pagingInfo.data);
+    };
     return {
         following: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/'+ slug +'/following?page='+ pg).then(function(response){
+                _addToUserTrackArray(response.data);
                 return response.data;
             }
             ,function(error){
@@ -125,6 +129,7 @@ angular.module('starter.services', [])
         },
         follower: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/'+ slug +'/follower?page='+ pg).then(function(response){
+                _addToUserTrackArray(response.data);
                 return response.data;
             }
             ,function(error){
@@ -133,6 +138,7 @@ angular.module('starter.services', [])
         },
         get: function(userSlug) {
             return $http.get($rootScope.baseURL+"/api/"+userSlug).then(function(response){
+                _addToUserTrackArray({data:response.data});
                 return response.data;
             }
             ,function(error){
@@ -141,6 +147,7 @@ angular.module('starter.services', [])
         },
         liker: function(id, pg) {
             return $http.get($rootScope.baseURL+'/api/post/'+ id +'/likers?page='+ pg).then(function(response){
+                _addToUserTrackArray(response.data);
                 return response.data;
             }
             ,function(error){
@@ -149,6 +156,7 @@ angular.module('starter.services', [])
         },
         findFriends: function(pg) {
             return $http.get($rootScope.baseURL+'/api/find-friends?page='+ pg).then(function(response){
+                _addToUserTrackArray(response.data);
                 return response.data.data;
             });
         }
