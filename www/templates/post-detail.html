@@ -18,12 +18,12 @@
         <div class="no-result" ng-if="noResult">
             This post has been deleted by owner
         </div>
-        <div ng-hide="noResult">
+        <div ng-hide="noResult" class="entity-id-{{post.id}}">
             <div class="post-image">
                 <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
             </div>
             <div class="button-group">
-                <button class= "button button-clear button-dark icon heart-for-post-{{post.id}}" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
+                <button class= "button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                 <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="focusComment()"></button>
                 <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
                 <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption()"></button>
@@ -97,7 +97,7 @@
             <hr size="1" color="#e7e7e7">
             <div class="stats">
                 <p class="likes-count" ng-click="goPostLikers(post.id)">
-                  <i class="ion-ios-heart"></i> <span class="like-count-for-post-{{post.id}}">{{ likesCount(post) }}</span> likes
+                  <i class="ion-ios-heart"></i> <span class="like-count-number">{{ likesCount(post) }}</span> likes
                 </p>
             </div>
             <p class="content" ng-bind-html="linkHashTag(post.content) | unsafe"></p>
