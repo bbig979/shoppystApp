@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
@@ -16,6 +16,15 @@ angular.module('starter.controllers', [])
     $rootScope.userTrackArray = [];
     $rootScope.currentUser = null;
 
+    $rootScope.scroll = function() {
+        $ionicScrollDelegate.scrollBy(0, 100);
+    }
+    $rootScope.ifTestAccount = function() {
+        if($rootScope.currentUser){
+            return $rootScope.currentUser.email == "info@snaplook.today";
+        }
+        return false;
+    }
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
