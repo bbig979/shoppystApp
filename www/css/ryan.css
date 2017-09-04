@@ -3369,7 +3369,7 @@
 }
 /* line 6, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar .item-content {
-  padding: 7px;
+  padding: 14px;
   min-height: 55px;
 }
 /* line 7, ../../scss/ryan/_comment-list.scss */
@@ -3382,20 +3382,19 @@
 /* line 19, ../../scss/ryan/_comment-list.scss */
 .comment-list .item {
   border-color: #e7e7e7;
-  padding: 7px;
 }
 /* line 20, ../../scss/ryan/_comment-list.scss */
 .comment-list .item .time-ago {
   position: absolute;
-  top: 7px;
+  top: 15px;
   right: 10px;
   font-size: 13px;
 }
-/* line 29, ../../scss/ryan/_comment-list.scss */
+/* line 28, ../../scss/ryan/_comment-list.scss */
 .comment-list .load-more {
   padding: 10px;
 }
-/* line 32, ../../scss/ryan/_comment-list.scss */
+/* line 31, ../../scss/ryan/_comment-list.scss */
 .comment-list .button-small {
   line-height: 0;
 }
