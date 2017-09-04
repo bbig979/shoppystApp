@@ -37,10 +37,10 @@
             </div>
             <div class="tabs-striped" ng-hide="notMe(account_info)">
                 <div class="tabs">
-                    <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
+                    <a class="tab-item best" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
                         <span ng-hide="notMe(account_info)">Best</span>
                     </a>
-                    <a class="tab-item" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
+                    <a class="tab-item new" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
                         <span ng-hide="notMe(account_info)">New</span>
                     </a>
                 </div>
@@ -49,34 +49,37 @@
         <div class="no-result" ng-if="noResult">
             No look posted today
         </div>
-        <div class="loading-spinner" data-loading ng-if="posts.length == 0">
+        <div class="loading-spinner" data-loading ng-if="posts.length == 0 && !noMoreItemsAvailable">
             <ion-spinner></ion-spinner>
         </div>
         <ion-list>
             <div>
                 <ion-item collection-repeat="post in posts" class="post" collection-item-width="'100%'">
-                    <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id, account_info, posts, $index)">
-                        <a class="post_img"></a>
-                    </ion-item>
-                    <div>
-                        <div class="desc_row">
-                            <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
-                            <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.first_name}} {{post.user.last_name}}</div>
-                        </div>
-                        <div class="desc_row">
-                            <span class="likes-count"><i class="ion-ios-heart"></i>
-                                <span class="like-count-number">{{ likesCount(post) }} likes</span>
-                            </span>
-                        </div>
-                        <div class="desc_row">
-                            <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
-                        </div>
-                        <div class="desc_row">
-                            <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
-                        </div>
-                        <div class="add_to_compare">
-                            <button class= "button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'" ng-if="notMe(account_info)"></button>
-                            <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
+                    <div class="entity-id-{{post.id}}">
+                        <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id, account_info, posts, $index)">
+                            <a class="post_img"></a>
+                        </ion-item>
+                        <div>
+                            <div class="desc_row">
+                                <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
+                                <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.first_name}} {{post.user.last_name}}</div>
+                            </div>
+                            <div class="desc_row">
+                                <span class="likes-count">
+                                    <i class="ion-ios-heart"></i>
+                                    <span class="like-count-number">{{ likesCount(post) }}</span> likes
+                                </span>
+                            </div>
+                            <div class="desc_row">
+                                <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
+                            </div>
+                            <div class="desc_row">
+                                <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
+                            </div>
+                            <div class="add_to_compare">
+                                <button class="button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'" ng-if="notMe(account_info)"></button>
+                                <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : compareIndexList[post.id], 'ion-plus' : !compareIndexList[post.id]}" ng-click="addCompare(post.id)"></button>
+                            </div>
                         </div>
                     </div>
                 </ion-item>
