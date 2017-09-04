@@ -2700,6 +2700,7 @@ angular.module('starter.controllers', [])
         $scope.noResult = false;
 
         FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(response){
+            $scope.$broadcast('scroll.infiniteScrollComplete');
             posts = response.data;
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
@@ -3046,9 +3047,6 @@ angular.module('starter.controllers', [])
         {
             $state.go('tab.account-notification',{accountSlug: data[2]});
         }
-    };
-    $scope.goNotificationProfile = function(slug) {
-        $state.go('tab.account-notification',{accountSlug: slug});
     };
     $scope.loadMore = function() {
         FetchNotifications.new(user.slug, $scope.page).then(function(response){
