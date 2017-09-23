@@ -1,10 +1,10 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate) {
     $rootScope.clientVersion = '1.0';
-    //$rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    $rootScope.baseURL = 'http://localhost:8888';
+    //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.compareList = [];
@@ -2442,7 +2442,7 @@ angular.module('starter.controllers', [])
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.currentSlug = "";
     $scope.noResult = false;
-    $scope.activatedTab = 'best';
+    $scope.activatedTab = 'new';
     if ($stateParams.activateTab) {
         $scope.activatedTab = $stateParams.activateTab;
     }
@@ -2454,11 +2454,6 @@ angular.module('starter.controllers', [])
     else
     {
         $scope.currentSlug = $stateParams.accountSlug;
-    }
-
-    if (user.slug != $scope.currentSlug)
-    {
-        $scope.activatedTab = 'new';
     }
 
     if (user.id || $stateParams.refresh) {

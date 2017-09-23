@@ -27,21 +27,11 @@
             </div>
             <div class="tabs-striped" ng-hide="notMe(account_info)">
                 <div class="tabs">
-                    <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
-                        Best
-                    </a>
                     <a class="tab-item" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
                         New
                     </a>
-                </div>
-            </div>
-            <div class="tabs-striped" ng-hide="notMe(account_info)">
-                <div class="tabs">
-                    <a class="tab-item best" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
-                        <span ng-hide="notMe(account_info)">Best</span>
-                    </a>
-                    <a class="tab-item new" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
-                        <span ng-hide="notMe(account_info)">New</span>
+                    <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
+                        Best
                     </a>
                 </div>
             </div>
