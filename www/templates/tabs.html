@@ -5,13 +5,12 @@ navigation history that also transitions its views in and out.
 -->
 <ion-tabs class="tabs-icon-middle" keyboard-handler>
 
-
-    <ion-tab icon-off="ion-home" icon-on="ion-home" href="#/tab/home">
-        <ion-nav-view name="tab-home"></ion-nav-view>
-    </ion-tab>
-
     <ion-tab icon-off="ion-search" icon-on="ion-search" href="#/tab/explore//explore">
         <ion-nav-view name="tab-explore"></ion-nav-view>
+    </ion-tab>
+
+    <ion-tab icon-off="ion-person-stalker" icon-on="ion-person-stalker" href="#/tab/home">
+        <ion-nav-view name="tab-home"></ion-nav-view>
     </ion-tab>
 
     <ion-tab icon-off="ion-camera" icon-on="ion-camera" ng-click="openCameraMenu()">

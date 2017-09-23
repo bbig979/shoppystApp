@@ -1,10 +1,10 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://app.snaplook.today';
+    //$rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    //$rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.compareList = [];
@@ -106,7 +106,7 @@ angular.module('starter.controllers', [])
             }
         }
         if(status == 500){
-            $state.go('tab.home');
+            $state.go('tab.explore-explore');
         }
         else if(typeof (error.status) != 'undefined' && error.status == 401){
             // when validation error
@@ -1099,7 +1099,7 @@ angular.module('starter.controllers', [])
     });
     if(localStorage.getItem('have_seen_intro')){
         if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
-            $state.go('tab.home');
+            $state.go('tab.explore-explore');
         }
         else{
             $state.go('auth');
@@ -1149,7 +1149,7 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                $state.go('tab.home');
+                $state.go('tab.explore-explore');
 
             })
             .error(function(){
@@ -1187,7 +1187,7 @@ angular.module('starter.controllers', [])
 
                         $ionicLoading.hide();
 
-                        $state.go('tab.home');
+                        $state.go('tab.explore-explore');
                     })
                         .error(function(){
                             $ionicLoading.hide();
@@ -1260,7 +1260,7 @@ angular.module('starter.controllers', [])
 
                                 $ionicLoading.hide();
 
-                                $state.go('tab.home');
+                                $state.go('tab.explore-explore');
                             })
                                 .error(function(){
                                     $ionicLoading.hide();
@@ -1335,7 +1335,7 @@ angular.module('starter.controllers', [])
                     disableBack: true
                 });
 
-                $state.go('tab.home',{refresh : true});
+                $state.go('tab.explore-explore');
             })
             .error(function(){
                 $rootScope.handleHttpError(error, status);
@@ -1399,7 +1399,7 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                $state.go('tab.home');
+                $state.go('tab.explore-explore');
             })
             .error(function(){
                 $ionicLoading.hide();
@@ -1428,7 +1428,7 @@ angular.module('starter.controllers', [])
 
                 $ionicLoading.hide();
 
-                $state.go('tab.home');
+                $state.go('tab.explore-explore');
             })
             .error(function(){
                 $ionicLoading.hide();
@@ -1466,7 +1466,7 @@ angular.module('starter.controllers', [])
 
                     $ionicLoading.hide();
 
-                    $state.go('tab.home');
+                    $state.go('tab.explore-explore');
                 })
                 .error(function(){
                     $ionicLoading.hide();
@@ -1539,7 +1539,7 @@ angular.module('starter.controllers', [])
 
                             $ionicLoading.hide();
 
-                            $state.go('tab.home');
+                            $state.go('tab.explore-explore');
                         })
                         .error(function(){
                             $ionicLoading.hide();
