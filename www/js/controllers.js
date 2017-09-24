@@ -16,6 +16,16 @@ angular.module('starter.controllers', [])
     $rootScope.userTrackArray = [];
     $rootScope.currentUser = null;
 
+    $rootScope.goNotification = function() {
+        $state.go('tab.notification');
+    }
+    $rootScope.ifInNotification = function() {
+        var detect = 'auth, forgetpassword, register, register2, root, intro';
+        if( detect.indexOf($state.current.name) > -1 || $state.current.name.indexOf('notification') > -1){
+            return true;
+        }
+        return false;
+    }
     $rootScope.scroll = function() {
         $ionicScrollDelegate.scrollBy(0, 100);
     }
@@ -35,15 +45,18 @@ angular.module('starter.controllers', [])
         var tab = 'notAssigned';
         switch(id){
             case 0:
-                tab = 'home';
+                tab = 'explore';
                 break;
             case 1:
-                tab = 'explore';
+                tab = 'home';
                 break;
             case 3:
                 tab = 'notification';
                 break;
             case 4:
+                tab = 'compare';
+                break;
+            case 5:
                 tab = 'account';
                 break;
             default:

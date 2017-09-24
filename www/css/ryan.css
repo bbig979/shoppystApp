@@ -3606,6 +3606,11 @@ a {
 }
 
 /* line 20, ../../scss/ryan/_top-bar.scss */
+.bar .button.button-clear.fa-bell::before {
+  font-size: 25px;
+}
+
+/* line 23, ../../scss/ryan/_top-bar.scss */
 .platform-android .nav-bar-has-subheader .bar.bar-stable {
   background-color: #FF6D70;
   background: -webkit-linear-gradient(left, #FF1D5C, #FFC772);
@@ -3639,12 +3644,12 @@ ion-tabs .tab-item {
 }
 
 /* line 17, ../../scss/ryan/_footer-nav.scss */
-.tab-item[icon-on=ion-home].tab-item-active {
+.tab-item[icon-on=ion-search].tab-item-active {
   color: #FFBD71;
 }
 
 /* line 20, ../../scss/ryan/_footer-nav.scss */
-.tab-item[icon-on=ion-search].tab-item-active {
+.tab-item[icon-on=ion-person-stalker].tab-item-active {
   color: #FF986C;
 }
 
@@ -3654,8 +3659,8 @@ ion-tabs .tab-item {
 }
 
 /* line 26, ../../scss/ryan/_footer-nav.scss */
-.tab-item[icon-on=ion-ios-bell].tab-item-active {
-  color: #FF4B62;
+.tab-item[icon-on=ion-ios-bell] {
+  display: none;
 }
 
 /* line 29, ../../scss/ryan/_footer-nav.scss */
