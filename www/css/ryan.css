@@ -3664,11 +3664,16 @@ ion-tabs .tab-item {
 }
 
 /* line 29, ../../scss/ryan/_footer-nav.scss */
+.tab-item[icon-on=ion-podium].tab-item-active {
+  color: #FF4B62;
+}
+
+/* line 32, ../../scss/ryan/_footer-nav.scss */
 .tab-item[icon-on=ion-android-person].tab-item-active {
   color: #FF285D;
 }
 
-/* line 32, ../../scss/ryan/_footer-nav.scss */
+/* line 35, ../../scss/ryan/_footer-nav.scss */
 div.tab-nav.tabs {
   border-top-width: 0px;
 }

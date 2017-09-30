@@ -793,15 +793,7 @@ angular.module('starter.controllers', [])
         return false;
     };
     $rootScope.openCompare = function(){
-        if ($rootScope.compareList.length < 2)
-        {
-            $rootScope.popupMessage("Oops", "Please add more than 2 looks to compare");
-        }
-        else
-        {
-            var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-            $state.go('tab.compare-'+tab);
-        }
+        $state.go('tab.compare');
     };
     $rootScope.addCompare = function(_post_id) {
         if (!$rootScope.canClickInList()) {
@@ -2190,7 +2182,7 @@ angular.module('starter.controllers', [])
     ];
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.originalPostOrder = [];
-    if ($rootScope.compareList.length >= 2 )
+    if ($rootScope.compareList.length > 0 )
     {
         $scope.showInstruction = false;
         FetchPosts.compare($rootScope.compareList).then(function(response){

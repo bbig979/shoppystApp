@@ -229,42 +229,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.compare-home', {
-       url: '/compare/home',
+
+    .state('tab.compare', {
+       cache: false,
+       url: '/compare',
        views: {
-           'tab-home': {
-               templateUrl: 'templates/compare.html',
+           'tab-compare': {
+               templateUrl: 'templates/tab-compare.html',
                controller: 'CompareCtrl'
            }
        }
     })
-    .state('tab.compare-explore', {
-       url: '/compare/explore',
-       views: {
-           'tab-explore': {
-               templateUrl: 'templates/compare.html',
-               controller: 'CompareCtrl'
-           }
-       }
-    })
-    .state('tab.compare-account', {
-       url: '/compare/account',
-       views: {
-           'tab-account': {
-               templateUrl: 'templates/compare.html',
-               controller: 'CompareCtrl'
-           }
-       }
-    })
-    .state('tab.compare-notification', {
-       url: '/compare/notification',
-       views: {
-           'tab-notification': {
-               templateUrl: 'templates/compare.html',
-               controller: 'CompareCtrl'
-           }
-       }
-    })
+    .state('tab.account-compare', {url: '/compare'})
+    .state('tab.post-detail-compare', {url: '/compare'})
+    
     .state('tab.post-create', {
       url: '/post/create',
       params: { 'photoUrl': null },
