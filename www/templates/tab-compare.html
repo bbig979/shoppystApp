@@ -1,9 +1,9 @@
-<ion-view class="post-list" id="compare" view-title="TOP OUTFITS LIKED">
+<ion-view class="post-list" id="compare" view-title="WHICH LOOKS BETTER">
     <ion-content>
         <div class="list sort">
             <label class="item item-input item-select">
                 <div class="input-label">
-                    By Gender
+                    To Gender
                 </div>
                 <select name="sort-by-gender" ng-model="sort.gender" ng-change="sortPosts(sort)" ng-options="opt.label for opt in genderList">
                     <option value="">All</option>
@@ -11,7 +11,7 @@
             </label>
             <label class="item item-input item-select">
                 <div class="input-label">
-                    By Age Group
+                    To Age Group
                 </div>
                 <select name="sort-by-age" ng-model="sort.age" ng-change="sortPosts(sort)" ng-options="opt.label for opt in ageList">
                     <option value="">All</option>
