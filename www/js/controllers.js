@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
@@ -25,6 +25,18 @@ angular.module('starter.controllers', [])
             return true;
         }
         return false;
+    }
+    $rootScope.ifInCompare = function() {
+        if($state.current.name == 'tab.compare'){
+            return true;
+        }
+        return false;
+    }
+    $rootScope.refreshCompare = function() {
+        $ionicLoading.show();
+        ComparePosts.refresh().then(function(){
+            $ionicLoading.hide();
+        });
     }
     $rootScope.scroll = function() {
         $ionicScrollDelegate.scrollBy(0, 100);
@@ -991,7 +1003,7 @@ angular.module('starter.controllers', [])
         }
     };
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, ComparePosts) {
     $scope.submitted = false;
     $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
@@ -1037,7 +1049,9 @@ angular.module('starter.controllers', [])
         // Transfer succeeded
         function success(r) {
             $ionicLoading.show({template: 'Upload Success', duration:500});
-            $state.go('tab.account-account', {refresh: options.fileName, activateTab:'new'});
+            var result = JSON.parse(r.response);
+            ComparePosts.toggle(result.id);
+            $state.go('tab.compare');
         }
 
         // Transfer failed
@@ -1579,7 +1593,7 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -1733,6 +1747,12 @@ angular.module('starter.controllers', [])
             }
         });
     };
+    $scope.toggleCompare = function(id){
+        ComparePosts.toggle(id);
+    }
+    $scope.isInCompare = function(id){
+        return ComparePosts.has(id);
+    }
 })
 
 .controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope, $timeout) {
@@ -1789,7 +1809,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup, ComparePosts) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -2025,9 +2045,15 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
         });
     };
+    $scope.toggleCompare = function(id){
+        ComparePosts.toggle(id);
+    }
+    $scope.isInCompare = function(id){
+        return ComparePosts.has(id);
+    }
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
@@ -2164,189 +2190,55 @@ angular.module('starter.controllers', [])
             return '#'+temp.join(' #');
         }
     }
+    $scope.toggleCompare = function(id){
+        ComparePosts.toggle(id);
+    }
+    $scope.isInCompare = function(id){
+        return ComparePosts.has(id);
+    }
 })
 
-.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http) {
+.controller('TabCtrl', function($scope, ComparePosts) {
+    $scope.getComparePostsLength = function(){
+        return ComparePosts.length();
+    }
+})
+.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
-    $scope.genderList = [
-        {value: 'male', label: 'Male'},
-        {value: 'female', label: 'Female'}
-    ];
-    $scope.ageList = [
-        {value: '10', label: '10-20'},
-        {value: '20', label: '20-30'},
-        {value: '30', label: '30-40'},
-        {value: '40', label: '40-50'},
-        {value: '50', label: 'Above 50'}
-    ];
-    $scope.tab = $state.current['name'].split("-")[1];
-    $scope.originalPostOrder = [];
-    if ($rootScope.compareList.length > 0 )
-    {
-        $scope.showInstruction = false;
-        FetchPosts.compare($rootScope.compareList).then(function(response){
-            posts = response;
-            $scope.posts = posts;
-            for (index = 0; index < posts.length; ++index) {
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-                $scope.originalPostOrder.push(posts[index].id);
-            }
-            $scope.original_posts = $scope.cloneObj(posts);
-        });
-    }
-/*
+    $scope.genderList = ComparePosts.getGenderList();
+    $scope.ageList = ComparePosts.getAgeList();
+    $scope.sort = ComparePosts.getLastFilters();
+
+    // Context: when to refresh posts in compare
+    // Option: A
     $scope.$on('$ionicView.enter', function() {
-        $scope.showInstruction = true;
-        if ($rootScope.compareList.length >= 2 )
-        {
-            $scope.showInstruction = false;
-            FetchPosts.compare($rootScope.compareList).then(function(response){
-                posts = response;
-                $scope.posts = posts;
-                for (index = 0; index < posts.length; ++index) {
-                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-                }
-            });
-        }
+        $scope.sortPosts($scope.sort);
     });
-*/
-    $scope.removeCompare = function(_post) {
-        $rootScope.addCompare(_post.id);
-        $scope.posts.splice($scope.posts.indexOf(_post), 1);
-    }
-    $scope.sortPostsToOriginalOrder = function(posts) {
-        var temp_var;
-        var found_index;
-        var dummy_obj = {id:0};
-        for(i = 0; i < $scope.originalPostOrder.length; i++)
-        {
-            dummy_obj.id = $scope.originalPostOrder[i];
-            found_index = $rootScope.indexOfObj(posts, dummy_obj);
-            temp_var = posts[i];
-            posts[i] = posts[found_index];
-            posts[found_index] = temp_var;
-        }
-        return posts;
-    }
-    $scope.sortPosts = function(sort, index) {
-        var post_list = $scope.sortPostsToOriginalOrder($scope.posts);
-        var percent_array = [];
-        var like_count_array = [];
-        var analytics;
-        var temp_var;
-        var sort_by_age = false;
-        var sort_by_gender = false;
 
-        if (sort.age !== undefined && sort.age !== "" && sort.age !== null)
-        {
-            var sort_by_age = true;
-        }
-        if (sort.gender !== undefined && sort.gender !== "" && sort.gender !== null)
-        {
-            var sort_by_gender = true;
-        }
-
-        for(i = 0; i < post_list.length; i++)
-        {
-            like_count_array[i] = 0;
-            analytics = post_list[i].post_analytic[0];
-            if (sort_by_gender == true)
-            {
-                like_count_array[i] += parseFloat($scope.getLikeCount(analytics, sort.gender));
-            }
-            if (sort_by_age == true)
-            {
-                like_count_array[i] += parseFloat($scope.getLikeCount(analytics, sort.age));
-            }
-        }
-        for(i = 0; i < like_count_array.length; i++)
-        {
-            for(j = 0; j < like_count_array.length; j++)
-            {
-                if (like_count_array[i] > like_count_array[j])
-                {
-                    temp_var = like_count_array[i];
-                    like_count_array[i] = like_count_array[j];
-                    like_count_array[j] = temp_var;
-                    temp_var = post_list[i];
-                    post_list[i] = post_list[j];
-                    post_list[j] = temp_var;
-                }
-            }
-        }
-        $scope.posts = post_list;
-    };
-    $scope.getLikeCount = function(_stat, _index) {
-        _index = _index.value;
-        if (_stat === undefined)
-        {
-            return 0;
-        }
-        if (_index === "male")
-        {
-            if (_stat.male === undefined || _stat.male === null || _stat.male == 0)
-            {
-                return 0;
-            }
-            return parseInt(_stat.male);
-        }
-        else if (_index === "female")
-        {
-            if (_stat.female == 0 || _stat.female == 'undefined' || _stat.female == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.female);
-        }
-        else if (_index === "10")
-        {
-            if (_stat.teens == 0 || _stat.teens == 'undefined' || _stat.teens == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.teens);
-        }
-        else if (_index === "20")
-        {
-            if (_stat.twenties == 0 || _stat.twenties == 'undefined' || _stat.twenties == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.twenties);
-        }
-        else if (_index === "30")
-        {
-            if (_stat.thirties == 0 || _stat.thirties == 'undefined' || _stat.thirties == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.thirties);
-        }
-        else if (_index === "40")
-        {
-            if (_stat.forties == 0 || _stat.forties == 'undefined' || _stat.forties == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.forties);
-        }
-        else if (_index === "50")
-        {
-            if (_stat.fifties == 0 || _stat.fifties == 'undefined' || _stat.fifties == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.fifties);
-        }
+    $scope.sortPosts = function(sort) {
+        $ionicLoading.show();
+        ComparePosts.sort(sort.gender.value, sort.age.value).then(function() {
+            $ionicLoading.hide();
+        });
     };
     $scope.notMe = function(post) {
         return (post.user.id != user.id);
     };
+    $scope.toggleCompare = function(id){
+        ComparePosts.toggle(id);
+    }
+    $scope.isInCompare = function(id){
+        return ComparePosts.has(id);
+    }
+    $scope.getPosts = function(){
+        return ComparePosts.get();
+    }
+    $scope.doRefresh = function(){
+        ComparePosts.sort($scope.sort.gender.value, $scope.sort.age.value).then(function() {
+            $scope.$broadcast('scroll.refreshComplete');
+        });
+    }
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {
     $scope.schools = [];
@@ -2438,7 +2330,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts) {
     var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;
@@ -2650,7 +2542,7 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         $scope.posts = [];
-        $scope.activatedTab = 'best';
+        $scope.activatedTab = 'new';
 
         FetchUsers.get($scope.currentSlug).then(function(account_info){
             $scope.account_info = account_info;
@@ -2659,7 +2551,7 @@ angular.module('starter.controllers', [])
                 $rootScope.currentUser = account_info;
             }
         });
-        FetchPosts.user($scope.currentSlug, 'best', $scope.page).then(function(response){
+        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
             posts = response.data;
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
@@ -2731,6 +2623,12 @@ angular.module('starter.controllers', [])
                 posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
         });
+    }
+    $scope.toggleCompare = function(id){
+        ComparePosts.toggle(id);
+    }
+    $scope.isInCompare = function(id){
+        return ComparePosts.has(id);
     }
 })
 .controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope) {
