@@ -17,8 +17,11 @@
 .title-image{
   height: 44px;
 }
+.bar .button.button-clear.ion-refresh::before{
+    font-size:23px;
+}
 .bar .button.button-clear.fa-bell::before{
-    font-size:25px;
+    font-size:23px;
 }
 .platform-android .nav-bar-has-subheader .bar.bar-stable{
   background-color: $primary-color;
