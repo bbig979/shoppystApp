@@ -1950,8 +1950,10 @@ angular.module('starter.controllers', [])
                         if(res) {
                             $ionicLoading.show();
                             $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
-                                $stateParams.posts.splice($stateParams.index,1);
-                                $stateParams.user.posts_count--;
+                                if($stateParams.posts){
+                                    $stateParams.posts.splice($stateParams.index,1);
+                                    $stateParams.user.posts_count--;
+                                }
                                 $ionicLoading.hide();
                                 $ionicHistory.goBack();
                                 return true;
