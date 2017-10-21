@@ -22,11 +22,11 @@
         </div>
         <ion-list>
             <div>
-                <ion-item ng-repeat="post in getPosts()" class="post item post_{{post.id}}">
+                <ion-item ng-repeat="post in comparePosts.get()" class="post item post_{{post.id}}">
                     <div class="entity-id-{{post.id}}">
                         <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id)">
                             <a class="post_img"></a>
-                            <div class="ranking">{{getPosts().indexOf(post) + 1}}</div>
+                            <div class="ranking">{{comparePosts.get().indexOf(post) + 1}}</div>
                         </ion-item>
                         <div>
                             <div class="desc_row">
@@ -40,11 +40,11 @@
                                 <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
                             </div>
                             <div class="desc_row">
-                                <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
+                                <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{postTimer.icon(post.created_at)}}" aria-hidden="true"></i> {{postTimer.timeLeft(post.created_at)}}</span>
                             </div>
                             <div class="add_to_compare">
                                 <button class= "button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'" ng-if="notMe(post)"></button>
-                                <button class="button button-clear button-dark icon add-compare-button" ng-class="{true: 'ion-minus', false: 'ion-plus'}[isInCompare(post.id)]" ng-click="toggleCompare(post.id)"></button>
+                                <button class="button button-clear button-dark icon add-compare-button" ng-class="{true: 'ion-minus', false: 'ion-plus'}[comparePosts.has(post.id)]" ng-click="comparePosts.toggle(post.id)"></button>
                             </div>
                         </div>
                     </div>

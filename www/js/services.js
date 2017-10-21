@@ -201,6 +201,60 @@ angular.module('starter.services', [])
         });
     };
 })
+.service('PostTimer', function(){
+    const sec_to_expire = 60 * 60 * 24;
+    const sec_in_one_hour = 60 * 60;
+    const sec_in_one_min = 60;
+    const two_third = 2/3;
+    const one_third = 1/3;
+
+    this.elapsed = function(created_at){
+        return this._secPassed(created_at) > sec_to_expire;
+    }
+    this.icon = function(created_at){
+        var sec_passed = this._secPassed(created_at);
+        var sec_remains = sec_to_expire - sec_passed;
+
+        if(sec_remains < 0){
+            return "fa-eye-slash"
+        }
+        else if(sec_remains / sec_to_expire > two_third){
+            return "fa-hourglass-start";
+        }
+        else if(sec_remains / sec_to_expire > one_third){
+            return "fa-hourglass-half";
+        }
+        else{
+            return "fa-hourglass-end";
+        }
+    }
+    this.timeLeft = function(created_at){
+        var sec_passed = this._secPassed(created_at);
+        var sec_remains = sec_to_expire - sec_passed;
+
+        if(sec_remains < 0){
+            return 'private';
+        }
+        if(sec_remains < sec_in_one_hour){
+            return Math.floor(sec_remains / sec_in_one_min) + 'm Left';
+        }
+        return Math.floor(sec_remains / sec_in_one_hour) + 'h Left';
+    }
+    this._secPassed = function(created_at){
+        var t = created_at.split(/[- :]/);
+        t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
+        var now = new Date();
+        return Math.floor((
+            new Date(
+                now.getUTCFullYear(),
+                now.getUTCMonth(),
+                now.getUTCDate(),
+                now.getUTCHours(),
+                now.getUTCMinutes(),
+                now.getUTCSeconds()
+            ) - new Date(t)) / 1000);
+    }
+})
 .factory('ComparePosts', function($http, FetchPosts, $rootScope, $q){
     var _post_array = [];
     var _post_id_array = [];

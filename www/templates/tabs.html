@@ -4,7 +4,7 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 <ion-tabs class="tabs-icon-middle" ng-controller="TabCtrl" keyboard-handler>
-    <span class="small-badge" ng-hide="getComparePostsLength() == 0" ng-click="openCompare()">{{getComparePostsLength()}}</span>
+    <span class="small-badge" ng-hide="comparePosts.length() == 0" ng-click="openCompare()">{{comparePosts.length()}}</span>
 
     <ion-tab icon-off="ion-search" icon-on="ion-search" href="#/tab/explore//explore">
         <ion-nav-view name="tab-explore"></ion-nav-view>

@@ -18,7 +18,7 @@
                             <div class="profile-image" ng-click="goAccount(post.user.slug)" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )"></div>
                             <div class="user-name" ng-click="goAccount(post.user.slug)">{{ post.user.first_name }} {{ post.user.last_name }}</div>
                         </a>
-                        <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.time_icon}}" aria-hidden="true"></i> {{post.created_from}} Left</span>
+                        <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{postTimer.icon(post.created_at)}}" aria-hidden="true"></i> {{postTimer.timeLeft(post.created_at)}}</span>
                         <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
                     </div>
                     <div class="post-image">
@@ -28,7 +28,7 @@
                         <button class= "button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                         <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="commentsPage(post.id)"></button>
                         <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption(post.id)"></button>
-                        <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : isInCompare(post.id), 'ion-plus' : !isInCompare(post.id)}" ng-click="toggleCompare(post.id)"></button>
+                        <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : comparePosts.has(post.id), 'ion-plus' : !comparePosts.has(post.id)}" ng-click="comparePosts.toggle(post.id)"></button>
                     </div>
                     <hr size="1" color="#e7e7e7">
                     <div class="analytics-group" ng-show="post.show_stat">

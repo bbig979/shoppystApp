@@ -1593,11 +1593,13 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, PostTimer) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
 
     var user = $rootScope.getCurrentUser();
 
@@ -1747,12 +1749,6 @@ angular.module('starter.controllers', [])
             }
         });
     };
-    $scope.toggleCompare = function(id){
-        ComparePosts.toggle(id);
-    }
-    $scope.isInCompare = function(id){
-        return ComparePosts.has(id);
-    }
 })
 
 .controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope, $timeout) {
@@ -1809,7 +1805,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup, ComparePosts) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup, ComparePosts, PostTimer) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -1822,6 +1818,8 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     $scope.stat_height = 0;
     $scope.stat_label_height = 0;
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
     var user = $rootScope.getCurrentUser();
 
     $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
@@ -2047,21 +2045,17 @@ angular.module('starter.controllers', [])
             $scope.$broadcast('scroll.refreshComplete');
         });
     };
-    $scope.toggleCompare = function(id){
-        ComparePosts.toggle(id);
-    }
-    $scope.isInCompare = function(id){
-        return ComparePosts.has(id);
-    }
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
     $scope.showSample = false;
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
@@ -2192,28 +2186,20 @@ angular.module('starter.controllers', [])
             return '#'+temp.join(' #');
         }
     }
-    $scope.toggleCompare = function(id){
-        ComparePosts.toggle(id);
-    }
-    $scope.isInCompare = function(id){
-        return ComparePosts.has(id);
-    }
 })
 
 .controller('TabCtrl', function($scope, ComparePosts) {
-    $scope.getComparePostsLength = function(){
-        return ComparePosts.length();
-    }
+    $scope.comparePosts = ComparePosts;
 })
-.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading) {
+.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading, PostTimer) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
     $scope.genderList = ComparePosts.getGenderList();
     $scope.ageList = ComparePosts.getAgeList();
     $scope.sort = ComparePosts.getLastFilters();
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
 
-    // Context: when to refresh posts in compare
-    // Option: A
     $scope.$on('$ionicView.enter', function() {
         $scope.sortPosts($scope.sort);
     });
@@ -2223,18 +2209,9 @@ angular.module('starter.controllers', [])
         ComparePosts.sort(sort.gender.value, sort.age.value).then(function() {
             $ionicLoading.hide();
         });
-    };
+    }
     $scope.notMe = function(post) {
         return (post.user.id != user.id);
-    };
-    $scope.toggleCompare = function(id){
-        ComparePosts.toggle(id);
-    }
-    $scope.isInCompare = function(id){
-        return ComparePosts.has(id);
-    }
-    $scope.getPosts = function(){
-        return ComparePosts.get();
     }
     $scope.doRefresh = function(){
         ComparePosts.sort($scope.sort.gender.value, $scope.sort.age.value).then(function() {
@@ -2332,7 +2309,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, PostTimer) {
     var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;
@@ -2342,6 +2319,9 @@ angular.module('starter.controllers', [])
     $scope.currentSlug = "";
     $scope.noResult = false;
     $scope.activatedTab = 'new';
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
+
     if ($stateParams.activateTab) {
         $scope.activatedTab = $stateParams.activateTab;
     }
@@ -2625,12 +2605,6 @@ angular.module('starter.controllers', [])
                 posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
         });
-    }
-    $scope.toggleCompare = function(id){
-        ComparePosts.toggle(id);
-    }
-    $scope.isInCompare = function(id){
-        return ComparePosts.has(id);
     }
 })
 .controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope) {
