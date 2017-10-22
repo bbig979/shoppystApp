@@ -310,24 +310,23 @@
   position: relative;
 }
 /* line 4, ../../scss/tw/_compare.scss */
-#compare .item .ranking {
+#compare .item .partial_likes {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 7px;
+  right: 7px;
   color: #fff;
   background-color: #000;
-  width: 23px;
-  height: 23px;
+  opacity: 0.5;
+  padding: 1px 7px 1px 7px;
   text-align: center;
-  font-size: 12px;
-  border: 2px solid #fff;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  -ms-border-radius: 50%;
-  border-radius: 50%;
+  font-size: 10px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  border-radius: 25px;
   background-clip: padding-box;
 }
-/* line 18, ../../scss/tw/_compare.scss */
+/* line 17, ../../scss/tw/_compare.scss */
 #compare .sort {
   margin-bottom: 0;
 }

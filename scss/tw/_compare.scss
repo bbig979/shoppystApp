@@ -1,18 +1,17 @@
 #compare {
   .item{
     position: relative;
-    .ranking{
+    .partial_likes{
       position: absolute;
-      top: 10px;
-      left: 10px;
+      top: 7px;
+      right: 7px;
       color: #fff;
       background-color: #000;
-      width: 23px;
-      height: 23px;
+      opacity: 0.5;
+      padding: 1px 7px 1px 7px;
       text-align: center;
-      font-size: 12px;
-      border: 2px solid #fff;
-      @include border-radius(50%);
+      font-size: 10px;
+      @include border-radius(25px);
     }
   }
   .sort{

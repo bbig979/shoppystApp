@@ -288,12 +288,11 @@ angular.module('starter.services', [])
             var prev_this = this;
             this._fetch().then(function() {
                 var target_key = prev_this._getTargetKeyForPostAnalytic(gender, age_group);
-                var total_key = prev_this._getTotalKeyForPostAnalytic(gender, age_group);
-console.log(target_key+'/'+total_key);
+console.log(target_key);
 console.log(_post_array);
                 _post_array.sort(function(a, b){
-                    var keyA = a.post_analytic[0][target_key] / a.post_analytic[0][total_key];
-                    var keyB = b.post_analytic[0][target_key] / b.post_analytic[0][total_key];
+                    var keyA = a.post_analytic[0][target_key];
+                    var keyB = b.post_analytic[0][target_key];
                     if(keyA < keyB) return 1;
                     if(keyA > keyB) return -1;
                     return 0;
@@ -302,6 +301,15 @@ console.log(_post_array);
             });
             this._logLastFilters(gender, age_group);
             return deferred.promise;
+        },
+        partialLikes: function(post_id){
+            var target_key = this._getTargetKeyForPostAnalytic(_last_filter_gender, _last_filter_age_group);
+            for(var i = 0; i < _post_array.length; i++){
+                this_post = _post_array[i];
+                if(post_id == this_post.id){
+                    return this_post.post_analytic[0][target_key];
+                }
+            }
         },
         toggle: function(post_id){
             var deferred = $q.defer();
@@ -347,7 +355,7 @@ console.log(_post_array);
             }
         },
         _getOption: function(needle, haystack){
-            for(i = 0; i < haystack.length; i++){
+            for(var i = 0; i < haystack.length; i++){
                 option = haystack[i];
                 if(option.value == needle){
                     return option;
@@ -394,9 +402,9 @@ console.log(_post_array);
                 post_analytic[0].fifties;
         },
         _removeFromPostArray: function(post_id){
-            for(i = 0; i < _post_array.length; i++){
-                thisPost = _post_array[i];
-                if(post_id == thisPost.id){
+            for(var i = 0; i < _post_array.length; i++){
+                this_post = _post_array[i];
+                if(post_id == this_post.id){
                     _post_array.splice(i, 1);
                     return;
                 }
