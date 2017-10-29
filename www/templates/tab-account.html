@@ -19,12 +19,6 @@
                 <div class="account-followers-btn col" ng-click="goAccountFollower(account_info.slug)"><span class="ion-ios-people"></span><br><span class="dynamic-follower-count">{{account_info.follower_count}}</span><br>Followers</div>
                 <div class="account-following-btn col" ng-click="goAccountFollowing(account_info.slug)"><span class="ion-android-person"></span><br><span class="dynamic-following-count">{{account_info.following_count}}</span><br>Following</div>
             </div>
-            <div class="account-social-network row">
-                <div class="button button-clear icon col account-facebook-btn clearfix" ng-click="goAccountSocialNetwork('facebook')" ng-if="account_info.social_networks.facebook"><span class="ion-social-facebook"></span></div>
-                <div class="button button-clear icon col ion-social-twitter account-twitter-btn clearfix" ng-click="goAccountSocialNetwork('twitter')" ng-if="account_info.social_networks.twitter"><span class="ion-social-facebook"></span></div>
-                <div class="button button-clear icon col ion-social-instagram-outline account-instagram-btn clearfix" ng-click="goAccountSocialNetwork('instagram')" ng-if="account_info.social_networks.instagram"><span class="ion-social-facebook"></span></div>
-                <div class="button button-clear icon col ion-social-pinterest account-pinterest-btn clearfix" ng-click="goAccountSocialNetwork('pinterest')" ng-if="account_info.social_networks.pinterest"><span class="ion-social-facebook"></span></div>
-            </div>
             <div class="tabs-striped" ng-hide="notMe(account_info)">
                 <div class="tabs">
                     <a class="tab-item" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
