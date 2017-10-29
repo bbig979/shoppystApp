@@ -271,6 +271,7 @@ angular.module('starter.services', [])
             for(var i = 0; i < _picture_array.length; i++){
                 if(_picture_array[i] == pic){
                     _picture_array.splice(i, 1);
+                    return;
                 }
             }
         }
@@ -333,7 +334,6 @@ console.log(_post_array);
             }
         },
         toggle: function(post_id){
-            var deferred = $q.defer();
             if (_post_id_array.indexOf(post_id) != -1) {
                 _post_id_array.splice(_post_id_array.indexOf(post_id), 1);
                 _is_post_added_map[post_id] = false;
@@ -342,17 +342,8 @@ console.log(_post_array);
             else{
                 _post_id_array.push(post_id);
                 _is_post_added_map[post_id] = true;
-                // Context: when to refresh posts in compare
-                // Option: B
-                /*
-                this._setLastFiltersIfNull();
-                this.sort(_last_filter_gender, _last_filter_age_group).then(function(){
-                    deferred.resolve();
-                });
-                */
             }
             localStorage.setItem('post_id_array', JSON.stringify(_post_id_array));
-            return deferred.promise;
         },
         get: function(){
             return _post_array;
@@ -411,9 +402,27 @@ console.log(_post_array);
                     prev_this._setTotalFieldsInPostAnalytic(posts[index].post_analytic);
                 }
                 _post_array = posts;
+                prev_this._syncClientIfDeleted(posts);
                 deferred.resolve();
             });
             return deferred.promise;
+        },
+        _syncClientIfDeleted: function(posts){
+            if(posts.length != _post_id_array.length){
+                for (var i = 0; i < _post_id_array.length; i++) {
+                    var found = false;
+                    for(var j = 0; j < posts.length; j++){
+                        if(posts[j].id == _post_id_array[i]){
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found){
+                        this.toggle(_post_id_array[i]);
+                        i--;
+                    }
+                }
+            }
         },
         _setPlaceHolderIfPostAnalyticIsEmpty: function(post_analytic){
             if(post_analytic[0] === undefined){
