@@ -319,7 +319,7 @@
   opacity: 0.5;
   padding: 1px 7px 1px 7px;
   text-align: center;
-  font-size: 10px;
+  font-size: 13px;
   -webkit-border-radius: 25px;
   -moz-border-radius: 25px;
   -ms-border-radius: 25px;
@@ -432,13 +432,29 @@
   clear: both;
 }
 
-/* line 2, ../../scss/tw/_post-create.scss */
-#create-post .post-image {
+/* line 3, ../../scss/tw/_post-create.scss */
+#create-post .post-images li {
   width: 50%;
-  padding: 10px auto;
-  margin: 12px;
+  height: 60vw;
+  float: left;
+  padding: 12px;
+  padding-bottom: 0px;
+  overflow: hidden;
+  position: relative;
 }
-/* line 6, ../../scss/tw/_post-create.scss */
+/* line 13, ../../scss/tw/_post-create.scss */
+#create-post .post-images li:nth-child(odd) {
+  padding-right: 6px;
+}
+/* line 17, ../../scss/tw/_post-create.scss */
+#create-post .post-images li:nth-child(even) {
+  padding-left: 6px;
+}
+/* line 21, ../../scss/tw/_post-create.scss */
+#create-post .post-images li:last-child {
+  margin-bottom: 10px;
+}
+/* line 27, ../../scss/tw/_post-create.scss */
 #create-post .post-image img {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -446,7 +462,41 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 12, ../../scss/tw/_post-create.scss */
+/* line 32, ../../scss/tw/_post-create.scss */
+#create-post .remove-image {
+  position: absolute;
+  top: 15px;
+  right: 13px;
+  z-index: 5;
+  font-size: 6vw;
+  color: #fff;
+}
+/* line 41, ../../scss/tw/_post-create.scss */
+#create-post li:nth-child(even) .remove-image {
+  right: 19px;
+}
+/* line 45, ../../scss/tw/_post-create.scss */
+#create-post .add-more-to-compare-wrapper {
+  width: 100%;
+  height: 100%;
+}
+/* line 50, ../../scss/tw/_post-create.scss */
+#create-post .add-more-to-compare-button {
+  border: dashed 0.8vw #ccc;
+  border-radius: 2vw;
+  height: 100%;
+  color: #ccc;
+  font-weight: bold;
+  font-size: 4.5vw;
+  line-height: 9vw;
+  text-align: center;
+  padding-top: 13vw;
+}
+/* line 60, ../../scss/tw/_post-create.scss */
+#create-post .add-more-to-compare-button .ion-plus-circled {
+  font-size: 8vw;
+}
+/* line 66, ../../scss/tw/_post-create.scss */
 #create-post .post-caption textarea {
   width: 100%;
   border: 1px solid #ddd;
@@ -457,18 +507,17 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 20, ../../scss/tw/_post-create.scss */
+/* line 74, ../../scss/tw/_post-create.scss */
 #create-post img {
-  max-height: 300px;
   max-width: 100%;
 }
-/* line 25, ../../scss/tw/_post-create.scss */
+/* line 78, ../../scss/tw/_post-create.scss */
 #create-post .item-image img:first-child,
 #create-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-/* line 31, ../../scss/tw/_post-create.scss */
+/* line 84, ../../scss/tw/_post-create.scss */
 #create-post .post-image .item {
   padding: 0px;
 }

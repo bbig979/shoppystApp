@@ -255,6 +255,27 @@ angular.module('starter.services', [])
             ) - new Date(t)) / 1000);
     }
 })
+.factory('CameraPictues', function(){
+    var _picture_array = [];
+    return {
+        get: function(){
+            return _picture_array;
+        },
+        set: function(pic){
+            _picture_array.push(pic);
+        },
+        reset: function(){
+            _picture_array = [];
+        },
+        remove: function(pic){
+            for(var i = 0; i < _picture_array.length; i++){
+                if(_picture_array[i] == pic){
+                    _picture_array.splice(i, 1);
+                }
+            }
+        }
+    }
+})
 .factory('ComparePosts', function($http, FetchPosts, $rootScope, $q){
     var _post_array = [];
     var _post_id_array = [];
@@ -330,6 +351,7 @@ console.log(_post_array);
                 });
                 */
             }
+            localStorage.setItem('post_id_array', JSON.stringify(_post_id_array));
             return deferred.promise;
         },
         get: function(){
@@ -339,6 +361,9 @@ console.log(_post_array);
             return _is_post_added_map[post_id];
         },
         length: function(){
+            if(_post_id_array.length == 0){
+                this._restoreFromLocalStorage();
+            }
             return _post_id_array.length;
         },
         getGenderList: function(){
@@ -352,6 +377,14 @@ console.log(_post_array);
             return {
                 gender: this._getOption(_last_filter_gender, _gender_list),
                 age: this._getOption(_last_filter_age_group, _age_list),
+            }
+        },
+        _restoreFromLocalStorage: function(){
+            if(localStorage.getItem('post_id_array')){
+                _post_id_array = JSON.parse(localStorage.getItem('post_id_array'));
+                for(var i = 0; i < _post_id_array.length; i++){
+                    _is_post_added_map[_post_id_array[i]] = true;
+                }
             }
         },
         _getOption: function(needle, haystack){

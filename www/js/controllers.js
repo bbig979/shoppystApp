@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
@@ -209,7 +209,8 @@ angular.module('starter.controllers', [])
                                 localStorage.setItem('photo', imageData);
                                 $ionicLoading.show({template: 'Loading Photo', duration:500});
                                 $ionicLoading.hide();
-                                $state.go('tab.post-create',{photoUrl: imageData});
+                                CameraPictues.set(imageData);
+                                $state.go('tab.post-create');
                             },
                             function(err){
                                 $ionicLoading.hide();
@@ -232,7 +233,8 @@ angular.module('starter.controllers', [])
                                     localStorage.setItem('photo', fileEntry.nativeURL);
                                     $ionicLoading.show({template: 'Loading Photo', duration:500});
                                     $ionicLoading.hide();
-                                    $state.go('tab.post-create',{photoUrl: fileEntry.nativeURL});
+                                    CameraPictues.set(fileEntry.nativeURL);
+                                    $state.go('tab.post-create');
                                 });
                             },
                             function(err){
@@ -1003,14 +1005,14 @@ angular.module('starter.controllers', [])
         }
     };
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, ComparePosts) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, ComparePosts, CameraPictues, $timeout) {
     $scope.submitted = false;
     $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
-    $scope.picData = $stateParams.photoUrl;
     $scope.occasionList = new Array();
     $scope.shopOptionalOccasion = false;
+    $scope.cameraPictues = CameraPictues;
 
     FetchOccasions.get().then(function(response){
         occasions = response;
@@ -1021,9 +1023,9 @@ angular.module('starter.controllers', [])
     });
 
     $scope.sharePost = function(captions, occasion, other) {
+        var share_post_scope = this;
         $scope.submitted = true;
         $ionicLoading.show({template: 'Uploading Photo...'});
-        var fileURL = $scope.picData;
         var options = new FileUploadOptions();
         var param_caption = '';
         if (typeof captions != 'undefined')
@@ -1035,28 +1037,55 @@ angular.module('starter.controllers', [])
             occasion = null;
         }
         options.fileKey = "image";
-        options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
         options.mimeType = "image/jpeg";
         options.chunkedMode = true;
 
-        var params = { 'captions': param_caption, 'user_id': user.id, 'occasion': occasion, 'other': other };
-
-        options.params = params;
-
         var ft = new FileTransfer();
-        ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, options);
+        var params = { 'captions': param_caption, 'user_id': user.id, 'occasion': occasion, 'other': other };
+        options.params = params;
+        var fileURLs = CameraPictues.get();
+        var uploadTryCount = 0;
+        var uploadSuccessCount = 0;
+
+        for(var i=0; i<fileURLs.length; i++){
+            options.fileName = fileURLs[i].substr(fileURLs[i].lastIndexOf('/') + 1);
+            ft.upload(fileURLs[i], encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, options);
+        }
 
         // Transfer succeeded
         function success(r) {
-            $ionicLoading.show({template: 'Upload Success', duration:500});
+            uploadTryCount++;
+            uploadSuccessCount++;
             var result = JSON.parse(r.response);
             ComparePosts.toggle(result.id);
-            $state.go('tab.compare');
+            if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
+                $ionicLoading.show({
+                    template: 'Upload Success ( ' + uploadSuccessCount + ' / ' + uploadTryCount + ' )',
+                    duration:500
+                });
+                $scope.submitted = false;
+                share_post_scope.occasion = undefined;
+                share_post_scope.captions = undefined;
+                uploadTryCount = 0;
+                uploadSuccessCount = 0;
+                $timeout(function(){
+                    CameraPictues.reset();
+                    $state.go('tab.compare');
+                }, 500);
+            }
         }
 
         // Transfer failed
         function fail(error) {
-            $ionicLoading.show({template: 'Upload Fail', duration:500});
+            uploadTryCount++;
+            if(uploadTryCount == fileURLs.length && uploadSuccessCount == 0){
+                $ionicLoading.show({template: 'Upload Fail', duration:500});
+                $scope.submitted = false;
+                share_post_scope.occasion = undefined;
+                share_post_scope.captions = undefined;
+                uploadTryCount = 0;
+                uploadSuccessCount = 0;
+            }
         }
     }
     $scope.checkOccasion = function(_occasion) {
@@ -1070,6 +1099,7 @@ angular.module('starter.controllers', [])
         }
     }
     $scope.back = function() {
+        CameraPictues.reset();
         $ionicHistory.goBack();
     }
 })
@@ -1951,6 +1981,9 @@ angular.module('starter.controllers', [])
                                 if($stateParams.posts){
                                     $stateParams.posts.splice($stateParams.index,1);
                                     $stateParams.user.posts_count--;
+                                }
+                                if(ComparePosts.has($scope.post.id)){
+                                    ComparePosts.toggle($scope.post.id);
                                 }
                                 $ionicLoading.hide();
                                 $ionicHistory.goBack();

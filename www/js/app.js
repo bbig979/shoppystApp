@@ -269,7 +269,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
     .state('tab.post-create', {
       url: '/post/create',
-      params: { 'photoUrl': null },
       views: {
         'tab-camera': {
           templateUrl: 'templates/post-create.html',
