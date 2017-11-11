@@ -7,12 +7,12 @@
         <div class="list sort">
             <label class="item item-input item-select">
                 <div class="input-label">
-                    To Gender
+                    To
                 </div>
                 <select name="sort-by-gender" ng-model="sort.gender" ng-change="sortPosts(sort)" ng-options="opt.label for opt in genderList">
                 </select>
             </label>
-            <label class="item item-input item-select">
+            <label class="item item-input item-select" ng-hide="comparePosts.isFriendsSelected()">
                 <div class="input-label">
                     In Age
                 </div>

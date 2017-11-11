@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
@@ -32,9 +32,28 @@ angular.module('starter.controllers', [])
         }
         return false;
     }
-    $rootScope.refreshCompare = function() {
+    $rootScope.shareCompare = function() {
         $ionicLoading.show();
-        ComparePosts.refresh().then(function(){
+        ComparePosts.share().then(function(hash){
+            if(hash){
+                var options = {
+                    message: 'which looks better?',
+                    subject: 'Which Looks Better?',
+                    url: $rootScope.baseURL + '/s/' + hash
+                }
+                var onSuccess = function(result) {
+                    console.log($rootScope.baseURL + '/s/' + hash);
+                    console.log("Shared to app: " + result.app);
+                    FetchShareLink.update(hash, result.app);
+                }
+                var onError = function(msg) {
+                    console.log("Sharing failed with message: " + msg);
+                }
+                window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+            }
+            else{
+                $rootScope.popupMessage('Oops', 'You cannot share other\'s look');
+            }
             $ionicLoading.hide();
         });
     }
@@ -889,6 +908,7 @@ angular.module('starter.controllers', [])
         $rootScope.lastScrolling = new Date().getTime();
     };
     $rootScope.canClickInList = function() {
+        return true;
         var diff =  new Date().getTime() - $rootScope.lastScrolling;
         if (diff > 200) {
             return true;
@@ -1047,6 +1067,12 @@ angular.module('starter.controllers', [])
         var uploadTryCount = 0;
         var uploadSuccessCount = 0;
 
+        if(fileURLs.length < 2){
+            $ionicLoading.hide();
+            $rootScope.popupMessage('', 'You Need at Least 2 Looks to Compare');
+            $scope.submitted = false;
+            return;
+        }
         for(var i=0; i<fileURLs.length; i++){
             options.fileName = fileURLs[i].substr(fileURLs[i].lastIndexOf('/') + 1);
             ft.upload(fileURLs[i], encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, options);
@@ -1057,6 +1083,9 @@ angular.module('starter.controllers', [])
             uploadTryCount++;
             uploadSuccessCount++;
             var result = JSON.parse(r.response);
+            if(uploadSuccessCount == 1){
+                ComparePosts.reset();
+            }
             ComparePosts.toggle(result.id);
             if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
                 $ionicLoading.show({
