@@ -351,8 +351,8 @@ angular.module('starter.services', [])
 console.log(target_key);
 console.log(_post_array);
                 _post_array.sort(function(a, b){
-                    var keyA = a.post_analytic[0][target_key];
-                    var keyB = b.post_analytic[0][target_key];
+                    var keyA = parseInt(a.post_analytic[0][target_key]);
+                    var keyB = parseInt(b.post_analytic[0][target_key]);
                     if(keyA < keyB) return 1;
                     if(keyA > keyB) return -1;
                     return 0;
