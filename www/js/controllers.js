@@ -33,6 +33,14 @@ angular.module('starter.controllers', [])
         return false;
     }
     $rootScope.shareCompare = function() {
+        if(ComparePosts.isAnyPostExpired()){
+            $rootScope.popupMessage('Oops', 'You cannot share a look that is private');
+            return;
+        }
+        if(ComparePosts.length() < 2){
+            $rootScope.popupMessage('Oops', 'You need at least 2 looks to share');
+            return;
+        }
         $ionicLoading.show();
         ComparePosts.share().then(function(hash){
             if(hash){

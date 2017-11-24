@@ -302,7 +302,7 @@ angular.module('starter.services', [])
         }
     }
 })
-.factory('ComparePosts', function($http, FetchPosts, FetchShareLink, $rootScope, $q){
+.factory('ComparePosts', function($http, FetchPosts, FetchShareLink, $rootScope, $q, PostTimer){
     var _post_array = [];
     var _post_id_array = [];
     var _is_post_added_map = [];
@@ -415,6 +415,14 @@ console.log(_post_array);
         },
         isFriendsSelected: function(){
             return _last_filter_gender == 'friends';
+        },
+        isAnyPostExpired: function(){
+            for(var i = 0; i < _post_array.length; i++){
+                if(PostTimer.elapsed(_post_array[i].created_at)){
+                    return true;
+                }
+            }
+            return false;
         },
         _restoreFromLocalStorage: function(){
             if(localStorage.getItem('post_id_array')){
