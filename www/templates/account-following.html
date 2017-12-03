@@ -14,7 +14,7 @@
             <ion-item class="item item-avatar" ng-repeat="user in users">
                 <div class="entity-id-{{user.id}}">
                     <div ng-click="goAccount(user.slug)" style="background-image: url( {{ photoPath( user.profile_img_path, 's' ) }} )" class="profile-image"></div>
-                    <div ng-click="goAccount(user.slug)" class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
+                    <div ng-click="goAccount(user.slug)" class="user-name">{{ user.username }}</div>
                     <button class="button button-small follow-toggle" ng-class="{'following' : user.following_check}" ng-click="toggleFollow(user)" ng-if="me.id != user.id"></button>
                 </div>
             </ion-item>

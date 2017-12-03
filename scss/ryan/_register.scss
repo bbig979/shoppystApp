@@ -9,10 +9,26 @@
   }
 }
 #register2{
-  .padding.consistent{
-    padding: 13px;
-  }
-  .item-select{
-    border-top: 0;
-  }
+    .padding.consistent{
+        padding: 13px;
+    }
+    .item-select{
+        border-top: 0;
+    }
+    .username.fail::after {
+        color: red;
+        font-size: 13px;
+        font-family: FontAwesome, sans-serif;
+        content: "\f05e  The username is not available";
+        float: right;
+        padding-right:15px;
+    }
+    .username.success::after {
+        color: green;
+        font-size: 13px;
+        font-family: FontAwesome, sans-serif;
+        content: "\f05d  The username is available";
+        float: right;
+        padding-right:15px;
+    }
 }

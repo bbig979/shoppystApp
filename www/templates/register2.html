@@ -2,13 +2,9 @@
     <ion-content>
         <form ng-submit="register2(registerData)">
             <div class="list">
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">First name</span>
-                    <input type="text" ng-model="registerData.first_name" placeholder="First name">
-                </label>
-                <label class="item item-input item-floating-label">
-                    <span class="input-label">Last name</span>
-                    <input type="text" ng-model="registerData.last_name" placeholder="Last name">
+                <label class="item item-input item-floating-label username" ng-class="getUsernameClass()">
+                    <span class="input-label">Username</span>
+                    <input type="text" ng-model="registerData.username" placeholder="Username" ng-keydown="usernameTyped($event)">
                 </label>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Age</span>

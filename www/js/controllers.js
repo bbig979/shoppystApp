@@ -191,21 +191,22 @@ angular.module('starter.controllers', [])
             $state.go('auth');
         }
     };
+    $rootScope.setCurrentUser = function(user){
+        $rootScope.currentUser = user;
+        var user_str = JSON.stringify(user);
+        localStorage.setItem('user', user_str);
+    };
     $rootScope.goAccountOption = function(id){
         $state.go('tab.option-account',{userId: id});
     };
-    $rootScope.getNameOnCard = function(_first_name, _last_name){
-        if (_first_name.length >= $rootScope.nameLengthOnCard - 1)
+    $rootScope.getNameOnCard = function(_username){
+        if (_username.length >= $rootScope.nameLengthOnCard - 1)
         {
-            return _first_name.substring(0, $rootScope.nameLengthOnCard) + "...";
-        }
-        else if (_first_name.length + _last_name.length >= $rootScope.nameLengthOnCard - 1)
-        {
-            return (_first_name + " " +_last_name).substring(0, $rootScope.nameLengthOnCard) + "...";
+            return _username.substring(0, $rootScope.nameLengthOnCard) + "...";
         }
         else
         {
-            return _first_name + " " +_last_name;
+            return _username;
         }
     };
     $rootScope.openCameraMenu = function(){
@@ -878,7 +879,7 @@ angular.module('starter.controllers', [])
                         confirmPopup.then(function(res) {
                             if(res) {
                                 $ionicLoading.show();
-                                $http.post($rootScope.baseURL+'/api/'+$stateParams.accountSlug+'/block').success(function(){
+                                $http.post($rootScope.baseURL+'/api/user/'+$stateParams.accountSlug+'/block').success(function(){
                                     $ionicLoading.hide();
                                     return true;
                                 })
@@ -897,7 +898,7 @@ angular.module('starter.controllers', [])
                         confirmPopup.then(function(res) {
                             if(res) {
                                 $ionicLoading.show();
-                                $http.post($rootScope.baseURL+'/api/'+$stateParams.accountSlug+'/report').success(function(){
+                                $http.post($rootScope.baseURL+'/api/user/'+$stateParams.accountSlug+'/report').success(function(){
                                     $ionicLoading.hide();
                                     return true;
                                 })
@@ -994,7 +995,7 @@ angular.module('starter.controllers', [])
     $rootScope.toggleFollow = function(user) {
         var current_user = $rootScope.getCurrentUser();
         if(user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
+            $http.get($rootScope.baseURL+'/api/user/'+ user.slug +'/unfollow').success(function(){
                 current_user.following_count--;
             })
             .error(function(error){
@@ -1002,7 +1003,7 @@ angular.module('starter.controllers', [])
             });
         }
         else{
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
+            $http.get($rootScope.baseURL+'/api/user/'+ user.slug +'/follow').success(function(){
                 current_user.following_count++;
             })
             .error(function(error){
@@ -1210,7 +1211,6 @@ angular.module('starter.controllers', [])
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
-
             $state.go('register2',registerData);
         })
         .error(function(error, status){
@@ -1218,35 +1218,13 @@ angular.module('starter.controllers', [])
             $rootScope.handleHttpError(error, status);
         });
     }
-    $scope.fbRegister = function() {
-        $ionicLoading.show();
-        $auth.authenticate('facebook').then(function() {
-            // Return an $http request for the authenticated user
-            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                // Stringify the retured data
-                var user = JSON.stringify(response.user);
-
-                // Set the stringified user data into local storage
-                localStorage.setItem('user', user);
-
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-
-                $ionicLoading.hide();
-
-                $state.go('tab.explore-explore');
-
-            })
-            .error(function(){
-                $ionicLoading.hide();
-                $rootScope.handleHttpError(error, status);
-            })
-        });
-    };
     var fbLoginSuccess = function(response) {
         if (!response.authResponse){
             fbLoginError("Cannot find the authResponse");
+            return;
+        }
+        if(localStorage.getItem('user')){
+            console.log('user already logged in');
             return;
         }
 
@@ -1258,31 +1236,23 @@ angular.module('starter.controllers', [])
                 url : $rootScope.baseURL+'/api/facebook',
                 data : {profile:profileInfo}
             })
-                .success(function(response){
-                    localStorage.setItem('satellizer_token', response.token);
-                    $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                        // Stringify the retured data
-                        var user = JSON.stringify(response.user);
-
-                        // Set the stringified user data into local storage
-                        localStorage.setItem('user', user);
-
-                        $ionicHistory.nextViewOptions({
-                            disableBack: true
-                        });
-
-                        $ionicLoading.hide();
-
-                        $state.go('tab.explore-explore');
-                    })
-                        .error(function(){
-                            $ionicLoading.hide();
-                            $rootScope.handleHttpError(error, status);
-                        });
+            .success(function(response){
+                localStorage.setItem('satellizer_token', response.token);
+                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                    var user = response.user;
+                    $rootScope.setCurrentUser(user);
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+                    $state.go('tab.explore-explore');
                 })
-                .error(function(error){
-                    $rootScope.handleHttpError(error);
+                .error(function(){
+                    $rootScope.handleHttpError(error, status);
                 });
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
         }, function(fail){
             // Fail get profile info
             console.log('profile info fail', fail);
@@ -1292,7 +1262,6 @@ angular.module('starter.controllers', [])
     // This is the fail callback from the login method
     var fbLoginError = function(error){
         console.log('fbLoginError', error);
-        $ionicLoading.hide();
     };
 
     // This method is to get the user profile info from the facebook api
@@ -1331,31 +1300,26 @@ angular.module('starter.controllers', [])
                         url : $rootScope.baseURL+'/api/facebook',
                         data : {profile:profileInfo}
                     })
-                        .success(function(response){
-                            localStorage.setItem('satellizer_token', response.token);
-                            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                                // Stringify the retured data
-                                var user = JSON.stringify(response.user);
-
-                                // Set the stringified user data into local storage
-                                localStorage.setItem('user', user);
-
-                                $ionicHistory.nextViewOptions({
-                                    disableBack: true
-                                });
-
-                                $ionicLoading.hide();
-
-                                $state.go('tab.explore-explore');
-                            })
-                                .error(function(){
-                                    $ionicLoading.hide();
-                                    $rootScope.handleHttpError(error, status);
-                                });
+                    .success(function(response){
+                        localStorage.setItem('satellizer_token', response.token);
+                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                            var user = response.user;
+                            $rootScope.setCurrentUser(user);
+                            $ionicHistory.nextViewOptions({
+                                disableBack: true
+                            });
+                            $ionicLoading.hide();
+                            $state.go('tab.explore-explore');
                         })
-                        .error(function(error){
-                            $rootScope.handleHttpError(error);
+                        .error(function(){
+                            $ionicLoading.hide();
+                            $rootScope.handleHttpError(error, status);
                         });
+                    })
+                    .error(function(error){
+                        $ionicLoading.hide();
+                        $rootScope.handleHttpError(error);
+                    });
                 }, function(fail){
                     // Fail get profile info
                     console.log('profile info fail', fail);
@@ -1369,10 +1333,6 @@ angular.module('starter.controllers', [])
 
                 console.log('getLoginStatus@facebookSignIn-else-connected', success.status);
 
-                $ionicLoading.show({
-                    template: 'Logging in...'
-                });
-
                 // Ask the permissions you need. You can learn more about
                 // FB permissions here: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
                 facebookConnectPlugin.login(['email', 'public_profile'], fbLoginSuccess, fbLoginError);
@@ -1381,27 +1341,63 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state) {
+.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout) {
     $scope.registerData = {};
+    $scope.usernameClass = '';
     var credentials = {
         email: $stateParams.email,
         password: $stateParams.password
     }
+    var checkUsernameAvailability = function(){
+        $http({
+            method : 'POST',
+            url : $rootScope.baseURL+'/api/register2/validate/username',
+            data : {username:$scope.registerData.username}
+        })
+        .success(function(response){
+            $scope.usernameClass = 'success';
+        })
+        .error(function(error, status){
+            if(error.username != undefined && error.username[0] == 'The username is not available'){
+                $scope.usernameClass = 'fail';
+            }
+        });
+    }
 
     if(!localStorage.getItem('user')){
+        console.log(credentials);
         $auth.login(credentials).then(function() {
         },
         function(error) {
             $rootScope.handleHttpError(error, status);
         });
+        $scope.registerData.username = $stateParams.email.split('@')[0];
     }
     else{
         var user = $rootScope.getCurrentUser();
-        $scope.registerData.first_name = user.first_name;
-        $scope.registerData.last_name = user.last_name;
         $scope.registerData.gender = user.gender;
+        $scope.registerData.username = user.email.split('@')[0];
     }
+    $timeout(function(){
+        checkUsernameAvailability();
+    }, 1000);
 
+    var last_typed_timestmap_milisec = 0;
+    var need_to_stay_idle_milisec = 2000;
+    $scope.usernameTyped = function(keyEvent){
+        last_typed_timestmap_milisec = Date.now();
+        $timeout(
+            function(){
+                stayed_idle_milisec = Date.now() - last_typed_timestmap_milisec;
+                if(stayed_idle_milisec >= need_to_stay_idle_milisec){
+                    checkUsernameAvailability();
+                }
+            }, need_to_stay_idle_milisec
+        )
+    }
+    $scope.getUsernameClass = function(){
+        return $scope.usernameClass;
+    }
     $scope.register2 = function(registerData){
         $ionicLoading.show();
         $http({
@@ -1411,16 +1407,12 @@ angular.module('starter.controllers', [])
         })
         .success(function(response){
             $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                // Stringify the retured data
-                var user = JSON.stringify(response.user);
-
-                // Set the stringified user data into local storage
-                localStorage.setItem('user', user);
+                var user = response.user;
+                $rootScope.setCurrentUser(user);
                 $ionicLoading.hide();
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
-
                 $state.go('tab.explore-explore');
             })
             .error(function(){
@@ -1430,6 +1422,9 @@ angular.module('starter.controllers', [])
         .error(function(error, status){
             $ionicLoading.hide();
             $rootScope.handleHttpError(error, status);
+            if(error.username != undefined && error.username[0] == 'The username is not available'){
+                $scope.usernameClass = 'fail';
+            }
         });
     }
 })
@@ -1473,18 +1468,12 @@ angular.module('starter.controllers', [])
         $auth.login(credentials).then(function() {
             // Return an $http request for the authenticated user
             $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                // Stringify the retured data
-                var user = JSON.stringify(response.user);
-
-                // Set the stringified user data into local storage
-                localStorage.setItem('user', user);
-
+                var user = response.user;
+                $rootScope.setCurrentUser(user);
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
-
                 $ionicLoading.hide();
-
                 $state.go('tab.explore-explore');
             })
             .error(function(){
@@ -1497,35 +1486,14 @@ angular.module('starter.controllers', [])
             $rootScope.handleHttpError(error, status);
         });
     };
-    $scope.fbLogin = function() {
-        $ionicLoading.show();
-        $auth.authenticate('facebook').then(function() {
-            // Return an $http request for the authenticated user
-            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                // Stringify the retured data
-                var user = JSON.stringify(response.user);
-
-                // Set the stringified user data into local storage
-                localStorage.setItem('user', user);
-
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-
-                $ionicLoading.hide();
-
-                $state.go('tab.explore-explore');
-            })
-            .error(function(){
-                $ionicLoading.hide();
-                $rootScope.handleHttpError(error, status);
-            })
-        });
-    };
 
     var fbLoginSuccess = function(response) {
         if (!response.authResponse){
             fbLoginError("Cannot find the authResponse");
+            return;
+        }
+        if(localStorage.getItem('user')){
+            console.log('user already logged in');
             return;
         }
 
@@ -1540,22 +1508,14 @@ angular.module('starter.controllers', [])
             .success(function(response){
                 localStorage.setItem('satellizer_token', response.token);
                 $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                    // Stringify the retured data
-                    var user = JSON.stringify(response.user);
-
-                    // Set the stringified user data into local storage
-                    localStorage.setItem('user', user);
-
+                    var user = response.user;
+                    $rootScope.setCurrentUser(user);
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-
-                    $ionicLoading.hide();
-
                     $state.go('tab.explore-explore');
                 })
                 .error(function(){
-                    $ionicLoading.hide();
                     $rootScope.handleHttpError(error, status);
                 });
             })
@@ -1571,7 +1531,6 @@ angular.module('starter.controllers', [])
     // This is the fail callback from the login method
     var fbLoginError = function(error){
         console.log('fbLoginError', error);
-        $ionicLoading.hide();
     };
 
     // This method is to get the user profile info from the facebook api
@@ -1613,18 +1572,12 @@ angular.module('starter.controllers', [])
                     .success(function(response){
                         localStorage.setItem('satellizer_token', response.token);
                         $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                            // Stringify the retured data
-                            var user = JSON.stringify(response.user);
-
-                            // Set the stringified user data into local storage
-                            localStorage.setItem('user', user);
-
+                            var user = response.user;
+                            $rootScope.setCurrentUser(user);
                             $ionicHistory.nextViewOptions({
                                 disableBack: true
                             });
-
                             $ionicLoading.hide();
-
                             $state.go('tab.explore-explore');
                         })
                         .error(function(){
@@ -1633,6 +1586,7 @@ angular.module('starter.controllers', [])
                         });
                     })
                     .error(function(error){
+                        $ionicLoading.hide();
                         $rootScope.handleHttpError(error);
                     });
                 }, function(fail){
@@ -1647,10 +1601,6 @@ angular.module('starter.controllers', [])
                 // so we're not sure if they are logged into this app or not.
 
                 console.log('getLoginStatus@facebookSignIn-else-connected', success.status);
-
-                $ionicLoading.show({
-                    template: 'Logging in...'
-                });
 
                 // Ask the permissions you need. You can learn more about
                 // FB permissions here: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
@@ -2127,6 +2077,15 @@ angular.module('starter.controllers', [])
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
 
+    var user = $rootScope.getCurrentUser();
+    if(user.username == user.email){
+        $state.go('register2').then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
+    }
+
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
         if(!response.next_page_url){
@@ -2525,7 +2484,7 @@ angular.module('starter.controllers', [])
 
         var ft = new FileTransfer();
 
-        ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/'+user.slug+'/editProfilePicture'), success, fail, options);
+        ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/user/'+user.slug+'/editProfilePicture'), success, fail, options);
 
         function success(r) {
             $ionicLoading.show({template: 'Upload Success', duration:500});
@@ -2677,7 +2636,7 @@ angular.module('starter.controllers', [])
         });
     }
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope, $timeout) {
     $scope.user = $rootScope.getCurrentUser();
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
@@ -2700,10 +2659,18 @@ angular.module('starter.controllers', [])
         confirmPopup.then(function(res) {
             if(res) {
                 localStorage.removeItem('user');
-                localStorage.removeItem('satellizer_token');
-                $ionicHistory.clearCache().then(function(){
-                    $ionicHistory.clearHistory();
-                    $state.go('root');
+                localStorage.removeItem('post_id_array');
+                // if we remove token, regular register after fb account log out does not work
+                //localStorage.removeItem('satellizer_token');
+
+                // problem: when A log out and log in as B, old data remains and causes problems
+                //          ex. profile still shows A instead of B
+                //          - clearCache and clearHistory alone not working
+                // solution: reinstatiate the app by reload on log out
+                $state.go('root').then(function(){
+                    $timeout(function(){
+                        window.location.reload();
+                    },100);
                 });
             }
         });
@@ -2716,14 +2683,8 @@ angular.module('starter.controllers', [])
     var user = $rootScope.getCurrentUser();
     FetchUsers.get(user.slug).then(function(user){
         $scope.user = user;
-        var data = { first_name : $scope.user.first_name,
-            first_name : $scope.user.first_name,
-            last_name : $scope.user.last_name,
-            slug : $scope.user.slug,
-            facebook : $scope.user.social_networks.facebook,
-            twitter : $scope.user.social_networks.twitter,
-            instagram : $scope.user.social_networks.instagram,
-            pinterest : $scope.user.social_networks.pinterest,
+        var data = {
+            username : $scope.user.username,
             age : $scope.user.age,
             gender : $scope.user.gender
         };
@@ -2733,7 +2694,7 @@ angular.module('starter.controllers', [])
     $scope.updateProfile = function(user){
         $http({
             method: "POST",
-            url: $rootScope.baseURL + '/api/' + $scope.user.slug + '/edit',
+            url: $rootScope.baseURL + '/api/user/' + $scope.user.slug + '/edit',
             data: user
         })
         .success(function(response){
@@ -2750,7 +2711,7 @@ angular.module('starter.controllers', [])
     $scope.changePassword = function(pwd){
         $http({
             method: "POST",
-            url: $rootScope.baseURL + '/api/' + user.slug + '/password/edit',
+            url: $rootScope.baseURL + '/api/user/' + user.slug + '/password/edit',
             data: pwd
         })
         .success(function(response){

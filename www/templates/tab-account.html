@@ -10,7 +10,7 @@
             <div class="account-image" style="background: url({{accountImage}})" ng-click="changeProfilePicture()"></div>
             <div class="user-name">
                 <ion-spinner icon="ios-small" ng-if="!account_info"></ion-spinner>
-                {{ account_info.first_name }} {{ account_info.last_name }}
+                {{ account_info.username }}
             </div>
             <div class="user-joined">Joined at <span class="time-ago" am-time-ago="account_info.created_at | amUtc" ng-if="account_info"></span></div>
             <div class="account-achievement row">
@@ -46,7 +46,7 @@
                         <div>
                             <div class="desc_row">
                                 <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
-                                <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.first_name}} {{post.user.last_name}}</div>
+                                <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}}</div>
                             </div>
                             <div class="desc_row">
                                 <span class="likes-count">

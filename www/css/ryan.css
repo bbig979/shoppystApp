@@ -3831,6 +3831,24 @@ div.tab-nav.tabs {
 #register2 .item-select {
   border-top: 0;
 }
+/* line 18, ../../scss/ryan/_register.scss */
+#register2 .username.fail::after {
+  color: red;
+  font-size: 13px;
+  font-family: FontAwesome, sans-serif;
+  content: "\f05e  The username is not available";
+  float: right;
+  padding-right: 15px;
+}
+/* line 26, ../../scss/ryan/_register.scss */
+#register2 .username.success::after {
+  color: green;
+  font-size: 13px;
+  font-family: FontAwesome, sans-serif;
+  content: "\f05d  The username is available";
+  float: right;
+  padding-right: 15px;
+}
 
 /* line 1, ../../scss/ryan/_intro.scss */
 #intro {

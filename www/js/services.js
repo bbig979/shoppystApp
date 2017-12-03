@@ -74,7 +74,7 @@ angular.module('starter.services', [])
             });
         },
         user: function(userSlug, tab, pg) {
-            return $http.get($rootScope.baseURL+"/api/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/user/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
@@ -83,7 +83,7 @@ angular.module('starter.services', [])
             });
         },
         liked: function(slug, pg){
-            return $http.get($rootScope.baseURL+"/api/"+slug+"/liked?page="+pg).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/user/"+slug+"/liked?page="+pg).then(function(response){
                 return response.data.data;
             }
             ,function(error){
@@ -144,7 +144,7 @@ angular.module('starter.services', [])
     };
     return {
         following: function(slug, pg) {
-            return $http.get($rootScope.baseURL+'/api/'+ slug +'/following?page='+ pg).then(function(response){
+            return $http.get($rootScope.baseURL+'/api/user/'+ slug +'/following?page='+ pg).then(function(response){
                 _addToUserTrackArray(response.data);
                 return response.data;
             }
@@ -153,7 +153,7 @@ angular.module('starter.services', [])
             });
         },
         follower: function(slug, pg) {
-            return $http.get($rootScope.baseURL+'/api/'+ slug +'/follower?page='+ pg).then(function(response){
+            return $http.get($rootScope.baseURL+'/api/user/'+ slug +'/follower?page='+ pg).then(function(response){
                 _addToUserTrackArray(response.data);
                 return response.data;
             }
@@ -162,7 +162,7 @@ angular.module('starter.services', [])
             });
         },
         get: function(userSlug) {
-            return $http.get($rootScope.baseURL+"/api/"+userSlug).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/user/"+userSlug).then(function(response){
                 _addToUserTrackArray({data:response.data});
                 return response.data;
             }
@@ -202,7 +202,7 @@ angular.module('starter.services', [])
 .factory('FetchNotifications', function($http, $rootScope) {
     return {
         new: function(slug, pg) {
-            return $http.get($rootScope.baseURL+'/api/'+slug+'/notification?page='+pg).then(function(response){
+            return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification?page='+pg).then(function(response){
                 return response.data;
             }
             ,function(error){

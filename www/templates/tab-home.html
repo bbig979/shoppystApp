@@ -16,7 +16,7 @@
                     <div class="post-header">
                         <a>
                             <div class="profile-image" ng-click="goAccount(post.user.slug)" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )"></div>
-                            <div class="user-name" ng-click="goAccount(post.user.slug)">{{ post.user.first_name }} {{ post.user.last_name }}</div>
+                            <div class="user-name" ng-click="goAccount(post.user.slug)">{{ post.user.username }}</div>
                         </a>
                         <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{postTimer.icon(post.created_at)}}" aria-hidden="true"></i> {{postTimer.timeLeft(post.created_at)}}</span>
                         <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
