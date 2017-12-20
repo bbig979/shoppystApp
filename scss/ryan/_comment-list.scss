@@ -10,7 +10,7 @@
         float: left;
         margin: 3px 6px 0 0;
       }
-      padding: 7px;
+      padding: 14px;
       min-height: 55px;
     }
     padding: 0;
@@ -19,12 +19,11 @@
   .item{
     .time-ago{
       position: absolute;
-      top: 7px;
+      top: 15px;
       right: 10px;
       font-size: 13px;
     }
     border-color: $grey-light;
-    padding: 7px;
   }
   .load-more{
     padding: 10px;

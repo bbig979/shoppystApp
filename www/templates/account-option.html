@@ -1,10 +1,10 @@
 <ion-view view-title="Options" cache-view="false">
   <ion-content>
     <ion-list>
-    	<ion-item ng-click="goAccountEdit()">Edit Profile</ion-item>
-    	<ion-item ng-click="goChangePassword()" ng-if="!user.facebook_user_id">Change Password</ion-item>
-    	<ion-item ng-click="goInviteFriends()">Invite Friends</ion-item>
-    	<ion-item ng-click="logout()">Log Out</ion-item>
+    	<ion-item ng-click="goAccountEdit()" class="edit-profile">Edit Profile</ion-item>
+    	<ion-item ng-click="goChangePassword()" ng-if="!user.facebook_user_id" class="change-password">Change Password</ion-item>
+    	<ion-item ng-click="goInviteFriends()" class="invite-friends">Invite Friends</ion-item>
+    	<ion-item ng-click="logout()" class="log-out">Log Out</ion-item>
     </ion-list>
   </ion-content>
 </ion-view>

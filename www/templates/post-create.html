@@ -1,9 +1,25 @@
-<ion-view id="create-post" view-title="POST">
+<ion-view id="create-post" view-title="LOOKS TO COMPARE">
     <ion-content class="has-header">
         <form ng-submit="sharePost(captions, occasion.value, other)" name="shareForm">
-            <div class="post-image">
-                <img class="item" ng-src="{{picData}}" />
-            </div>
+            <ul class="post-images">
+                <li ng-repeat="cameraPicture in cameraPictues.get()">
+                    <div class="post-image">
+                        <img class="item" ng-src="{{cameraPicture}}" />
+                    </div>
+                    <div class="remove-image" ng-click="cameraPictues.remove(cameraPicture)">
+                        <i class="icon ion-close-circled"></i>
+                    </div>
+                </li>
+                <li>
+                    <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu()">
+                        <div class="add-more-to-compare-button">
+                            <i class="icon ion-plus-circled"></i><br>
+                            More Look<br>
+                            to Compare
+                        </div>
+                    </div>
+                </li>
+            </ul>
             <div class="post-caption padding">
                 <textarea placeholder="Write a Caption" class="form-control" ng-model="captions"></textarea>
             </div>
@@ -22,7 +38,7 @@
                 </label>
             </div>
             <div class="padding">
-                <button type="submit" class="button button-block button-positive" ng-disabled="submitted">Share a post</button>
+                <button type="submit" class="button button-block button-positive" ng-disabled="submitted">Share</button>
             </div>
             <div class="padding">
                 <button type="button" class="button button-block button-stable" ng-click="back()" ng-disabled="submitted">Cancel</button>

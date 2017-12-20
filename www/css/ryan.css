@@ -3270,12 +3270,11 @@
 
 /* line 2, ../../scss/ryan/_post-list.scss */
 .post-list .post {
-  width: 98%;
-  border-radius: 3px;
+  width: 100%;
   float: left;
-  margin: 1%;
   padding: 0px;
   position: relative;
+  border-right-color: #fff;
 }
 /* line 3, ../../scss/ryan/_post-list.scss */
 .post-list .post .post_img {
@@ -3283,7 +3282,7 @@
   width: 100%;
   padding-top: 100%;
 }
-/* line 14, ../../scss/ryan/_post-list.scss */
+/* line 13, ../../scss/ryan/_post-list.scss */
 .post-list .post ion-item {
   border: 0;
   background-position: 50% 50%;
@@ -3293,7 +3292,7 @@
   float: left;
   background-color: #f0f0f0;
 }
-/* line 23, ../../scss/ryan/_post-list.scss */
+/* line 22, ../../scss/ryan/_post-list.scss */
 .post-list .post .desc_row {
   float: left;
   width: 50%;
@@ -3301,13 +3300,13 @@
   color: #aaa;
   padding: 5px 5px 0px 10px;
 }
-/* line 30, ../../scss/ryan/_post-list.scss */
+/* line 29, ../../scss/ryan/_post-list.scss */
 .post-list .post .add_to_compare {
   position: absolute;
   bottom: 5px;
   right: 8px;
 }
-/* line 35, ../../scss/ryan/_post-list.scss */
+/* line 34, ../../scss/ryan/_post-list.scss */
 .post-list .post .like-button {
   min-width: 20px;
   min-height: 21px;
@@ -3315,12 +3314,12 @@
   padding-right: 5px;
   margin-right: 10px;
 }
-/* line 42, ../../scss/ryan/_post-list.scss */
+/* line 41, ../../scss/ryan/_post-list.scss */
 .post-list .post .like-button:before {
   line-height: 20px;
   font-size: 25px;
 }
-/* line 46, ../../scss/ryan/_post-list.scss */
+/* line 45, ../../scss/ryan/_post-list.scss */
 .post-list .post .profile-image {
   width: 25px;
   height: 25px;
@@ -3332,11 +3331,11 @@
   float: left;
   margin-right: 5px;
 }
-/* line 54, ../../scss/ryan/_post-list.scss */
+/* line 53, ../../scss/ryan/_post-list.scss */
 .post-list .post .user-name {
   padding: 2px;
 }
-/* line 57, ../../scss/ryan/_post-list.scss */
+/* line 56, ../../scss/ryan/_post-list.scss */
 .post-list .post .add-compare-button {
   float: right;
   background-color: #FF4C62;
@@ -3348,12 +3347,12 @@
   padding-right: 6px;
   margin-right: 6px;
 }
-/* line 68, ../../scss/ryan/_post-list.scss */
+/* line 67, ../../scss/ryan/_post-list.scss */
 .post-list .post .add-compare-button:before {
   line-height: 20px;
   font-size: 13px;
 }
-/* line 72, ../../scss/ryan/_post-list.scss */
+/* line 71, ../../scss/ryan/_post-list.scss */
 .post-list .post .button.button-dark.button-clear.ion-ios-heart {
   color: #FF4C62;
 }
@@ -3369,7 +3368,7 @@
 }
 /* line 6, ../../scss/ryan/_comment-list.scss */
 .comment-list .item-avatar .item-content {
-  padding: 7px;
+  padding: 14px;
   min-height: 55px;
 }
 /* line 7, ../../scss/ryan/_comment-list.scss */
@@ -3382,20 +3381,19 @@
 /* line 19, ../../scss/ryan/_comment-list.scss */
 .comment-list .item {
   border-color: #e7e7e7;
-  padding: 7px;
 }
 /* line 20, ../../scss/ryan/_comment-list.scss */
 .comment-list .item .time-ago {
   position: absolute;
-  top: 7px;
+  top: 15px;
   right: 10px;
   font-size: 13px;
 }
-/* line 29, ../../scss/ryan/_comment-list.scss */
+/* line 28, ../../scss/ryan/_comment-list.scss */
 .comment-list .load-more {
   padding: 10px;
 }
-/* line 32, ../../scss/ryan/_comment-list.scss */
+/* line 31, ../../scss/ryan/_comment-list.scss */
 .comment-list .button-small {
   line-height: 0;
 }
@@ -3607,6 +3605,16 @@ a {
 }
 
 /* line 20, ../../scss/ryan/_top-bar.scss */
+.bar .button.button-clear.ion-refresh::before {
+  font-size: 23px;
+}
+
+/* line 23, ../../scss/ryan/_top-bar.scss */
+.bar .button.button-clear.fa-bell::before {
+  font-size: 23px;
+}
+
+/* line 26, ../../scss/ryan/_top-bar.scss */
 .platform-android .nav-bar-has-subheader .bar.bar-stable {
   background-color: #FF6D70;
   background: -webkit-linear-gradient(left, #FF1D5C, #FFC772);
@@ -3640,12 +3648,12 @@ ion-tabs .tab-item {
 }
 
 /* line 17, ../../scss/ryan/_footer-nav.scss */
-.tab-item[icon-on=ion-home].tab-item-active {
+.tab-item[icon-on=ion-search].tab-item-active {
   color: #FFBD71;
 }
 
 /* line 20, ../../scss/ryan/_footer-nav.scss */
-.tab-item[icon-on=ion-search].tab-item-active {
+.tab-item[icon-on=ion-person-stalker].tab-item-active {
   color: #FF986C;
 }
 
@@ -3655,16 +3663,21 @@ ion-tabs .tab-item {
 }
 
 /* line 26, ../../scss/ryan/_footer-nav.scss */
-.tab-item[icon-on=ion-ios-bell].tab-item-active {
-  color: #FF4B62;
+.tab-item[icon-on=ion-ios-bell] {
+  display: none;
 }
 
 /* line 29, ../../scss/ryan/_footer-nav.scss */
+.tab-item[icon-on=ion-podium].tab-item-active {
+  color: #FF4B62;
+}
+
+/* line 32, ../../scss/ryan/_footer-nav.scss */
 .tab-item[icon-on=ion-android-person].tab-item-active {
   color: #FF285D;
 }
 
-/* line 32, ../../scss/ryan/_footer-nav.scss */
+/* line 35, ../../scss/ryan/_footer-nav.scss */
 div.tab-nav.tabs {
   border-top-width: 0px;
 }
@@ -3817,6 +3830,24 @@ div.tab-nav.tabs {
 /* line 15, ../../scss/ryan/_register.scss */
 #register2 .item-select {
   border-top: 0;
+}
+/* line 18, ../../scss/ryan/_register.scss */
+#register2 .username.fail::after {
+  color: red;
+  font-size: 13px;
+  font-family: FontAwesome, sans-serif;
+  content: "\f05e  The username is not available";
+  float: right;
+  padding-right: 15px;
+}
+/* line 26, ../../scss/ryan/_register.scss */
+#register2 .username.success::after {
+  color: green;
+  font-size: 13px;
+  font-family: FontAwesome, sans-serif;
+  content: "\f05d  The username is available";
+  float: right;
+  padding-right: 15px;
 }
 
 /* line 1, ../../scss/ryan/_intro.scss */
