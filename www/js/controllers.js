@@ -1,10 +1,10 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera,$ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink) {
     $rootScope.clientVersion = '1.0';
-    // $rootScope.baseURL = 'http://app.snaplook.today';
-    $rootScope.baseURL = 'http://localhost:8000';
-    // $rootScope.baseURL = 'http://192.168.56.1:8000';
-    // $rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.baseURL = 'http://app.snaplook.today';
+    //$rootScope.baseURL = 'http://localhost:8000';
+    //$rootScope.baseURL = 'http://192.168.56.1:8000';
+    //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.compareList = [];
@@ -13,7 +13,67 @@ angular.module('starter.controllers', [])
     $rootScope.stat_height = 0;
     $rootScope.stat_label_height = 0;
     $rootScope.postTrackArray = [];
+    $rootScope.userTrackArray = [];
+    $rootScope.currentUser = null;
 
+    $rootScope.goNotification = function() {
+        $state.go('tab.notification');
+    }
+    $rootScope.ifInNotification = function() {
+        var detect = 'auth, forgetpassword, register, register2, root, intro';
+        if( detect.indexOf($state.current.name) > -1 || $state.current.name.indexOf('notification') > -1){
+            return true;
+        }
+        return false;
+    }
+    $rootScope.ifInCompare = function() {
+        if($state.current.name == 'tab.compare'){
+            return true;
+        }
+        return false;
+    }
+    $rootScope.shareCompare = function() {
+        if(ComparePosts.isAnyPostExpired()){
+            $rootScope.popupMessage('Oops', 'You cannot share a look that is private');
+            return;
+        }
+        if(ComparePosts.length() < 2){
+            $rootScope.popupMessage('Oops', 'You need at least 2 looks to share');
+            return;
+        }
+        $ionicLoading.show();
+        ComparePosts.share().then(function(hash){
+            if(hash){
+                var options = {
+                    message: 'which looks better?',
+                    subject: 'Which Looks Better?',
+                    url: $rootScope.baseURL + '/s/' + hash
+                }
+                var onSuccess = function(result) {
+                    console.log($rootScope.baseURL + '/s/' + hash);
+                    console.log("Shared to app: " + result.app);
+                    FetchShareLink.update(hash, result.app);
+                }
+                var onError = function(msg) {
+                    console.log("Sharing failed with message: " + msg);
+                }
+                window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+            }
+            else{
+                $rootScope.popupMessage('Oops', 'You cannot share other\'s look');
+            }
+            $ionicLoading.hide();
+        });
+    }
+    $rootScope.scroll = function() {
+        $ionicScrollDelegate.scrollBy(0, 100);
+    }
+    $rootScope.ifTestAccount = function() {
+        if($rootScope.currentUser){
+            return $rootScope.currentUser.email == "info@snaplook.today";
+        }
+        return false;
+    }
     $rootScope.photoPath = function(file_name, size) {
         return helper_generatePhotoPath( $rootScope.baseURL, file_name, size );
     };
@@ -24,15 +84,18 @@ angular.module('starter.controllers', [])
         var tab = 'notAssigned';
         switch(id){
             case 0:
-                tab = 'home';
+                tab = 'explore';
                 break;
             case 1:
-                tab = 'explore';
+                tab = 'home';
                 break;
             case 3:
                 tab = 'notification';
                 break;
             case 4:
+                tab = 'compare';
+                break;
+            case 5:
                 tab = 'account';
                 break;
             default:
@@ -70,13 +133,13 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.school-detail-'+tab,{schoolId: id, schoolName: name});
     };
-    $rootScope.goAccountFollowing = function(slug, user){
+    $rootScope.goAccountFollowing = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-following-'+tab,{userSlug: slug, user: user});
+        $state.go('tab.account-following-'+tab,{userSlug: slug});
     };
-    $rootScope.goAccountFollower = function(slug, user){
+    $rootScope.goAccountFollower = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-follower-'+tab,{userSlug: slug, user: user});
+        $state.go('tab.account-follower-'+tab,{userSlug: slug});
     };
     $rootScope.goAccountLiked = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -95,7 +158,7 @@ angular.module('starter.controllers', [])
             }
         }
         if(status == 500){
-            $state.go('tab.home');
+            $state.go('tab.explore-explore');
         }
         else if(typeof (error.status) != 'undefined' && error.status == 401){
             // when validation error
@@ -114,27 +177,36 @@ angular.module('starter.controllers', [])
         console.log(error);
     };
     $rootScope.getCurrentUser = function(){
-        var user = JSON.parse(localStorage.getItem('user'));
-        if(user){
-            return user;
+        if($state.current.name){
+            if($rootScope.currentUser){
+                return $rootScope.currentUser;
+            }
+            else{
+                var user = JSON.parse(localStorage.getItem('user'));
+                if(user){
+                    $rootScope.currentUser = user;
+                    return $rootScope.currentUser;
+                }
+            }
+            $state.go('auth');
         }
-        $state.go('auth');
+    };
+    $rootScope.setCurrentUser = function(user){
+        $rootScope.currentUser = user;
+        var user_str = JSON.stringify(user);
+        localStorage.setItem('user', user_str);
     };
     $rootScope.goAccountOption = function(id){
         $state.go('tab.option-account',{userId: id});
     };
-    $rootScope.getNameOnCard = function(_first_name, _last_name){
-        if (_first_name.length >= $rootScope.nameLengthOnCard - 1)
+    $rootScope.getNameOnCard = function(_username){
+        if (_username.length >= $rootScope.nameLengthOnCard - 1)
         {
-            return _first_name.substring(0, $rootScope.nameLengthOnCard) + "...";
-        }
-        else if (_first_name.length + _last_name.length >= $rootScope.nameLengthOnCard - 1)
-        {
-            return (_first_name + " " +_last_name).substring(0, $rootScope.nameLengthOnCard) + "...";
+            return _username.substring(0, $rootScope.nameLengthOnCard) + "...";
         }
         else
         {
-            return _first_name + " " +_last_name;
+            return _username;
         }
     };
     $rootScope.openCameraMenu = function(){
@@ -165,7 +237,8 @@ angular.module('starter.controllers', [])
                                 localStorage.setItem('photo', imageData);
                                 $ionicLoading.show({template: 'Loading Photo', duration:500});
                                 $ionicLoading.hide();
-                                $state.go('tab.post-create',{photoUrl: imageData});
+                                CameraPictues.set(imageData);
+                                $state.go('tab.post-create');
                             },
                             function(err){
                                 $ionicLoading.hide();
@@ -188,7 +261,8 @@ angular.module('starter.controllers', [])
                                     localStorage.setItem('photo', fileEntry.nativeURL);
                                     $ionicLoading.show({template: 'Loading Photo', duration:500});
                                     $ionicLoading.hide();
-                                    $state.go('tab.post-create',{photoUrl: fileEntry.nativeURL});
+                                    CameraPictues.set(fileEntry.nativeURL);
+                                    $state.go('tab.post-create');
                                 });
                             },
                             function(err){
@@ -761,15 +835,7 @@ angular.module('starter.controllers', [])
         return false;
     };
     $rootScope.openCompare = function(){
-        if ($rootScope.compareList.length < 2)
-        {
-            $rootScope.popupMessage("Oops", "Please add more than 2 looks to compare");
-        }
-        else
-        {
-            var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-            $state.go('tab.compare-'+tab);
-        }
+        $state.go('tab.compare');
     };
     $rootScope.addCompare = function(_post_id) {
         if (!$rootScope.canClickInList()) {
@@ -813,7 +879,7 @@ angular.module('starter.controllers', [])
                         confirmPopup.then(function(res) {
                             if(res) {
                                 $ionicLoading.show();
-                                $http.post($rootScope.baseURL+'/api/'+$stateParams.accountSlug+'/block').success(function(){
+                                $http.post($rootScope.baseURL+'/api/user/'+$stateParams.accountSlug+'/block').success(function(){
                                     $ionicLoading.hide();
                                     return true;
                                 })
@@ -832,7 +898,7 @@ angular.module('starter.controllers', [])
                         confirmPopup.then(function(res) {
                             if(res) {
                                 $ionicLoading.show();
-                                $http.post($rootScope.baseURL+'/api/'+$stateParams.accountSlug+'/report').success(function(){
+                                $http.post($rootScope.baseURL+'/api/user/'+$stateParams.accountSlug+'/report').success(function(){
                                     $ionicLoading.hide();
                                     return true;
                                 })
@@ -851,6 +917,7 @@ angular.module('starter.controllers', [])
         $rootScope.lastScrolling = new Date().getTime();
     };
     $rootScope.canClickInList = function() {
+        return true;
         var diff =  new Date().getTime() - $rootScope.lastScrolling;
         if (diff > 200) {
             return true;
@@ -858,46 +925,46 @@ angular.module('starter.controllers', [])
             return false;
         }
     };
-    $rootScope.toggleLike = function(post){
-      if(post.user_liked){
-          post.likes_count.aggregate--;
-          if(post.likes_count.aggregate == 0){
-              post.likes_count = null;
-          }
-      }
-      else{
-          if(post.likes_count){
-              post.likes_count.aggregate++;
-          }
-          else{
-              post.likes_count = {aggregate: 1};
-          }
-      }
-      post.user_liked = !post.user_liked;
-    }
-    $rootScope.likeClicked = function($event,clickedPost){
+    $rootScope.toggleLike = function($event,post){
         $event.preventDefault();
-        if(clickedPost.user_liked){
-            $http.get($rootScope.baseURL+'/api/post/'+clickedPost.id+'/unlike').success(function(){
+        if(post.user_liked){
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
             });
         }
         else{
-            $http.get($rootScope.baseURL+'/api/post/'+clickedPost.id+'/like').success(function(){
+            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
             })
             .error(function(error){
                 $rootScope.handleHttpError(error);
             });
         }
+        $rootScope.trackAndUpdateLike(post);
+    };
+    $rootScope.trackAndUpdateLike = function(post){
         for(i = 0; i < $rootScope.postTrackArray.length; i++){
-            post = $rootScope.postTrackArray[i];
-            if(post.id == clickedPost.id){
-              $rootScope.toggleLike(post);
+            thisPost = $rootScope.postTrackArray[i];
+            if(post.id == thisPost.id){
+                if(thisPost.user_liked){
+                    thisPost.likes_count.aggregate--;
+                    if(thisPost.likes_count.aggregate == 0){
+                        thisPost.likes_count = null;
+                    }
+                }
+                else{
+                    if(thisPost.likes_count){
+                        thisPost.likes_count.aggregate++;
+                    }
+                    else{
+                        thisPost.likes_count = {aggregate: 1};
+                    }
+                }
+                thisPost.user_liked = !thisPost.user_liked;
             }
         }
-    };
+    }
     $rootScope.likesCount = function(post){
         if(post.likes_count){
             return post.likes_count.aggregate;
@@ -925,15 +992,56 @@ angular.module('starter.controllers', [])
                 post.post_analytic[0].female == 0
             )
     }
+    $rootScope.toggleFollow = function(user) {
+        var current_user = $rootScope.getCurrentUser();
+        if(user.following_check){
+            $http.get($rootScope.baseURL+'/api/user/'+ user.slug +'/unfollow').success(function(){
+                current_user.following_count--;
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        else{
+            $http.get($rootScope.baseURL+'/api/user/'+ user.slug +'/follow').success(function(){
+                current_user.following_count++;
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+        $rootScope.trackAndUpdateFollow(user);
+    };
+    $rootScope.trackAndUpdateFollow = function(user) {
+        for(i = 0; i < $rootScope.userTrackArray.length; i++){
+            thisUser = $rootScope.userTrackArray[i];
+            if(thisUser.id == user.id){
+                if(thisUser.following_check){
+                    if(thisUser.follower_count){
+                        thisUser.follower_count--;
+                    }
+                }
+                else{
+                    if(thisUser.follower_count){
+                        thisUser.follower_count++;
+                    }
+                    else{
+                        thisUser.follower_count = 1;
+                    }
+                }
+                thisUser.following_check = !thisUser.following_check;
+            }
+        }
+    };
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, ComparePosts, CameraPictues, $timeout) {
     $scope.submitted = false;
     $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
-    $scope.picData = $stateParams.photoUrl;
     $scope.occasionList = new Array();
     $scope.shopOptionalOccasion = false;
+    $scope.cameraPictues = CameraPictues;
 
     FetchOccasions.get().then(function(response){
         occasions = response;
@@ -944,9 +1052,9 @@ angular.module('starter.controllers', [])
     });
 
     $scope.sharePost = function(captions, occasion, other) {
+        var share_post_scope = this;
         $scope.submitted = true;
         $ionicLoading.show({template: 'Uploading Photo...'});
-        var fileURL = $scope.picData;
         var options = new FileUploadOptions();
         var param_caption = '';
         if (typeof captions != 'undefined')
@@ -958,26 +1066,64 @@ angular.module('starter.controllers', [])
             occasion = null;
         }
         options.fileKey = "image";
-        options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
         options.mimeType = "image/jpeg";
         options.chunkedMode = true;
 
-        var params = { 'captions': param_caption, 'user_id': user.id, 'occasion': occasion, 'other': other };
-
-        options.params = params;
-
         var ft = new FileTransfer();
-        ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, options);
+        var params = { 'captions': param_caption, 'user_id': user.id, 'occasion': occasion, 'other': other };
+        options.params = params;
+        var fileURLs = CameraPictues.get();
+        var uploadTryCount = 0;
+        var uploadSuccessCount = 0;
+
+        if(fileURLs.length < 2){
+            $ionicLoading.hide();
+            $rootScope.popupMessage('', 'You Need at Least 2 Looks to Compare');
+            $scope.submitted = false;
+            return;
+        }
+        for(var i=0; i<fileURLs.length; i++){
+            options.fileName = fileURLs[i].substr(fileURLs[i].lastIndexOf('/') + 1);
+            ft.upload(fileURLs[i], encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, options);
+        }
 
         // Transfer succeeded
         function success(r) {
-            $ionicLoading.show({template: 'Upload Success', duration:500});
-            $state.go('tab.account-account', {refresh: options.fileName, activateTab:'new'});
+            uploadTryCount++;
+            uploadSuccessCount++;
+            var result = JSON.parse(r.response);
+            if(uploadSuccessCount == 1){
+                ComparePosts.reset();
+            }
+            ComparePosts.toggle(result.id);
+            if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
+                $ionicLoading.show({
+                    template: 'Upload Success ( ' + uploadSuccessCount + ' / ' + uploadTryCount + ' )',
+                    duration:500
+                });
+                $scope.submitted = false;
+                share_post_scope.occasion = undefined;
+                share_post_scope.captions = undefined;
+                uploadTryCount = 0;
+                uploadSuccessCount = 0;
+                $timeout(function(){
+                    CameraPictues.reset();
+                    $state.go('tab.compare');
+                }, 500);
+            }
         }
 
         // Transfer failed
         function fail(error) {
-            $ionicLoading.show({template: 'Upload Fail', duration:500});
+            uploadTryCount++;
+            if(uploadTryCount == fileURLs.length && uploadSuccessCount == 0){
+                $ionicLoading.show({template: 'Upload Fail', duration:500});
+                $scope.submitted = false;
+                share_post_scope.occasion = undefined;
+                share_post_scope.captions = undefined;
+                uploadTryCount = 0;
+                uploadSuccessCount = 0;
+            }
         }
     }
     $scope.checkOccasion = function(_occasion) {
@@ -991,6 +1137,7 @@ angular.module('starter.controllers', [])
         }
     }
     $scope.back = function() {
+        CameraPictues.reset();
         $ionicHistory.goBack();
     }
 })
@@ -1039,7 +1186,7 @@ angular.module('starter.controllers', [])
     });
     if(localStorage.getItem('have_seen_intro')){
         if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
-            $state.go('tab.home');
+            $state.go('tab.explore-explore');
         }
         else{
             $state.go('auth');
@@ -1064,7 +1211,6 @@ angular.module('starter.controllers', [])
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
-
             $state.go('register2',registerData);
         })
         .error(function(error, status){
@@ -1072,35 +1218,13 @@ angular.module('starter.controllers', [])
             $rootScope.handleHttpError(error, status);
         });
     }
-    $scope.fbRegister = function() {
-        $ionicLoading.show();
-        $auth.authenticate('facebook').then(function() {
-            // Return an $http request for the authenticated user
-            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                // Stringify the retured data
-                var user = JSON.stringify(response.user);
-
-                // Set the stringified user data into local storage
-                localStorage.setItem('user', user);
-
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-
-                $ionicLoading.hide();
-
-                $state.go('tab.home');
-
-            })
-            .error(function(){
-                $ionicLoading.hide();
-                $rootScope.handleHttpError(error, status);
-            })
-        });
-    };
     var fbLoginSuccess = function(response) {
         if (!response.authResponse){
             fbLoginError("Cannot find the authResponse");
+            return;
+        }
+        if(localStorage.getItem('user')){
+            console.log('user already logged in');
             return;
         }
 
@@ -1112,31 +1236,23 @@ angular.module('starter.controllers', [])
                 url : $rootScope.baseURL+'/api/facebook',
                 data : {profile:profileInfo}
             })
-                .success(function(response){
-                    localStorage.setItem('satellizer_token', response.token);
-                    $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                        // Stringify the retured data
-                        var user = JSON.stringify(response.user);
-
-                        // Set the stringified user data into local storage
-                        localStorage.setItem('user', user);
-
-                        $ionicHistory.nextViewOptions({
-                            disableBack: true
-                        });
-
-                        $ionicLoading.hide();
-
-                        $state.go('tab.home');
-                    })
-                        .error(function(){
-                            $ionicLoading.hide();
-                            $rootScope.handleHttpError(error, status);
-                        });
+            .success(function(response){
+                localStorage.setItem('satellizer_token', response.token);
+                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                    var user = response.user;
+                    $rootScope.setCurrentUser(user);
+                    $ionicHistory.nextViewOptions({
+                        disableBack: true
+                    });
+                    $state.go('tab.explore-explore');
                 })
-                .error(function(error){
-                    $rootScope.handleHttpError(error);
+                .error(function(){
+                    $rootScope.handleHttpError(error, status);
                 });
+            })
+            .error(function(error){
+                $rootScope.handleHttpError(error);
+            });
         }, function(fail){
             // Fail get profile info
             console.log('profile info fail', fail);
@@ -1146,7 +1262,6 @@ angular.module('starter.controllers', [])
     // This is the fail callback from the login method
     var fbLoginError = function(error){
         console.log('fbLoginError', error);
-        $ionicLoading.hide();
     };
 
     // This method is to get the user profile info from the facebook api
@@ -1185,31 +1300,26 @@ angular.module('starter.controllers', [])
                         url : $rootScope.baseURL+'/api/facebook',
                         data : {profile:profileInfo}
                     })
-                        .success(function(response){
-                            localStorage.setItem('satellizer_token', response.token);
-                            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                                // Stringify the retured data
-                                var user = JSON.stringify(response.user);
-
-                                // Set the stringified user data into local storage
-                                localStorage.setItem('user', user);
-
-                                $ionicHistory.nextViewOptions({
-                                    disableBack: true
-                                });
-
-                                $ionicLoading.hide();
-
-                                $state.go('tab.home');
-                            })
-                                .error(function(){
-                                    $ionicLoading.hide();
-                                    $rootScope.handleHttpError(error, status);
-                                });
+                    .success(function(response){
+                        localStorage.setItem('satellizer_token', response.token);
+                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
+                            var user = response.user;
+                            $rootScope.setCurrentUser(user);
+                            $ionicHistory.nextViewOptions({
+                                disableBack: true
+                            });
+                            $ionicLoading.hide();
+                            $state.go('tab.explore-explore');
                         })
-                        .error(function(error){
-                            $rootScope.handleHttpError(error);
+                        .error(function(){
+                            $ionicLoading.hide();
+                            $rootScope.handleHttpError(error, status);
                         });
+                    })
+                    .error(function(error){
+                        $ionicLoading.hide();
+                        $rootScope.handleHttpError(error);
+                    });
                 }, function(fail){
                     // Fail get profile info
                     console.log('profile info fail', fail);
@@ -1223,10 +1333,6 @@ angular.module('starter.controllers', [])
 
                 console.log('getLoginStatus@facebookSignIn-else-connected', success.status);
 
-                $ionicLoading.show({
-                    template: 'Logging in...'
-                });
-
                 // Ask the permissions you need. You can learn more about
                 // FB permissions here: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
                 facebookConnectPlugin.login(['email', 'public_profile'], fbLoginSuccess, fbLoginError);
@@ -1235,27 +1341,63 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state) {
+.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout) {
     $scope.registerData = {};
+    $scope.usernameClass = '';
     var credentials = {
         email: $stateParams.email,
         password: $stateParams.password
     }
+    var checkUsernameAvailability = function(){
+        $http({
+            method : 'POST',
+            url : $rootScope.baseURL+'/api/register2/validate/username',
+            data : {username:$scope.registerData.username}
+        })
+        .success(function(response){
+            $scope.usernameClass = 'success';
+        })
+        .error(function(error, status){
+            if(error.username != undefined && error.username[0] == 'The username is not available'){
+                $scope.usernameClass = 'fail';
+            }
+        });
+    }
 
     if(!localStorage.getItem('user')){
+        console.log(credentials);
         $auth.login(credentials).then(function() {
         },
         function(error) {
             $rootScope.handleHttpError(error, status);
         });
+        $scope.registerData.username = $stateParams.email.split('@')[0];
     }
     else{
         var user = $rootScope.getCurrentUser();
-        $scope.registerData.first_name = user.first_name;
-        $scope.registerData.last_name = user.last_name;
         $scope.registerData.gender = user.gender;
+        $scope.registerData.username = user.email.split('@')[0];
     }
+    $timeout(function(){
+        checkUsernameAvailability();
+    }, 1000);
 
+    var last_typed_timestmap_milisec = 0;
+    var need_to_stay_idle_milisec = 2000;
+    $scope.usernameTyped = function(keyEvent){
+        last_typed_timestmap_milisec = Date.now();
+        $timeout(
+            function(){
+                stayed_idle_milisec = Date.now() - last_typed_timestmap_milisec;
+                if(stayed_idle_milisec >= need_to_stay_idle_milisec){
+                    checkUsernameAvailability();
+                }
+            }, need_to_stay_idle_milisec
+        )
+    }
+    $scope.getUsernameClass = function(){
+        return $scope.usernameClass;
+    }
     $scope.register2 = function(registerData){
         $ionicLoading.show();
         $http({
@@ -1265,17 +1407,13 @@ angular.module('starter.controllers', [])
         })
         .success(function(response){
             $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                // Stringify the retured data
-                var user = JSON.stringify(response.user);
-
-                // Set the stringified user data into local storage
-                localStorage.setItem('user', user);
+                var user = response.user;
+                $rootScope.setCurrentUser(user);
                 $ionicLoading.hide();
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
-
-                $state.go('tab.home',{refresh : true});
+                $state.go('tab.explore-explore');
             })
             .error(function(){
                 $rootScope.handleHttpError(error, status);
@@ -1284,6 +1422,9 @@ angular.module('starter.controllers', [])
         .error(function(error, status){
             $ionicLoading.hide();
             $rootScope.handleHttpError(error, status);
+            if(error.username != undefined && error.username[0] == 'The username is not available'){
+                $scope.usernameClass = 'fail';
+            }
         });
     }
 })
@@ -1327,19 +1468,13 @@ angular.module('starter.controllers', [])
         $auth.login(credentials).then(function() {
             // Return an $http request for the authenticated user
             $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                // Stringify the retured data
-                var user = JSON.stringify(response.user);
-
-                // Set the stringified user data into local storage
-                localStorage.setItem('user', user);
-
+                var user = response.user;
+                $rootScope.setCurrentUser(user);
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
-
                 $ionicLoading.hide();
-
-                $state.go('tab.home');
+                $state.go('tab.explore-explore');
             })
             .error(function(){
                 $ionicLoading.hide();
@@ -1351,35 +1486,14 @@ angular.module('starter.controllers', [])
             $rootScope.handleHttpError(error, status);
         });
     };
-    $scope.fbLogin = function() {
-        $ionicLoading.show();
-        $auth.authenticate('facebook').then(function() {
-            // Return an $http request for the authenticated user
-            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                // Stringify the retured data
-                var user = JSON.stringify(response.user);
-
-                // Set the stringified user data into local storage
-                localStorage.setItem('user', user);
-
-                $ionicHistory.nextViewOptions({
-                    disableBack: true
-                });
-
-                $ionicLoading.hide();
-
-                $state.go('tab.home');
-            })
-            .error(function(){
-                $ionicLoading.hide();
-                $rootScope.handleHttpError(error, status);
-            })
-        });
-    };
 
     var fbLoginSuccess = function(response) {
         if (!response.authResponse){
             fbLoginError("Cannot find the authResponse");
+            return;
+        }
+        if(localStorage.getItem('user')){
+            console.log('user already logged in');
             return;
         }
 
@@ -1394,22 +1508,14 @@ angular.module('starter.controllers', [])
             .success(function(response){
                 localStorage.setItem('satellizer_token', response.token);
                 $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                    // Stringify the retured data
-                    var user = JSON.stringify(response.user);
-
-                    // Set the stringified user data into local storage
-                    localStorage.setItem('user', user);
-
+                    var user = response.user;
+                    $rootScope.setCurrentUser(user);
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-
-                    $ionicLoading.hide();
-
-                    $state.go('tab.home');
+                    $state.go('tab.explore-explore');
                 })
                 .error(function(){
-                    $ionicLoading.hide();
                     $rootScope.handleHttpError(error, status);
                 });
             })
@@ -1425,7 +1531,6 @@ angular.module('starter.controllers', [])
     // This is the fail callback from the login method
     var fbLoginError = function(error){
         console.log('fbLoginError', error);
-        $ionicLoading.hide();
     };
 
     // This method is to get the user profile info from the facebook api
@@ -1467,19 +1572,13 @@ angular.module('starter.controllers', [])
                     .success(function(response){
                         localStorage.setItem('satellizer_token', response.token);
                         $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                            // Stringify the retured data
-                            var user = JSON.stringify(response.user);
-
-                            // Set the stringified user data into local storage
-                            localStorage.setItem('user', user);
-
+                            var user = response.user;
+                            $rootScope.setCurrentUser(user);
                             $ionicHistory.nextViewOptions({
                                 disableBack: true
                             });
-
                             $ionicLoading.hide();
-
-                            $state.go('tab.home');
+                            $state.go('tab.explore-explore');
                         })
                         .error(function(){
                             $ionicLoading.hide();
@@ -1487,6 +1586,7 @@ angular.module('starter.controllers', [])
                         });
                     })
                     .error(function(error){
+                        $ionicLoading.hide();
                         $rootScope.handleHttpError(error);
                     });
                 }, function(fail){
@@ -1502,10 +1602,6 @@ angular.module('starter.controllers', [])
 
                 console.log('getLoginStatus@facebookSignIn-else-connected', success.status);
 
-                $ionicLoading.show({
-                    template: 'Logging in...'
-                });
-
                 // Ask the permissions you need. You can learn more about
                 // FB permissions here: https://developers.facebook.com/docs/facebook-login/permissions/v2.4
                 facebookConnectPlugin.login(['email', 'public_profile'], fbLoginSuccess, fbLoginError);
@@ -1514,11 +1610,13 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, PostTimer) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
 
     var user = $rootScope.getCurrentUser();
 
@@ -1719,29 +1817,12 @@ angular.module('starter.controllers', [])
             }
         });
     };
-    $scope.followToggle = function(like) {
-        if(like.user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ like.user.slug +'/unfollow').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            $http.get($rootScope.baseURL+'/api/'+ like.user.slug +'/follow').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        like.user.following_check = !like.user.following_check;
-    };
     $scope.notMe = function(like) {
         return (like.user.id != user.id);
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup, ComparePosts, PostTimer) {
     $scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -1754,6 +1835,8 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     $scope.stat_height = 0;
     $scope.stat_label_height = 0;
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
     var user = $rootScope.getCurrentUser();
 
     $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
@@ -1882,8 +1965,13 @@ angular.module('starter.controllers', [])
                         if(res) {
                             $ionicLoading.show();
                             $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
-                                $stateParams.posts.splice($stateParams.index,1);
-                                $stateParams.user.posts_count--;
+                                if($stateParams.posts){
+                                    $stateParams.posts.splice($stateParams.index,1);
+                                    $stateParams.user.posts_count--;
+                                }
+                                if(ComparePosts.has($scope.post.id)){
+                                    ComparePosts.toggle($scope.post.id);
+                                }
                                 $ionicLoading.hide();
                                 $ionicHistory.goBack();
                                 return true;
@@ -1979,13 +2067,24 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
     $scope.showSample = false;
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
+
+    var user = $rootScope.getCurrentUser();
+    if(user.username == user.email){
+        $state.go('register2').then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
+    }
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
@@ -2118,216 +2217,36 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http) {
+.controller('TabCtrl', function($scope, ComparePosts) {
+    $scope.comparePosts = ComparePosts;
+})
+.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading, PostTimer) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
-    $scope.genderList = [
-        {value: 'male', label: 'Male'},
-        {value: 'female', label: 'Female'}
-    ];
-    $scope.ageList = [
-        {value: '10', label: '10-20'},
-        {value: '20', label: '20-30'},
-        {value: '30', label: '30-40'},
-        {value: '40', label: '40-50'},
-        {value: '50', label: 'Above 50'}
-    ];
-    $scope.tab = $state.current['name'].split("-")[1];
-    $scope.originalPostOrder = [];
-    if ($rootScope.compareList.length >= 2 )
-    {
-        $scope.showInstruction = false;
-        FetchPosts.compare($rootScope.compareList).then(function(response){
-            posts = response;
-            $scope.posts = posts;
-            for (index = 0; index < posts.length; ++index) {
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-                $scope.originalPostOrder.push(posts[index].id);
-            }
-            $scope.original_posts = $scope.cloneObj(posts);
+    $scope.genderList = ComparePosts.getGenderList();
+    $scope.ageList = ComparePosts.getAgeList();
+    $scope.sort = ComparePosts.getLastFilters();
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
+
+    $scope.$on('$ionicView.enter', function() {
+        $scope.sortPosts($scope.sort);
+    });
+
+    $scope.sortPosts = function(sort) {
+        $ionicLoading.show();
+        ComparePosts.sort(sort.gender.value, sort.age.value).then(function() {
+            $ionicLoading.hide();
         });
     }
-/*
-    $scope.$on('$ionicView.enter', function() {
-        $scope.showInstruction = true;
-        if ($rootScope.compareList.length >= 2 )
-        {
-            $scope.showInstruction = false;
-            FetchPosts.compare($rootScope.compareList).then(function(response){
-                posts = response;
-                $scope.posts = posts;
-                for (index = 0; index < posts.length; ++index) {
-                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-                }
-            });
-        }
-    });
-*/
-    $scope.removeCompare = function(_post) {
-        $rootScope.addCompare(_post.id);
-        $scope.posts.splice($scope.posts.indexOf(_post), 1);
-    }
-    $scope.sortPostsToOriginalOrder = function(posts) {
-        var temp_var;
-        var found_index;
-        var dummy_obj = {id:0};
-        for(i = 0; i < $scope.originalPostOrder.length; i++)
-        {
-            dummy_obj.id = $scope.originalPostOrder[i];
-            found_index = $rootScope.indexOfObj(posts, dummy_obj);
-            temp_var = posts[i];
-            posts[i] = posts[found_index];
-            posts[found_index] = temp_var;
-        }
-        return posts;
-    }
-    $scope.sortPosts = function(sort, index) {
-        var post_list = $scope.sortPostsToOriginalOrder($scope.posts);
-        var percent_array = [];
-        var analytics;
-        var temp_var;
-        var sort_by_age = false;
-        var sort_by_gender = false;
-
-        if (sort.age !== undefined && sort.age !== "" && sort.age !== null)
-        {
-            var sort_by_age = true;
-        }
-        if (sort.gender !== undefined && sort.gender !== "" && sort.gender !== null)
-        {
-            var sort_by_gender = true;
-        }
-
-        for(i = 0; i < post_list.length; i++)
-        {
-            like_count_array[i] = 0;
-            analytics = post_list[i].post_analytic[0];
-            if (sort_by_gender == true)
-            {
-                like_count_array[i] += parseFloat($scope.getLikeCount(analytics, sort.gender));
-            }
-            if (sort_by_age == true)
-            {
-                like_count_array[i] += parseFloat($scope.getLikeCount(analytics, sort.age));
-            }
-        }
-        for(i = 0; i < like_count_array.length; i++)
-        {
-            for(j = 0; j < like_count_array.length; j++)
-            {
-                if (like_count_array[i] > like_count_array[j])
-                {
-                    temp_var = like_count_array[i];
-                    like_count_array[i] = like_count_array[j];
-                    like_count_array[j] = temp_var;
-                    temp_var = post_list[i];
-                    post_list[i] = post_list[j];
-                    post_list[j] = temp_var;
-                }
-            }
-        }
-        $scope.posts = post_list;
-    };
-    $scope.getLikeCount = function(_stat, _index) {
-        _index = _index.value;
-        if (_stat === undefined)
-        {
-            return 0;
-        }
-        if (_index === "male")
-        {
-            if (_stat.male === undefined || _stat.male === null || _stat.male == 0)
-            {
-                return 0;
-            }
-            return parseInt(_stat.male);
-        }
-        else if (_index === "female")
-        {
-            if (_stat.female == 0 || _stat.female == 'undefined' || _stat.female == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.female);
-        }
-        else if (_index === "10")
-        {
-            if (_stat.teens == 0 || _stat.teens == 'undefined' || _stat.teens == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.teens);
-        }
-        else if (_index === "20")
-        {
-            if (_stat.twenties == 0 || _stat.twenties == 'undefined' || _stat.twenties == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.twenties);
-        }
-        else if (_index === "30")
-        {
-            if (_stat.thirties == 0 || _stat.thirties == 'undefined' || _stat.thirties == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.thirties);
-        }
-        else if (_index === "40")
-        {
-            if (_stat.forties == 0 || _stat.forties == 'undefined' || _stat.forties == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.forties);
-        }
-        else if (_index === "50")
-        {
-            if (_stat.fifties == 0 || _stat.fifties == 'undefined' || _stat.fifties == null)
-            {
-                return 0;
-            }
-            return parseInt(_stat.fifties);
-        }
-    };
     $scope.notMe = function(post) {
         return (post.user.id != user.id);
-    };
-    $scope.likeClicked = function($event,post){
-        var original_post_index = $scope.indexOfObj($scope.original_posts, post);
-        $event.preventDefault();
-        if(post.user_liked){
-            post.likes_count.aggregate--;
-            if(post.likes_count.aggregate == 0){
-                post.likes_count = null;
-            }
-            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            if(post.likes_count){
-                post.likes_count.aggregate++;
-            }
-            else{
-                post.likes_count = {aggregate: 1};
-            }
-            $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        post.user_liked = !post.user_liked;
-        $scope.original_posts[original_post_index] = post;
-    };
+    }
+    $scope.doRefresh = function(){
+        ComparePosts.sort($scope.sort.gender.value, $scope.sort.age.value).then(function() {
+            $scope.$broadcast('scroll.refreshComplete');
+        });
+    }
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {
     $scope.schools = [];
@@ -2419,7 +2338,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, PostTimer) {
     var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;
@@ -2428,7 +2347,10 @@ angular.module('starter.controllers', [])
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.currentSlug = "";
     $scope.noResult = false;
-    $scope.activatedTab = 'best';
+    $scope.activatedTab = 'new';
+    $scope.comparePosts = ComparePosts;
+    $scope.postTimer = PostTimer;
+
     if ($stateParams.activateTab) {
         $scope.activatedTab = $stateParams.activateTab;
     }
@@ -2442,11 +2364,6 @@ angular.module('starter.controllers', [])
         $scope.currentSlug = $stateParams.accountSlug;
     }
 
-    if (user.slug != $scope.currentSlug)
-    {
-        $scope.activatedTab = 'new';
-    }
-
     if (user.id || $stateParams.refresh) {
         FetchUsers.get($scope.currentSlug).then(function(account_info){
             $scope.account_info = account_info;
@@ -2455,6 +2372,7 @@ angular.module('starter.controllers', [])
             if (user.id == $scope.account_info.id)
             {
                 $scope.isMyAccount = true;
+                $rootScope.currentUser = $scope.account_info;
             }
         });
         FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
@@ -2566,7 +2484,7 @@ angular.module('starter.controllers', [])
 
         var ft = new FileTransfer();
 
-        ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/'+user.slug+'/editProfilePicture'), success, fail, options);
+        ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/user/'+user.slug+'/editProfilePicture'), success, fail, options);
 
         function success(r) {
             $ionicLoading.show({template: 'Upload Success', duration:500});
@@ -2597,23 +2515,6 @@ angular.module('starter.controllers', [])
         {
             window.open('https://www.pinterest.com/'+$scope.account_info.social_networks.pinterest, '_system');
         }
-    };
-    $scope.followToggle = function(like) {
-        if(like.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ like.slug +'/unfollow').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else {
-            $http.get($rootScope.baseURL+'/api/'+ like.slug +'/follow').success(function(){
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        like.following_check = !like.following_check;
     };
     $scope.notMe = function(like) {
         return !$scope.isMyAccount;
@@ -2652,12 +2553,16 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         $scope.posts = [];
-        $scope.activatedTab = 'best';
+        $scope.activatedTab = 'new';
 
         FetchUsers.get($scope.currentSlug).then(function(account_info){
             $scope.account_info = account_info;
+            if (user.id == account_info.id)
+            {
+                $rootScope.currentUser = account_info;
+            }
         });
-        FetchPosts.user($scope.currentSlug, 'best', $scope.page).then(function(response){
+        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
             posts = response.data;
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
@@ -2698,6 +2603,7 @@ angular.module('starter.controllers', [])
         $scope.noResult = false;
 
         FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(response){
+            $scope.$broadcast('scroll.infiniteScrollComplete');
             posts = response.data;
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
@@ -2730,7 +2636,7 @@ angular.module('starter.controllers', [])
         });
     }
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope, $timeout) {
     $scope.user = $rootScope.getCurrentUser();
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
@@ -2753,10 +2659,18 @@ angular.module('starter.controllers', [])
         confirmPopup.then(function(res) {
             if(res) {
                 localStorage.removeItem('user');
-                localStorage.removeItem('satellizer_token');
-                $ionicHistory.clearCache().then(function(){
-                    $ionicHistory.clearHistory();
-                    $state.go('root');
+                localStorage.removeItem('post_id_array');
+                // if we remove token, regular register after fb account log out does not work
+                //localStorage.removeItem('satellizer_token');
+
+                // problem: when A log out and log in as B, old data remains and causes problems
+                //          ex. profile still shows A instead of B
+                //          - clearCache and clearHistory alone not working
+                // solution: reinstatiate the app by reload on log out
+                $state.go('root').then(function(){
+                    $timeout(function(){
+                        window.location.reload();
+                    },100);
                 });
             }
         });
@@ -2769,14 +2683,8 @@ angular.module('starter.controllers', [])
     var user = $rootScope.getCurrentUser();
     FetchUsers.get(user.slug).then(function(user){
         $scope.user = user;
-        var data = { first_name : $scope.user.first_name,
-            first_name : $scope.user.first_name,
-            last_name : $scope.user.last_name,
-            slug : $scope.user.slug,
-            facebook : $scope.user.social_networks.facebook,
-            twitter : $scope.user.social_networks.twitter,
-            instagram : $scope.user.social_networks.instagram,
-            pinterest : $scope.user.social_networks.pinterest,
+        var data = {
+            username : $scope.user.username,
             age : $scope.user.age,
             gender : $scope.user.gender
         };
@@ -2786,7 +2694,7 @@ angular.module('starter.controllers', [])
     $scope.updateProfile = function(user){
         $http({
             method: "POST",
-            url: $rootScope.baseURL + '/api/' + $scope.user.slug + '/edit',
+            url: $rootScope.baseURL + '/api/user/' + $scope.user.slug + '/edit',
             data: user
         })
         .success(function(response){
@@ -2803,7 +2711,7 @@ angular.module('starter.controllers', [])
     $scope.changePassword = function(pwd){
         $http({
             method: "POST",
-            url: $rootScope.baseURL + '/api/' + user.slug + '/password/edit',
+            url: $rootScope.baseURL + '/api/user/' + user.slug + '/password/edit',
             data: pwd
         })
         .success(function(response){
@@ -2849,19 +2757,6 @@ angular.module('starter.controllers', [])
             $scope.page++;
             $scope.noMoreItemsAvailable = false;
         });
-    };
-    $scope.followToggle = function(user) {
-        if(user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-
-            });
-        }
-        else{
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-
-            });
-        }
-        user.following_check = !user.following_check;
     };
 })
 .controller('InviteFriendsCtrl', function($scope, $http, $rootScope, $ionicPopup, Focus) {
@@ -2936,29 +2831,6 @@ angular.module('starter.controllers', [])
             }
         });
     };
-    $scope.followToggle = function(user) {
-        if(user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
-                    $stateParams.user.following_count--;
-                }
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
-                    $stateParams.user.following_count++;
-                }
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        user.following_check = !user.following_check;
-    };
 })
 .controller('FollowerCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope, $timeout) {
     var user = $rootScope.getCurrentUser();
@@ -3011,29 +2883,6 @@ angular.module('starter.controllers', [])
                 $scope.noResult = true;
             }
         });
-    };
-    $scope.followToggle = function(user) {
-        if(user.following_check){
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/unfollow').success(function(){
-                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
-                    $stateParams.user.following_count--;
-                }
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        else{
-            $http.get($rootScope.baseURL+'/api/'+ user.slug +'/follow').success(function(){
-                if( $stateParams.user && ($stateParams.user.id == $scope.me.id) ){
-                    $stateParams.user.following_count++;
-                }
-            })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-        user.following_check = !user.following_check;
     };
 })
 .controller('LikedCtrl', function($scope, $stateParams, FetchPosts, $timeout) {
@@ -3103,9 +2952,6 @@ angular.module('starter.controllers', [])
         {
             $state.go('tab.account-notification',{accountSlug: data[2]});
         }
-    };
-    $scope.goNotificationProfile = function(slug) {
-        $state.go('tab.account-notification',{accountSlug: slug});
     };
     $scope.loadMore = function() {
         FetchNotifications.new(user.slug, $scope.page).then(function(response){

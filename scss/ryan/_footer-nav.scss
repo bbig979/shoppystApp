@@ -14,16 +14,19 @@ ion-tabs .tab-item {
     font-size: 35px;
   }
 }
-.tab-item[icon-on=ion-home].tab-item-active{
+.tab-item[icon-on=ion-search].tab-item-active{
   color: #FFBD71;
 }
-.tab-item[icon-on=ion-search].tab-item-active{
+.tab-item[icon-on=ion-person-stalker].tab-item-active{
   color: #FF986C;
 }
 .tab-item[icon-on=ion-camera].tab-item-active{
   color: #FF7167;
 }
-.tab-item[icon-on=ion-ios-bell].tab-item-active{
+.tab-item[icon-on=ion-ios-bell]{
+  display: none;
+}
+.tab-item[icon-on=ion-podium].tab-item-active {
   color: #FF4B62;
 }
 .tab-item[icon-on=ion-android-person].tab-item-active{

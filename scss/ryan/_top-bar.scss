@@ -17,6 +17,12 @@
 .title-image{
   height: 44px;
 }
+.bar .button.button-clear.ion-refresh::before{
+    font-size:23px;
+}
+.bar .button.button-clear.fa-bell::before{
+    font-size:23px;
+}
 .platform-android .nav-bar-has-subheader .bar.bar-stable{
   background-color: $primary-color;
   background: -webkit-linear-gradient(left, #FF1D5C , #FFC772); /* For Safari 5.1 to 6.0 */

@@ -7,7 +7,7 @@
         <ion-list>
             <ion-item class="item item-avatar item-text-wrap" ng-repeat="comment in post.latest_ten_comments">
               <div class="profile-image" style="background-image: url( {{ photoPath( comment.user.profile_img_path, 's' ) }} )" ng-click="goAccount(comment.user.slug)"></div>
-              <div class="user-name" ng-click="goAccount(comment.user.slug)">{{ comment.user.first_name }} {{ comment.user.last_name }}</div>
+              <div class="user-name" ng-click="goAccount(comment.user.slug)">{{ comment.user.username }}</div>
                 <p>{{ comment.content }}</p>
                 <span class="time-ago grey-small-font" am-time-ago="comment.created_at | amUtc"></span>
                 <ion-option-button class="button-assertive" ng-click="remComment($index)" ng-if="ownComment($index)">Delete</ion-option-button>
