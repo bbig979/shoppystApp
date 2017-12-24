@@ -264,6 +264,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/tab-compare.html',
                controller: 'CompareCtrl'
            }
+       },
+       params: {
+           isThisAfterShare: false,
        }
     })
 

@@ -306,10 +306,40 @@
 }
 
 /* line 2, ../../scss/tw/_compare.scss */
+#compare .compare-toggle {
+  border-bottom: 1px solid #eee;
+  padding: 2px;
+}
+/* line 3, ../../scss/tw/_compare.scss */
+#compare .compare-toggle a {
+  padding: 10px;
+  float: right;
+}
+/* line 7, ../../scss/tw/_compare.scss */
+#compare .compare-toggle .label {
+  padding: 10px;
+  float: left;
+}
+/* line 11, ../../scss/tw/_compare.scss */
+#compare .compare-toggle .active {
+  background-color: #FF4C62;
+  color: white;
+  border-radius: 16px;
+  font-weight: 500;
+  padding: 4px 10px;
+  margin-top: 6px;
+}
+/* line 22, ../../scss/tw/_compare.scss */
+#compare .compare-toggle:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+/* line 27, ../../scss/tw/_compare.scss */
 #compare .item {
   position: relative;
 }
-/* line 4, ../../scss/tw/_compare.scss */
+/* line 29, ../../scss/tw/_compare.scss */
 #compare .item .partial_likes {
   position: absolute;
   top: 7px;
@@ -326,7 +356,7 @@
   border-radius: 25px;
   background-clip: padding-box;
 }
-/* line 17, ../../scss/tw/_compare.scss */
+/* line 42, ../../scss/tw/_compare.scss */
 #compare .sort {
   margin-bottom: 0;
 }

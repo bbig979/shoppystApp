@@ -3572,6 +3572,201 @@ a {
   text-align: center;
 }
 
+/* line 79, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-modal {
+  z-index: 12;
+  position: fixed;
+  left: 5vw;
+  width: 90vw;
+  top: 60vw;
+}
+/* line 80, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-modal #tutorial-title {
+  color: #7adc64;
+  font-size: 8vw;
+  padding-bottom: 5vw;
+}
+/* line 85, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-modal #tutorial-message {
+  color: white;
+  font-size: 5vw;
+  line-height: 8vw;
+}
+/* line 90, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-modal #tutorial-ok {
+  float: right;
+  color: white;
+  background-color: #488a38;
+  width: 40vw;
+  text-align: center;
+  padding: 2vw;
+  margin-top: 10vw;
+  font-weight: bold;
+}
+/* line 106, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 11;
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+}
+/* line 115, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.non-highlight {
+  background-color: #000;
+}
+/* line 118, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight:after {
+  content: '';
+  position: absolute;
+  border-radius: 100%;
+  width: 12vw;
+  height: 40px;
+  box-shadow: 0px 0px 100px 5000px #000;
+}
+/* line 126, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight.bottom:after {
+  bottom: 4px;
+}
+/* line 129, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight.top:after {
+  top: 2px;
+}
+/* line 132, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight.left-most.bottom:after {
+  left: 4vw;
+}
+/* line 135, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight.left-center.bottom:after {
+  left: 24vw;
+}
+/* line 138, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight.center.bottom:after {
+  left: 44vw;
+}
+/* line 141, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight.right-center.bottom:after {
+  right: 24vw;
+}
+/* line 144, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight.right-most.bottom:after {
+  right: 4vw;
+}
+/* line 147, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight.left-most.top:after {
+  left: 0;
+}
+/* line 150, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-curtain.highlight.right-most.top:after {
+  right: 0;
+}
+/* line 153, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker {
+  color: white;
+  z-index: 11;
+  position: fixed;
+  font-size: 20vw;
+}
+/* line 159, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.bottom {
+  bottom: 65px;
+}
+/* line 162, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.top {
+  top: 55px;
+}
+/* line 165, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.left-most.bottom {
+  -webkit-transform: rotate(-23deg);
+  -moz-transform: rotate(-23deg);
+  -ms-transform: rotate(-23deg);
+  -o-transform: rotate(-23deg);
+  transform: rotate(-23deg);
+  left: 4vw;
+}
+/* line 169, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.left-center.bottom {
+  -webkit-transform: rotate(-25deg);
+  -moz-transform: rotate(-25deg);
+  -ms-transform: rotate(-25deg);
+  -o-transform: rotate(-25deg);
+  transform: rotate(-25deg);
+  left: 23vw;
+}
+/* line 173, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.center.bottom {
+  -webkit-transform: rotate(-32deg);
+  -moz-transform: rotate(-32deg);
+  -ms-transform: rotate(-32deg);
+  -o-transform: rotate(-32deg);
+  transform: rotate(-32deg);
+  left: 41vw;
+}
+/* line 177, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.center.top {
+  left: 41vw;
+}
+/* line 180, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.right-center.bottom {
+  -webkit-transform: rotate(276deg);
+  -moz-transform: rotate(276deg);
+  -ms-transform: rotate(276deg);
+  -o-transform: rotate(276deg);
+  transform: rotate(276deg);
+  right: 28vw;
+}
+/* line 184, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.right-most.bottom {
+  -webkit-transform: rotate(276deg);
+  -moz-transform: rotate(276deg);
+  -ms-transform: rotate(276deg);
+  -o-transform: rotate(276deg);
+  transform: rotate(276deg);
+  right: 10vw;
+}
+/* line 188, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.left-most.top {
+  -webkit-transform: rotate(96deg);
+  -moz-transform: rotate(96deg);
+  -ms-transform: rotate(96deg);
+  -o-transform: rotate(96deg);
+  transform: rotate(96deg);
+  left: 6vw;
+}
+/* line 192, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-marker.right-most.top {
+  -webkit-transform: rotate(171deg);
+  -moz-transform: rotate(171deg);
+  -ms-transform: rotate(171deg);
+  -o-transform: rotate(171deg);
+  transform: rotate(171deg);
+  right: 6vw;
+}
+/* line 196, ../../scss/ryan/_global.scss */
+#tutorial-wrapper #tutorial-go-back {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 12;
+  color: white;
+  font-size: 25px;
+}
+
+/* line 207, ../../scss/ryan/_global.scss */
+.platform-ios #tutorial-wrapper #tutorial-go-back {
+  top: 30px;
+}
+/* line 210, ../../scss/ryan/_global.scss */
+.platform-ios #tutorial-wrapper #tutorial-marker.top {
+  top: 75px;
+}
+/* line 213, ../../scss/ryan/_global.scss */
+.platform-ios #tutorial-wrapper #tutorial-curtain.highlight.top:after {
+  top: 22px;
+}
+
 /* line 1, ../../scss/ryan/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;

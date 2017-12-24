@@ -280,6 +280,101 @@ angular.module('starter.services', [])
             ) - new Date(t)) / 1000);
     }
 })
+.service('LocalJson', function($http){
+    var url = "";
+    if (ionic.Platform.isAndroid()) {
+        url = "/android_asset/www/";
+    }
+    this.get = function(file_name){
+        return $http.get(url + 'data/' + file_name + '.json').then(function (response) {
+            return response.data;
+        });
+    }
+})
+.service('Tutorial', function(LocalJson){
+    var _dummy_tutorial = {"marker" : {"position" : {}}};
+    var _tutorials;
+    LocalJson.get('tutorials').then(function(json_data){
+        _tutorials = json_data;
+    });
+    var _current_tutorial = _dummy_tutorial;
+    var _current_group = '';
+    var _current_id = '';
+    this.triggerIfNotCompleted = function(group){
+        // @todo
+        // check flag in current user and return if is_tutorial_completed is true
+        if(!localStorage.getItem(group)){
+            _current_group = group;
+            this.trigger(1);
+        }
+    }
+    this.trigger = function(id){
+        _current_id = id;
+        _current_tutorial = _tutorials[_current_group][_current_id];
+    }
+    this.getTitle = function(){
+        return _current_tutorial.title;
+    }
+    this.getMessage = function(){
+        return _current_tutorial.message;
+    }
+    this.getHorizontalPosition = function(){
+        return _current_tutorial.marker.position.horizontal;
+    }
+    this.getVerticalPosition = function(){
+        return _current_tutorial.marker.position.vertical;
+    }
+    this.isTriggered = function(){
+        return _current_id != '';
+    }
+    this.isTherePrevious = function(){
+        if(_current_id){
+            var previous_id = _current_id - 1;
+            return typeof _tutorials[_current_group][previous_id] !== 'undefined';
+        }
+        return false;
+    }
+    this.isMarkerArrow = function(){
+        return _current_tutorial.marker.type == 'arrow';
+    }
+    this.getCustomMarker = function(){
+        return _current_tutorial.marker.type;
+    }
+    this.next = function(){
+        var next_id = _current_id + 1;
+        if(typeof _tutorials[_current_group][next_id] !== 'undefined'){
+            this.trigger(next_id);
+        }
+        else{
+            localStorage.setItem(_current_group, true);
+            if(this._isThisUserCompletedTutorials()){
+                // @todo
+                // set flag in user db if tutorials are completed
+            }
+            _current_tutorial = _dummy_tutorial;
+            _current_group = '';
+            _current_id = '';
+        }
+    }
+    this._isThisUserCompletedTutorials = function(){
+        for (var group in _tutorials) {
+            if(!localStorage.getItem(group)){
+                return false;
+            }
+        }
+        return true;
+    }
+    this.previous = function(){
+        var previous_id = _current_id - 1;
+        this.trigger(previous_id);
+    }
+    this.isHighlightNeeded = function(){
+        return (
+            typeof _current_tutorial.highlight !== 'undefined' &&
+            _current_tutorial.highlight
+        )
+    }
+})
 .factory('CameraPictues', function(){
     var _picture_array = [];
     return {
@@ -308,20 +403,6 @@ angular.module('starter.services', [])
     var _is_post_added_map = [];
     var _last_filter_gender = null;
     var _last_filter_age_group = null;
-    var _gender_list = [
-        {value: 'all', label: 'Everyone'},
-        {value: 'male', label: 'Male'},
-        {value: 'female', label: 'Female'},
-        {value: 'friends', label: 'Friends'}
-    ];
-    var _age_list = [
-        {value: 'all', label: 'All'},
-        {value: 'teens', label: '10-20'},
-        {value: 'twenties', label: '20-30'},
-        {value: 'thirties', label: '30-40'},
-        {value: 'forties', label: '40-50'},
-        {value: 'fifties', label: 'Above 50'}
-    ];
 
     return {
         share: function(){
@@ -400,17 +481,11 @@ console.log(_post_array);
             _post_id_array = [];
             _is_post_added_map = [];
         },
-        getGenderList: function(){
-            return _gender_list;
-        },
-        getAgeList: function(){
-            return _age_list;
-        },
         getLastFilters: function(){
             this._setLastFiltersIfNull();
             return {
-                gender: this._getOption(_last_filter_gender, _gender_list),
-                age: this._getOption(_last_filter_age_group, _age_list),
+                gender: _last_filter_gender,
+                age: _last_filter_age_group,
             }
         },
         isFriendsSelected: function(){
@@ -429,14 +504,6 @@ console.log(_post_array);
                 _post_id_array = JSON.parse(localStorage.getItem('post_id_array'));
                 for(var i = 0; i < _post_id_array.length; i++){
                     _is_post_added_map[_post_id_array[i]] = true;
-                }
-            }
-        },
-        _getOption: function(needle, haystack){
-            for(var i = 0; i < haystack.length; i++){
-                option = haystack[i];
-                if(option.value == needle){
-                    return option;
                 }
             }
         },

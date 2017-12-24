@@ -1108,7 +1108,7 @@ angular.module('starter.controllers', [])
                 uploadSuccessCount = 0;
                 $timeout(function(){
                     CameraPictues.reset();
-                    $state.go('tab.compare');
+                    $state.go('tab.compare', {isThisAfterShare: true});
                 }, 500);
             }
         }
@@ -1160,6 +1160,11 @@ angular.module('starter.controllers', [])
         });
     };
 })
+
+.controller('TutorialCtrl',function($scope, Tutorial){
+    $scope.tutorial = Tutorial;
+})
+
 .controller('IntroCtrl',function($scope, $state, $ionicHistory){
     $scope.slideIndex = 0;
     $scope.enterApplication = function(){
@@ -2067,7 +2072,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer, Tutorial) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
@@ -2085,6 +2090,8 @@ angular.module('starter.controllers', [])
             },100);
         });
     }
+
+    Tutorial.triggerIfNotCompleted('tutorial_welcome');
 
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
@@ -2220,22 +2227,26 @@ angular.module('starter.controllers', [])
 .controller('TabCtrl', function($scope, ComparePosts) {
     $scope.comparePosts = ComparePosts;
 })
-.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading, PostTimer) {
+.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading, PostTimer, $stateParams, Tutorial) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
-    $scope.genderList = ComparePosts.getGenderList();
-    $scope.ageList = ComparePosts.getAgeList();
     $scope.sort = ComparePosts.getLastFilters();
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
+    $scope.gender_active = $scope.sort.gender;
+    $scope.age_active = $scope.sort.age;
+
+    if($stateParams.isThisAfterShare){
+        Tutorial.triggerIfNotCompleted('tutorial_first_compare');
+    }
 
     $scope.$on('$ionicView.enter', function() {
-        $scope.sortPosts($scope.sort);
+        $scope.sortPosts($scope.gender_active , $scope.age_active );
     });
 
-    $scope.sortPosts = function(sort) {
+    $scope.sortPosts = function(gender, age) {
         $ionicLoading.show();
-        ComparePosts.sort(sort.gender.value, sort.age.value).then(function() {
+        ComparePosts.sort(gender, age).then(function() {
             $ionicLoading.hide();
         });
     }
@@ -2246,6 +2257,14 @@ angular.module('starter.controllers', [])
         ComparePosts.sort($scope.sort.gender.value, $scope.sort.age.value).then(function() {
             $scope.$broadcast('scroll.refreshComplete');
         });
+    }
+    $scope.setGender = function(gender) {
+        $scope.gender_active = gender;
+        $scope.sortPosts($scope.gender_active , $scope.age_active );
+    }
+    $scope.setAge = function(age) {
+        $scope.age_active = age;
+        $scope.sortPosts($scope.gender_active , $scope.age_active );
     }
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {

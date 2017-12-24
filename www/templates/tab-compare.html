@@ -4,21 +4,21 @@
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
-        <div class="list sort">
-            <label class="item item-input item-select">
-                <div class="input-label">
-                    To
-                </div>
-                <select name="sort-by-gender" ng-model="sort.gender" ng-change="sortPosts(sort)" ng-options="opt.label for opt in genderList">
-                </select>
-            </label>
-            <label class="item item-input item-select" ng-hide="comparePosts.isFriendsSelected()">
-                <div class="input-label">
-                    In Age
-                </div>
-                <select name="sort-by-age" ng-model="sort.age" ng-change="sortPosts(sort)" ng-options="opt.label for opt in ageList">
-                </select>
-            </label>
+        <div class="compare-toggle">
+            <div class="label">To</div>
+            <a ng-class="{ active: gender_active === 'friends' }" ng-click="setGender('friends')">Friends</a>
+            <a ng-class="{ active: gender_active === 'female' }" ng-click="setGender('female')">Female</a>
+            <a ng-class="{ active: gender_active === 'male' }" ng-click="setGender('male')">Male</a>
+            <a ng-class="{ active: gender_active === 'all' }" ng-click="setGender('all')">Everyone</a>
+        </div>
+        <div class="compare-toggle age" ng-hide="comparePosts.isFriendsSelected()">
+            <div class="label">In Age</div>
+            <a ng-class="{ active: age_active === 'fifties' }" ng-click="setAge('fifties')">50 <</a>
+            <a ng-class="{ active: age_active === 'forties' }" ng-click="setAge('forties')">40s</a>
+            <a ng-class="{ active: age_active === 'thirties' }" ng-click="setAge('thirties')">30s</a>
+            <a ng-class="{ active: age_active === 'twenties' }" ng-click="setAge('twenties')">20s</a>
+            <a ng-class="{ active: age_active === 'teens' }" ng-click="setAge('teens')">10s</a>
+            <a ng-class="{ active: age_active === 'all' }" ng-click="setAge('all')">All</a>
         </div>
         <ion-list>
             <div>
