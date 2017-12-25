@@ -35,16 +35,16 @@ angular.module('starter.services', [])
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         school: function(pg, id) {
             return $http.get($rootScope.baseURL+"/api/school/"+id+"/post?page="+pg).then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         get: function(postID){
@@ -52,8 +52,8 @@ angular.module('starter.services', [])
                 _addToPostTrackArray({data:response.data});
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         new: function(pg, search_term){
@@ -61,16 +61,16 @@ angular.module('starter.services', [])
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         sample: function(count){
             return $http.get($rootScope.baseURL+"/api/explore/sample?count="+count).then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         user: function(userSlug, tab, pg) {
@@ -78,16 +78,16 @@ angular.module('starter.services', [])
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         liked: function(slug, pg){
             return $http.get($rootScope.baseURL+"/api/user/"+slug+"/liked?page="+pg).then(function(response){
                 return response.data.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         compare: function(postIDArray){
@@ -95,8 +95,8 @@ angular.module('starter.services', [])
                 _addToPostTrackArray({data:response.data});
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         }
     };
@@ -107,8 +107,8 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+"/api/compare/"+postIDArray.join(",")+'/share').then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         update:function(id, channel) {
@@ -121,7 +121,7 @@ angular.module('starter.services', [])
                 //
             })
             .error(function(error){
-                $rootScope.handleHttpError(error);
+                // this is not user triggered
             });
         }
     };
@@ -132,8 +132,8 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+'/api/occasion').then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(){
+                // this is not user triggered
             });
         }
     };
@@ -148,8 +148,8 @@ angular.module('starter.services', [])
                 _addToUserTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         follower: function(slug, pg) {
@@ -157,8 +157,8 @@ angular.module('starter.services', [])
                 _addToUserTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         get: function(userSlug) {
@@ -166,8 +166,8 @@ angular.module('starter.services', [])
                 _addToUserTrackArray({data:response.data});
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         liker: function(id, pg) {
@@ -175,8 +175,8 @@ angular.module('starter.services', [])
                 _addToUserTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         findFriends: function(pg) {
@@ -193,8 +193,8 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+'/api/ranking/school?page='+pg).then(function(response){
                 return response.data.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         }
     };
@@ -205,8 +205,8 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification?page='+pg).then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         }
     };
@@ -278,6 +278,27 @@ angular.module('starter.services', [])
                 now.getUTCMinutes(),
                 now.getUTCSeconds()
             ) - new Date(t)) / 1000);
+    }
+})
+.service('Wait', function(){
+    this.miliSec = function(ms){
+        var start = Date.now(), now = start;
+        while (now - start < ms) {
+           now = Date.now();
+        }
+    }
+})
+.service('RestartApp', function($state, $timeout){
+    this.go = function(state){
+        // problem: when A log out and log in as B, old data remains and causes problems
+        //          ex. profile still shows A instead of B
+        //          - clearCache and clearHistory alone not working
+        // solution: reload the app on log in page
+        $state.go(state).then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
     }
 })
 .service('LocalJson', function($http){

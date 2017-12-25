@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
@@ -149,32 +149,27 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-notification-'+tab);
     };
-    $rootScope.handleHttpError = function(error, status){
-        if(status == 422){
-            // when login error
-            for(var key in error){
-                $rootScope.popupMessage('', error[key]);
-                break;
+    $rootScope.handleHttpError = function(data, status){
+        console.log('data:');
+        console.log(data);
+        console.log('status:');
+        console.log(status);
+        if(status == 422 || status == 401){
+            // when login or validation error
+            for(var key in data){
+                $rootScope.popupMessage('', data[key]);
+                // problem : multiple errors lead to opening multiple popups in the beginning
+                // solution : found out that long computation blocks opening graphical element.
+                //            therefore I placed wait service, which runs computation for specific time long.
+                Wait.miliSec(100);
             }
         }
-        if(status == 500){
-            $state.go('tab.explore-explore');
+        else if(typeof (data.error) != 'undefined' && data.error == "token_not_provided"){
+            RestartApp.go('root');
         }
-        else if(typeof (error.status) != 'undefined' && error.status == 401){
-            // when validation error
-            for(var key in error.data){
-                $rootScope.popupMessage('', error.data[key]);
-                break;
-            }
+        else{
+            $rootScope.popupMessage('Error', 'An unknown network error has occurred.');
         }
-        else if(typeof (error.error) != 'undefined' && error.error == "token_not_provided"){
-            $state.go('auth');
-        }
-        else if(typeof (error.data) != 'undefined' && typeof (error.data.error) != 'undefined' && error.data.error == "token_not_provided"){
-            $state.go('auth');
-        }
-        console.log('status: '+status);
-        console.log(error);
     };
     $rootScope.getCurrentUser = function(){
         if($state.current.name){
@@ -883,9 +878,9 @@ angular.module('starter.controllers', [])
                                     $ionicLoading.hide();
                                     return true;
                                 })
-                                    .error(function(error){
-                                        $rootScope.handleHttpError(error);
-                                    });
+                                .error(function(data, status){
+                                    $rootScope.handleHttpError(data, status);
+                                });
                             }
                         });
                         return true;
@@ -902,9 +897,9 @@ angular.module('starter.controllers', [])
                                     $ionicLoading.hide();
                                     return true;
                                 })
-                                    .error(function(error){
-                                        $rootScope.handleHttpError(error);
-                                    });
+                                .error(function(data, status){
+                                    $rootScope.handleHttpError(data, status);
+                                });
                             }
                         });
                         return true;
@@ -930,15 +925,15 @@ angular.module('starter.controllers', [])
         if(post.user_liked){
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
         $rootScope.trackAndUpdateLike(post);
@@ -998,16 +993,16 @@ angular.module('starter.controllers', [])
             $http.get($rootScope.baseURL+'/api/user/'+ user.slug +'/unfollow').success(function(){
                 current_user.following_count--;
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/user/'+ user.slug +'/follow').success(function(){
                 current_user.following_count++;
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
         $rootScope.trackAndUpdateFollow(user);
@@ -1151,12 +1146,12 @@ angular.module('starter.controllers', [])
             url: $rootScope.baseURL + '/api/post/' + $scope.post.id + '/edit',
             data: {'content': post.content, 'post-id': $scope.post.id }
         })
-        .success(function(response){
+        .success(function(){
             $ionicLoading.hide();
             $ionicHistory.goBack();
         })
-        .error(function(error, status){
-            $rootScope.handleHttpError(error, status);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
     };
 })
@@ -1211,16 +1206,16 @@ angular.module('starter.controllers', [])
             url : $rootScope.baseURL+'/api/register',
             data : registerData
         })
-        .success(function(response){
+        .success(function(){
             $ionicLoading.hide();
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
             $state.go('register2',registerData);
         })
-        .error(function(error, status){
+        .error(function(data, status){
             $ionicLoading.hide();
-            $rootScope.handleHttpError(error, status);
+            $rootScope.handleHttpError(data, status);
         });
     }
     var fbLoginSuccess = function(response) {
@@ -1241,22 +1236,22 @@ angular.module('starter.controllers', [])
                 url : $rootScope.baseURL+'/api/facebook',
                 data : {profile:profileInfo}
             })
-            .success(function(response){
-                localStorage.setItem('satellizer_token', response.token);
-                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                    var user = response.user;
+            .success(function(data){
+                localStorage.setItem('satellizer_token', data.token);
+                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                    var user = data.user;
                     $rootScope.setCurrentUser(user);
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
                     $state.go('tab.explore-explore');
                 })
-                .error(function(){
-                    $rootScope.handleHttpError(error, status);
+                .error(function(data, status){
+                    $rootScope.handleHttpError(data, status);
                 });
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }, function(fail){
             // Fail get profile info
@@ -1305,10 +1300,10 @@ angular.module('starter.controllers', [])
                         url : $rootScope.baseURL+'/api/facebook',
                         data : {profile:profileInfo}
                     })
-                    .success(function(response){
-                        localStorage.setItem('satellizer_token', response.token);
-                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                            var user = response.user;
+                    .success(function(data){
+                        localStorage.setItem('satellizer_token', data.token);
+                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                            var user = data.user;
                             $rootScope.setCurrentUser(user);
                             $ionicHistory.nextViewOptions({
                                 disableBack: true
@@ -1316,14 +1311,14 @@ angular.module('starter.controllers', [])
                             $ionicLoading.hide();
                             $state.go('tab.explore-explore');
                         })
-                        .error(function(){
+                        .error(function(data, status){
                             $ionicLoading.hide();
-                            $rootScope.handleHttpError(error, status);
+                            $rootScope.handleHttpError(data, status);
                         });
                     })
-                    .error(function(error){
+                    .error(function(data, status){
                         $ionicLoading.hide();
-                        $rootScope.handleHttpError(error);
+                        $rootScope.handleHttpError(data, status);
                     });
                 }, function(fail){
                     // Fail get profile info
@@ -1359,11 +1354,11 @@ angular.module('starter.controllers', [])
             url : $rootScope.baseURL+'/api/register2/validate/username',
             data : {username:$scope.registerData.username}
         })
-        .success(function(response){
+        .success(function(){
             $scope.usernameClass = 'success';
         })
-        .error(function(error, status){
-            if(error.username != undefined && error.username[0] == 'The username is not available'){
+        .error(function(data, status){
+            if(data.username != undefined && data.username[0] == 'The username is not available'){
                 $scope.usernameClass = 'fail';
             }
         });
@@ -1373,8 +1368,8 @@ angular.module('starter.controllers', [])
         console.log(credentials);
         $auth.login(credentials).then(function() {
         },
-        function(error) {
-            $rootScope.handleHttpError(error, status);
+        function(response) {
+            $rootScope.handleHttpError(response.data, response.status);
         });
         $scope.registerData.username = $stateParams.email.split('@')[0];
     }
@@ -1410,9 +1405,9 @@ angular.module('starter.controllers', [])
             url : $rootScope.baseURL+'/api/register2',
             data : registerData
         })
-        .success(function(response){
-            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                var user = response.user;
+        .success(function(){
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                var user = data.user;
                 $rootScope.setCurrentUser(user);
                 $ionicLoading.hide();
                 $ionicHistory.nextViewOptions({
@@ -1420,14 +1415,14 @@ angular.module('starter.controllers', [])
                 });
                 $state.go('tab.explore-explore');
             })
-            .error(function(){
-                $rootScope.handleHttpError(error, status);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         })
-        .error(function(error, status){
+        .error(function(data, status){
             $ionicLoading.hide();
-            $rootScope.handleHttpError(error, status);
-            if(error.username != undefined && error.username[0] == 'The username is not available'){
+            $rootScope.handleHttpError(data, status);
+            if(data.username != undefined && data.username[0] == 'The username is not available'){
                 $scope.usernameClass = 'fail';
             }
         });
@@ -1443,14 +1438,14 @@ angular.module('starter.controllers', [])
             url : $rootScope.baseURL+'/api/passwordReset',
             data : datas
         })
-        .success(function(response){
+        .success(function(){
             $ionicLoading.hide();
             $rootScope.popupMessage("", "Email has been sent");
             $ionicHistory.goBack();
         })
-        .error(function(error, status){
+        .error(function(data, status){
             $ionicLoading.hide();
-            $rootScope.handleHttpError(error, status);
+            $rootScope.handleHttpError(data, status);
         });
     }
 })
@@ -1472,8 +1467,8 @@ angular.module('starter.controllers', [])
 
         $auth.login(credentials).then(function() {
             // Return an $http request for the authenticated user
-            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                var user = response.user;
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                var user = data.user;
                 $rootScope.setCurrentUser(user);
                 $ionicHistory.nextViewOptions({
                     disableBack: true
@@ -1481,14 +1476,14 @@ angular.module('starter.controllers', [])
                 $ionicLoading.hide();
                 $state.go('tab.explore-explore');
             })
-            .error(function(){
+            .error(function(data, status){
                 $ionicLoading.hide();
-                $rootScope.handleHttpError(error, status);
+                $rootScope.handleHttpError(data, status);
             })
         },
-        function(error) {
+        function(response) {
             $ionicLoading.hide();
-            $rootScope.handleHttpError(error, status);
+            $rootScope.handleHttpError(response.data, response.status);
         });
     };
 
@@ -1510,22 +1505,22 @@ angular.module('starter.controllers', [])
                 url : $rootScope.baseURL+'/api/facebook',
                 data : {profile:profileInfo}
             })
-            .success(function(response){
-                localStorage.setItem('satellizer_token', response.token);
-                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                    var user = response.user;
+            .success(function(data){
+                localStorage.setItem('satellizer_token', data.token);
+                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                    var user = data.user;
                     $rootScope.setCurrentUser(user);
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
                     $state.go('tab.explore-explore');
                 })
-                .error(function(){
-                    $rootScope.handleHttpError(error, status);
+                .error(function(data, status){
+                    $rootScope.handleHttpError(data, status);
                 });
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }, function(fail){
             // Fail get profile info
@@ -1574,10 +1569,10 @@ angular.module('starter.controllers', [])
                         url : $rootScope.baseURL+'/api/facebook',
                         data : {profile:profileInfo}
                     })
-                    .success(function(response){
-                        localStorage.setItem('satellizer_token', response.token);
-                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                            var user = response.user;
+                    .success(function(data){
+                        localStorage.setItem('satellizer_token', data.token);
+                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                            var user = data.user;
                             $rootScope.setCurrentUser(user);
                             $ionicHistory.nextViewOptions({
                                 disableBack: true
@@ -1585,14 +1580,14 @@ angular.module('starter.controllers', [])
                             $ionicLoading.hide();
                             $state.go('tab.explore-explore');
                         })
-                        .error(function(){
+                        .error(function(data, status){
                             $ionicLoading.hide();
-                            $rootScope.handleHttpError(error, status);
+                            $rootScope.handleHttpError(data, status);
                         });
                     })
-                    .error(function(error){
+                    .error(function(data, status){
                         $ionicLoading.hide();
-                        $rootScope.handleHttpError(error);
+                        $rootScope.handleHttpError(data, status);
                     });
                 }, function(fail){
                     // Fail get profile info
@@ -1762,8 +1757,8 @@ angular.module('starter.controllers', [])
                             $ionicLoading.hide();
                             return true;
                         })
-                        .error(function(error){
-                            $rootScope.handleHttpError(error);
+                        .error(function(data, status){
+                            $rootScope.handleHttpError(data, status);
                         });
                     }
                 });
@@ -1896,14 +1891,14 @@ angular.module('starter.controllers', [])
             url : $rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment/create',
             data : {comment:$scope.comment.content}
         })
-        .success(function(response){
-            response.user = user;
-            $scope.post.latest_ten_comments.push(response);
+        .success(function(data){
+            data.user = user;
+            $scope.post.latest_ten_comments.push(data);
             $scope.commentSubmitting = false;
             $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)+1);
         })
-        .error(function(error){
-            $rootScope.handleHttpError(error);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
         $scope.comment.content = '';
     };
@@ -1912,22 +1907,22 @@ angular.module('starter.controllers', [])
             $scope.post.latest_ten_comments.splice($index, 1);
             $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)-1);
         })
-        .error(function(error){
-            $rootScope.handleHttpError(error);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
     };
     $scope.loadMoreComments = function(){
         if($scope.commentsHiddenCount > 0){
-            $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment?page='+$scope.page).success(function(response){
-                $scope.post.latest_ten_comments = response.data.reverse().concat($scope.post.latest_ten_comments);
-                $scope.commentsHiddenCount -= response.data.length;
+            $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment?page='+$scope.page).success(function(data){
+                $scope.post.latest_ten_comments = data.data.reverse().concat($scope.post.latest_ten_comments);
+                $scope.commentsHiddenCount -= data.data.length;
                 if($scope.commentsHiddenCount < 0){
                     $scope.commentsHiddenCount = 0;
                 }
                 $scope.page++;
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
     };
@@ -1981,8 +1976,8 @@ angular.module('starter.controllers', [])
                                 $ionicHistory.goBack();
                                 return true;
                             })
-                            .error(function(error){
-                                $rootScope.handleHttpError(error);
+                            .error(function(data, status){
+                                $rootScope.handleHttpError(data, status);
                             });
                         }
                     });
@@ -2008,8 +2003,8 @@ angular.module('starter.controllers', [])
                                 $ionicLoading.hide();
                                 return true;
                             })
-                            .error(function(error){
-                                $rootScope.handleHttpError(error);
+                            .error(function(data, status){
+                                $rootScope.handleHttpError(data, status);
                             });
                         }
                     });
@@ -2655,7 +2650,7 @@ angular.module('starter.controllers', [])
         });
     }
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope, $timeout) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope, $timeout, RestartApp) {
     $scope.user = $rootScope.getCurrentUser();
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
@@ -2680,17 +2675,11 @@ angular.module('starter.controllers', [])
                 localStorage.removeItem('user');
                 localStorage.removeItem('post_id_array');
                 // if we remove token, regular register after fb account log out does not work
+                // however if we leave token, it replace itself according to new login.
+                // therefore decided not to remove
+                //
                 //localStorage.removeItem('satellizer_token');
-
-                // problem: when A log out and log in as B, old data remains and causes problems
-                //          ex. profile still shows A instead of B
-                //          - clearCache and clearHistory alone not working
-                // solution: reinstatiate the app by reload on log out
-                $state.go('root').then(function(){
-                    $timeout(function(){
-                        window.location.reload();
-                    },100);
-                });
+                RestartApp.go('root');
             }
         });
 
@@ -2716,12 +2705,12 @@ angular.module('starter.controllers', [])
             url: $rootScope.baseURL + '/api/user/' + $scope.user.slug + '/edit',
             data: user
         })
-        .success(function(response){
+        .success(function(){
             $rootScope.popupMessage('Message', 'Profile Has been updated');
             $ionicHistory.goBack();
         })
-        .error(function(error, status){
-            $rootScope.handleHttpError(error, status);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
     };
 })
@@ -2733,12 +2722,12 @@ angular.module('starter.controllers', [])
             url: $rootScope.baseURL + '/api/user/' + user.slug + '/password/edit',
             data: pwd
         })
-        .success(function(response){
+        .success(function(){
             $rootScope.popupMessage('Message', 'Password Has been updated');
             $ionicHistory.goBack();
         })
-        .error(function(error, status){
-            $rootScope.handleHttpError(error, status);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
     };
 })
@@ -2785,12 +2774,12 @@ angular.module('starter.controllers', [])
             url: $rootScope.baseURL + '/api/invite-friends',
             data: {'email' : email }
         })
-        .success(function(response){
+        .success(function(){
             $rootScope.popupMessage('Message', 'Invitation has been sent');
             $( ".email" ).val("");
         })
-        .error(function(error, status){
-            $rootScope.handleHttpError(error, status);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
     };
 
