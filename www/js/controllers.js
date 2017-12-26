@@ -164,7 +164,12 @@ angular.module('starter.controllers', [])
                 Wait.miliSec(100);
             }
         }
-        else if(typeof (data.error) != 'undefined' && data.error == "token_not_provided"){
+        else if(data != null && typeof (data.error) != 'undefined' && data.error == "token_not_provided"){
+            RestartApp.go('root');
+        }
+        else if(data != null && typeof (data.error) != 'undefined' && data.error == "user_not_found"){
+            localStorage.removeItem('user');
+            localStorage.removeItem('post_id_array');
             RestartApp.go('root');
         }
         else{
