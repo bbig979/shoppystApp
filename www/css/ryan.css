@@ -3572,7 +3572,27 @@ a {
   text-align: center;
 }
 
-/* line 79, ../../scss/ryan/_global.scss */
+/* line 78, ../../scss/ryan/_global.scss */
+.username.fail::after {
+  color: red;
+  font-size: 13px;
+  font-family: FontAwesome, sans-serif;
+  content: "\f05e  The username is not available";
+  float: right;
+  padding-right: 15px;
+}
+
+/* line 86, ../../scss/ryan/_global.scss */
+.username.success::after {
+  color: green;
+  font-size: 13px;
+  font-family: FontAwesome, sans-serif;
+  content: "\f05d  The username is available";
+  float: right;
+  padding-right: 15px;
+}
+
+/* line 95, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-modal {
   z-index: 12;
   position: fixed;
@@ -3580,19 +3600,19 @@ a {
   width: 90vw;
   top: 60vw;
 }
-/* line 80, ../../scss/ryan/_global.scss */
+/* line 96, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-modal #tutorial-title {
   color: #7adc64;
   font-size: 8vw;
   padding-bottom: 5vw;
 }
-/* line 85, ../../scss/ryan/_global.scss */
+/* line 101, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-modal #tutorial-message {
   color: white;
   font-size: 5vw;
   line-height: 8vw;
 }
-/* line 90, ../../scss/ryan/_global.scss */
+/* line 106, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-modal #tutorial-ok {
   float: right;
   color: white;
@@ -3603,7 +3623,7 @@ a {
   margin-top: 10vw;
   font-weight: bold;
 }
-/* line 106, ../../scss/ryan/_global.scss */
+/* line 122, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain {
   position: fixed;
   top: 0;
@@ -3613,11 +3633,11 @@ a {
   height: 100%;
   opacity: 0.7;
 }
-/* line 115, ../../scss/ryan/_global.scss */
+/* line 131, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.non-highlight {
   background-color: #000;
 }
-/* line 118, ../../scss/ryan/_global.scss */
+/* line 134, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight:after {
   content: '';
   position: absolute;
@@ -3626,58 +3646,58 @@ a {
   height: 40px;
   box-shadow: 0px 0px 100px 5000px #000;
 }
-/* line 126, ../../scss/ryan/_global.scss */
+/* line 142, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.bottom:after {
   bottom: 4px;
 }
-/* line 129, ../../scss/ryan/_global.scss */
+/* line 145, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.top:after {
   top: 2px;
 }
-/* line 132, ../../scss/ryan/_global.scss */
+/* line 148, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.left-most.bottom:after {
   left: 4vw;
 }
-/* line 135, ../../scss/ryan/_global.scss */
+/* line 151, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.left-center.bottom:after {
   left: 24vw;
 }
-/* line 138, ../../scss/ryan/_global.scss */
+/* line 154, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.center.bottom:after {
   left: 44vw;
 }
-/* line 141, ../../scss/ryan/_global.scss */
+/* line 157, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.right-center.bottom:after {
   right: 24vw;
 }
-/* line 144, ../../scss/ryan/_global.scss */
+/* line 160, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.right-most.bottom:after {
   right: 4vw;
 }
-/* line 147, ../../scss/ryan/_global.scss */
+/* line 163, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.left-most.top:after {
   left: 0;
 }
-/* line 150, ../../scss/ryan/_global.scss */
+/* line 166, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.right-most.top:after {
   right: 0;
 }
-/* line 153, ../../scss/ryan/_global.scss */
+/* line 169, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker {
   color: white;
   z-index: 11;
   position: fixed;
   font-size: 20vw;
 }
-/* line 159, ../../scss/ryan/_global.scss */
+/* line 175, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.bottom {
   bottom: 65px;
 }
-/* line 162, ../../scss/ryan/_global.scss */
+/* line 178, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.top {
   top: 55px;
 }
-/* line 165, ../../scss/ryan/_global.scss */
+/* line 181, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.left-most.bottom {
   -webkit-transform: rotate(-23deg);
   -moz-transform: rotate(-23deg);
@@ -3686,7 +3706,7 @@ a {
   transform: rotate(-23deg);
   left: 4vw;
 }
-/* line 169, ../../scss/ryan/_global.scss */
+/* line 185, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.left-center.bottom {
   -webkit-transform: rotate(-25deg);
   -moz-transform: rotate(-25deg);
@@ -3695,7 +3715,7 @@ a {
   transform: rotate(-25deg);
   left: 23vw;
 }
-/* line 173, ../../scss/ryan/_global.scss */
+/* line 189, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.center.bottom {
   -webkit-transform: rotate(-32deg);
   -moz-transform: rotate(-32deg);
@@ -3704,11 +3724,11 @@ a {
   transform: rotate(-32deg);
   left: 41vw;
 }
-/* line 177, ../../scss/ryan/_global.scss */
+/* line 193, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.center.top {
   left: 41vw;
 }
-/* line 180, ../../scss/ryan/_global.scss */
+/* line 196, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.right-center.bottom {
   -webkit-transform: rotate(276deg);
   -moz-transform: rotate(276deg);
@@ -3717,7 +3737,7 @@ a {
   transform: rotate(276deg);
   right: 28vw;
 }
-/* line 184, ../../scss/ryan/_global.scss */
+/* line 200, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.right-most.bottom {
   -webkit-transform: rotate(276deg);
   -moz-transform: rotate(276deg);
@@ -3726,7 +3746,7 @@ a {
   transform: rotate(276deg);
   right: 10vw;
 }
-/* line 188, ../../scss/ryan/_global.scss */
+/* line 204, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.left-most.top {
   -webkit-transform: rotate(96deg);
   -moz-transform: rotate(96deg);
@@ -3735,7 +3755,7 @@ a {
   transform: rotate(96deg);
   left: 6vw;
 }
-/* line 192, ../../scss/ryan/_global.scss */
+/* line 208, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.right-most.top {
   -webkit-transform: rotate(171deg);
   -moz-transform: rotate(171deg);
@@ -3744,7 +3764,7 @@ a {
   transform: rotate(171deg);
   right: 6vw;
 }
-/* line 196, ../../scss/ryan/_global.scss */
+/* line 212, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-go-back {
   position: fixed;
   top: 10px;
@@ -3754,15 +3774,15 @@ a {
   font-size: 25px;
 }
 
-/* line 207, ../../scss/ryan/_global.scss */
+/* line 223, ../../scss/ryan/_global.scss */
 .platform-ios #tutorial-wrapper #tutorial-go-back {
   top: 30px;
 }
-/* line 210, ../../scss/ryan/_global.scss */
+/* line 226, ../../scss/ryan/_global.scss */
 .platform-ios #tutorial-wrapper #tutorial-marker.top {
   top: 75px;
 }
-/* line 213, ../../scss/ryan/_global.scss */
+/* line 229, ../../scss/ryan/_global.scss */
 .platform-ios #tutorial-wrapper #tutorial-curtain.highlight.top:after {
   top: 22px;
 }
@@ -4025,24 +4045,6 @@ div.tab-nav.tabs {
 /* line 15, ../../scss/ryan/_register.scss */
 #register2 .item-select {
   border-top: 0;
-}
-/* line 18, ../../scss/ryan/_register.scss */
-#register2 .username.fail::after {
-  color: red;
-  font-size: 13px;
-  font-family: FontAwesome, sans-serif;
-  content: "\f05e  The username is not available";
-  float: right;
-  padding-right: 15px;
-}
-/* line 26, ../../scss/ryan/_register.scss */
-#register2 .username.success::after {
-  color: green;
-  font-size: 13px;
-  font-family: FontAwesome, sans-serif;
-  content: "\f05d  The username is available";
-  float: right;
-  padding-right: 15px;
 }
 
 /* line 1, ../../scss/ryan/_intro.scss */

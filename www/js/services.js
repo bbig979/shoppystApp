@@ -396,6 +396,50 @@ angular.module('starter.services', [])
         )
     }
 })
+.factory('UsernameAvailability', function($http, $timeout, $rootScope, $q){
+    var last_typed_timestmap_milisec = 0;
+    var need_to_stay_idle_milisec = 2000;
+
+    return {
+        check: function(username){
+            var deferred = $q.defer();
+            var this_factory = this;
+            $http({
+                method : 'POST',
+                url : $rootScope.baseURL+'/api/register2/validate/username',
+                data : {username:username}
+            })
+            .success(function(){
+                deferred.resolve('success');
+            })
+            .error(function(data, status){
+                if(this_factory.isFailed(data)){
+                    deferred.resolve('fail');
+                }
+            });
+            return deferred.promise;
+        },
+        typed: function(username){
+            var deferred = $q.defer();
+            var this_factory = this;
+            last_typed_timestmap_milisec = Date.now();
+            $timeout(
+                function(){
+                    stayed_idle_milisec = Date.now() - last_typed_timestmap_milisec;
+                    if(stayed_idle_milisec >= need_to_stay_idle_milisec){
+                        this_factory.check(username).then(function(response){
+                            deferred.resolve(response);
+                        });
+                    }
+                }, need_to_stay_idle_milisec
+            )
+            return deferred.promise;
+        },
+        isFailed: function(data){
+            return data.username != undefined && data.username[0] == 'The username is not available';
+        }
+    }
+})
 .factory('CameraPictues', function(){
     var _picture_array = [];
     return {

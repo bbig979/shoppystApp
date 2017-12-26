@@ -2,13 +2,13 @@
     <ion-content overflow-scroll="false">
         <form ng-submit="updateProfile(user_info)" name="updateProfileForm" ng-if="user">
             <div class="list">
-                <label class="item item-input item-floating-label">
+                <label class="item item-input item-floating-label username" ng-class="usernameClass">
                     <span class="input-label">Username</span>
-                    <input type="text" placeholder="Username" class="form-control" ng-model="user_info.username">
+                    <input type="text" placeholder="Username" ng-model="user_info.username" ng-keyup="usernameTyped($event)">
                 </label>
                 <label class="item item-input item-floating-label">
                     <span class="input-label">Age</span>
-                    <input type="text" placeholder="Age" class="form-control" ng-model="user_info.age">
+                    <input type="text" placeholder="Age" ng-model="user_info.age">
                 </label>
                 <div class="item item-divider ng-binding">Gender</div>
                 <ion-radio ng-model="user_info.gender" ng-value="'male'">Male</ion-radio>

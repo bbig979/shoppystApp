@@ -1340,28 +1340,12 @@ angular.module('starter.controllers', [])
         });
     };
 })
-
-.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout) {
+.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout, UsernameAvailability) {
     $scope.registerData = {};
     $scope.usernameClass = '';
     var credentials = {
         email: $stateParams.email,
         password: $stateParams.password
-    }
-    var checkUsernameAvailability = function(){
-        $http({
-            method : 'POST',
-            url : $rootScope.baseURL+'/api/register2/validate/username',
-            data : {username:$scope.registerData.username}
-        })
-        .success(function(){
-            $scope.usernameClass = 'success';
-        })
-        .error(function(data, status){
-            if(data.username != undefined && data.username[0] == 'The username is not available'){
-                $scope.usernameClass = 'fail';
-            }
-        });
     }
 
     if(!localStorage.getItem('user')){
@@ -1378,26 +1362,18 @@ angular.module('starter.controllers', [])
         $scope.registerData.gender = user.gender;
         $scope.registerData.username = user.email.split('@')[0];
     }
-    $timeout(function(){
-        checkUsernameAvailability();
-    }, 1000);
 
-    var last_typed_timestmap_milisec = 0;
-    var need_to_stay_idle_milisec = 2000;
+    $timeout(function(){
+        UsernameAvailability.check($scope.registerData.username).then(function(response){
+            $scope.usernameClass = response;
+        });
+    }, 1000);
     $scope.usernameTyped = function(keyEvent){
-        last_typed_timestmap_milisec = Date.now();
-        $timeout(
-            function(){
-                stayed_idle_milisec = Date.now() - last_typed_timestmap_milisec;
-                if(stayed_idle_milisec >= need_to_stay_idle_milisec){
-                    checkUsernameAvailability();
-                }
-            }, need_to_stay_idle_milisec
-        )
+        UsernameAvailability.typed($scope.registerData.username).then(function(response){
+            $scope.usernameClass = response;
+        });
     }
-    $scope.getUsernameClass = function(){
-        return $scope.usernameClass;
-    }
+
     $scope.register2 = function(registerData){
         $ionicLoading.show();
         $http({
@@ -1422,13 +1398,12 @@ angular.module('starter.controllers', [])
         .error(function(data, status){
             $ionicLoading.hide();
             $rootScope.handleHttpError(data, status);
-            if(data.username != undefined && data.username[0] == 'The username is not available'){
+            if(UsernameAvailability.isFailed(data)){
                 $scope.usernameClass = 'fail';
             }
         });
     }
 })
-
 .controller('ForgetPasswordCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
     $scope.datas = {email:''};
     $scope.sendLink = function(datas){
@@ -2687,8 +2662,10 @@ angular.module('starter.controllers', [])
 
     };
 })
-.controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory) {
+.controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory, UsernameAvailability) {
     var user = $rootScope.getCurrentUser();
+    $scope.usernameClass = '';
+
     FetchUsers.get(user.slug).then(function(user){
         $scope.user = user;
         var data = {
@@ -2699,6 +2676,17 @@ angular.module('starter.controllers', [])
         $scope.user_info = data;
     });
 
+    $scope.usernameTyped = function(keyEvent){
+        if($scope.user.username == $scope.user_info.username){
+            $scope.usernameClass = 'success';
+        }
+        else{
+            UsernameAvailability.typed($scope.user_info.username).then(function(response){
+                $scope.usernameClass = response;
+            });
+        }
+    }
+
     $scope.updateProfile = function(user){
         $http({
             method: "POST",
@@ -2707,10 +2695,19 @@ angular.module('starter.controllers', [])
         })
         .success(function(){
             $rootScope.popupMessage('Message', 'Profile Has been updated');
+            for(i = 0; i < $rootScope.userTrackArray.length; i++){
+                thisUser = $rootScope.userTrackArray[i];
+                if(thisUser.id == $scope.user.id){
+                    thisUser.username = user.username;
+                }
+            }
             $ionicHistory.goBack();
         })
         .error(function(data, status){
             $rootScope.handleHttpError(data, status);
+            if(UsernameAvailability.isFailed(data)){
+                $scope.usernameClass = 'fail';
+            }
         });
     };
 })
