@@ -2205,11 +2205,11 @@ angular.module('starter.controllers', [])
 .controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading, PostTimer, $stateParams, Tutorial) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
-    $scope.sort = ComparePosts.getLastFilters();
+    $scope.last_filters = ComparePosts.getLastFilters();
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
-    $scope.gender_active = $scope.sort.gender;
-    $scope.age_active = $scope.sort.age;
+    $scope.gender_active = $scope.last_filters.gender;
+    $scope.age_active = $scope.last_filters.age;
 
     if($stateParams.isThisAfterShare){
         Tutorial.triggerIfNotCompleted('tutorial_first_compare');
@@ -2229,7 +2229,7 @@ angular.module('starter.controllers', [])
         return (post.user.id != user.id);
     }
     $scope.doRefresh = function(){
-        ComparePosts.sort($scope.sort.gender.value, $scope.sort.age.value).then(function() {
+        ComparePosts.sort($scope.gender_active, $scope.age_active).then(function() {
             $scope.$broadcast('scroll.refreshComplete');
         });
     }
@@ -2662,9 +2662,6 @@ angular.module('starter.controllers', [])
                 RestartApp.go('root');
             }
         });
-
-
-
     };
 })
 .controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory, UsernameAvailability) {
