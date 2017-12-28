@@ -7,8 +7,6 @@ angular.module('starter.controllers', [])
     //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
-    $rootScope.compareList = [];
-    $rootScope.compareIndexList = [];
     $rootScope.nameLengthOnCard = 12;
     $rootScope.stat_height = 0;
     $rootScope.stat_label_height = 0;
@@ -22,12 +20,6 @@ angular.module('starter.controllers', [])
     $rootScope.ifInNotification = function() {
         var detect = 'auth, forgetpassword, register, register2, root, intro';
         if( detect.indexOf($state.current.name) > -1 || $state.current.name.indexOf('notification') > -1){
-            return true;
-        }
-        return false;
-    }
-    $rootScope.ifInCompare = function() {
-        if($state.current.name == 'tab.compare'){
             return true;
         }
         return false;
@@ -797,36 +789,6 @@ angular.module('starter.controllers', [])
             return "other";
         }
     };
-    $rootScope.calculateCreatedFrom = function(val){
-        var t = val.split(/[- :]/);
-        t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-        return Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-    };
-    $rootScope.calculateGetTimeIcon = function(val){
-        if (val/60 > 16)
-        {
-            return "fa-hourglass-end";
-        }
-        else if (val/60 > 8)
-        {
-            return "fa-hourglass-half";
-        }
-        else
-        {
-            return "fa-hourglass-start";
-        }
-    };
-    $rootScope.manipulateCreatedFrom = function(val){
-        if (Math.floor(24 - val/60) > 0)
-        {
-            return Math.floor(24 - val/60) + "h";
-        }
-        else
-        {
-            return Math.floor(60 - val%60) + "m";
-        }
-    };
     $rootScope.ifNGCompare = function(){
         var detect = 'tab.compare-home, tab.compare-explore, tab.compare-notification, tab.compare-account, auth, forgetpassword, register, register2, root, intro';
         if( detect.indexOf($state.current.name) > -1){
@@ -836,25 +798,6 @@ angular.module('starter.controllers', [])
     };
     $rootScope.openCompare = function(){
         $state.go('tab.compare');
-    };
-    $rootScope.addCompare = function(_post_id) {
-        if (!$rootScope.canClickInList()) {
-            return;
-        }
-        if ($rootScope.compareList.indexOf(_post_id) != -1)
-        {
-            $rootScope.compareIndexList[_post_id] = false;
-            $rootScope.compareList.splice($rootScope.compareList.indexOf(_post_id), 1);
-        }
-/*        else if ($rootScope.compareList.length >= 10)
-        {
-            $rootScope.popupMessage("Alert", "You can add up to 10 looks for compare");
-        }*/
-        else
-        {
-            $rootScope.compareIndexList[_post_id] = true;
-            $rootScope.compareList.push(_post_id);
-        }
     };
 
     $rootScope.openOthersProfileMenu = function(){
@@ -1606,15 +1549,6 @@ angular.module('starter.controllers', [])
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
                     posts[index].show_stat = false;
@@ -1623,10 +1557,6 @@ angular.module('starter.controllers', [])
                 {
                     posts[index].show_stat = true;
                 }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1642,15 +1572,6 @@ angular.module('starter.controllers', [])
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
                     posts[index].show_stat = false;
@@ -1659,10 +1580,6 @@ angular.module('starter.controllers', [])
                 {
                     posts[index].show_stat = true;
                 }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1680,15 +1597,6 @@ angular.module('starter.controllers', [])
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
                     posts[index].show_stat = false;
@@ -1697,10 +1605,6 @@ angular.module('starter.controllers', [])
                 {
                     posts[index].show_stat = true;
                 }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
@@ -1839,15 +1743,6 @@ angular.module('starter.controllers', [])
             if(post.user_liked){
                 $scope.liked = true;
             }
-            if ($rootScope.compareList.indexOf(post.id) == -1)
-            {
-                $rootScope.compareIndexList[post.id] = false;
-            }
-            else
-            {
-                $rootScope.compareIndexList[post.id] = true;
-            }
-
             if ($rootScope.isStatNotAvailable(post))
             {
                 post.show_stat = false;
@@ -1856,9 +1751,6 @@ angular.module('starter.controllers', [])
             {
                 post.show_stat = true;
             }
-            post.created_from = $rootScope.calculateCreatedFrom(post.created_at);
-            post.time_icon = $rootScope.calculateGetTimeIcon(post.created_from);
-            post.created_from = $rootScope.manipulateCreatedFrom(post.created_from);
         }
         else{
             $scope.noResult = true;
@@ -2017,15 +1909,6 @@ angular.module('starter.controllers', [])
                 if(post.user_liked){
                     $scope.liked = true;
                 }
-                if ($rootScope.compareList.indexOf(post.id) == -1)
-                {
-                    $rootScope.compareIndexList[post.id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[post.id] = true;
-                }
-
                 if ($rootScope.isStatNotAvailable(post))
                 {
                     post.show_stat = false;
@@ -2034,10 +1917,6 @@ angular.module('starter.controllers', [])
                 {
                     post.show_stat = true;
                 }
-
-                post.created_from = $rootScope.calculateCreatedFrom(post.created_at);
-                post.time_icon = $rootScope.calculateGetTimeIcon(post.created_from);
-                post.created_from = $rootScope.manipulateCreatedFrom(post.created_from);
             }
             else{
                 $scope.noResult = true;
@@ -2084,21 +1963,6 @@ angular.module('starter.controllers', [])
             });
         }
         */
-        for (index = 0; index < posts.length; ++index) {
-            if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-            {
-                $rootScope.compareIndexList[posts[index].id] = false;
-            }
-            else
-            {
-                $rootScope.compareIndexList[posts[index].id] = true;
-            }
-
-            posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-            posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-            posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-        }
-
         if(posts && posts.length == 0){
             $scope.noResult = true;
         }
@@ -2107,21 +1971,6 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
-
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -2137,21 +1986,6 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
-
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -2382,21 +2216,6 @@ angular.module('starter.controllers', [])
             if( !$scope.isMyAccount && ($scope.activatedTab == 'best') ){
                 $scope.noMoreItemsAvailable = true;
             }
-
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
         });
     }
 
@@ -2525,21 +2344,6 @@ angular.module('starter.controllers', [])
                   $scope.$broadcast('scroll.infiniteScrollComplete');
                 });
                 $scope.page++;
-
-                for (index = 0; index < posts.length; ++index) {
-                    if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                    {
-                        $rootScope.compareIndexList[posts[index].id] = false;
-                    }
-                    else
-                    {
-                        $rootScope.compareIndexList[posts[index].id] = true;
-                    }
-
-                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-                }
             });
         }
     };
@@ -2572,21 +2376,6 @@ angular.module('starter.controllers', [])
             if( !$scope.isMyAccount && ($scope.activatedTab == 'best') ){
                 $scope.noMoreItemsAvailable = true;
             }
-
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
         });
     };
     $scope.activateTab = function(tab){
@@ -2612,21 +2401,6 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.activatingTab = false;
-
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
         });
     }
 })
@@ -2639,7 +2413,18 @@ angular.module('starter.controllers', [])
         $state.go('tab.find-friends');
     };
     $scope.goInviteFriends = function(id){
-        $state.go('tab.invite-friends');
+        var options = {
+            message: 'which looks better?',
+            subject: 'Which Looks Better?',
+            url: $rootScope.baseURL + '/s/demo'
+        }
+        var onSuccess = function(result) {
+            console.log("invite succeed");
+        }
+        var onError = function(msg) {
+            console.log("invite failed with message: " + msg);
+        }
+        window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
     };
     $scope.goChangePassword = function(id){
         $state.go('tab.change-password');

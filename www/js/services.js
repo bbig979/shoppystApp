@@ -474,7 +474,6 @@ angular.module('starter.services', [])
     return {
         share: function(){
             var deferred = $q.defer();
-            var prev_this = this;
             if(_post_id_array.length == 0){
                 deferred.resolve();
                 return deferred.promise;
@@ -493,9 +492,9 @@ angular.module('starter.services', [])
         },
         sort: function(gender, age_group){
             var deferred = $q.defer();
-            var prev_this = this;
+            var this_factory = this;
             this._fetch().then(function() {
-                var target_key = prev_this._getTargetKeyForPostAnalytic(gender, age_group);
+                var target_key = this_factory._getTargetKeyForPostAnalytic(gender, age_group);
 console.log(target_key);
 console.log(_post_array);
                 _post_array.sort(function(a, b){
@@ -576,7 +575,7 @@ console.log(_post_array);
         },
         _fetch: function(){
             var deferred = $q.defer();
-            var prev_this = this;
+            var this_factory = this;
             if(_post_id_array.length == 0){
                 deferred.resolve();
                 return deferred.promise;
@@ -584,13 +583,10 @@ console.log(_post_array);
             FetchPosts.compare(_post_id_array).then(function(response){
                 posts = response;
                 for (index = 0; index < posts.length; ++index) {
-                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-                    prev_this._setTotalFieldsInPostAnalytic(posts[index].post_analytic);
+                    this_factory._setTotalFieldsInPostAnalytic(posts[index].post_analytic);
                 }
                 _post_array = posts;
-                prev_this._syncClientIfDeleted(posts);
+                this_factory._syncClientIfDeleted(posts);
                 deferred.resolve();
             });
             return deferred.promise;
