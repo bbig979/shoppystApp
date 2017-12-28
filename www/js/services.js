@@ -234,6 +234,8 @@ angular.module('starter.services', [])
     const one_third = 1/3;
 
     this.elapsed = function(created_at){
+        // @todo delete line below before launch
+        return false;
         return this._secPassed(created_at) > sec_to_expire;
     }
     this.icon = function(created_at){
