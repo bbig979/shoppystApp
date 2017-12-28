@@ -24,6 +24,12 @@ angular.module('starter.controllers', [])
         }
         return false;
     }
+    $rootScope.ifInCompare = function() {
+        if($state.current.name == 'tab.compare'){
+            return true;
+        }
+        return false;
+    }
     $rootScope.shareCompare = function() {
         if(ComparePosts.isAnyPostExpired()){
             $rootScope.popupMessage('Oops', 'You cannot share a look that is private');
