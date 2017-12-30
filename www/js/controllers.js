@@ -1,8 +1,8 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://app.snaplook.today';
-    //$rootScope.baseURL = 'http://localhost:8000';
+    //$rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
     //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
@@ -2067,11 +2067,13 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, FetchSearchResults, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
+    $scope.searchResult = [{"id":74,"name":"Scott Park","profile_img_path":"0e2fd213d99e6001660f61666e09a63f.jpg","type":"user","slug":"scott-park"},{"id":83,"name":"Su Park","profile_img_path":"e8a02eb59fccbee1b238aa6ec9405f1c.jpg","type":"user","slug":"su-park"},{"id":1,"name":"Party","profile_img_path":null,"type":"occasion","slug":"Party"},{"id":24,"name":"leopard","profile_img_path":null,"type":"tag","slug":"leopard"}];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+    $scope.showResult = false;
     $scope.noResult = false;
     $scope.showSample = false;
     $scope.comparePosts = ComparePosts;
@@ -2086,7 +2088,7 @@ angular.module('starter.controllers', [])
         });
     }
 
-    FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
+    FetchPosts.new($scope.page, $stateParams.searchTerm, $stateParams.type).then(function(response){
         posts = response.data;
         if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
@@ -2200,19 +2202,37 @@ angular.module('starter.controllers', [])
 */
         });
     };
-    $scope.submitSearch = function(search_term) {
-        $state.go('tab.explore-explore',{searchTerm: search_term});
+    $scope.submitSearch = function(search_term, type = "tag") {
+        $state.go('tab.explore-explore',{searchTerm: search_term, type: type});
+    };
+    $scope.goSearchPost = function(search_term, type) {
+        $scope.submitSearch(search_term, type);
     };
     $scope.noSearchTerm = function() {
        return !$stateParams.searchTerm;
     };
     $scope.focusSearch = function(){
         Focus('search');
+        $scope.showResult = false;
     }
     $scope.tagSearchTerm = function(){
         if($stateParams.searchTerm){
             var temp = $stateParams.searchTerm.split(' ');
             return '#'+temp.join(' #');
+        }
+    }
+    $scope.fetchData = function(searchTerm) {
+        if ((searchTerm.trim()).length == 0)
+        {
+            $scope.showResult = false;
+        }
+        else
+        {
+            $scope.showResult = true;
+            FetchSearchResults.get(searchTerm).then(function(response){
+                $scope.searchResult = response;
+                console.log(response);
+            });
         }
     }
 })

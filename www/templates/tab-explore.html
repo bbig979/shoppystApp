@@ -8,7 +8,7 @@
             <div class="bar bar-header item-input-inset">
                 <label class="item-input-wrapper">
                     <i class="icon ion-ios-search placeholder-icon"></i>
-                    <input type="search" id="search" placeholder="Search hashtags" ng-model="searchTerm">
+                    <input type="search" id="search" placeholder="Search hashtags" ng-model="searchTerm" ng-change="fetchData(searchTerm)" autocomplete="off">
                 </label>
                 <div ng-click="searchTerm='';focusSearch();" class="button button-clear search-clear" ng-show="searchTerm.length">X</div>
             </div>
@@ -22,7 +22,7 @@
         <div class="loading-spinner" data-loading ng-if="posts.length == 0 && !noMoreItemsAvailable">
             <ion-spinner></ion-spinner>
         </div>
-        <ion-list>
+        <ion-list ng-hide="showResult">
             <div>
                 <ion-item collection-repeat="post in posts" class="post" collection-item-width="'100%'">
                     <div class="entity-id-{{post.id}}">
@@ -55,6 +55,17 @@
                 </ion-item>
             </div>
         </ion-list>
+        <ion-list ng-show="showResult">
+            <div>
+                <ion-item ng-repeat="line in searchResult" class="post">
+                    <div ng-if="line.type == 'tag'" ng-click="goSearchPost(line.name, 'tag')"><span class="head_sign">#</span>{{line.name}}</div>
+                    <div ng-if="line.type == 'user'" class="entity-id-{{line.id}}">
+                        <div ng-click="goAccount(line.slug)" style="background-image: url( {{ photoPath( line.profile_img_path, 's' ) }} )" class="profile-image"></div>
+                        <div ng-click="goAccount(line.slug)" class="user-name">{{ line.name }}</div>
+                    </div>
+                    <div ng-if="line.type == 'occasion'" ng-click="goSearchPost(line.name, 'occasion')"><span class="head_sign">@</span>{{line.name}}</div>
+                </ion-item>
+        </div>
         <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
     </ion-content>
 </ion-view>

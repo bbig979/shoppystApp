@@ -25,6 +25,18 @@ angular.module('starter.services', [])
         }
     };
 }])
+.factory('FetchSearchResults', function($http, $rootScope) {
+    return {
+        get: function(searchTerm){
+            return $http.get($rootScope.baseURL+"/api/search/"+searchTerm).then(function(response){
+                return response.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+    };
+})
 .factory('FetchPosts', function($http, $rootScope) {
     var _addToPostTrackArray = function(pagingInfo) {
         $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
@@ -56,7 +68,7 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(error);
             });
         },
-        new: function(pg, search_term){
+        new: function(pg, search_term, type){
             return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
                 _addToPostTrackArray(response.data);
                 return response.data;
