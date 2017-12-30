@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
@@ -7,8 +7,6 @@ angular.module('starter.controllers', [])
     //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
-    $rootScope.compareList = [];
-    $rootScope.compareIndexList = [];
     $rootScope.nameLengthOnCard = 12;
     $rootScope.stat_height = 0;
     $rootScope.stat_label_height = 0;
@@ -149,32 +147,32 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-notification-'+tab);
     };
-    $rootScope.handleHttpError = function(error, status){
-        if(status == 422){
-            // when login error
-            for(var key in error){
-                $rootScope.popupMessage('', error[key]);
-                break;
+    $rootScope.handleHttpError = function(data, status){
+        console.log('data:');
+        console.log(data);
+        console.log('status:');
+        console.log(status);
+        if(status == 422 || status == 401){
+            // when login or validation error
+            for(var key in data){
+                $rootScope.popupMessage('', data[key]);
+                // problem : multiple errors lead to opening multiple popups in the beginning
+                // solution : found out that long computation blocks opening graphical element.
+                //            therefore I placed wait service, which runs computation for specific time long.
+                Wait.miliSec(100);
             }
         }
-        if(status == 500){
-            $state.go('tab.explore-explore');
+        else if(data != null && typeof (data.error) != 'undefined' && data.error == "token_not_provided"){
+            RestartApp.go('root');
         }
-        else if(typeof (error.status) != 'undefined' && error.status == 401){
-            // when validation error
-            for(var key in error.data){
-                $rootScope.popupMessage('', error.data[key]);
-                break;
-            }
+        else if(data != null && typeof (data.error) != 'undefined' && data.error == "user_not_found"){
+            localStorage.removeItem('user');
+            localStorage.removeItem('post_id_array');
+            RestartApp.go('root');
         }
-        else if(typeof (error.error) != 'undefined' && error.error == "token_not_provided"){
-            $state.go('auth');
+        else{
+            $rootScope.popupMessage('Error', 'An unknown network error has occurred.');
         }
-        else if(typeof (error.data) != 'undefined' && typeof (error.data.error) != 'undefined' && error.data.error == "token_not_provided"){
-            $state.go('auth');
-        }
-        console.log('status: '+status);
-        console.log(error);
     };
     $rootScope.getCurrentUser = function(){
         if($state.current.name){
@@ -797,36 +795,6 @@ angular.module('starter.controllers', [])
             return "other";
         }
     };
-    $rootScope.calculateCreatedFrom = function(val){
-        var t = val.split(/[- :]/);
-        t = new Date(t[0], t[1]-1, t[2], t[3], t[4], t[5]);
-
-        return Math.floor(((new Date() - new Date(t)) / 1000 / 60) % 1440);
-    };
-    $rootScope.calculateGetTimeIcon = function(val){
-        if (val/60 > 16)
-        {
-            return "fa-hourglass-end";
-        }
-        else if (val/60 > 8)
-        {
-            return "fa-hourglass-half";
-        }
-        else
-        {
-            return "fa-hourglass-start";
-        }
-    };
-    $rootScope.manipulateCreatedFrom = function(val){
-        if (Math.floor(24 - val/60) > 0)
-        {
-            return Math.floor(24 - val/60) + "h";
-        }
-        else
-        {
-            return Math.floor(60 - val%60) + "m";
-        }
-    };
     $rootScope.ifNGCompare = function(){
         var detect = 'tab.compare-home, tab.compare-explore, tab.compare-notification, tab.compare-account, auth, forgetpassword, register, register2, root, intro';
         if( detect.indexOf($state.current.name) > -1){
@@ -836,25 +804,6 @@ angular.module('starter.controllers', [])
     };
     $rootScope.openCompare = function(){
         $state.go('tab.compare');
-    };
-    $rootScope.addCompare = function(_post_id) {
-        if (!$rootScope.canClickInList()) {
-            return;
-        }
-        if ($rootScope.compareList.indexOf(_post_id) != -1)
-        {
-            $rootScope.compareIndexList[_post_id] = false;
-            $rootScope.compareList.splice($rootScope.compareList.indexOf(_post_id), 1);
-        }
-/*        else if ($rootScope.compareList.length >= 10)
-        {
-            $rootScope.popupMessage("Alert", "You can add up to 10 looks for compare");
-        }*/
-        else
-        {
-            $rootScope.compareIndexList[_post_id] = true;
-            $rootScope.compareList.push(_post_id);
-        }
     };
 
     $rootScope.openOthersProfileMenu = function(){
@@ -883,9 +832,9 @@ angular.module('starter.controllers', [])
                                     $ionicLoading.hide();
                                     return true;
                                 })
-                                    .error(function(error){
-                                        $rootScope.handleHttpError(error);
-                                    });
+                                .error(function(data, status){
+                                    $rootScope.handleHttpError(data, status);
+                                });
                             }
                         });
                         return true;
@@ -902,9 +851,9 @@ angular.module('starter.controllers', [])
                                     $ionicLoading.hide();
                                     return true;
                                 })
-                                    .error(function(error){
-                                        $rootScope.handleHttpError(error);
-                                    });
+                                .error(function(data, status){
+                                    $rootScope.handleHttpError(data, status);
+                                });
                             }
                         });
                         return true;
@@ -930,15 +879,15 @@ angular.module('starter.controllers', [])
         if(post.user_liked){
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/like').success(function(){
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
         $rootScope.trackAndUpdateLike(post);
@@ -998,16 +947,16 @@ angular.module('starter.controllers', [])
             $http.get($rootScope.baseURL+'/api/user/'+ user.slug +'/unfollow').success(function(){
                 current_user.following_count--;
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
         else{
             $http.get($rootScope.baseURL+'/api/user/'+ user.slug +'/follow').success(function(){
                 current_user.following_count++;
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
         $rootScope.trackAndUpdateFollow(user);
@@ -1108,7 +1057,7 @@ angular.module('starter.controllers', [])
                 uploadSuccessCount = 0;
                 $timeout(function(){
                     CameraPictues.reset();
-                    $state.go('tab.compare');
+                    $state.go('tab.compare', {isThisAfterShare: true});
                 }, 500);
             }
         }
@@ -1151,15 +1100,20 @@ angular.module('starter.controllers', [])
             url: $rootScope.baseURL + '/api/post/' + $scope.post.id + '/edit',
             data: {'content': post.content, 'post-id': $scope.post.id }
         })
-        .success(function(response){
+        .success(function(){
             $ionicLoading.hide();
             $ionicHistory.goBack();
         })
-        .error(function(error, status){
-            $rootScope.handleHttpError(error, status);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
     };
 })
+
+.controller('TutorialCtrl',function($scope, Tutorial){
+    $scope.tutorial = Tutorial;
+})
+
 .controller('IntroCtrl',function($scope, $state, $ionicHistory){
     $scope.slideIndex = 0;
     $scope.enterApplication = function(){
@@ -1206,16 +1160,16 @@ angular.module('starter.controllers', [])
             url : $rootScope.baseURL+'/api/register',
             data : registerData
         })
-        .success(function(response){
+        .success(function(){
             $ionicLoading.hide();
             $ionicHistory.nextViewOptions({
                 disableBack: true
             });
             $state.go('register2',registerData);
         })
-        .error(function(error, status){
+        .error(function(data, status){
             $ionicLoading.hide();
-            $rootScope.handleHttpError(error, status);
+            $rootScope.handleHttpError(data, status);
         });
     }
     var fbLoginSuccess = function(response) {
@@ -1236,22 +1190,22 @@ angular.module('starter.controllers', [])
                 url : $rootScope.baseURL+'/api/facebook',
                 data : {profile:profileInfo}
             })
-            .success(function(response){
-                localStorage.setItem('satellizer_token', response.token);
-                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                    var user = response.user;
+            .success(function(data){
+                localStorage.setItem('satellizer_token', data.token);
+                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                    var user = data.user;
                     $rootScope.setCurrentUser(user);
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
                     $state.go('tab.explore-explore');
                 })
-                .error(function(){
-                    $rootScope.handleHttpError(error, status);
+                .error(function(data, status){
+                    $rootScope.handleHttpError(data, status);
                 });
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }, function(fail){
             // Fail get profile info
@@ -1300,10 +1254,10 @@ angular.module('starter.controllers', [])
                         url : $rootScope.baseURL+'/api/facebook',
                         data : {profile:profileInfo}
                     })
-                    .success(function(response){
-                        localStorage.setItem('satellizer_token', response.token);
-                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                            var user = response.user;
+                    .success(function(data){
+                        localStorage.setItem('satellizer_token', data.token);
+                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                            var user = data.user;
                             $rootScope.setCurrentUser(user);
                             $ionicHistory.nextViewOptions({
                                 disableBack: true
@@ -1311,14 +1265,14 @@ angular.module('starter.controllers', [])
                             $ionicLoading.hide();
                             $state.go('tab.explore-explore');
                         })
-                        .error(function(){
+                        .error(function(data, status){
                             $ionicLoading.hide();
-                            $rootScope.handleHttpError(error, status);
+                            $rootScope.handleHttpError(data, status);
                         });
                     })
-                    .error(function(error){
+                    .error(function(data, status){
                         $ionicLoading.hide();
-                        $rootScope.handleHttpError(error);
+                        $rootScope.handleHttpError(data, status);
                     });
                 }, function(fail){
                     // Fail get profile info
@@ -1340,36 +1294,20 @@ angular.module('starter.controllers', [])
         });
     };
 })
-
-.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout) {
+.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout, UsernameAvailability) {
     $scope.registerData = {};
     $scope.usernameClass = '';
     var credentials = {
         email: $stateParams.email,
         password: $stateParams.password
     }
-    var checkUsernameAvailability = function(){
-        $http({
-            method : 'POST',
-            url : $rootScope.baseURL+'/api/register2/validate/username',
-            data : {username:$scope.registerData.username}
-        })
-        .success(function(response){
-            $scope.usernameClass = 'success';
-        })
-        .error(function(error, status){
-            if(error.username != undefined && error.username[0] == 'The username is not available'){
-                $scope.usernameClass = 'fail';
-            }
-        });
-    }
 
     if(!localStorage.getItem('user')){
         console.log(credentials);
         $auth.login(credentials).then(function() {
         },
-        function(error) {
-            $rootScope.handleHttpError(error, status);
+        function(response) {
+            $rootScope.handleHttpError(response.data, response.status);
         });
         $scope.registerData.username = $stateParams.email.split('@')[0];
     }
@@ -1378,26 +1316,18 @@ angular.module('starter.controllers', [])
         $scope.registerData.gender = user.gender;
         $scope.registerData.username = user.email.split('@')[0];
     }
-    $timeout(function(){
-        checkUsernameAvailability();
-    }, 1000);
 
-    var last_typed_timestmap_milisec = 0;
-    var need_to_stay_idle_milisec = 2000;
+    $timeout(function(){
+        UsernameAvailability.check($scope.registerData.username).then(function(response){
+            $scope.usernameClass = response;
+        });
+    }, 1000);
     $scope.usernameTyped = function(keyEvent){
-        last_typed_timestmap_milisec = Date.now();
-        $timeout(
-            function(){
-                stayed_idle_milisec = Date.now() - last_typed_timestmap_milisec;
-                if(stayed_idle_milisec >= need_to_stay_idle_milisec){
-                    checkUsernameAvailability();
-                }
-            }, need_to_stay_idle_milisec
-        )
+        UsernameAvailability.typed($scope.registerData.username).then(function(response){
+            $scope.usernameClass = response;
+        });
     }
-    $scope.getUsernameClass = function(){
-        return $scope.usernameClass;
-    }
+
     $scope.register2 = function(registerData){
         $ionicLoading.show();
         $http({
@@ -1405,9 +1335,9 @@ angular.module('starter.controllers', [])
             url : $rootScope.baseURL+'/api/register2',
             data : registerData
         })
-        .success(function(response){
-            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                var user = response.user;
+        .success(function(){
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                var user = data.user;
                 $rootScope.setCurrentUser(user);
                 $ionicLoading.hide();
                 $ionicHistory.nextViewOptions({
@@ -1415,20 +1345,19 @@ angular.module('starter.controllers', [])
                 });
                 $state.go('tab.explore-explore');
             })
-            .error(function(){
-                $rootScope.handleHttpError(error, status);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         })
-        .error(function(error, status){
+        .error(function(data, status){
             $ionicLoading.hide();
-            $rootScope.handleHttpError(error, status);
-            if(error.username != undefined && error.username[0] == 'The username is not available'){
+            $rootScope.handleHttpError(data, status);
+            if(UsernameAvailability.isFailed(data)){
                 $scope.usernameClass = 'fail';
             }
         });
     }
 })
-
 .controller('ForgetPasswordCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
     $scope.datas = {email:''};
     $scope.sendLink = function(datas){
@@ -1438,14 +1367,14 @@ angular.module('starter.controllers', [])
             url : $rootScope.baseURL+'/api/passwordReset',
             data : datas
         })
-        .success(function(response){
+        .success(function(){
             $ionicLoading.hide();
             $rootScope.popupMessage("", "Email has been sent");
             $ionicHistory.goBack();
         })
-        .error(function(error, status){
+        .error(function(data, status){
             $ionicLoading.hide();
-            $rootScope.handleHttpError(error, status);
+            $rootScope.handleHttpError(data, status);
         });
     }
 })
@@ -1467,8 +1396,8 @@ angular.module('starter.controllers', [])
 
         $auth.login(credentials).then(function() {
             // Return an $http request for the authenticated user
-            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                var user = response.user;
+            $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                var user = data.user;
                 $rootScope.setCurrentUser(user);
                 $ionicHistory.nextViewOptions({
                     disableBack: true
@@ -1476,14 +1405,14 @@ angular.module('starter.controllers', [])
                 $ionicLoading.hide();
                 $state.go('tab.explore-explore');
             })
-            .error(function(){
+            .error(function(data, status){
                 $ionicLoading.hide();
-                $rootScope.handleHttpError(error, status);
+                $rootScope.handleHttpError(data, status);
             })
         },
-        function(error) {
+        function(response) {
             $ionicLoading.hide();
-            $rootScope.handleHttpError(error, status);
+            $rootScope.handleHttpError(response.data, response.status);
         });
     };
 
@@ -1505,22 +1434,22 @@ angular.module('starter.controllers', [])
                 url : $rootScope.baseURL+'/api/facebook',
                 data : {profile:profileInfo}
             })
-            .success(function(response){
-                localStorage.setItem('satellizer_token', response.token);
-                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                    var user = response.user;
+            .success(function(data){
+                localStorage.setItem('satellizer_token', data.token);
+                $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                    var user = data.user;
                     $rootScope.setCurrentUser(user);
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
                     $state.go('tab.explore-explore');
                 })
-                .error(function(){
-                    $rootScope.handleHttpError(error, status);
+                .error(function(data, status){
+                    $rootScope.handleHttpError(data, status);
                 });
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }, function(fail){
             // Fail get profile info
@@ -1569,10 +1498,10 @@ angular.module('starter.controllers', [])
                         url : $rootScope.baseURL+'/api/facebook',
                         data : {profile:profileInfo}
                     })
-                    .success(function(response){
-                        localStorage.setItem('satellizer_token', response.token);
-                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(response){
-                            var user = response.user;
+                    .success(function(data){
+                        localStorage.setItem('satellizer_token', data.token);
+                        $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
+                            var user = data.user;
                             $rootScope.setCurrentUser(user);
                             $ionicHistory.nextViewOptions({
                                 disableBack: true
@@ -1580,14 +1509,14 @@ angular.module('starter.controllers', [])
                             $ionicLoading.hide();
                             $state.go('tab.explore-explore');
                         })
-                        .error(function(){
+                        .error(function(data, status){
                             $ionicLoading.hide();
-                            $rootScope.handleHttpError(error, status);
+                            $rootScope.handleHttpError(data, status);
                         });
                     })
-                    .error(function(error){
+                    .error(function(data, status){
                         $ionicLoading.hide();
-                        $rootScope.handleHttpError(error);
+                        $rootScope.handleHttpError(data, status);
                     });
                 }, function(fail){
                     // Fail get profile info
@@ -1626,15 +1555,6 @@ angular.module('starter.controllers', [])
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
                     posts[index].show_stat = false;
@@ -1643,10 +1563,6 @@ angular.module('starter.controllers', [])
                 {
                     posts[index].show_stat = true;
                 }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1662,15 +1578,6 @@ angular.module('starter.controllers', [])
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
                     posts[index].show_stat = false;
@@ -1679,10 +1586,6 @@ angular.module('starter.controllers', [])
                 {
                     posts[index].show_stat = true;
                 }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1700,15 +1603,6 @@ angular.module('starter.controllers', [])
         FetchPosts.following($scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
                     posts[index].show_stat = false;
@@ -1717,10 +1611,6 @@ angular.module('starter.controllers', [])
                 {
                     posts[index].show_stat = true;
                 }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
             }
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
@@ -1757,8 +1647,8 @@ angular.module('starter.controllers', [])
                             $ionicLoading.hide();
                             return true;
                         })
-                        .error(function(error){
-                            $rootScope.handleHttpError(error);
+                        .error(function(data, status){
+                            $rootScope.handleHttpError(data, status);
                         });
                     }
                 });
@@ -1859,15 +1749,6 @@ angular.module('starter.controllers', [])
             if(post.user_liked){
                 $scope.liked = true;
             }
-            if ($rootScope.compareList.indexOf(post.id) == -1)
-            {
-                $rootScope.compareIndexList[post.id] = false;
-            }
-            else
-            {
-                $rootScope.compareIndexList[post.id] = true;
-            }
-
             if ($rootScope.isStatNotAvailable(post))
             {
                 post.show_stat = false;
@@ -1876,9 +1757,6 @@ angular.module('starter.controllers', [])
             {
                 post.show_stat = true;
             }
-            post.created_from = $rootScope.calculateCreatedFrom(post.created_at);
-            post.time_icon = $rootScope.calculateGetTimeIcon(post.created_from);
-            post.created_from = $rootScope.manipulateCreatedFrom(post.created_from);
         }
         else{
             $scope.noResult = true;
@@ -1891,14 +1769,14 @@ angular.module('starter.controllers', [])
             url : $rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment/create',
             data : {comment:$scope.comment.content}
         })
-        .success(function(response){
-            response.user = user;
-            $scope.post.latest_ten_comments.push(response);
+        .success(function(data){
+            data.user = user;
+            $scope.post.latest_ten_comments.push(data);
             $scope.commentSubmitting = false;
             $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)+1);
         })
-        .error(function(error){
-            $rootScope.handleHttpError(error);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
         $scope.comment.content = '';
     };
@@ -1907,22 +1785,22 @@ angular.module('starter.controllers', [])
             $scope.post.latest_ten_comments.splice($index, 1);
             $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)-1);
         })
-        .error(function(error){
-            $rootScope.handleHttpError(error);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
     };
     $scope.loadMoreComments = function(){
         if($scope.commentsHiddenCount > 0){
-            $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment?page='+$scope.page).success(function(response){
-                $scope.post.latest_ten_comments = response.data.reverse().concat($scope.post.latest_ten_comments);
-                $scope.commentsHiddenCount -= response.data.length;
+            $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment?page='+$scope.page).success(function(data){
+                $scope.post.latest_ten_comments = data.data.reverse().concat($scope.post.latest_ten_comments);
+                $scope.commentsHiddenCount -= data.data.length;
                 if($scope.commentsHiddenCount < 0){
                     $scope.commentsHiddenCount = 0;
                 }
                 $scope.page++;
             })
-            .error(function(error){
-                $rootScope.handleHttpError(error);
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
             });
         }
     };
@@ -1976,8 +1854,8 @@ angular.module('starter.controllers', [])
                                 $ionicHistory.goBack();
                                 return true;
                             })
-                            .error(function(error){
-                                $rootScope.handleHttpError(error);
+                            .error(function(data, status){
+                                $rootScope.handleHttpError(data, status);
                             });
                         }
                     });
@@ -2003,8 +1881,8 @@ angular.module('starter.controllers', [])
                                 $ionicLoading.hide();
                                 return true;
                             })
-                            .error(function(error){
-                                $rootScope.handleHttpError(error);
+                            .error(function(data, status){
+                                $rootScope.handleHttpError(data, status);
                             });
                         }
                     });
@@ -2037,15 +1915,6 @@ angular.module('starter.controllers', [])
                 if(post.user_liked){
                     $scope.liked = true;
                 }
-                if ($rootScope.compareList.indexOf(post.id) == -1)
-                {
-                    $rootScope.compareIndexList[post.id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[post.id] = true;
-                }
-
                 if ($rootScope.isStatNotAvailable(post))
                 {
                     post.show_stat = false;
@@ -2054,10 +1923,6 @@ angular.module('starter.controllers', [])
                 {
                     post.show_stat = true;
                 }
-
-                post.created_from = $rootScope.calculateCreatedFrom(post.created_at);
-                post.time_icon = $rootScope.calculateGetTimeIcon(post.created_from);
-                post.created_from = $rootScope.manipulateCreatedFrom(post.created_from);
             }
             else{
                 $scope.noResult = true;
@@ -2067,7 +1932,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer, Tutorial) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
@@ -2086,6 +1951,8 @@ angular.module('starter.controllers', [])
         });
     }
 
+    Tutorial.triggerIfNotCompleted('tutorial_welcome');
+
     FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
         if(!response.next_page_url){
@@ -2102,21 +1969,6 @@ angular.module('starter.controllers', [])
             });
         }
         */
-        for (index = 0; index < posts.length; ++index) {
-            if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-            {
-                $rootScope.compareIndexList[posts[index].id] = false;
-            }
-            else
-            {
-                $rootScope.compareIndexList[posts[index].id] = true;
-            }
-
-            posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-            posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-            posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-        }
-
         if(posts && posts.length == 0){
             $scope.noResult = true;
         }
@@ -2125,21 +1977,6 @@ angular.module('starter.controllers', [])
     $scope.loadMore = function() {
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
-
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -2155,21 +1992,6 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
-
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -2220,22 +2042,26 @@ angular.module('starter.controllers', [])
 .controller('TabCtrl', function($scope, ComparePosts) {
     $scope.comparePosts = ComparePosts;
 })
-.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading, PostTimer) {
+.controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading, PostTimer, $stateParams, Tutorial) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
-    $scope.genderList = ComparePosts.getGenderList();
-    $scope.ageList = ComparePosts.getAgeList();
-    $scope.sort = ComparePosts.getLastFilters();
+    $scope.last_filters = ComparePosts.getLastFilters();
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
+    $scope.gender_active = $scope.last_filters.gender;
+    $scope.age_active = $scope.last_filters.age;
+
+    if($stateParams.isThisAfterShare){
+        Tutorial.triggerIfNotCompleted('tutorial_first_compare');
+    }
 
     $scope.$on('$ionicView.enter', function() {
-        $scope.sortPosts($scope.sort);
+        $scope.sortPosts($scope.gender_active , $scope.age_active );
     });
 
-    $scope.sortPosts = function(sort) {
+    $scope.sortPosts = function(gender, age) {
         $ionicLoading.show();
-        ComparePosts.sort(sort.gender.value, sort.age.value).then(function() {
+        ComparePosts.sort(gender, age).then(function() {
             $ionicLoading.hide();
         });
     }
@@ -2243,9 +2069,17 @@ angular.module('starter.controllers', [])
         return (post.user.id != user.id);
     }
     $scope.doRefresh = function(){
-        ComparePosts.sort($scope.sort.gender.value, $scope.sort.age.value).then(function() {
+        ComparePosts.sort($scope.gender_active, $scope.age_active).then(function() {
             $scope.$broadcast('scroll.refreshComplete');
         });
+    }
+    $scope.setGender = function(gender) {
+        $scope.gender_active = gender;
+        $scope.sortPosts($scope.gender_active , $scope.age_active );
+    }
+    $scope.setAge = function(age) {
+        $scope.age_active = age;
+        $scope.sortPosts($scope.gender_active , $scope.age_active );
     }
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {
@@ -2388,21 +2222,6 @@ angular.module('starter.controllers', [])
             if( !$scope.isMyAccount && ($scope.activatedTab == 'best') ){
                 $scope.noMoreItemsAvailable = true;
             }
-
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
         });
     }
 
@@ -2531,21 +2350,6 @@ angular.module('starter.controllers', [])
                   $scope.$broadcast('scroll.infiniteScrollComplete');
                 });
                 $scope.page++;
-
-                for (index = 0; index < posts.length; ++index) {
-                    if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                    {
-                        $rootScope.compareIndexList[posts[index].id] = false;
-                    }
-                    else
-                    {
-                        $rootScope.compareIndexList[posts[index].id] = true;
-                    }
-
-                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-                }
             });
         }
     };
@@ -2578,21 +2382,6 @@ angular.module('starter.controllers', [])
             if( !$scope.isMyAccount && ($scope.activatedTab == 'best') ){
                 $scope.noMoreItemsAvailable = true;
             }
-
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
         });
     };
     $scope.activateTab = function(tab){
@@ -2618,25 +2407,10 @@ angular.module('starter.controllers', [])
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.activatingTab = false;
-
-            for (index = 0; index < posts.length; ++index) {
-                if ($rootScope.compareList.indexOf(posts[index].id) == -1)
-                {
-                    $rootScope.compareIndexList[posts[index].id] = false;
-                }
-                else
-                {
-                    $rootScope.compareIndexList[posts[index].id] = true;
-                }
-
-                posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-            }
         });
     }
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope, $timeout) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope, $timeout, RestartApp) {
     $scope.user = $rootScope.getCurrentUser();
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
@@ -2645,7 +2419,18 @@ angular.module('starter.controllers', [])
         $state.go('tab.find-friends');
     };
     $scope.goInviteFriends = function(id){
-        $state.go('tab.invite-friends');
+        var options = {
+            message: 'which looks better?',
+            subject: 'Which Looks Better?',
+            url: $rootScope.baseURL + '/s/demo'
+        }
+        var onSuccess = function(result) {
+            console.log("invite succeed");
+        }
+        var onError = function(msg) {
+            console.log("invite failed with message: " + msg);
+        }
+        window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
     };
     $scope.goChangePassword = function(id){
         $state.go('tab.change-password');
@@ -2661,26 +2446,19 @@ angular.module('starter.controllers', [])
                 localStorage.removeItem('user');
                 localStorage.removeItem('post_id_array');
                 // if we remove token, regular register after fb account log out does not work
+                // however if we leave token, it replace itself according to new login.
+                // therefore decided not to remove
+                //
                 //localStorage.removeItem('satellizer_token');
-
-                // problem: when A log out and log in as B, old data remains and causes problems
-                //          ex. profile still shows A instead of B
-                //          - clearCache and clearHistory alone not working
-                // solution: reinstatiate the app by reload on log out
-                $state.go('root').then(function(){
-                    $timeout(function(){
-                        window.location.reload();
-                    },100);
-                });
+                RestartApp.go('root');
             }
         });
-
-
-
     };
 })
-.controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory) {
+.controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory, UsernameAvailability) {
     var user = $rootScope.getCurrentUser();
+    $scope.usernameClass = '';
+
     FetchUsers.get(user.slug).then(function(user){
         $scope.user = user;
         var data = {
@@ -2691,18 +2469,38 @@ angular.module('starter.controllers', [])
         $scope.user_info = data;
     });
 
+    $scope.usernameTyped = function(keyEvent){
+        if($scope.user.username == $scope.user_info.username){
+            $scope.usernameClass = 'success';
+        }
+        else{
+            UsernameAvailability.typed($scope.user_info.username).then(function(response){
+                $scope.usernameClass = response;
+            });
+        }
+    }
+
     $scope.updateProfile = function(user){
         $http({
             method: "POST",
             url: $rootScope.baseURL + '/api/user/' + $scope.user.slug + '/edit',
             data: user
         })
-        .success(function(response){
+        .success(function(){
             $rootScope.popupMessage('Message', 'Profile Has been updated');
+            for(i = 0; i < $rootScope.userTrackArray.length; i++){
+                thisUser = $rootScope.userTrackArray[i];
+                if(thisUser.id == $scope.user.id){
+                    thisUser.username = user.username;
+                }
+            }
             $ionicHistory.goBack();
         })
-        .error(function(error, status){
-            $rootScope.handleHttpError(error, status);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
+            if(UsernameAvailability.isFailed(data)){
+                $scope.usernameClass = 'fail';
+            }
         });
     };
 })
@@ -2714,12 +2512,12 @@ angular.module('starter.controllers', [])
             url: $rootScope.baseURL + '/api/user/' + user.slug + '/password/edit',
             data: pwd
         })
-        .success(function(response){
+        .success(function(){
             $rootScope.popupMessage('Message', 'Password Has been updated');
             $ionicHistory.goBack();
         })
-        .error(function(error, status){
-            $rootScope.handleHttpError(error, status);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
     };
 })
@@ -2766,12 +2564,12 @@ angular.module('starter.controllers', [])
             url: $rootScope.baseURL + '/api/invite-friends',
             data: {'email' : email }
         })
-        .success(function(response){
+        .success(function(){
             $rootScope.popupMessage('Message', 'Invitation has been sent');
             $( ".email" ).val("");
         })
-        .error(function(error, status){
-            $rootScope.handleHttpError(error, status);
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
         });
     };
 

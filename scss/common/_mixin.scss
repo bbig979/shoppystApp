@@ -7,6 +7,13 @@
   border-radius: $radius;
   background-clip: padding-box;  //stops bg color from leaking outside the border
 }
+@mixin rotate($degree) {
+    -webkit-transform: rotate($degree);
+    -moz-transform: rotate($degree);
+    -ms-transform: rotate($degree);
+    -o-transform: rotate($degree);
+    transform: rotate($degree);
+}
 @mixin box-shadow($param, $inset: false) {
   @if $inset {
     -webkit-box-shadow:inset $param;

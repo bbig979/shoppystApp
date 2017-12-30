@@ -35,16 +35,16 @@ angular.module('starter.services', [])
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         school: function(pg, id) {
             return $http.get($rootScope.baseURL+"/api/school/"+id+"/post?page="+pg).then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         get: function(postID){
@@ -52,8 +52,8 @@ angular.module('starter.services', [])
                 _addToPostTrackArray({data:response.data});
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         new: function(pg, search_term){
@@ -61,16 +61,16 @@ angular.module('starter.services', [])
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         sample: function(count){
             return $http.get($rootScope.baseURL+"/api/explore/sample?count="+count).then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         user: function(userSlug, tab, pg) {
@@ -78,16 +78,16 @@ angular.module('starter.services', [])
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         liked: function(slug, pg){
             return $http.get($rootScope.baseURL+"/api/user/"+slug+"/liked?page="+pg).then(function(response){
                 return response.data.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         compare: function(postIDArray){
@@ -95,8 +95,8 @@ angular.module('starter.services', [])
                 _addToPostTrackArray({data:response.data});
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         }
     };
@@ -107,8 +107,8 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+"/api/compare/"+postIDArray.join(",")+'/share').then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         update:function(id, channel) {
@@ -121,7 +121,7 @@ angular.module('starter.services', [])
                 //
             })
             .error(function(error){
-                $rootScope.handleHttpError(error);
+                // this is not user triggered
             });
         }
     };
@@ -132,8 +132,8 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+'/api/occasion').then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(){
+                // this is not user triggered
             });
         }
     };
@@ -148,8 +148,8 @@ angular.module('starter.services', [])
                 _addToUserTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         follower: function(slug, pg) {
@@ -157,8 +157,8 @@ angular.module('starter.services', [])
                 _addToUserTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         get: function(userSlug) {
@@ -166,8 +166,8 @@ angular.module('starter.services', [])
                 _addToUserTrackArray({data:response.data});
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         liker: function(id, pg) {
@@ -175,8 +175,8 @@ angular.module('starter.services', [])
                 _addToUserTrackArray(response.data);
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         },
         findFriends: function(pg) {
@@ -193,8 +193,8 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+'/api/ranking/school?page='+pg).then(function(response){
                 return response.data.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         }
     };
@@ -205,8 +205,8 @@ angular.module('starter.services', [])
             return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification?page='+pg).then(function(response){
                 return response.data;
             }
-            ,function(error){
-                $rootScope.handleHttpError(error);
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
             });
         }
     };
@@ -234,6 +234,8 @@ angular.module('starter.services', [])
     const one_third = 1/3;
 
     this.elapsed = function(created_at){
+        // @todo delete line below before launch
+        return false;
         return this._secPassed(created_at) > sec_to_expire;
     }
     this.icon = function(created_at){
@@ -280,6 +282,166 @@ angular.module('starter.services', [])
             ) - new Date(t)) / 1000);
     }
 })
+.service('Wait', function(){
+    this.miliSec = function(ms){
+        var start = Date.now(), now = start;
+        while (now - start < ms) {
+           now = Date.now();
+        }
+    }
+})
+.service('RestartApp', function($state, $timeout){
+    this.go = function(state){
+        // problem: when A log out and log in as B, old data remains and causes problems
+        //          ex. profile still shows A instead of B
+        //          - clearCache and clearHistory alone not working
+        // solution: reload the app on log in page
+        $state.go(state).then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
+    }
+})
+.service('LocalJson', function($http){
+    var url = "";
+    if (ionic.Platform.isAndroid()) {
+        url = "/android_asset/www/";
+    }
+    this.get = function(file_name){
+        return $http.get(url + 'data/' + file_name + '.json').then(function (response) {
+            return response.data;
+        });
+    }
+})
+.service('Tutorial', function(LocalJson){
+    var _dummy_tutorial = {"marker" : {"position" : {}}};
+    var _tutorials;
+    LocalJson.get('tutorials').then(function(json_data){
+        _tutorials = json_data;
+    });
+    var _current_tutorial = _dummy_tutorial;
+    var _current_group = '';
+    var _current_id = '';
+    this.triggerIfNotCompleted = function(group){
+        // @todo
+        // check flag in current user and return if is_tutorial_completed is true
+        if(!localStorage.getItem(group)){
+            _current_group = group;
+            this.trigger(1);
+        }
+    }
+    this.trigger = function(id){
+        _current_id = id;
+        _current_tutorial = _tutorials[_current_group][_current_id];
+    }
+    this.getTitle = function(){
+        return _current_tutorial.title;
+    }
+    this.getMessage = function(){
+        return _current_tutorial.message;
+    }
+    this.getHorizontalPosition = function(){
+        return _current_tutorial.marker.position.horizontal;
+    }
+    this.getVerticalPosition = function(){
+        return _current_tutorial.marker.position.vertical;
+    }
+    this.isTriggered = function(){
+        return _current_id != '';
+    }
+    this.isTherePrevious = function(){
+        if(_current_id){
+            var previous_id = _current_id - 1;
+            return typeof _tutorials[_current_group][previous_id] !== 'undefined';
+        }
+        return false;
+    }
+    this.isMarkerArrow = function(){
+        return _current_tutorial.marker.type == 'arrow';
+    }
+    this.getCustomMarker = function(){
+        return _current_tutorial.marker.type;
+    }
+    this.next = function(){
+        var next_id = _current_id + 1;
+        if(typeof _tutorials[_current_group][next_id] !== 'undefined'){
+            this.trigger(next_id);
+        }
+        else{
+            localStorage.setItem(_current_group, true);
+            if(this._isThisUserCompletedTutorials()){
+                // @todo
+                // set flag in user db if tutorials are completed
+            }
+            _current_tutorial = _dummy_tutorial;
+            _current_group = '';
+            _current_id = '';
+        }
+    }
+    this._isThisUserCompletedTutorials = function(){
+        for (var group in _tutorials) {
+            if(!localStorage.getItem(group)){
+                return false;
+            }
+        }
+        return true;
+    }
+    this.previous = function(){
+        var previous_id = _current_id - 1;
+        this.trigger(previous_id);
+    }
+    this.isHighlightNeeded = function(){
+        return (
+            typeof _current_tutorial.highlight !== 'undefined' &&
+            _current_tutorial.highlight
+        )
+    }
+})
+.factory('UsernameAvailability', function($http, $timeout, $rootScope, $q){
+    var last_typed_timestmap_milisec = 0;
+    var need_to_stay_idle_milisec = 2000;
+
+    return {
+        check: function(username){
+            var deferred = $q.defer();
+            var this_factory = this;
+            $http({
+                method : 'POST',
+                url : $rootScope.baseURL+'/api/register2/validate/username',
+                data : {username:username}
+            })
+            .success(function(){
+                deferred.resolve('success');
+            })
+            .error(function(data, status){
+                if(this_factory.isFailed(data)){
+                    deferred.resolve('fail');
+                }
+            });
+            return deferred.promise;
+        },
+        typed: function(username){
+            var deferred = $q.defer();
+            var this_factory = this;
+            last_typed_timestmap_milisec = Date.now();
+            $timeout(
+                function(){
+                    stayed_idle_milisec = Date.now() - last_typed_timestmap_milisec;
+                    if(stayed_idle_milisec >= need_to_stay_idle_milisec){
+                        this_factory.check(username).then(function(response){
+                            deferred.resolve(response);
+                        });
+                    }
+                }, need_to_stay_idle_milisec
+            )
+            return deferred.promise;
+        },
+        isFailed: function(data){
+            return data.username != undefined && data.username[0] == 'The username is not available';
+        }
+    }
+})
 .factory('CameraPictues', function(){
     var _picture_array = [];
     return {
@@ -308,25 +470,10 @@ angular.module('starter.services', [])
     var _is_post_added_map = [];
     var _last_filter_gender = null;
     var _last_filter_age_group = null;
-    var _gender_list = [
-        {value: 'all', label: 'Everyone'},
-        {value: 'male', label: 'Male'},
-        {value: 'female', label: 'Female'},
-        {value: 'friends', label: 'Friends'}
-    ];
-    var _age_list = [
-        {value: 'all', label: 'All'},
-        {value: 'teens', label: '10-20'},
-        {value: 'twenties', label: '20-30'},
-        {value: 'thirties', label: '30-40'},
-        {value: 'forties', label: '40-50'},
-        {value: 'fifties', label: 'Above 50'}
-    ];
 
     return {
         share: function(){
             var deferred = $q.defer();
-            var prev_this = this;
             if(_post_id_array.length == 0){
                 deferred.resolve();
                 return deferred.promise;
@@ -345,9 +492,9 @@ angular.module('starter.services', [])
         },
         sort: function(gender, age_group){
             var deferred = $q.defer();
-            var prev_this = this;
+            var this_factory = this;
             this._fetch().then(function() {
-                var target_key = prev_this._getTargetKeyForPostAnalytic(gender, age_group);
+                var target_key = this_factory._getTargetKeyForPostAnalytic(gender, age_group);
 console.log(target_key);
 console.log(_post_array);
                 _post_array.sort(function(a, b){
@@ -400,17 +547,11 @@ console.log(_post_array);
             _post_id_array = [];
             _is_post_added_map = [];
         },
-        getGenderList: function(){
-            return _gender_list;
-        },
-        getAgeList: function(){
-            return _age_list;
-        },
         getLastFilters: function(){
             this._setLastFiltersIfNull();
             return {
-                gender: this._getOption(_last_filter_gender, _gender_list),
-                age: this._getOption(_last_filter_age_group, _age_list),
+                gender: _last_filter_gender,
+                age: _last_filter_age_group,
             }
         },
         isFriendsSelected: function(){
@@ -432,17 +573,9 @@ console.log(_post_array);
                 }
             }
         },
-        _getOption: function(needle, haystack){
-            for(var i = 0; i < haystack.length; i++){
-                option = haystack[i];
-                if(option.value == needle){
-                    return option;
-                }
-            }
-        },
         _fetch: function(){
             var deferred = $q.defer();
-            var prev_this = this;
+            var this_factory = this;
             if(_post_id_array.length == 0){
                 deferred.resolve();
                 return deferred.promise;
@@ -450,13 +583,10 @@ console.log(_post_array);
             FetchPosts.compare(_post_id_array).then(function(response){
                 posts = response;
                 for (index = 0; index < posts.length; ++index) {
-                    posts[index].created_from = $rootScope.calculateCreatedFrom(posts[index].created_at);
-                    posts[index].time_icon = $rootScope.calculateGetTimeIcon(posts[index].created_from);
-                    posts[index].created_from = $rootScope.manipulateCreatedFrom(posts[index].created_from);
-                    prev_this._setTotalFieldsInPostAnalytic(posts[index].post_analytic);
+                    this_factory._setTotalFieldsInPostAnalytic(posts[index].post_analytic);
                 }
                 _post_array = posts;
-                prev_this._syncClientIfDeleted(posts);
+                this_factory._syncClientIfDeleted(posts);
                 deferred.resolve();
             });
             return deferred.promise;
