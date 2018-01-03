@@ -11,7 +11,7 @@
             <ion-spinner></ion-spinner>
         </div>
         <ion-list>
-            <ion-item ng-repeat="post in posts">
+            <ion-item ng-repeat="post in posts" ng-hide="postTimer.elapsed(post.created_at)">
                 <div class="entity-id-{{post.id}}">
                     <div class="post-header">
                         <a>
