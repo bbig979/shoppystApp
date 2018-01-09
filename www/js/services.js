@@ -27,8 +27,8 @@ angular.module('starter.services', [])
 }])
 .factory('FetchSearchResults', function($http, $rootScope) {
     return {
-        get: function(searchTerm){
-            return $http.get($rootScope.baseURL+"/api/search/"+searchTerm).then(function(response){
+        get: function(searchTerm, type){
+            return $http.get($rootScope.baseURL+"/api/search/"+searchTerm+"/"+type).then(function(response){
                 return response.data;
             }
             ,function(error){
@@ -68,8 +68,8 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        new: function(pg, search_term){
-            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term).then(function(response){
+        new: function(pg, search_term, search_type){
+            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&search_type="+search_type).then(function(response){
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
