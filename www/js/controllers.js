@@ -2105,19 +2105,13 @@ angular.module('starter.controllers', [])
         {
             var term = searchTerm.trim();
             $scope.showSearch = true;
-            if (term[0] == "@")
-            {
-                type = "people";
-                term = term.substr(1);
-            }
-            else if (term[0] == "#")
-            {
-                type = "tag";
-                term = term.substr(1);
-            }
-            else if (type === null)
+            if (type === null)
             {
                 type = $scope.search_type_active;
+            }
+            if (term[0] == "@" || term[0] == "#")
+            {
+                term = term.substr(1);
             }
 
             $scope.isSearchRunning = true;
