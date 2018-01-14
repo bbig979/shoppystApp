@@ -3787,6 +3787,41 @@ a {
   top: 22px;
 }
 
+/* line 234, ../../scss/ryan/_global.scss */
+#new-post-wrapper {
+  position: fixed;
+  top: 72px;
+  z-index: 3;
+  text-align: center;
+  width: 100%;
+}
+/* line 235, ../../scss/ryan/_global.scss */
+#new-post-wrapper #new-post-button {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: #ff4b61;
+  color: #fff;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+  background-clip: padding-box;
+  -webkit-box-shadow: 1px 1px 5px #333;
+  -moz-box-shadow: 1px 1px 5px #333;
+  box-shadow: 1px 1px 5px #333;
+}
+
+/* line 249, ../../scss/ryan/_global.scss */
+#new-post-loading-spinner {
+  text-align: center;
+  padding: 10px 0 0 0;
+}
+
+/* line 254, ../../scss/ryan/_global.scss */
+.platform-ios #new-post-wrapper {
+  top: 92px;
+}
+
 /* line 1, ../../scss/ryan/_top-bar.scss */
 .bar .buttons span.back-text {
   display: none;

@@ -42,8 +42,8 @@ angular.module('starter.services', [])
         $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
     };
     return {
-        following: function(pg) {
-            return $http.get($rootScope.baseURL+"/api/home?page="+pg).then(function(response){
+        following: function(mostRecentPostID, pg) {
+            return $http.get($rootScope.baseURL+"/api/home?page="+pg+"&from_id="+mostRecentPostID).then(function(response){
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
@@ -68,13 +68,21 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        new: function(pg, search_term, search_type){
-            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&search_type="+search_type).then(function(response){
+        new: function(mostRecentPostID, pg, search_term, search_type){
+            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&search_type="+search_type+"&from_id="+mostRecentPostID).then(function(response){
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
             ,function(response){
                 $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        checkNewer: function(domain, mostRecentPostID){
+            return $http.post($rootScope.baseURL+"/api/post/check-newer?&domain="+domain+"&from_id="+mostRecentPostID).then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                // this is not user triggered
             });
         },
         sample: function(count){
@@ -473,6 +481,61 @@ angular.module('starter.services', [])
                     return;
                 }
             }
+        }
+    }
+})
+.factory('ScrollingDetector', function($ionicScrollDelegate){
+    var _current_position;
+    var _last_position;
+    var _prev_is_going_down;
+    return {
+        isGoingDown: function(){
+            if(_current_position){
+                if(_last_position == _current_position){
+                    return _prev_is_going_down;
+                }
+                var is_going_down = _last_position < _current_position;
+                _prev_is_going_down = is_going_down;
+                console.log(is_going_down);
+                return is_going_down;
+            }
+        },
+        record: function(pic){
+            _last_position = _current_position;
+            _current_position = $ionicScrollDelegate.getScrollPosition().top;
+        }
+    }
+})
+.factory('NewPost', function($rootScope, $q, FetchPosts){
+    var _default_flags = {
+        "from_id" : 0, // just for logging purpose
+        "is_available" : false
+    }
+    var _flags_map = {
+        "explore" : $rootScope.cloneObj(_default_flags),
+        "following" : $rootScope.cloneObj(_default_flags)
+    }
+    return {
+        isAvailable: function(domain, from_id){
+            var deferred = $q.defer();
+            _flags_map[domain].from_id = from_id;
+            if(_flags_map[domain].is_available){
+                deferred.resolve(true);
+                return deferred.promise;
+            }
+            else{
+                FetchPosts.checkNewer(domain, from_id).then(function(response){
+                    _flags_map[domain].is_available = response;
+                    deferred.resolve(response);
+                });
+                return deferred.promise;
+            }
+        },
+        resetFlags: function(domain){
+            _flags_map[domain] = $rootScope.cloneObj(_default_flags);
+        },
+        log: function(){
+            console.log($rootScope.cloneObj(_flags_map));
         }
     }
 })

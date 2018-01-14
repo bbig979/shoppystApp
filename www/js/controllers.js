@@ -1539,21 +1539,38 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, PostTimer) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, PostTimer, NewPost, $ionicScrollDelegate, ScrollingDetector) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
+    $scope.mostRecentPostID = 0;
+    $scope.newPostAvailable = false;
+    $scope.loadingNewPost = false;
 
     var user = $rootScope.getCurrentUser();
 
     $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
 
+    $scope.$on('$ionicView.enter', function() {
+        if($scope.noResult){
+            $scope.loadingNewPost = true;
+            $scope.doRefresh();
+        }
+        if($scope.posts.length > 0){
+            NewPost.isAvailable('following', $scope.mostRecentPostID).then(function(response){
+                $scope.newPostAvailable = response;
+            });
+        }
+    });
+
     if(user || $stateParams.refresh){
-        FetchPosts.following($scope.page).then(function(response){
+        NewPost.resetFlags('following');
+        FetchPosts.following($scope.mostRecentPostID, $scope.page).then(function(response){
             posts = response.data;
+            $scope.mostRecentPostID = posts[0].id;
             for (index = 0; index < posts.length; ++index) {
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
@@ -1575,7 +1592,7 @@ angular.module('starter.controllers', [])
         });
     }
     $scope.loadMore = function() {
-        FetchPosts.following($scope.page).then(function(response){
+        FetchPosts.following($scope.mostRecentPostID, $scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
                 if ($rootScope.isStatNotAvailable(posts[index]))
@@ -1597,11 +1614,31 @@ angular.module('starter.controllers', [])
             $scope.page++;
         });
     };
+    $scope.loadNewPost = function() {
+        $ionicScrollDelegate.scrollTop();
+        $scope.loadingNewPost = true;
+        $scope.newPostAvailable = false;
+        $scope.doRefresh();
+    };
+    $scope.scrollDetectWhenNewPostAvailable = function() {
+        if($scope.newPostAvailable){
+            ScrollingDetector.record();
+            if(ScrollingDetector.isGoingDown()){
+                $('#new-post-button.following').hide();
+            }
+            else{
+                $('#new-post-button.following').show();
+            }
+        }
+    };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        FetchPosts.following($scope.page).then(function(response){
+        $scope.mostRecentPostID = 0;
+        NewPost.resetFlags('following');
+        FetchPosts.following($scope.mostRecentPostID, $scope.page).then(function(response){
             posts = response.data;
+            $scope.mostRecentPostID = posts[0].id;
             for (index = 0; index < posts.length; ++index) {
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
@@ -1618,6 +1655,7 @@ angular.module('starter.controllers', [])
             }
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
+            $scope.loadingNewPost = false;
             $scope.page++;
             $scope.noResult = false;
             if(posts && posts.length == 0){
@@ -1932,7 +1970,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, FetchSearchResults, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer, Tutorial) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, FetchSearchResults, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector) {
     $scope.search_type_active = "all";
     $scope.searchType = "tag";
     $scope.searchHolder = "Search";
@@ -1945,6 +1983,7 @@ angular.module('starter.controllers', [])
 
     $scope.posts = [];
     $scope.searchResult = [];
+    $scope.samples = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.isSearchRunning = false;
@@ -1954,6 +1993,9 @@ angular.module('starter.controllers', [])
     $scope.showSample = false;
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
+    $scope.mostRecentPostID = 0;
+    $scope.newPostAvailable = false;
+    $scope.loadingNewPost = false;
 
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email){
@@ -1966,33 +2008,56 @@ angular.module('starter.controllers', [])
 
     Tutorial.triggerIfNotCompleted('tutorial_welcome');
 
+    $scope.$on('$ionicView.enter', function() {
+        if($scope.noResult){
+            $scope.loadingNewPost = true;
+            $scope.doRefresh();
+        }
+        if($scope.posts.length > 0){
+            NewPost.isAvailable('explore', $scope.mostRecentPostID).then(function(response){
+                $scope.newPostAvailable = response;
+            });
+        }
+    });
     $scope.showNoSearchResultText = function() {
         return $scope.searchNoResultText;
     };
     $scope.showPlaceHolder = function() {
         return $scope.searchHolder;
     };
+
     $scope.fetchPost = function(type) {
-        FetchPosts.new($scope.page, $stateParams.searchTerm, $scope.searchType).then(function(response){
+        FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm, $scope.searchType).then(function(response){
             posts = response.data;
+            $scope.noMoreItemsAvailable = false;
+
+            if (type == "refresh")
+            {
+                $scope.noMoreItemsAvailable = false;
+            }
+
+            if (!response.next_page_url)
+            {
+                $scope.noMoreItemsAvailable = true;
+            }
+
             if (type == "new" || type == "refresh")
             {
                 $scope.posts = posts;
-                $scope.noResult = false;
-                if(posts && posts.length == 0)
-                {
-                    $scope.noResult = true;
-                }
-                $scope.noMoreItemsAvailable = false;
+                $scope.mostRecentPostID = posts[0].id;
                 /*
                 if(posts && posts.length < $rootScope.minimumCountToShowSample){
                     if ($scope.showSample != true)
                     {
                         $scope.showSample = true;
-                        FetchPosts.sample($rootScope.sampleCount).then(function(response){
-                            samples = response.data;
-                            $scope.samples = samples;
-                        });
+                        
+                        if ($scope.samples.length == 0)
+                        {
+                            FetchPosts.sample($rootScope.sampleCount).then(function(response){
+                                samples = response.data;
+                                $scope.samples = samples;
+                            });
+                        }
                     }
                 }
                 */
@@ -2000,24 +2065,51 @@ angular.module('starter.controllers', [])
             else if (type == "more")
             {
                 $scope.posts = $scope.posts.concat(posts);
+
                 $timeout(function() {
                   $scope.$broadcast('scroll.infiniteScrollComplete');
                 });
             }
 
+            if (type == "new")
+            {
+                if(posts && posts.length == 0){
+                    $scope.noResult = true;
+                }                
+            }
+
             if (type == "refresh")
             {
                 $scope.$broadcast('scroll.refreshComplete');
+                $scope.loadingNewPost = false;
+                $scope.noResult = false;
             }
 
-            if(!response.next_page_url)
-            {
-                $scope.noMoreItemsAvailable = true;
-            }
             $scope.page++;
         });
     };
+  
     $scope.fetchPost("new");
+
+    $scope.loadNewPost = function() {
+        $scope.newPostAvailable = false;
+        $timeout(function() {
+            $ionicScrollDelegate.scrollTop();
+            $scope.loadingNewPost = true;
+            $scope.doRefresh();
+        }, 300);
+    };
+    $scope.scrollDetectWhenNewPostAvailable = function() {
+        if($scope.newPostAvailable){
+            ScrollingDetector.record();
+            if(ScrollingDetector.isGoingDown()){
+                $('#new-post-button.explore').hide();
+            }
+            else{
+                $('#new-post-button.explore').show();
+            }
+        }
+    };
 
     $scope.loadMore = function() {
         $scope.fetchPost("more");
@@ -2025,6 +2117,8 @@ angular.module('starter.controllers', [])
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
+        $scope.mostRecentPostID = 0;
+        NewPost.resetFlags('explore');
         $scope.fetchPost("refresh");
     };
     $scope.submitSearch = function(search_term, type = "tag") {

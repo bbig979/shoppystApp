@@ -1,9 +1,17 @@
+<div id="new-post-wrapper">
+    <div id="new-post-button" class="explore" ng-click="loadNewPost()" ng-show="newPostAvailable">
+        <i class="fa fa-arrow-up" aria-hidden="true"></i> New Looks
+    </div>
+</div>
 <ion-view class="post-list" id="tab-explore" view-title="<img class='title-image' src='img/logo.png'/>">
-    <ion-content on-scroll="scrollList()">
+    <ion-content on-scroll="scrollList();scrollDetectWhenNewPostAvailable();">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
+        <div id="new-post-loading-spinner" ng-show="loadingNewPost">
+            <ion-spinner class="spinner spinner-ios"></ion-spinner>
+        </div>
         <form name="searchForm" ng-submit="submitSearch(searchTerm)" ng-show="noSearchTerm()">
             <div class="bar bar-header item-input-inset">
                 <label class="item-input-wrapper">

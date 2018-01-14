@@ -231,3 +231,27 @@ a{
         }
     }
 }
+#new-post-wrapper{
+    #new-post-button{
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #ff4b61;
+        color: #fff;
+        @include border-radius(10px);
+        @include box-shadow(1px 1px 5px #333);
+    }
+    position: fixed;
+    top: 72px;
+    z-index: 3;
+    text-align: center;
+    width: 100%;
+}
+#new-post-loading-spinner{
+    text-align: center;
+    padding: 10px 0 0 0;
+}
+.platform-ios {
+    #new-post-wrapper{
+        top: 92px;
+    }
+}
