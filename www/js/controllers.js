@@ -1539,21 +1539,38 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, PostTimer) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, PostTimer, NewPost, $ionicScrollDelegate, ScrollingDetector) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
+    $scope.mostRecentPostID = 0;
+    $scope.newPostAvailable = false;
+    $scope.loadingNewPost = false;
 
     var user = $rootScope.getCurrentUser();
 
     $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
 
+    $scope.$on('$ionicView.enter', function() {
+        if($scope.noResult){
+            $scope.loadingNewPost = true;
+            $scope.doRefresh();
+        }
+        if($scope.posts.length > 0){
+            NewPost.isAvailable('following', $scope.mostRecentPostID).then(function(response){
+                $scope.newPostAvailable = response;
+            });
+        }
+    });
+
     if(user || $stateParams.refresh){
-        FetchPosts.following($scope.page).then(function(response){
+        NewPost.resetFlags('following');
+        FetchPosts.following($scope.mostRecentPostID, $scope.page).then(function(response){
             posts = response.data;
+            $scope.mostRecentPostID = posts[0].id;
             for (index = 0; index < posts.length; ++index) {
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
@@ -1575,7 +1592,7 @@ angular.module('starter.controllers', [])
         });
     }
     $scope.loadMore = function() {
-        FetchPosts.following($scope.page).then(function(response){
+        FetchPosts.following($scope.mostRecentPostID, $scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
                 if ($rootScope.isStatNotAvailable(posts[index]))
@@ -1597,11 +1614,31 @@ angular.module('starter.controllers', [])
             $scope.page++;
         });
     };
+    $scope.loadNewPost = function() {
+        $ionicScrollDelegate.scrollTop();
+        $scope.loadingNewPost = true;
+        $scope.newPostAvailable = false;
+        $scope.doRefresh();
+    };
+    $scope.scrollDetectWhenNewPostAvailable = function() {
+        if($scope.newPostAvailable){
+            ScrollingDetector.record();
+            if(ScrollingDetector.isGoingDown()){
+                $('#new-post-button.following').hide();
+            }
+            else{
+                $('#new-post-button.following').show();
+            }
+        }
+    };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        FetchPosts.following($scope.page).then(function(response){
+        $scope.mostRecentPostID = 0;
+        NewPost.resetFlags('following');
+        FetchPosts.following($scope.mostRecentPostID, $scope.page).then(function(response){
             posts = response.data;
+            $scope.mostRecentPostID = posts[0].id;
             for (index = 0; index < posts.length; ++index) {
                 if ($rootScope.isStatNotAvailable(posts[index]))
                 {
@@ -1618,6 +1655,7 @@ angular.module('starter.controllers', [])
             }
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
+            $scope.loadingNewPost = false;
             $scope.page++;
             $scope.noResult = false;
             if(posts && posts.length == 0){
@@ -1932,7 +1970,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer, Tutorial) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
@@ -1941,6 +1979,9 @@ angular.module('starter.controllers', [])
     $scope.showSample = false;
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
+    $scope.mostRecentPostID = 0;
+    $scope.newPostAvailable = false;
+    $scope.loadingNewPost = false;
 
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email){
@@ -1953,11 +1994,24 @@ angular.module('starter.controllers', [])
 
     Tutorial.triggerIfNotCompleted('tutorial_welcome');
 
-    FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
+    $scope.$on('$ionicView.enter', function() {
+        if($scope.noResult){
+            $scope.loadingNewPost = true;
+            $scope.doRefresh();
+        }
+        if($scope.posts.length > 0){
+            NewPost.isAvailable('explore', $scope.mostRecentPostID).then(function(response){
+                $scope.newPostAvailable = response;
+            });
+        }
+    });
+
+    FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm).then(function(response){
         posts = response.data;
         if(!response.next_page_url){
             $scope.noMoreItemsAvailable = true;
         }
+        $scope.mostRecentPostID = posts[0].id;
         $scope.posts = posts;
         $scope.page++;
         /*
@@ -1975,7 +2029,7 @@ angular.module('starter.controllers', [])
     });
 
     $scope.loadMore = function() {
-        FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
+        FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -1987,20 +2041,42 @@ angular.module('starter.controllers', [])
             $scope.page++;
         });
     };
+    $scope.loadNewPost = function() {
+        $scope.newPostAvailable = false;
+        $timeout(function() {
+            $ionicScrollDelegate.scrollTop();
+            $scope.loadingNewPost = true;
+            $scope.doRefresh();
+        }, 300);
+    };
+    $scope.scrollDetectWhenNewPostAvailable = function() {
+        if($scope.newPostAvailable){
+            ScrollingDetector.record();
+            if(ScrollingDetector.isGoingDown()){
+                $('#new-post-button.explore').hide();
+            }
+            else{
+                $('#new-post-button.explore').show();
+            }
+        }
+    };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        FetchPosts.new($scope.page, $stateParams.searchTerm).then(function(response){
+        $scope.mostRecentPostID = 0;
+        NewPost.resetFlags('explore');
+        FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
+            $scope.mostRecentPostID = posts[0].id;
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
+            $scope.loadingNewPost = false;
             $scope.page++;
             $scope.noResult = false;
-
             if(posts && posts.length < $rootScope.minimumCountToShowSample){
                 if ($scope.showSample == true)
                 {
@@ -2015,11 +2091,6 @@ angular.module('starter.controllers', [])
                     });
                 }
             }
-/*
-            if(posts && posts.length == 0){
-                $scope.noResult = true;
-            }
-*/
         });
     };
     $scope.submitSearch = function(search_term) {
