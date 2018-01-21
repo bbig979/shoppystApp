@@ -128,7 +128,9 @@
         <ion-nav-buttons side="right">
             <span class="test-scroll" ng-show="ifTestAccount()" ng-click="scroll()">s</span>
             <i class="button button-clear icon ion-ios-more" ng-show="ifOthersProfile()" ng-click="openOthersProfileMenu()"></i>
-            <i class="button button-clear icon fa fa-bell" ng-hide="ifOthersProfile() || ifInNotification()" ng-click="goNotification()"></i>
+            <span class="small-badge" ng-if="notificationCount != 0">{{notificationCount}}</span>
+            <i class="button button-clear icon fa fa-bell" ng-hide="ifOthersProfile() || ifInNotification()" ng-click="goNotification()">
+            </i>
         </ion-nav-buttons>
     </ion-nav-bar>
     <!--

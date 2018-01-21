@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications) {
     $rootScope.clientVersion = '1.0';
     //$rootScope.baseURL = 'http://app.snaplook.today';
     $rootScope.baseURL = 'http://localhost:8000';
@@ -13,8 +13,27 @@ angular.module('starter.controllers', [])
     $rootScope.postTrackArray = [];
     $rootScope.userTrackArray = [];
     $rootScope.currentUser = null;
+    $rootScope.notificationCount = "0";
+
+    $rootScope.getNotification = function() {
+        if ($rootScope.currentUser)
+        {
+            var user = $rootScope.getCurrentUser();
+            FetchNotifications.count(user.slug).then(function(response){
+                $rootScope.notificationCount = (response >= 10 ? "9+" : (response ? response : 0));
+            });            
+        }
+    }
+    setInterval(function() {$rootScope.getNotification();}, 5000);
 
     $rootScope.goNotification = function() {
+        var user = $rootScope.getCurrentUser();
+        $http.get($rootScope.baseURL+'/api/user/'+user.slug+'/notification/open').success(function(){
+            $rootScope.notificationCount = "0";
+        })
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
+        });
         $state.go('tab.notification');
     }
     $rootScope.ifInNotification = function() {
