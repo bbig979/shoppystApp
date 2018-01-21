@@ -25,18 +25,6 @@ angular.module('starter.services', [])
         }
     };
 }])
-.factory('FetchSearchResults', function($http, $rootScope) {
-    return {
-        get: function(searchTerm, type){
-            return $http.get($rootScope.baseURL+"/api/search/"+searchTerm+"/"+type).then(function(response){
-                return response.data;
-            }
-            ,function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-    };
-})
 .factory('FetchPosts', function($http, $rootScope) {
     var _addToPostTrackArray = function(pagingInfo) {
         $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
@@ -68,8 +56,8 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        new: function(mostRecentPostID, pg, search_term, search_type){
-            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&search_type="+search_type+"&from_id="+mostRecentPostID).then(function(response){
+        new: function(mostRecentPostID, pg, search_term){
+            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&from_id="+mostRecentPostID).then(function(response){
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
@@ -380,6 +368,9 @@ angular.module('starter.services', [])
     this.isMarkerArrow = function(){
         return _current_tutorial.marker.type == 'arrow';
     }
+    this.isMarkerNone = function(){
+        return _current_tutorial.marker.type == 'none';
+    }
     this.getCustomMarker = function(){
         return _current_tutorial.marker.type;
     }
@@ -413,8 +404,8 @@ angular.module('starter.services', [])
     }
     this.isHighlightNeeded = function(){
         return (
-            typeof _current_tutorial.highlight !== 'undefined' &&
-            _current_tutorial.highlight
+            typeof _current_tutorial.marker.highlight !== 'undefined' &&
+            _current_tutorial.marker.highlight
         )
     }
 })

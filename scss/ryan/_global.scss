@@ -166,6 +166,16 @@ a{
     #tutorial-curtain.highlight.right-most.top:after {
         right: 0;
     }
+    #tutorial-curtain.highlight.compare-look-sort:after {
+        right: -10vw;
+        top: 30px;
+        content: '';
+        position: absolute;
+        border-radius: 100%;
+        width: 340px;
+        height: 115px;
+        box-shadow: 0px 0px 100px 5000px #000;
+    }
     #tutorial-marker{
         color: white;
         z-index: 11;
@@ -228,6 +238,9 @@ a{
         }
         #tutorial-curtain.highlight.top:after {
             top: 22px;
+        }
+        #tutorial-curtain.highlight.compare-look-sort:after {
+            top: 50px;
         }
     }
 }
