@@ -341,12 +341,8 @@
 }
 /* line 29, ../../scss/tw/_compare.scss */
 #compare .item .partial_likes {
-  position: absolute;
-  top: 7px;
-  right: 7px;
   color: #fff;
-  background-color: #000;
-  opacity: 0.5;
+  background-color: #ff4b61;
   padding: 1px 7px 1px 7px;
   text-align: center;
   font-size: 13px;
@@ -356,7 +352,7 @@
   border-radius: 25px;
   background-clip: padding-box;
 }
-/* line 42, ../../scss/tw/_compare.scss */
+/* line 38, ../../scss/tw/_compare.scss */
 #compare .sort {
   margin-bottom: 0;
 }

@@ -111,8 +111,8 @@ angular.module('starter.services', [])
 })
 .factory('FetchShareLink', function($http, $rootScope) {
     return {
-        get: function(postIDArray) {
-            return $http.get($rootScope.baseURL+"/api/compare/"+postIDArray.join(",")+'/share').then(function(response){
+        get: function(post_id_csv) {
+            return $http.get($rootScope.baseURL+"/api/compare/"+post_id_csv+'/share').then(function(response){
                 return response.data;
             }
             ,function(response){
@@ -748,6 +748,84 @@ console.log(_post_array);
                 return 'total_age_group';
             }
             return 'total_gender';
+        }
+    }
+})
+.factory('ComparePostSet', function($http, FetchPosts, FetchShareLink, $q){
+    return {
+        share: function(post_id_csv){
+            var deferred = $q.defer();
+            FetchShareLink.get(post_id_csv).then(function(response){
+                deferred.resolve(response);
+            });
+            return deferred.promise;
+        },
+        sort: function(gender, age_group, post_array){
+            var this_factory = this;
+            var target_key = this_factory._getTargetKeyForPostAnalytic(gender, age_group);
+            post_array.sort(function(a, b){
+                var keyA = parseInt(a.post_analytic[0][target_key]);
+                var keyB = parseInt(b.post_analytic[0][target_key]);
+                if(keyA < keyB) return 1;
+                if(keyA > keyB) return -1;
+                return 0;
+            });
+        },
+        partialLikes: function(filter_gender, filter_age_group, post_id, post_array){
+            var target_key = this._getTargetKeyForPostAnalytic(filter_gender, filter_age_group);
+            for(var i = 0; i < post_array.length; i++){
+                this_post = post_array[i];
+                if(post_id == this_post.id){
+                    return this_post.post_analytic[0][target_key];
+                }
+            }
+        },
+        fetch: function(post_id_array){
+            var deferred = $q.defer();
+            var this_factory = this;
+            FetchPosts.compare(post_id_array).then(function(response){
+                post_array = response;
+                for (index = 0; index < post_array.length; ++index) {
+                    this_factory._setTotalFieldsInPostAnalytic(post_array[index]);
+                }
+                deferred.resolve(post_array);
+            });
+            return deferred.promise;
+        },
+        _setPlaceHolderIfPostAnalyticIsEmpty: function(post_analytic){
+            if(post_analytic[0] === undefined){
+                post_analytic[0] = [];
+            }
+        },
+        _setTotalFieldsInPostAnalytic: function(post){
+            post_analytic = post.post_analytic;
+            this._setPlaceHolderIfPostAnalyticIsEmpty(post_analytic);
+            post_analytic[0].dummy_total_key = 1;
+            post_analytic[0].total_all = post.like_count;
+            post_analytic[0].total_gender =
+                post_analytic[0].male +
+                post_analytic[0].female;
+            post_analytic[0].total_age_group =
+                post_analytic[0].teens +
+                post_analytic[0].twenties +
+                post_analytic[0].thirties +
+                post_analytic[0].forties +
+                post_analytic[0].fifties;
+        },
+        _getTargetKeyForPostAnalytic: function(gender, age_group){
+            if(gender == 'friends'){
+                return gender;
+            }
+            if(gender == 'all' && age_group == 'all'){
+                return 'total_all';
+            }
+            if(gender == 'all' && age_group != 'all'){
+                return age_group;
+            }
+            if(gender != 'all' && age_group == 'all'){
+                return gender;
+            }
+            return gender + '_' + age_group;
         }
     }
 });

@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp) {
     $rootScope.clientVersion = '1.0';
     $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
@@ -25,22 +25,14 @@ angular.module('starter.controllers', [])
         return false;
     }
     $rootScope.ifInCompare = function() {
-        if($state.current.name == 'tab.compare'){
+        if($state.current.name.indexOf('post-compare') > -1){
             return true;
         }
         return false;
     }
     $rootScope.shareCompare = function() {
-        if(ComparePosts.isAnyPostExpired()){
-            $rootScope.popupMessage('Oops', 'You cannot share a look that is private');
-            return;
-        }
-        if(ComparePosts.length() < 2){
-            $rootScope.popupMessage('Oops', 'You need at least 2 looks to share');
-            return;
-        }
         $ionicLoading.show();
-        ComparePosts.share().then(function(hash){
+        ComparePostSet.share($stateParams.postIds).then(function(hash){
             if(hash){
                 var options = {
                     message: 'which looks better?',
@@ -115,6 +107,10 @@ angular.module('starter.controllers', [])
         }
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-detail-'+tab,{postId: id, user: user, posts: posts, index: index});
+    };
+    $rootScope.goPostCompare = function(ids, is_my_post_compare = false){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.post-compare-'+tab,{postIds: ids, isMyPostCompare: is_my_post_compare});
     };
     $rootScope.goPostLikers = function(id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -294,6 +290,9 @@ angular.module('starter.controllers', [])
         }
         return false;
     };
+    $rootScope.ifMyPostCompare = function(){
+        return $stateParams.isMyPostCompare == 'true';
+    }
     $rootScope.getMaxStat = function(stat, index) {
         if (stat === undefined || stat.length == 0)
         {
@@ -2164,6 +2163,80 @@ angular.module('starter.controllers', [])
     $scope.setAge = function(age) {
         $scope.age_active = age;
         $scope.sortPosts($scope.gender_active , $scope.age_active );
+    }
+})
+.controller('PostCompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePostSet, $ionicLoading, PostTimer, $stateParams, Tutorial) {
+    var user = $rootScope.getCurrentUser();
+    $scope.showInstruction = true;
+    $scope.comparePostSet = ComparePostSet;
+    $scope.postTimer = PostTimer;
+    $scope.gender_active = 'all';
+    $scope.age_active = 'all';
+    $scope.post_id_array = $stateParams.postIds.split(',');
+    $scope.post_array = [];
+/*
+ * option 1
+ * refresh as sort + refresh as enter view
+ *
+    $scope.$on('$ionicView.enter', function() {
+        $scope.sortPosts($scope.gender_active, $scope.age_active);
+    });
+    $scope.sortPosts = function(gender, age) {
+        $ionicLoading.show();
+        ComparePostSet.fetch($scope.post_id_array).then(function(post_array) {
+            $scope.post_array = post_array;
+            $ionicLoading.hide();
+            ComparePostSet.sort(gender, age, $scope.post_array);
+        });
+    }
+*/
+/*
+ * option 2
+ * refresh as enter view
+ *
+    $scope.$on('$ionicView.enter', function() {
+        $ionicLoading.show();
+        ComparePostSet.fetch($scope.post_id_array).then(function(post_array) {
+            $scope.post_array = post_array;
+            $ionicLoading.hide();
+            ComparePostSet.sort($scope.gender_active, $scope.age_active, $scope.post_array);
+        });
+    });
+    $scope.sortPosts = function(gender, age) {
+        ComparePostSet.sort(gender, age, $scope.post_array);
+    }
+*/
+/*
+ * option 3
+ * refresh as enter once
+ */
+    $ionicLoading.show();
+    ComparePostSet.fetch($scope.post_id_array).then(function(post_array) {
+        $scope.post_array = post_array;
+        $ionicLoading.hide();
+        ComparePostSet.sort($scope.gender_active, $scope.age_active, $scope.post_array);
+    });
+    $scope.sortPosts = function(gender, age) {
+        ComparePostSet.sort(gender, age, $scope.post_array);
+    }
+
+    $scope.notMe = function(post) {
+        return (post.user.id != user.id);
+    }
+    $scope.doRefresh = function(){
+        ComparePostSet.fetch($scope.post_id_array).then(function(post_array) {
+            $scope.post_array = post_array;
+            $scope.$broadcast('scroll.refreshComplete');
+            ComparePostSet.sort($scope.gender_active, $scope.age_active, $scope.post_array);
+        });
+    }
+    $scope.setGender = function(gender) {
+        $scope.gender_active = gender;
+        $scope.sortPosts($scope.gender_active, $scope.age_active);
+    }
+    $scope.setAge = function(age) {
+        $scope.age_active = age;
+        $scope.sortPosts($scope.gender_active , $scope.age_active);
     }
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {

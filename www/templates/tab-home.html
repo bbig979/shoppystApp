@@ -36,7 +36,7 @@
                         <button class= "button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
                         <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="commentsPage(post.id)"></button>
                         <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption(post.id)"></button>
-                        <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : comparePosts.has(post.id), 'ion-plus' : !comparePosts.has(post.id)}" ng-click="comparePosts.toggle(post.id)"></button>
+                        <button class="button button-clear button-dark icon ion-ios-browsers-outline" ng-click="goPostCompare(post.set_ids)"></button>
                     </div>
                     <hr size="1" color="#e7e7e7">
                     <div class="analytics-group" ng-show="post.show_stat">

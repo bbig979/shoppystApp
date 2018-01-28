@@ -106,6 +106,44 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            refresh: null
         }
     })
+
+    .state('tab.post-compare-home', {
+       url: '/post/compare/:postIds/home/:isMyPostCompare',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/post-compare.html',
+               controller: 'PostCompareCtrl'
+           }
+       }
+    })
+    .state('tab.post-compare-explore', {
+       url: '/post/compare/:postIds/explore/:isMyPostCompare',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/post-compare.html',
+               controller: 'PostCompareCtrl'
+           }
+       }
+    })
+    .state('tab.post-compare-notification', {
+       url: '/post/compare/:postIds/notification/:isMyPostCompare',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/post-compare.html',
+               controller: 'PostCompareCtrl'
+           }
+       }
+    })
+    .state('tab.post-compare-account', {
+       url: '/post/compare/:postIds/account/:isMyPostCompare',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/post-compare.html',
+               controller: 'PostCompareCtrl'
+           }
+       }
+    })
+
     .state('tab.post-detail-home', {
        url: '/post/:postId/home',
        views: {

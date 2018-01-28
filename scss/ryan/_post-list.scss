@@ -28,7 +28,7 @@
     }
     .add_to_compare{
       position: absolute;
-      bottom: 5px;
+      bottom: 10px;
       right: 8px;
     }
     .like-button{
@@ -55,9 +55,6 @@
     }
     .add-compare-button {
       float: right;
-      background-color: #FF4C62;
-      border-color: #FF4C62;
-      color: #fff;
       min-width: 20px;
       min-height: 21px;
       height: 21px;
@@ -66,7 +63,6 @@
     }
     .add-compare-button:before {
       line-height: 20px;
-      font-size: 13px;
     }
     .button.button-dark.button-clear.ion-ios-heart {
       color: #FF4C62;

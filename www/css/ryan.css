@@ -3303,7 +3303,7 @@
 /* line 29, ../../scss/ryan/_post-list.scss */
 .post-list .post .add_to_compare {
   position: absolute;
-  bottom: 5px;
+  bottom: 10px;
   right: 8px;
 }
 /* line 34, ../../scss/ryan/_post-list.scss */
@@ -3338,21 +3338,17 @@
 /* line 56, ../../scss/ryan/_post-list.scss */
 .post-list .post .add-compare-button {
   float: right;
-  background-color: #FF4C62;
-  border-color: #FF4C62;
-  color: #fff;
   min-width: 20px;
   min-height: 21px;
   height: 21px;
   padding-right: 6px;
   margin-right: 6px;
 }
-/* line 67, ../../scss/ryan/_post-list.scss */
+/* line 64, ../../scss/ryan/_post-list.scss */
 .post-list .post .add-compare-button:before {
   line-height: 20px;
-  font-size: 13px;
 }
-/* line 71, ../../scss/ryan/_post-list.scss */
+/* line 67, ../../scss/ryan/_post-list.scss */
 .post-list .post .button.button-dark.button-clear.ion-ios-heart {
   color: #FF4C62;
 }
