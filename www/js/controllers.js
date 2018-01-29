@@ -79,13 +79,13 @@ angular.module('starter.controllers', [])
             case 1:
                 tab = 'home';
                 break;
+            case 2:
+                tab = 'camera';
+                break;
             case 3:
                 tab = 'notification';
                 break;
             case 4:
-                tab = 'compare';
-                break;
-            case 5:
                 tab = 'account';
                 break;
             default:

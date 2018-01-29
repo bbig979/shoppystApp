@@ -23,10 +23,7 @@ ion-tabs .tab-item {
 .tab-item[icon-on=ion-camera].tab-item-active{
   color: #FF7167;
 }
-.tab-item[icon-on=ion-ios-bell]{
-  display: none;
-}
-.tab-item[icon-on=ion-podium].tab-item-active {
+.tab-item[icon-on=ion-ios-bell].tab-item-active{
   color: #FF4B62;
 }
 .tab-item[icon-on=ion-android-person].tab-item-active{
