@@ -764,11 +764,13 @@ console.log(_post_array);
             var this_factory = this;
             var target_key = this_factory._getTargetKeyForPostAnalytic(gender, age_group);
             post_array.sort(function(a, b){
-                var keyA = parseInt(a.post_analytic[0][target_key]);
-                var keyB = parseInt(b.post_analytic[0][target_key]);
-                if(keyA < keyB) return 1;
-                if(keyA > keyB) return -1;
-                return 0;
+                if(a.post_analytic[0][target_key] == b.post_analytic[0][target_key]){
+                    if(a.like_count == b.like_count){
+                        return parseInt(a.id) < parseInt(b.id) ? 1 : -1;
+                    }
+                    return parseInt(a.like_count) < parseInt(b.like_count) ? 1 : -1;
+                }
+                return parseInt(a.post_analytic[0][target_key]) < parseInt(b.post_analytic[0][target_key]) ? 1 : -1;
             });
         },
         partialLikes: function(filter_gender, filter_age_group, post_id, post_array){
