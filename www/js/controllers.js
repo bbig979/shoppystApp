@@ -982,7 +982,7 @@ angular.module('starter.controllers', [])
         }
     };
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, ComparePosts, CameraPictues, $timeout) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout) {
     $scope.submitted = false;
     $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
@@ -1023,6 +1023,7 @@ angular.module('starter.controllers', [])
         var fileURLs = CameraPictues.get();
         var uploadTryCount = 0;
         var uploadSuccessCount = 0;
+        var postIdArray = [];
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
@@ -1037,26 +1038,27 @@ angular.module('starter.controllers', [])
 
         // Transfer succeeded
         function success(r) {
+            var result = JSON.parse(r.response);
             uploadTryCount++;
             uploadSuccessCount++;
-            var result = JSON.parse(r.response);
-            if(uploadSuccessCount == 1){
-                ComparePosts.reset();
+            if(typeof result.id !== 'undefined'){
+                postIdArray.push(result.id);
             }
-            ComparePosts.toggle(result.id);
             if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
                 $ionicLoading.show({
                     template: 'Upload Success ( ' + uploadSuccessCount + ' / ' + uploadTryCount + ' )',
                     duration:500
                 });
+                $http.post($rootScope.baseURL+'/api/compare/'+postIdArray.join(',')+'/create');
                 $scope.submitted = false;
                 share_post_scope.occasion = undefined;
                 share_post_scope.captions = undefined;
                 uploadTryCount = 0;
                 uploadSuccessCount = 0;
+                postIdArray = [];
                 $timeout(function(){
                     CameraPictues.reset();
-                    $state.go('tab.compare', {isThisAfterShare: true});
+                    $state.go('tab.account-account', {refresh: true});
                 }, 500);
             }
         }
