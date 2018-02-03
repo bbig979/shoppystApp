@@ -154,6 +154,7 @@
             'right-most': tutorial.getHorizontalPosition() == 'right-most',
             'top': tutorial.getVerticalPosition() == 'top',
             'bottom': tutorial.getVerticalPosition() == 'bottom',
+            'compare-look-sort' : tutorial.getVerticalPosition() == 'compare-look-sort',
             'highlight' : tutorial.isHighlightNeeded(),
             'non-highlight' : !tutorial.isHighlightNeeded()
         }">
@@ -167,8 +168,8 @@
             'top': tutorial.getVerticalPosition() == 'top',
             'bottom': tutorial.getVerticalPosition() == 'bottom'
         }">
-            <img src="img/tutorial_arrow.png" style="width: 30vw;" ng-show="tutorial.isMarkerArrow()">
-            <img src="img/{{ tutorial.getCustomMarker() }}" style="width: 17vw;" ng-show="!tutorial.isMarkerArrow()">
+            <img src="img/tutorial_arrow.png" style="width: 30vw;" ng-show="tutorial.isMarkerArrow() && !tutorial.isMarkerNone()">
+            <img src="img/{{ tutorial.getCustomMarker() }}" style="width: 17vw;" ng-show="!tutorial.isMarkerArrow() && !tutorial.isMarkerNone()">
         </div>
     </div>
   </body>

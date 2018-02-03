@@ -3,9 +3,9 @@
         "1" : {
             "title" : "Welcome to Snaplook",
             "message" : "Explore other's looks and give them a like so they can discover which looks better",
-            "highlight" : true,
             "marker" : {
                 "type" : "arrow",
+                "highlight" : true,
                 "position" : {
                     "horizontal" : "left-most",
                     "vertical" : "bottom"
@@ -15,9 +15,9 @@
         "2" : {
             "title" : "Share Your Looks",
             "message" : "Are you shopping? Or Going out on a date? Discover which looks better. Don't be shy. All looks disappear after 24 hours.",
-            "highlight" : true,
             "marker" : {
                 "type" : "arrow",
+                "highlight" : true,
                 "position" : {
                     "horizontal" : "center",
                     "vertical" : "bottom"
@@ -29,9 +29,9 @@
         "1" : {
             "title" : "Great Job!",
             "message" : "Share your looks to your friends and family. Ask them which looks better.",
-            "highlight" : true,
             "marker" : {
                 "type" : "arrow",
+                "highlight" : true,
                 "position" : {
                     "horizontal" : "left-most",
                     "vertical" : "top"
@@ -41,9 +41,9 @@
         "2" : {
             "title" : "Pull to Refresh",
             "message" : "Now your looks are public for 24 hours. Other users will start vote on your looks. Refresh to see updated votes.",
-            "highlight" : false,
             "marker" : {
                 "type" : "tutorial_pull_down.png",
+                "highlight" : false,
                 "position" : {
                     "horizontal" : "center",
                     "vertical" : "top"
@@ -51,11 +51,23 @@
             }
         },
         "3" : {
+            "title" : "Sort by Attractiveness",
+            "message" : "Discover Which look appeals to which group. The most appealing look goes on top and the least goes on bottom.",
+            "marker" : {
+                "type" : "none",
+                "highlight" : true,
+                "position" : {
+                    "horizontal" : "compare-look-sort",
+                    "vertical" : "compare-look-sort"
+                }
+            }
+        },
+        "4" : {
             "title" : "Come Back Any Time",
             "message" : "While you are waiting, try vote on other's look. You can come back any time to see which looks better.",
-            "highlight" : true,
             "marker" : {
                 "type" : "arrow",
+                "highlight" : true,
                 "position" : {
                     "horizontal" : "right-center",
                     "vertical" : "bottom"
