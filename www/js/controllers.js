@@ -1,8 +1,8 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePosts, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications) {
     $rootScope.clientVersion = '1.0';
-    //$rootScope.baseURL = 'http://app.snaplook.today';
-    $rootScope.baseURL = 'http://localhost:8000';
+    $rootScope.baseURL = 'http://app.snaplook.today';
+    //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
     //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
@@ -1558,20 +1558,36 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, PostTimer) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, PostTimer, NewPost, $ionicScrollDelegate, ScrollingDetector) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
+    $scope.mostRecentPostID = 0;
+    $scope.newPostAvailable = false;
+    $scope.loadingNewPost = false;
 
     var user = $rootScope.getCurrentUser();
 
     $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
 
+    $scope.$on('$ionicView.enter', function() {
+        if($scope.noResult){
+            $scope.loadingNewPost = true;
+            $scope.doRefresh();
+        }
+        if($scope.posts.length > 0){
+            NewPost.isAvailable('following', $scope.mostRecentPostID).then(function(response){
+                $scope.newPostAvailable = response;
+            });
+        }
+    });
+
     if(user || $stateParams.refresh){
-        FetchPosts.following($scope.page).then(function(response){
+        NewPost.resetFlags('following');
+        FetchPosts.following($scope.mostRecentPostID, $scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
                 if ($rootScope.isStatNotAvailable(posts[index]))
@@ -1586,15 +1602,19 @@ angular.module('starter.controllers', [])
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
-            if(posts && posts.length == 0){
+            if(posts.length == 0){
                 $scope.noResult = true;
+            }
+            else{
+                $scope.noResult = false;
+                $scope.mostRecentPostID = posts[0].id;
             }
             $scope.posts = posts;
             $scope.page++;
         });
     }
     $scope.loadMore = function() {
-        FetchPosts.following($scope.page).then(function(response){
+        FetchPosts.following($scope.mostRecentPostID, $scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
                 if ($rootScope.isStatNotAvailable(posts[index]))
@@ -1616,10 +1636,29 @@ angular.module('starter.controllers', [])
             $scope.page++;
         });
     };
+    $scope.loadNewPost = function() {
+        $ionicScrollDelegate.scrollTop();
+        $scope.loadingNewPost = true;
+        $scope.newPostAvailable = false;
+        $scope.doRefresh();
+    };
+    $scope.scrollDetectWhenNewPostAvailable = function() {
+        if($scope.newPostAvailable){
+            ScrollingDetector.record();
+            if(ScrollingDetector.isGoingDown()){
+                $('#new-post-button.following').hide();
+            }
+            else{
+                $('#new-post-button.following').show();
+            }
+        }
+    };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        FetchPosts.following($scope.page).then(function(response){
+        $scope.mostRecentPostID = 0;
+        NewPost.resetFlags('following');
+        FetchPosts.following($scope.mostRecentPostID, $scope.page).then(function(response){
             posts = response.data;
             for (index = 0; index < posts.length; ++index) {
                 if ($rootScope.isStatNotAvailable(posts[index]))
@@ -1637,10 +1676,14 @@ angular.module('starter.controllers', [])
             }
             $scope.posts = posts;
             $scope.$broadcast('scroll.refreshComplete');
+            $scope.loadingNewPost = false;
             $scope.page++;
-            $scope.noResult = false;
-            if(posts && posts.length == 0){
+            if(posts.length == 0){
                 $scope.noResult = true;
+            }
+            else{
+                $scope.noResult = false;
+                $scope.mostRecentPostID = posts[0].id;
             }
         });
     };
@@ -1951,28 +1994,18 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, FetchSearchResults, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer, Tutorial) {
-    $scope.search_type_active = "all";
-    $scope.searchType = "tag";
-    $scope.searchHolder = "Search";
-    $scope.searchNoResultText = "No Results Found";
-    if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'occasion')
-    {
-        $scope.searchType = "occasion";
-    }
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector) {
     $scope.tab = $state.current['name'].split("-")[1];
-
     $scope.posts = [];
-    $scope.searchResult = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
-    $scope.isSearchRunning = false;
-    $scope.showSearch = false;
     $scope.noResult = false;
-    $scope.noSearchResult = false;
     $scope.showSample = false;
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
+    $scope.mostRecentPostID = 0;
+    $scope.newPostAvailable = false;
+    $scope.loadingNewPost = false;
 
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email){
@@ -1985,163 +2018,126 @@ angular.module('starter.controllers', [])
 
     Tutorial.triggerIfNotCompleted('tutorial_welcome');
 
-    $scope.showNoSearchResultText = function() {
-        return $scope.searchNoResultText;
-    };
-    $scope.showPlaceHolder = function() {
-        return $scope.searchHolder;
-    };
-    $scope.fetchPost = function(type) {
-        FetchPosts.new($scope.page, $stateParams.searchTerm, $scope.searchType).then(function(response){
+    $scope.$on('$ionicView.enter', function() {
+        if($scope.noResult){
+            $scope.loadingNewPost = true;
+            $scope.doRefresh();
+        }
+        if($scope.posts.length > 0){
+            NewPost.isAvailable('explore', $scope.mostRecentPostID).then(function(response){
+                $scope.newPostAvailable = response;
+            });
+        }
+    });
+
+    FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm).then(function(response){
+        posts = response.data;
+        if(!response.next_page_url){
+            $scope.noMoreItemsAvailable = true;
+        }
+        $scope.posts = posts;
+        $scope.page++;
+        /*
+        if(posts && posts.length < $rootScope.minimumCountToShowSample){
+            $scope.showSample = true;
+            FetchPosts.sample($rootScope.sampleCount).then(function(response){
+                samples = response.data;
+                $scope.samples = samples;
+            });
+        }
+        */
+        if(posts.length == 0){
+            $scope.noResult = true;
+        }
+        else{
+            $scope.noResult = false;
+            $scope.mostRecentPostID = posts[0].id;
+        }
+    });
+
+    $scope.loadMore = function() {
+        FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm).then(function(response){
             posts = response.data;
-            if (type == "new" || type == "refresh")
-            {
-                $scope.posts = posts;
-                $scope.noResult = false;
-                if(posts && posts.length == 0)
-                {
-                    $scope.noResult = true;
-                }
-                $scope.noMoreItemsAvailable = false;
-                /*
-                if(posts && posts.length < $rootScope.minimumCountToShowSample){
-                    if ($scope.showSample != true)
-                    {
-                        $scope.showSample = true;
-                        FetchPosts.sample($rootScope.sampleCount).then(function(response){
-                            samples = response.data;
-                            $scope.samples = samples;
-                        });
-                    }
-                }
-                */
-            }
-            else if (type == "more")
-            {
-                $scope.posts = $scope.posts.concat(posts);
-                $timeout(function() {
-                  $scope.$broadcast('scroll.infiniteScrollComplete');
-                });
-            }
-
-            if (type == "refresh")
-            {
-                $scope.$broadcast('scroll.refreshComplete');
-            }
-
-            if(!response.next_page_url)
-            {
+            if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
+            $scope.posts = $scope.posts.concat(posts);
+            $timeout(function() {
+              $scope.$broadcast('scroll.infiniteScrollComplete');
+            });
             $scope.page++;
         });
     };
-    $scope.fetchPost("new");
-
-    $scope.loadMore = function() {
-        $scope.fetchPost("more");
+    $scope.loadNewPost = function() {
+        $scope.newPostAvailable = false;
+        $timeout(function() {
+            $ionicScrollDelegate.scrollTop();
+            $scope.loadingNewPost = true;
+            $scope.doRefresh();
+        }, 300);
+    };
+    $scope.scrollDetectWhenNewPostAvailable = function() {
+        if($scope.newPostAvailable){
+            ScrollingDetector.record();
+            if(ScrollingDetector.isGoingDown()){
+                $('#new-post-button.explore').hide();
+            }
+            else{
+                $('#new-post-button.explore').show();
+            }
+        }
     };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        $scope.fetchPost("refresh");
+        $scope.mostRecentPostID = 0;
+        NewPost.resetFlags('explore');
+        FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm).then(function(response){
+            posts = response.data;
+            $scope.noMoreItemsAvailable = false;
+            if(!response.next_page_url){
+                $scope.noMoreItemsAvailable = true;
+            }
+            $scope.posts = posts;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.loadingNewPost = false;
+            $scope.page++;
+            if(posts && posts.length < $rootScope.minimumCountToShowSample){
+                if ($scope.showSample == true)
+                {
+                    return;
+                }
+                else
+                {
+                    $scope.showSample = true;
+                    FetchPosts.sample($rootScope.sampleCount).then(function(response){
+                        samples = response.data;
+                        $scope.samples = samples;
+                    });
+                }
+            }
+            if(posts.length == 0){
+                $scope.noResult = true;
+            }
+            else{
+                $scope.noResult = false;
+                $scope.mostRecentPostID = posts[0].id;
+            }
+        });
     };
-    $scope.submitSearch = function(search_term, type = "tag") {
-        $state.go('tab.explore-explore',{searchTerm: search_term.substr(1), type: type});
-    };
-    $scope.goSearchPost = function(search_term, type) {
-        $scope.submitSearch(search_term, type);
+    $scope.submitSearch = function(search_term) {
+        $state.go('tab.explore-explore',{searchTerm: search_term});
     };
     $scope.noSearchTerm = function() {
        return !$stateParams.searchTerm;
     };
-    $scope.showSearchSection = function(){
-        $scope.showSearch = true;
-    }
     $scope.focusSearch = function(){
-        $scope.showSearch = false;
+        Focus('search');
     }
-    $scope.showSearchTerm = function(){
-        var termSign = "#";
-        if ($scope.searchType == "occasion")
-        {
-            termSign = "@";
-        }
+    $scope.tagSearchTerm = function(){
         if($stateParams.searchTerm){
             var temp = $stateParams.searchTerm.split(' ');
-            return termSign+temp.join(' '+termSign);
-        }
-    }
-    $scope.setType = function(searchTerm, type, isRefresh) {
-        if (type == "people")
-        {
-            $scope.searchHolder = "Search people";
-            $scope.searchNoResultText = "No users found.";
-        }
-        else if (type == "tag")
-        {
-            $scope.searchHolder = "Search hashtags";
-            $scope.searchNoResultText = "No hashtags found.";
-        }
-        else if (type == "occasion")
-        {
-            $scope.searchHolder = "Search occasions";
-            $scope.searchNoResultText = "No occasions found.";
-        }
-        else
-        {
-            $scope.searchHolder = "Search";
-            $scope.searchNoResultText = "No Results Found";
-        }
-        $scope.search_type_active = type;
-    };
-    $scope.fetchSearchResult = function(searchTerm, type = null) {
-        $scope.noSearchResult = false;
-        if (searchTerm.length == 0)
-        {
-            $scope.searchResult = [];
-            return;
-        }
-        else if (searchTerm.length == 1 && searchTerm == "#")
-        {
-            if ($scope.search_type_active != "all")
-            {
-                $scope.setType(searchTerm, "tag");
-            }
-            $scope.searchResult = [];
-            return;
-        }
-        else if (searchTerm.length == 1 && searchTerm == "@")
-        {
-            if ($scope.search_type_active != "all")
-            {
-                $scope.setType(searchTerm, "people");
-            }
-            $scope.searchResult = [];
-            return;
-        }
-        else
-        {
-            var term = searchTerm.trim();
-            $scope.showSearch = true;
-            if (type === null)
-            {
-                type = $scope.search_type_active;
-            }
-            if (term[0] == "@" || term[0] == "#")
-            {
-                term = term.substr(1);
-            }
-
-            $scope.isSearchRunning = true;
-            FetchSearchResults.get(term, type).then(function(response){
-                $scope.searchResult = response;
-                $scope.isSearchRunning = false;
-                if ($scope.searchResult === undefined || $scope.searchResult.length == 0)
-                {
-                    $scope.noSearchResult = true;
-                }
-            });
+            return '#'+temp.join(' #');
         }
     }
 })
