@@ -216,6 +216,14 @@ angular.module('starter.services', [])
             ,function(response){
                 $rootScope.handleHttpError(response.data, response.status);
             });
+        },
+        count: function(slug) {
+            return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification/count').then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
         }
     };
 })
