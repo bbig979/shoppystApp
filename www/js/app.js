@@ -35,8 +35,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
-    var baseURL = 'http://app.snaplook.today';
-    //var baseURL = 'http://localhost:8000';
+    //var baseURL = 'http://app.snaplook.today';
+    var baseURL = 'http://localhost:8000';
     //var baseURL = 'http://192.168.56.1:8000';
     //var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
@@ -221,7 +221,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-explore', {
-       url: '/explore/:searchTerm/explore',
+       url: '/explore/:searchTerm/:type/explore',
        views: {
            'tab-explore': {
                templateUrl: 'templates/tab-explore.html',
