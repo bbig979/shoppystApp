@@ -3280,7 +3280,7 @@
 .post-list .post .post_img {
   display: block;
   width: 100%;
-  padding-top: 100%;
+  padding-top: 120%;
 }
 /* line 13, ../../scss/ryan/_post-list.scss */
 .post-list .post ion-item {

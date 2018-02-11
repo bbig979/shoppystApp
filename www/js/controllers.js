@@ -1,10 +1,10 @@
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp) {
     $rootScope.clientVersion = '1.0';
-    $rootScope.baseURL = 'http://app.snaplook.today';
+    //$rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    //$rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -2176,6 +2176,7 @@ angular.module('starter.controllers', [])
     $scope.age_active = 'all';
     $scope.post_id_array = $stateParams.postIds.split(',');
     $scope.post_array = [];
+    $scope.top_post_id;
 /*
  * option 1
  * refresh as sort + refresh as enter view
@@ -2216,10 +2217,12 @@ angular.module('starter.controllers', [])
     ComparePostSet.fetch($scope.post_id_array).then(function(post_array) {
         $scope.post_array = post_array;
         $ionicLoading.hide();
-        ComparePostSet.sort($scope.gender_active, $scope.age_active, $scope.post_array);
+        //ComparePostSet.sort($scope.gender_active, $scope.age_active, $scope.post_array);
+        $scope.top_post_id = ComparePostSet.getTopPostId($scope.gender_active, $scope.age_active, $scope.post_array);
     });
     $scope.sortPosts = function(gender, age) {
-        ComparePostSet.sort(gender, age, $scope.post_array);
+        //ComparePostSet.sort(gender, age, $scope.post_array);
+        $scope.top_post_id = ComparePostSet.getTopPostId(gender, age, $scope.post_array);
     }
 
     $scope.notMe = function(post) {
@@ -2229,7 +2232,8 @@ angular.module('starter.controllers', [])
         ComparePostSet.fetch($scope.post_id_array).then(function(post_array) {
             $scope.post_array = post_array;
             $scope.$broadcast('scroll.refreshComplete');
-            ComparePostSet.sort($scope.gender_active, $scope.age_active, $scope.post_array);
+            //ComparePostSet.sort($scope.gender_active, $scope.age_active, $scope.post_array);
+            $scope.top_post_id = ComparePostSet.getTopPostId($scope.gender_active, $scope.age_active, $scope.post_array);
         });
     }
     $scope.setGender = function(gender) {

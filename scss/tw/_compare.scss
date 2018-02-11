@@ -19,21 +19,43 @@
         border-bottom: 1px solid #eee;
         padding: 2px;
     }
+    .compare-toggle.occasion{
+        margin-right: 5px;
+    }
     .compare-toggle:after{
         content: "";
         display: table;
         clear: both;
     }
+    .post.item{
+        width: 50%;
+    }
     .item{
-        position: relative;
-        .partial_likes{
-            color: #fff;
-            background-color: #ff4b61;
-            padding: 1px 7px 1px 7px;
-            text-align: center;
-            font-size: 13px;
-            @include border-radius(25px);
+        .winner{
+            position: absolute;
+            left: 2vw;
+            top: 2vw;
+            font-size: 10vw;
+            color: #ffffff;
+            border-radius: 50%;
+            border: 1px solid #fff;
+            width: 10vw;
+            height: 10vw;
+            background: #ff245d;
+            padding-left: 3vw;
         }
+        .desc_row{
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            background: #000;
+            background: rgba(0, 0, 0, 0.5);
+            padding-bottom: 5px;
+            position: absolute;
+            bottom: 0;
+        }
+        width: 100%;
+        padding: 0;
     }
     .sort{
         margin-bottom: 0;

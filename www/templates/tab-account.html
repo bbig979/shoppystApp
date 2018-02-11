@@ -19,16 +19,6 @@
                 <div class="account-followers-btn col" ng-click="goAccountFollower(account_info.slug)"><span class="ion-ios-people"></span><br><span class="dynamic-follower-count">{{account_info.follower_count}}</span><br>Followers</div>
                 <div class="account-following-btn col" ng-click="goAccountFollowing(account_info.slug)"><span class="ion-android-person"></span><br><span class="dynamic-following-count">{{account_info.following_count}}</span><br>Following</div>
             </div>
-            <div class="tabs-striped" ng-hide="notMe(account_info)">
-                <div class="tabs">
-                    <a class="tab-item" ng-click="activateTab('new')" ng-class="{'activatedd' : activatedTab == 'new' }">
-                        New
-                    </a>
-                    <a class="tab-item" ng-click="activateTab('best')" ng-class="{'activatedd' : activatedTab == 'best' }">
-                        Best
-                    </a>
-                </div>
-            </div>
         </div>
         <div class="no-result" ng-if="noResult">
             No look posted today
@@ -40,11 +30,8 @@
             <div>
                 <ion-item collection-repeat="post in posts" class="post" collection-item-width="'100%'">
                     <div class="entity-id-{{post.id}}">
-                        <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id, account_info, posts, $index)" ng-hide="postTimer.elapsed(post.created_at) && notMe(account_info)">
+                        <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id, account_info, posts, $index)">
                             <a class="post_img"></a>
-                        </ion-item>
-                        <ion-item ng-show="postTimer.elapsed(post.created_at) && notMe(account_info)">
-                            <a class="post_img elapsed"></a>
                         </ion-item>
                         <div>
                             <div class="desc_row">

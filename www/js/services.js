@@ -250,10 +250,7 @@ angular.module('starter.services', [])
         var sec_passed = this._secPassed(created_at);
         var sec_remains = sec_to_expire - sec_passed;
 
-        if(sec_remains < 0){
-            return "fa-eye-slash"
-        }
-        else if(sec_remains / sec_to_expire > two_third){
+        if(sec_remains / sec_to_expire > two_third){
             return "fa-hourglass-start";
         }
         else if(sec_remains / sec_to_expire > one_third){
@@ -267,8 +264,8 @@ angular.module('starter.services', [])
         var sec_passed = this._secPassed(created_at);
         var sec_remains = sec_to_expire - sec_passed;
 
-        if(sec_remains < 0){
-            return 'private';
+        if(sec_remains < 1){
+            return '1m Left';
         }
         if(sec_remains < sec_in_one_hour){
             return Math.floor(sec_remains / sec_in_one_min) + 'm Left';
@@ -781,6 +778,22 @@ console.log(_post_array);
                     return this_post.post_analytic[0][target_key];
                 }
             }
+        },
+        getTopPostId: function(filter_gender, filter_age_group, post_array){
+            var target_key = this._getTargetKeyForPostAnalytic(filter_gender, filter_age_group);
+            var top_like_count = 0;
+            var top_post_id;
+            for(var i = 0; i < post_array.length; i++){
+                this_post = post_array[i];
+                if(top_like_count <= parseInt(this_post.post_analytic[0][target_key])){
+                    top_post_id = this_post.id;
+                    top_like_count = parseInt(this_post.post_analytic[0][target_key]);
+                }
+            }
+            if(top_like_count == 0){
+                return 0;
+            }
+            return top_post_id;
         },
         fetch: function(post_id_array){
             var deferred = $q.defer();

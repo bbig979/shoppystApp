@@ -108,7 +108,6 @@
   margin-right: -5px;
   margin-top: -5px;
   padding-top: 5px;
-  margin-bottom: 20px;
   padding-bottom: 50px;
 }
 /* line 3, ../../scss/tw/_account.scss */
@@ -127,7 +126,7 @@
   margin-bottom: 15px;
   color: #777;
 }
-/* line 28, ../../scss/tw/_account.scss */
+/* line 27, ../../scss/tw/_account.scss */
 #tab-account .account-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -141,75 +140,75 @@
   clear: both;
   margin-top: 20px;
 }
-/* line 42, ../../scss/tw/_account.scss */
+/* line 41, ../../scss/tw/_account.scss */
 #tab-account .user-school {
   text-align: center;
   margin-bottom: 10px;
   text-decoration: underline;
 }
-/* line 48, ../../scss/tw/_account.scss */
+/* line 47, ../../scss/tw/_account.scss */
 #tab-account .user-joined {
   text-align: center;
 }
-/* line 52, ../../scss/tw/_account.scss */
+/* line 51, ../../scss/tw/_account.scss */
 #tab-account .account-option-btn {
   color: white;
   float: right;
   margin-right: 10px;
   font-size: 0.8em;
 }
-/* line 59, ../../scss/tw/_account.scss */
+/* line 58, ../../scss/tw/_account.scss */
 #tab-account .account-achievement {
   margin-top: 10px;
 }
-/* line 62, ../../scss/tw/_account.scss */
+/* line 61, ../../scss/tw/_account.scss */
 #tab-account .account-achievement button {
   color: white;
   line-height: 120%;
   font-weight: 400;
 }
-/* line 68, ../../scss/tw/_account.scss */
+/* line 67, ../../scss/tw/_account.scss */
 #tab-account .account-achievement div {
   color: white;
   line-height: 150%;
   font-size: 1.1em;
 }
-/* line 74, ../../scss/tw/_account.scss */
+/* line 73, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col {
   text-align: center;
 }
-/* line 78, ../../scss/tw/_account.scss */
+/* line 77, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(1) {
   color: #FF4B62;
 }
-/* line 81, ../../scss/tw/_account.scss */
+/* line 80, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(2) {
   color: #FF7167;
 }
-/* line 84, ../../scss/tw/_account.scss */
+/* line 83, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(3) {
   color: #FF986C;
 }
-/* line 87, ../../scss/tw/_account.scss */
+/* line 86, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(4) {
   color: #FFBD71;
 }
-/* line 91, ../../scss/tw/_account.scss */
+/* line 90, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .ion-camera,
 #tab-account .account-achievement .ion-ios-heart,
 #tab-account .account-achievement .ion-ios-people,
 #tab-account .account-achievement .ion-android-person {
   font-size: 1.5em;
 }
-/* line 99, ../../scss/tw/_account.scss */
+/* line 98, ../../scss/tw/_account.scss */
 #tab-account .account-social-network {
   font-size: 0.6em;
 }
-/* line 101, ../../scss/tw/_account.scss */
+/* line 100, ../../scss/tw/_account.scss */
 #tab-account .account-social-network div {
   color: #FF4C62;
 }
-/* line 106, ../../scss/tw/_account.scss */
+/* line 105, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle {
   font-size: 11px;
   float: right;
@@ -221,44 +220,44 @@
   color: #FF4C62;
   width: 90px;
 }
-/* line 117, ../../scss/tw/_account.scss */
+/* line 116, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle:after {
   padding-top: 7px;
   content: "FOLLOW";
 }
-/* line 121, ../../scss/tw/_account.scss */
+/* line 120, ../../scss/tw/_account.scss */
 #tab-account .following {
   background-color: #FF4C62;
   border-color: #FF4C62;
   color: #fff;
 }
-/* line 126, ../../scss/tw/_account.scss */
+/* line 125, ../../scss/tw/_account.scss */
 #tab-account .following:after {
   content: "UNFOLLOW";
 }
-/* line 129, ../../scss/tw/_account.scss */
+/* line 128, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activated {
   margin-top: 0px;
   border-style: solid;
   border-width: 0 0 0 0;
   border-color: #444;
 }
-/* line 135, ../../scss/tw/_account.scss */
+/* line 134, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activatedd {
   margin-bottom: -2px;
   border-style: solid;
   border-width: 0 0 2px 0;
   border-color: #FF4C62;
 }
-/* line 141, ../../scss/tw/_account.scss */
+/* line 140, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tabs {
   border-bottom: 0px solid #ddd;
 }
-/* line 144, ../../scss/tw/_account.scss */
+/* line 143, ../../scss/tw/_account.scss */
 #tab-account ion-list .list {
   margin-top: -15px;
 }
-/* line 148, ../../scss/tw/_account.scss */
+/* line 147, ../../scss/tw/_account.scss */
 #tab-account .profile-post-like-count {
   color: white;
   text-align: right;
@@ -330,29 +329,50 @@
   margin-top: 6px;
 }
 /* line 22, ../../scss/tw/_compare.scss */
+#compare .compare-toggle.occasion {
+  margin-right: 5px;
+}
+/* line 25, ../../scss/tw/_compare.scss */
 #compare .compare-toggle:after {
   content: "";
   display: table;
   clear: both;
 }
-/* line 27, ../../scss/tw/_compare.scss */
+/* line 30, ../../scss/tw/_compare.scss */
+#compare .post.item {
+  width: 50%;
+}
+/* line 33, ../../scss/tw/_compare.scss */
 #compare .item {
-  position: relative;
+  width: 100%;
+  padding: 0;
 }
-/* line 29, ../../scss/tw/_compare.scss */
-#compare .item .partial_likes {
-  color: #fff;
-  background-color: #ff4b61;
-  padding: 1px 7px 1px 7px;
+/* line 34, ../../scss/tw/_compare.scss */
+#compare .item .winner {
+  position: absolute;
+  left: 2vw;
+  top: 2vw;
+  font-size: 10vw;
+  color: #ffffff;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  width: 10vw;
+  height: 10vw;
+  background: #ff245d;
+  padding-left: 3vw;
+}
+/* line 47, ../../scss/tw/_compare.scss */
+#compare .item .desc_row {
+  width: 100%;
   text-align: center;
-  font-size: 13px;
-  -webkit-border-radius: 25px;
-  -moz-border-radius: 25px;
-  -ms-border-radius: 25px;
-  border-radius: 25px;
-  background-clip: padding-box;
+  color: #fff;
+  background: #000;
+  background: rgba(0, 0, 0, 0.5);
+  padding-bottom: 5px;
+  position: absolute;
+  bottom: 0;
 }
-/* line 38, ../../scss/tw/_compare.scss */
+/* line 60, ../../scss/tw/_compare.scss */
 #compare .sort {
   margin-bottom: 0;
 }
