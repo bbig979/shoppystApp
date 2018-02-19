@@ -25,6 +25,18 @@ angular.module('starter.services', [])
         }
     };
 }])
+.factory('FetchSearchResults', function($http, $rootScope) {
+    return {
+        get: function(searchTerm, type){
+            return $http.get($rootScope.baseURL+"/api/search/"+searchTerm+"/"+type).then(function(response){
+                return response.data;
+            }
+            ,function(error){
+                $rootScope.handleHttpError(error);
+            });
+        }
+    };
+})
 .factory('FetchPosts', function($http, $rootScope) {
     var _addToPostTrackArray = function(pagingInfo) {
         $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
@@ -56,8 +68,8 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        new: function(mostRecentPostID, pg, search_term){
-            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&from_id="+mostRecentPostID).then(function(response){
+        new: function(mostRecentPostID, pg, search_term, search_type){
+            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&search_type="+search_type+"&from_id="+mostRecentPostID).then(function(response){
                 _addToPostTrackArray(response.data);
                 return response.data;
             }
@@ -211,6 +223,14 @@ angular.module('starter.services', [])
     return {
         new: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification?page='+pg).then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        count: function(slug) {
+            return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification/count').then(function(response){
                 return response.data;
             }
             ,function(response){

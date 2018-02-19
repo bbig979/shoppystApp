@@ -85,17 +85,17 @@
 /* line 55, ../../scss/tw/_global.scss */
 .small-badge {
   background-color: #FF4C62;
-  border: 2px solid white;
   border-radius: 10px;
   color: white;
   font-size: 0.7em;
   padding: 2px 5px;
   line-height: 100%;
-  height: 18px;
+  height: 16px;
   position: fixed;
-  right: 23vw;
-  top: 5px;
+  right: 1vw;
+  top: 22px;
   z-index: 10000;
+  line-height: 130%;
 }
 
 /* line 2, ../../scss/tw/_account.scss */
@@ -264,44 +264,108 @@
 }
 
 /* line 2, ../../scss/tw/_explore.scss */
+#tab-explore .compare-toggle {
+  border-bottom: 1px solid #eee;
+}
+/* line 3, ../../scss/tw/_explore.scss */
+#tab-explore .compare-toggle a {
+  padding: 10px;
+  float: left;
+  text-transform: uppercase;
+  width: 25%;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+/* line 12, ../../scss/tw/_explore.scss */
+#tab-explore .compare-toggle .active {
+  background-color: #FF4C62;
+  color: white;
+  font-weight: 500;
+  padding: 4px 10px;
+  margin-top: 1px;
+  padding-top: 8px;
+  padding-bottom: 10px;
+}
+/* line 25, ../../scss/tw/_explore.scss */
+#tab-explore .search-running {
+  clear: both;
+  padding: 15px;
+  min-height: 55px;
+}
+/* line 30, ../../scss/tw/_explore.scss */
+#tab-explore .search-running i {
+  padding: 0px 5px;
+  margin-right: 8px;
+}
+/* line 36, ../../scss/tw/_explore.scss */
 #tab-explore .desc_top_row {
   height: 30px;
   padding: 5px;
   border-bottom: 1px solid #ddd;
 }
-/* line 7, ../../scss/tw/_explore.scss */
+/* line 41, ../../scss/tw/_explore.scss */
 #tab-explore .desc_top_row .desc_stat {
   font-size: 13px;
   color: #bbb;
   position: relative;
   top: -3px;
 }
-/* line 14, ../../scss/tw/_explore.scss */
+/* line 48, ../../scss/tw/_explore.scss */
 #tab-explore .desc_top_row .desc_stat .fa {
   font-size: 1.4em;
   position: relative;
   top: 3px;
 }
-/* line 21, ../../scss/tw/_explore.scss */
+/* line 55, ../../scss/tw/_explore.scss */
 #tab-explore .desc_bottom_row {
   height: 30px;
   padding: 5px;
 }
-/* line 25, ../../scss/tw/_explore.scss */
+/* line 59, ../../scss/tw/_explore.scss */
 #tab-explore .desc_bottom_row .desc_time {
   float: right;
   font-size: 13px;
   color: #bbb;
 }
-/* line 30, ../../scss/tw/_explore.scss */
+/* line 64, ../../scss/tw/_explore.scss */
 #tab-explore .desc_bottom_row .desc_time i.fa {
   margin-right: 2px;
 }
-/* line 35, ../../scss/tw/_explore.scss */
+/* line 69, ../../scss/tw/_explore.scss */
 #tab-explore .desc_bottom_row .desc_name {
   font-size: 13px;
   font-weight: bold;
   color: #FF4C62;
+}
+/* line 78, ../../scss/tw/_explore.scss */
+#tab-explore .explore-search .post .post-item {
+  padding: 4px;
+  min-height: 55px;
+}
+/* line 82, ../../scss/tw/_explore.scss */
+#tab-explore .explore-search .post .post-item .name {
+  font-size: 12px;
+  float: left;
+  padding-top: 14px;
+}
+/* line 87, ../../scss/tw/_explore.scss */
+#tab-explore .explore-search .post .post-item .profile-image {
+  float: left;
+  margin: 10px;
+}
+/* line 92, ../../scss/tw/_explore.scss */
+#tab-explore .explore-search .post .post-item .tag_sign {
+  float: left;
+  color: #cdcdcd;
+  margin: 14px 10px;
+  font-size: 1.0em;
+}
+/* line 99, ../../scss/tw/_explore.scss */
+#tab-explore .explore-search .post .post-item .at_sign {
+  float: left;
+  color: #cdcdcd;
+  margin: 14px 16px;
+  font-size: 1.4em;
 }
 
 /* line 2, ../../scss/tw/_compare.scss */

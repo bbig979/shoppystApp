@@ -259,7 +259,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-explore', {
-       url: '/explore/:searchTerm/explore',
+       url: '/explore/:searchTerm/:type/explore',
        views: {
            'tab-explore': {
                templateUrl: 'templates/tab-explore.html',
