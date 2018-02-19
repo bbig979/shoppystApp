@@ -1,20 +1,8 @@
 {
     "tutorial_welcome" : {
         "1" : {
-            "title" : "Welcome to Snaplook",
-            "message" : "Explore other's looks and give them a like so they can discover which looks better",
-            "marker" : {
-                "type" : "arrow",
-                "highlight" : true,
-                "position" : {
-                    "horizontal" : "left-most",
-                    "vertical" : "bottom"
-                }
-            }
-        },
-        "2" : {
             "title" : "Share Your Looks",
-            "message" : "Are you shopping? Or Going out on a date? Discover which looks better. Don't be shy. All looks disappear after 24 hours.",
+            "message" : "Are you shopping? Getting ready for a date? Get people's opinion on which outfit looks better. Don't be shy. All looks disappear after 24 hours.",
             "marker" : {
                 "type" : "arrow",
                 "highlight" : true,
@@ -23,24 +11,50 @@
                     "vertical" : "bottom"
                 }
             }
-        }
-    },
-    "tutorial_first_compare" : {
-        "1" : {
-            "title" : "Great Job!",
-            "message" : "Share your looks to your friends and family. Ask them which looks better.",
+        },
+        "2" : {
+            "title" : "Browse Others' Looks",
+            "message" : "Share your fashion sense, and give feedback to others on their looks.",
             "marker" : {
                 "type" : "arrow",
                 "highlight" : true,
                 "position" : {
                     "horizontal" : "left-most",
+                    "vertical" : "bottom"
+                }
+            }
+        }
+    },
+    "tutorial_first_share" : {
+        "1" : {
+            "title" : "Great Job!",
+            "message" : "See a collection of looks that are being compared.",
+            "marker" : {
+                "type" : "arrow",
+                "highlight" : true,
+                "position" : {
+                    "horizontal" : "first-share-compare",
+                    "vertical" : "first-share-compare"
+                }
+            }
+        }
+    },
+    "tutorial_first_compare" : {
+        "1" : {
+            "title" : "Need Feedback ASAP?",
+            "message" : "Share your looks with your friends and family, and get their feedback.",
+            "marker" : {
+                "type" : "arrow",
+                "highlight" : true,
+                "position" : {
+                    "horizontal" : "right-most",
                     "vertical" : "top"
                 }
             }
         },
         "2" : {
             "title" : "Pull to Refresh",
-            "message" : "Now your looks are public for 24 hours. Other users will start vote on your looks. Refresh to see updated votes.",
+            "message" : "Now your looks are public for 24 hours. Other users will start to vote on your looks. Refresh to see updated votes.",
             "marker" : {
                 "type" : "tutorial_pull_down.png",
                 "highlight" : false,
@@ -51,8 +65,8 @@
             }
         },
         "3" : {
-            "title" : "Sort by Attractiveness",
-            "message" : "Discover Which look appeals to which group. The most appealing look goes on top and the least goes on bottom.",
+            "title" : "Filter by Age and Gender",
+            "message" : "Get the opinion of the group that matters to you. For example, getting ready for a specific occasion? Select the age and gender of those you want to impress.",
             "marker" : {
                 "type" : "none",
                 "highlight" : true,
@@ -64,13 +78,13 @@
         },
         "4" : {
             "title" : "Come Back Any Time",
-            "message" : "While you are waiting, try vote on other's look. You can come back any time to see which looks better.",
+            "message" : "While you are waiting, vote on other people's looks and give them your opinion.",
             "marker" : {
-                "type" : "arrow",
-                "highlight" : true,
+                "type" : "none",
+                "highlight" : false,
                 "position" : {
-                    "horizontal" : "right-center",
-                    "vertical" : "bottom"
+                    "horizontal" : "",
+                    "vertical" : ""
                 }
             }
         }

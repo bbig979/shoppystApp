@@ -176,6 +176,10 @@ a{
         height: 115px;
         box-shadow: 0px 0px 100px 5000px #000;
     }
+    #tutorial-curtain.highlight.first-share-compare:after {
+        top: calc(375px + 50vw);
+        right: 10px;
+    }
     #tutorial-marker{
         color: white;
         z-index: 11;
@@ -218,6 +222,11 @@ a{
     #tutorial-marker.right-most.top {
         @include rotate(171deg);
         right: 6vw;
+    }
+    #tutorial-marker.first-share-compare {
+        @include rotate(270deg);
+        top: calc(280px + 50vw);
+        right: 35px;
     }
     #tutorial-go-back {
         position: fixed;

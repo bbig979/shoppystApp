@@ -25,6 +25,9 @@
             <a class="active">Party</a>
             <div class="clearfix"></div>
         </div>
+        <div class="expired-message" ng-show="post_array.length == 0">
+            Snaplooks have disappeared.
+        </div>
         <ion-list>
             <div>
                 <ion-item ng-repeat="post in post_array" class="post item post_{{post.id}}">

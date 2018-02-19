@@ -376,6 +376,13 @@
 #compare .sort {
   margin-bottom: 0;
 }
+/* line 63, ../../scss/tw/_compare.scss */
+#compare .expired-message {
+  background-color: #fff;
+  padding: 70px 0 70px 0;
+  text-align: center;
+  color: #333;
+}
 
 /* line 3, ../../scss/tw/_find-friends.scss */
 .find-friends ion-content .item {

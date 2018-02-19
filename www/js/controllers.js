@@ -1058,7 +1058,7 @@ angular.module('starter.controllers', [])
                 postIdArray = [];
                 $timeout(function(){
                     CameraPictues.reset();
-                    $state.go('tab.account-account', {refresh: true});
+                    $state.go('tab.account-account', {refresh: true, isThisAfterShare: true});
                 }, 500);
             }
         }
@@ -2127,6 +2127,7 @@ angular.module('starter.controllers', [])
 .controller('TabCtrl', function($scope, ComparePosts) {
     $scope.comparePosts = ComparePosts;
 })
+/*
 .controller('CompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePosts, $ionicLoading, PostTimer, $stateParams, Tutorial) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
@@ -2167,6 +2168,7 @@ angular.module('starter.controllers', [])
         $scope.sortPosts($scope.gender_active , $scope.age_active );
     }
 })
+*/
 .controller('PostCompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePostSet, $ionicLoading, PostTimer, $stateParams, Tutorial) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
@@ -2175,7 +2177,7 @@ angular.module('starter.controllers', [])
     $scope.gender_active = 'all';
     $scope.age_active = 'all';
     $scope.post_id_array = $stateParams.postIds.split(',');
-    $scope.post_array = [];
+    $scope.post_array = null;
     $scope.top_post_id;
 /*
  * option 1
@@ -2213,6 +2215,11 @@ angular.module('starter.controllers', [])
  * option 3
  * refresh as enter once
  */
+
+    if($stateParams.isMyPostCompare == 'true'){
+        Tutorial.triggerIfNotCompleted('tutorial_first_compare');
+    }
+
     $ionicLoading.show();
     ComparePostSet.fetch($scope.post_id_array).then(function(post_array) {
         $scope.post_array = post_array;
@@ -2335,7 +2342,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, PostTimer) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, PostTimer, Tutorial) {
     var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;
@@ -2347,6 +2354,10 @@ angular.module('starter.controllers', [])
     $scope.activatedTab = 'new';
     $scope.comparePosts = ComparePosts;
     $scope.postTimer = PostTimer;
+
+    if($stateParams.isThisAfterShare){
+        Tutorial.triggerIfNotCompleted('tutorial_first_share');
+    }
 
     if ($stateParams.activateTab) {
         $scope.activatedTab = $stateParams.activateTab;

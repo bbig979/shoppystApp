@@ -235,7 +235,8 @@ angular.module('starter.services', [])
     };
 })
 .service('PostTimer', function(){
-    const sec_to_expire = 60 * 60 * 24;
+    const sec_in_one_week = 60 * 60 * 24 * 7
+    const sec_in_one_day = 60 * 60 * 24;
     const sec_in_one_hour = 60 * 60;
     const sec_in_one_min = 60;
     const two_third = 2/3;
@@ -244,28 +245,32 @@ angular.module('starter.services', [])
     this.elapsed = function(created_at){
         // @todo delete line below before launch
         return false;
-        return this._secPassed(created_at) > sec_to_expire;
+        return this._secPassed(created_at) > sec_in_one_day;
     }
     this.icon = function(created_at){
         var sec_passed = this._secPassed(created_at);
-        var sec_remains = sec_to_expire - sec_passed;
+        var sec_remains = sec_in_one_day - sec_passed;
 
-        if(sec_remains / sec_to_expire > two_third){
+        if(sec_remains < 0){
+            return "fa-calendar";
+        }
+        if(sec_remains / sec_in_one_day > two_third){
             return "fa-hourglass-start";
         }
-        else if(sec_remains / sec_to_expire > one_third){
+        if(sec_remains / sec_in_one_day > one_third){
             return "fa-hourglass-half";
         }
-        else{
-            return "fa-hourglass-end";
-        }
+        return "fa-hourglass-end";
     }
     this.timeLeft = function(created_at){
         var sec_passed = this._secPassed(created_at);
-        var sec_remains = sec_to_expire - sec_passed;
+        var sec_remains = sec_in_one_day - sec_passed;
 
-        if(sec_remains < 1){
-            return '1m Left';
+        if(sec_remains < 0){
+            if(sec_remains >= -1 * sec_in_one_week){
+                return moment(created_at).fromNow();
+            }
+            return moment(created_at).format('LL');
         }
         if(sec_remains < sec_in_one_hour){
             return Math.floor(sec_remains / sec_in_one_min) + 'm Left';

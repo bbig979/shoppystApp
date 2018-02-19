@@ -420,7 +420,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        },
        params: {
            refresh: null,
-           activateTab: null
+           activateTab: null,
+           isThisAfterShare: false
        }
    })
 
