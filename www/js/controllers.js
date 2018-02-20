@@ -2036,7 +2036,7 @@ angular.module('starter.controllers', [])
             $scope.loadingNewPost = true;
             $scope.doRefresh();
         }
-        if($scope.posts.length > 0){
+        if($scope.posts.length > 0 && ! $stateParams.searchTerm){
             NewPost.isAvailable('explore', $scope.mostRecentPostID).then(function(response){
                 $scope.newPostAvailable = response;
             });
