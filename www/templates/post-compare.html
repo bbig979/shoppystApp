@@ -20,9 +20,9 @@
             <a ng-class="{ active: age_active === 'teens' }" ng-click="setAge('teens')" class="teens">10s</a>
             <a ng-class="{ active: age_active === 'all' }" ng-click="setAge('all')" class="all">All</a>
         </div>
-        <div class="compare-toggle occasion">
+        <div class="compare-toggle occasion" ng-hide="post_array[0].occasion == null">
             <div class="label">Occasion</div>
-            <a class="active">Party</a>
+            <a class="active">{{post_array[0].occasion.name}}</a>
             <div class="clearfix"></div>
         </div>
         <div class="expired-message" ng-show="post_array.length == 0">
