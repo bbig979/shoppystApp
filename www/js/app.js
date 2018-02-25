@@ -250,7 +250,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     })
 
     .state('tab.explore-home', {
-       url: '/explore/:searchTerm/home',
+       url: '/explore/:searchTerm/:type/home',
        views: {
            'tab-home': {
                templateUrl: 'templates/tab-explore.html',
@@ -268,7 +268,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-notification', {
-       url: '/explore/:searchTerm/notification',
+       url: '/explore/:searchTerm/:type/notification',
        views: {
            'tab-notification': {
                templateUrl: 'templates/tab-explore.html',
@@ -277,7 +277,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-compare', {
-       url: '/explore/:searchTerm/compare',
+       url: '/explore/:searchTerm/:type/compare',
        views: {
            'tab-compare': {
                templateUrl: 'templates/tab-explore.html',
@@ -286,7 +286,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-account', {
-       url: '/explore/:searchTerm/account',
+       url: '/explore/:searchTerm/:type/account',
        views: {
            'tab-account': {
                templateUrl: 'templates/tab-explore.html',

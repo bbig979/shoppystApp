@@ -119,10 +119,8 @@
                             <span class="dynamic-comment-count" id="{{post.id}}">0</span> comments
                         </span>
                     </div>
-                    <p class="content" ng-bind-html="linkHashTag(post.content) | unsafe"></p>
-                    <div class="divider">
-
-                    </div>
+                    <p class="content" ng-bind-html="linkHashTagAndOccasion(post) | unsafe"></p>
+                    <div class="divider"></div>
                 </div>
             </ion-item>
 

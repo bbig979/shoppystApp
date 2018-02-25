@@ -34,15 +34,18 @@
                             <a class="post_img"></a>
                         </ion-item>
                         <div>
-                            <div class="desc_row">
+                            <div class="desc_row profile">
                                 <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
                                 <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}}</div>
                             </div>
                             <div class="desc_row">
                                 <span class="likes-count">
-                                    <i class="ion-ios-heart"></i>
+                                    <i class="fa fa-heart" aria-hidden="true"></i>
                                     <span class="like-count-number">{{ likesCount(post) }}</span> likes
                                 </span>
+                            </div>
+                            <div class="desc_row" ng-hide="post.occasion == null">
+                                <span class="occasion grey-small-font"><i class="fa fa-map-marker" aria-hidden="true"></i> {{post.occasion.name}}</span>
                             </div>
                             <div class="desc_row">
                                 <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>

@@ -26,6 +26,9 @@
       color: $grey-dark;
       padding: 5px 5px 0px 10px;
     }
+    .desc_row.profile{
+        padding: 5px 0 5px 5px;
+    }
     .add_to_compare{
       position: absolute;
       bottom: 10px;
@@ -66,6 +69,10 @@
     }
     .button.button-dark.button-clear.ion-ios-heart {
       color: #FF4C62;
+    }
+    i{
+        width: 15px;
+        text-align: center;
     }
   }
 }
