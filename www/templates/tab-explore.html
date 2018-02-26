@@ -4,7 +4,9 @@
     </div>
 </div>
 <ion-view class="post-list" id="tab-explore" view-title="<img class='title-image' src='img/logo.png'/>">
-    <ion-content on-scroll="scrollList();scrollDetectWhenNewPostAvailable();">
+    <ion-content on-scroll="scrollList();scrollDetectWhenNewPostAvailable();" ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">

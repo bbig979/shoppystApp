@@ -1,5 +1,7 @@
 <ion-view class="masonry-post-list" id="account-notification" view-title="NOTIFICATION">
-    <ion-content>
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">

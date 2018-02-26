@@ -91,6 +91,22 @@ a{
     float: right;
     padding-right:15px;
 }
+#blocker-message{
+    position: fixed;
+    top: 44px;
+    height: 40px;
+    width: 100%;
+    background-color: #FFF9C7;
+    font-size: 12px;
+    color: #333;
+    border: 1px solid #FFBF00;
+    z-index: 5;
+    padding: 8px;
+    text-align: center;
+}
+.has-blocker-message{
+    top: 84px;
+}
 #tutorial-wrapper{
     #tutorial-modal{
         #tutorial-title{

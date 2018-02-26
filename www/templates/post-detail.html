@@ -7,14 +7,13 @@
         <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{postTimer.icon(post.created_at)}}" aria-hidden="true"></i> {{postTimer.timeLeft(post.created_at)}}</span>
         <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
     </ion-header-bar>
-    <ion-content>
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
-        <div class="update-notification" ng-if="!clientVersionUpToDate">
-            New features are added. Let's update an app!
-        </div>
         <div class="no-result" ng-if="noResult">
             This post has been deleted by owner
         </div>

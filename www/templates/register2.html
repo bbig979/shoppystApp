@@ -1,5 +1,7 @@
 <ion-view view-title="ALMOST DONE" id="register2">
-    <ion-content>
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <form ng-submit="register2(registerData)">
             <div class="list">
                 <label class="item item-input item-floating-label username" ng-class="usernameClass">

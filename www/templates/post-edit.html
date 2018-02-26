@@ -1,5 +1,7 @@
 <ion-view id="edit-post" view-title="Edit Post">
-    <ion-content class="has-header">
+    <ion-content class="has-header" ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <form ng-submit="updatePost(post)" name="shareForm">
             <div class="post-image">
                 <img class="item" ng-src="{{ photoPath( post.photos[0].img_path, 'm' ) }}"/>

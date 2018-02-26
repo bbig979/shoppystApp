@@ -4,7 +4,9 @@
     </div>
 </div>
 <ion-view class="single-post" id="home" view-title="FOLLOWING">
-    <ion-content on-scroll="scrollDetectWhenNewPostAvailable();">
+    <ion-content on-scroll="scrollDetectWhenNewPostAvailable();" ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">

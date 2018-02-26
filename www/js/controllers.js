@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage) {
     $rootScope.clientVersion = '1.0';
     //$rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
@@ -14,6 +14,7 @@ angular.module('starter.controllers', [])
     $rootScope.userTrackArray = [];
     $rootScope.currentUser = null;
     $rootScope.notificationCount = "0";
+    $rootScope.blockerMessage = BlockerMessage;
 
     $rootScope.getNotification = function() {
         if ($rootScope.currentUser)
@@ -1146,8 +1147,13 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('TutorialCtrl',function($scope, Tutorial){
-    $scope.tutorial = Tutorial;
+.controller('TutorialCtrl',function($scope, Tutorial, Config, BlockerMessage){
+    Config.init().then(function(){
+        Tutorial.init(Config.get('tutorials'));
+        Tutorial.triggerIfNotCompleted('tutorial_welcome');
+        $scope.tutorial = Tutorial;
+        BlockerMessage.init();
+    });
 })
 
 .controller('IntroCtrl',function($scope, $state, $ionicHistory){
@@ -1808,11 +1814,6 @@ angular.module('starter.controllers', [])
     $scope.postTimer = PostTimer;
     var user = $rootScope.getCurrentUser();
 
-    $http.get($rootScope.baseURL+'/api/latest/client/version').success(function(version){
-        if(version != $rootScope.clientVersion){
-            $scope.clientVersionUpToDate = false;
-        }
-    });
     FetchPosts.get($stateParams.postId).then(function(post){
         if(post){
             if(post.is_visible){
@@ -2044,8 +2045,6 @@ angular.module('starter.controllers', [])
             },100);
         });
     }
-
-    Tutorial.triggerIfNotCompleted('tutorial_welcome');
 
     $scope.$on('$ionicView.enter', function() {
         if($scope.noResult){
@@ -2783,7 +2782,7 @@ angular.module('starter.controllers', [])
             url: $rootScope.baseURL + '/api/user/' + $scope.user.slug + '/edit',
             data: user
         })
-        .success(function(){
+        .success(function(updated_user){
             $rootScope.popupMessage('Message', 'Profile Has been updated');
             for(i = 0; i < $rootScope.userTrackArray.length; i++){
                 thisUser = $rootScope.userTrackArray[i];
@@ -2791,6 +2790,9 @@ angular.module('starter.controllers', [])
                     thisUser.username = user.username;
                 }
             }
+            var user_str = JSON.stringify(updated_user);
+            localStorage.removeItem('user');
+            localStorage.setItem('user', user_str);
             $ionicHistory.goBack();
         })
         .error(function(data, status){

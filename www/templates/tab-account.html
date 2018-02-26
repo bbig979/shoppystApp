@@ -1,5 +1,7 @@
 <ion-view id="tab-account" class="post-list" view-title="PROFILE">
-    <ion-content>
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">

@@ -1,5 +1,7 @@
 <ion-view id="account-edit" view-title="Edit Profile">
-    <ion-content overflow-scroll="false">
+    <ion-content overflow-scroll="false" ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <form ng-submit="updateProfile(user_info)" name="updateProfileForm" ng-if="user">
             <div class="list">
                 <label class="item item-input item-floating-label username" ng-class="usernameClass">

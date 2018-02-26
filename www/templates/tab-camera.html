@@ -1,4 +1,6 @@
 <ion-view id="tab-camera" hide-nav-bar="true">
-    <ion-content class="has-header">
+    <ion-content class="has-header" ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
     </ion-content>
 </ion-view>

@@ -25,6 +25,65 @@ angular.module('starter.services', [])
         }
     };
 }])
+.factory('Config', function($q, $http, $rootScope){
+    var data = {};
+    return {
+        init: function(){
+            var deferred = $q.defer();
+            $http.get($rootScope.baseURL+'/api/config').success(function(response){
+                data = response;
+                deferred.resolve();
+            });
+            return deferred.promise;
+        },
+        get: function(key){
+            if(data == null || typeof data[key] === 'undefined'){
+                return null;
+            }
+            return data[key];
+        }
+    }
+})
+.factory('BlockerMessage', function(Tutorial, $rootScope, Config) {
+    var message = '';
+    var is_needed = false;
+    return {
+        init: function(){
+            if(this._isInfoIncompleted()){
+                message = 'We need your age and gender to give accurate feedback.';
+                is_needed = true;
+                return;
+            }
+            if(this._isNewVersionAvailable()){
+                message = "New features are added. Let's update an app!";
+                is_needed = true;
+                return;
+            }
+        },
+        get: function(){
+            return message;
+        },
+        isNeeded: function(){
+            if(Tutorial.isInProgress()){
+                return false;
+            }
+            return is_needed;
+        },
+        _isInfoIncompleted: function(){
+            if(localStorage.getItem('user')){
+                var user = JSON.parse(localStorage.getItem('user'));
+                return user.age == 0 || user.gender == "";
+            }
+            return false;
+        },
+        _isNewVersionAvailable: function(){
+            if(Config.get('version') == null){
+                return false;
+            }
+            return Config.get('version') != $rootScope.clientVersion;
+        }
+    };
+})
 .factory('FetchSearchResults', function($http, $rootScope) {
     return {
         get: function(searchTerm, type){
@@ -344,19 +403,19 @@ angular.module('starter.services', [])
         });
     }
 })
-.service('Tutorial', function(LocalJson){
+.service('Tutorial', function(){
     var _dummy_tutorial = {"marker" : {"position" : {}}};
-    var _tutorials;
-    LocalJson.get('tutorials').then(function(json_data){
-        _tutorials = json_data;
-    });
+    var _tutorials = null;
     var _current_tutorial = _dummy_tutorial;
     var _current_group = '';
     var _current_id = '';
+    this.init = function(json_data){
+        _tutorials = json_data;
+    }
     this.triggerIfNotCompleted = function(group){
         // @todo
         // check flag in current user and return if is_tutorial_completed is true
-        if(!localStorage.getItem(group)){
+        if(! localStorage.getItem(group)){
             _current_group = group;
             this.trigger(1);
         }
@@ -429,6 +488,9 @@ angular.module('starter.services', [])
             typeof _current_tutorial.marker.highlight !== 'undefined' &&
             _current_tutorial.marker.highlight
         )
+    }
+    this.isInProgress = function(){
+        return _current_group != '';
     }
 })
 .factory('UsernameAvailability', function($http, $timeout, $rootScope, $q){
