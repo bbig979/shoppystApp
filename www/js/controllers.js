@@ -2751,7 +2751,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory, UsernameAvailability) {
+.controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory, UsernameAvailability, BlockerMessage) {
     var user = $rootScope.getCurrentUser();
     $scope.usernameClass = '';
 
@@ -2793,6 +2793,7 @@ angular.module('starter.controllers', [])
             var user_str = JSON.stringify(updated_user);
             localStorage.removeItem('user');
             localStorage.setItem('user', user_str);
+            BlockerMessage.init();
             $ionicHistory.goBack();
         })
         .error(function(data, status){

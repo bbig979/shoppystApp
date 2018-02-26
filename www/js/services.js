@@ -59,6 +59,7 @@ angular.module('starter.services', [])
                 is_needed = true;
                 return;
             }
+            is_needed = false;
         },
         get: function(){
             return message;
