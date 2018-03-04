@@ -4043,6 +4043,16 @@ div.tab-nav.tabs {
 #tab-explore .search-clear {
   margin-top: 0;
 }
+/* line 12, ../../scss/ryan/_explore.scss */
+#tab-explore .user-type-tag {
+  font-size: 10px;
+  display: inline-block;
+  background-color: #aaa;
+  color: #fff;
+  padding: 3px 5px;
+  border-radius: 5px;
+  line-height: 1;
+}
 
 /* line 2, ../../scss/ryan/_ranking.scss */
 #tab-ranking .ranking-title {
