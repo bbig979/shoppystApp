@@ -1150,7 +1150,6 @@ angular.module('starter.controllers', [])
 .controller('TutorialCtrl',function($scope, Tutorial, Config, BlockerMessage){
     Config.init().then(function(){
         Tutorial.init(Config.get('tutorials'));
-        Tutorial.triggerIfNotCompleted('tutorial_welcome');
         $scope.tutorial = Tutorial;
         BlockerMessage.init();
     });
@@ -2044,6 +2043,9 @@ angular.module('starter.controllers', [])
                 window.location.reload();
             },100);
         });
+    }
+    else{
+        Tutorial.triggerIfNotCompleted('tutorial_welcome');
     }
 
     $scope.$on('$ionicView.enter', function() {

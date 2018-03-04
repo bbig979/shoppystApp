@@ -416,7 +416,7 @@ angular.module('starter.services', [])
     this.triggerIfNotCompleted = function(group){
         // @todo
         // check flag in current user and return if is_tutorial_completed is true
-        if(! localStorage.getItem(group)){
+        if(! localStorage.getItem(group) && _tutorials != null){
             _current_group = group;
             this.trigger(1);
         }
