@@ -4,7 +4,9 @@
     </div>
 </div>
 <ion-view class="post-list" id="tab-explore" view-title="<img class='title-image' src='img/logo.png'/>">
-    <ion-content on-scroll="scrollList();scrollDetectWhenNewPostAvailable();">
+    <ion-content on-scroll="scrollList();scrollDetectWhenNewPostAvailable();" ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
@@ -31,22 +33,22 @@
             <div>
                 <ion-item collection-repeat="post in posts" class="post" collection-item-width="'100%'">
                     <div class="entity-id-{{post.id}}">
-                        <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id)" ng-hide="postTimer.elapsed(post.created_at)">
+                        <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id)">
                             <a class="post_img"></a>
                         </ion-item>
-                        <ion-item ng-show="postTimer.elapsed(post.created_at)">
-                            <a class="post_img elapsed"></a>
-                        </ion-item>
                         <div>
-                            <div class="desc_row">
+                            <div class="desc_row profile">
                                 <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
                                 <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}}</div>
                             </div>
                             <div class="desc_row">
                                 <span class="likes-count">
-                                    <i class="ion-ios-heart"></i>
+                                    <i class="fa fa-heart" aria-hidden="true"></i>
                                     <span class="like-count-number">{{ likesCount(post) }}</span> likes
                                 </span>
+                            </div>
+                            <div class="desc_row" ng-hide="post.occasion == null">
+                                <span class="occasion grey-small-font"><i class="fa fa-map-marker" aria-hidden="true"></i> {{post.occasion.name}}</span>
                             </div>
                             <div class="desc_row" ng-hide="isStatNotAvailable(post)">
                                 <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
@@ -56,7 +58,7 @@
                             </div>
                             <div class="add_to_compare">
                                 <button class="button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
-                                <button class="button button-clear button-dark icon add-compare-button" ng-class="{'ion-minus' : comparePosts.has(post.id), 'ion-plus' : !comparePosts.has(post.id)}" ng-click="comparePosts.toggle(post.id)"></button>
+                                <button class="button button-clear button-dark icon add-compare-button ion-ios-browsers-outline" ng-click="goPostCompare(post.set_ids)"></button>
                             </div>
                         </div>
                     </div>
@@ -72,7 +74,7 @@
             </div>
             <div class="search-running" ng-if="isSearchRunning">
                 <i class="fa fa-search" aria-hidden="true"></i> Searching...
-            </div>            
+            </div>
             <div class="no-result" ng-if="noSearchResult && searchTerm.length">
                 {{showNoSearchResultText()}}
             </div>

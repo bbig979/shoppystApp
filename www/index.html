@@ -122,15 +122,10 @@
         <ion-nav-back-button class="button-clear">
             <i class="button button-clear icon ion-arrow-left-c"></i>
         </ion-nav-back-button>
-        <ion-nav-buttons side="left">
-            <i class="button button-clear icon ion-share" ng-show="ifInCompare()" ng-click="shareCompare()"></i>
-        </ion-nav-buttons>
         <ion-nav-buttons side="right">
             <span class="test-scroll" ng-show="ifTestAccount()" ng-click="scroll()">s</span>
             <i class="button button-clear icon ion-ios-more" ng-show="ifOthersProfile()" ng-click="openOthersProfileMenu()"></i>
-            <span class="small-badge" ng-if="notificationCount != 0">{{notificationCount}}</span>
-            <i class="button button-clear icon fa fa-bell" ng-hide="ifOthersProfile() || ifInNotification()" ng-click="goNotification()">
-            </i>
+            <i class="button button-clear icon ion-share" ng-show="ifInCompare() && ifMyPostCompare()" ng-click="shareCompare()"></i>
         </ion-nav-buttons>
     </ion-nav-bar>
     <!--
@@ -139,6 +134,7 @@
       have templates inline in this html file if you'd like).
     -->
     <ion-nav-view></ion-nav-view>
+    <div id="blocker-message" ng-show="blockerMessage.isNeeded()">{{ blockerMessage.get() }}</div>
     <div id="tutorial-wrapper" ng-show="tutorial.isTriggered()" ng-controller="TutorialCtrl">
         <div id="tutorial-go-back" ng-show="tutorial.isTherePrevious()" ng-click="tutorial.previous()">
             <i class="fa fa-backward" aria-hidden="true"></i>
@@ -157,6 +153,7 @@
             'top': tutorial.getVerticalPosition() == 'top',
             'bottom': tutorial.getVerticalPosition() == 'bottom',
             'compare-look-sort' : tutorial.getVerticalPosition() == 'compare-look-sort',
+            'first-share-compare' : tutorial.getVerticalPosition() == 'first-share-compare',
             'highlight' : tutorial.isHighlightNeeded(),
             'non-highlight' : !tutorial.isHighlightNeeded()
         }">
@@ -168,7 +165,8 @@
             'right-center': tutorial.getHorizontalPosition() == 'right-center',
             'right-most': tutorial.getHorizontalPosition() == 'right-most',
             'top': tutorial.getVerticalPosition() == 'top',
-            'bottom': tutorial.getVerticalPosition() == 'bottom'
+            'bottom': tutorial.getVerticalPosition() == 'bottom',
+            'first-share-compare' : tutorial.getVerticalPosition() == 'first-share-compare'
         }">
             <img src="img/tutorial_arrow.png" style="width: 30vw;" ng-show="tutorial.isMarkerArrow() && !tutorial.isMarkerNone()">
             <img src="img/{{ tutorial.getCustomMarker() }}" style="width: 17vw;" ng-show="!tutorial.isMarkerArrow() && !tutorial.isMarkerNone()">

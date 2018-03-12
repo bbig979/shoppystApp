@@ -25,6 +25,66 @@ angular.module('starter.services', [])
         }
     };
 }])
+.factory('Config', function($q, $http, $rootScope){
+    var data = {};
+    return {
+        init: function(){
+            var deferred = $q.defer();
+            $http.get($rootScope.baseURL+'/api/config').success(function(response){
+                data = response;
+                deferred.resolve();
+            });
+            return deferred.promise;
+        },
+        get: function(key){
+            if(data == null || typeof data[key] === 'undefined'){
+                return null;
+            }
+            return data[key];
+        }
+    }
+})
+.factory('BlockerMessage', function(Tutorial, $rootScope, Config) {
+    var message = '';
+    var is_needed = false;
+    return {
+        init: function(){
+            if(this._isInfoIncompleted()){
+                message = 'We need your age and gender to give accurate feedback.';
+                is_needed = true;
+                return;
+            }
+            if(this._isNewVersionAvailable()){
+                message = "New features are added. Let's update an app!";
+                is_needed = true;
+                return;
+            }
+            is_needed = false;
+        },
+        get: function(){
+            return message;
+        },
+        isNeeded: function(){
+            if(Tutorial.isInProgress()){
+                return false;
+            }
+            return is_needed;
+        },
+        _isInfoIncompleted: function(){
+            if(localStorage.getItem('user')){
+                var user = JSON.parse(localStorage.getItem('user'));
+                return user.age == 0 || user.gender == "";
+            }
+            return false;
+        },
+        _isNewVersionAvailable: function(){
+            if(Config.get('version') == null){
+                return false;
+            }
+            return Config.get('version') != $rootScope.clientVersion;
+        }
+    };
+})
 .factory('FetchSearchResults', function($http, $rootScope) {
     return {
         get: function(searchTerm, type){
@@ -123,8 +183,8 @@ angular.module('starter.services', [])
 })
 .factory('FetchShareLink', function($http, $rootScope) {
     return {
-        get: function(postIDArray) {
-            return $http.get($rootScope.baseURL+"/api/compare/"+postIDArray.join(",")+'/share').then(function(response){
+        get: function(post_id_csv) {
+            return $http.get($rootScope.baseURL+"/api/compare/"+post_id_csv+'/share').then(function(response){
                 return response.data;
             }
             ,function(response){
@@ -255,7 +315,8 @@ angular.module('starter.services', [])
     };
 })
 .service('PostTimer', function(){
-    const sec_to_expire = 60 * 60 * 24;
+    const sec_in_one_week = 60 * 60 * 24 * 7
+    const sec_in_one_day = 60 * 60 * 24;
     const sec_in_one_hour = 60 * 60;
     const sec_in_one_min = 60;
     const two_third = 2/3;
@@ -264,31 +325,32 @@ angular.module('starter.services', [])
     this.elapsed = function(created_at){
         // @todo delete line below before launch
         return false;
-        return this._secPassed(created_at) > sec_to_expire;
+        return this._secPassed(created_at) > sec_in_one_day;
     }
     this.icon = function(created_at){
         var sec_passed = this._secPassed(created_at);
-        var sec_remains = sec_to_expire - sec_passed;
+        var sec_remains = sec_in_one_day - sec_passed;
 
         if(sec_remains < 0){
-            return "fa-eye-slash"
+            return "fa-calendar";
         }
-        else if(sec_remains / sec_to_expire > two_third){
+        if(sec_remains / sec_in_one_day > two_third){
             return "fa-hourglass-start";
         }
-        else if(sec_remains / sec_to_expire > one_third){
+        if(sec_remains / sec_in_one_day > one_third){
             return "fa-hourglass-half";
         }
-        else{
-            return "fa-hourglass-end";
-        }
+        return "fa-hourglass-end";
     }
     this.timeLeft = function(created_at){
         var sec_passed = this._secPassed(created_at);
-        var sec_remains = sec_to_expire - sec_passed;
+        var sec_remains = sec_in_one_day - sec_passed;
 
         if(sec_remains < 0){
-            return 'private';
+            if(sec_remains >= -1 * sec_in_one_week){
+                return moment(created_at).fromNow();
+            }
+            return moment(created_at).format('LL');
         }
         if(sec_remains < sec_in_one_hour){
             return Math.floor(sec_remains / sec_in_one_min) + 'm Left';
@@ -342,19 +404,19 @@ angular.module('starter.services', [])
         });
     }
 })
-.service('Tutorial', function(LocalJson){
+.service('Tutorial', function(){
     var _dummy_tutorial = {"marker" : {"position" : {}}};
-    var _tutorials;
-    LocalJson.get('tutorials').then(function(json_data){
-        _tutorials = json_data;
-    });
+    var _tutorials = null;
     var _current_tutorial = _dummy_tutorial;
     var _current_group = '';
     var _current_id = '';
+    this.init = function(json_data){
+        _tutorials = json_data;
+    }
     this.triggerIfNotCompleted = function(group){
         // @todo
         // check flag in current user and return if is_tutorial_completed is true
-        if(!localStorage.getItem(group)){
+        if(! localStorage.getItem(group)){
             _current_group = group;
             this.trigger(1);
         }
@@ -427,6 +489,9 @@ angular.module('starter.services', [])
             typeof _current_tutorial.marker.highlight !== 'undefined' &&
             _current_tutorial.marker.highlight
         )
+    }
+    this.isInProgress = function(){
+        return _current_group != '';
     }
 })
 .factory('UsernameAvailability', function($http, $timeout, $rootScope, $q){
@@ -768,6 +833,102 @@ console.log(_post_array);
                 return 'total_age_group';
             }
             return 'total_gender';
+        }
+    }
+})
+.factory('ComparePostSet', function($http, FetchPosts, FetchShareLink, $q){
+    return {
+        share: function(post_id_csv){
+            var deferred = $q.defer();
+            FetchShareLink.get(post_id_csv).then(function(response){
+                deferred.resolve(response);
+            });
+            return deferred.promise;
+        },
+        sort: function(gender, age_group, post_array){
+            var this_factory = this;
+            var target_key = this_factory._getTargetKeyForPostAnalytic(gender, age_group);
+            post_array.sort(function(a, b){
+                if(a.post_analytic[0][target_key] == b.post_analytic[0][target_key]){
+                    if(a.like_count == b.like_count){
+                        return parseInt(a.id) < parseInt(b.id) ? 1 : -1;
+                    }
+                    return parseInt(a.like_count) < parseInt(b.like_count) ? 1 : -1;
+                }
+                return parseInt(a.post_analytic[0][target_key]) < parseInt(b.post_analytic[0][target_key]) ? 1 : -1;
+            });
+        },
+        partialLikes: function(filter_gender, filter_age_group, post_id, post_array){
+            var target_key = this._getTargetKeyForPostAnalytic(filter_gender, filter_age_group);
+            for(var i = 0; i < post_array.length; i++){
+                this_post = post_array[i];
+                if(post_id == this_post.id){
+                    return this_post.post_analytic[0][target_key];
+                }
+            }
+        },
+        getTopPostId: function(filter_gender, filter_age_group, post_array){
+            var target_key = this._getTargetKeyForPostAnalytic(filter_gender, filter_age_group);
+            var top_like_count = 0;
+            var top_post_id;
+            for(var i = 0; i < post_array.length; i++){
+                this_post = post_array[i];
+                if(top_like_count <= parseInt(this_post.post_analytic[0][target_key])){
+                    top_post_id = this_post.id;
+                    top_like_count = parseInt(this_post.post_analytic[0][target_key]);
+                }
+            }
+            if(top_like_count == 0){
+                return 0;
+            }
+            return top_post_id;
+        },
+        fetch: function(post_id_array){
+            var deferred = $q.defer();
+            var this_factory = this;
+            FetchPosts.compare(post_id_array).then(function(response){
+                post_array = response;
+                for (index = 0; index < post_array.length; ++index) {
+                    this_factory._setTotalFieldsInPostAnalytic(post_array[index]);
+                }
+                deferred.resolve(post_array);
+            });
+            return deferred.promise;
+        },
+        _setPlaceHolderIfPostAnalyticIsEmpty: function(post_analytic){
+            if(post_analytic[0] === undefined){
+                post_analytic[0] = [];
+            }
+        },
+        _setTotalFieldsInPostAnalytic: function(post){
+            post_analytic = post.post_analytic;
+            this._setPlaceHolderIfPostAnalyticIsEmpty(post_analytic);
+            post_analytic[0].dummy_total_key = 1;
+            post_analytic[0].total_all = post.like_count;
+            post_analytic[0].total_gender =
+                post_analytic[0].male +
+                post_analytic[0].female;
+            post_analytic[0].total_age_group =
+                post_analytic[0].teens +
+                post_analytic[0].twenties +
+                post_analytic[0].thirties +
+                post_analytic[0].forties +
+                post_analytic[0].fifties;
+        },
+        _getTargetKeyForPostAnalytic: function(gender, age_group){
+            if(gender == 'friends'){
+                return gender;
+            }
+            if(gender == 'all' && age_group == 'all'){
+                return 'total_all';
+            }
+            if(gender == 'all' && age_group != 'all'){
+                return age_group;
+            }
+            if(gender != 'all' && age_group == 'all'){
+                return gender;
+            }
+            return gender + '_' + age_group;
         }
     }
 });

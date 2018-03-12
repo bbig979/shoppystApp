@@ -1,5 +1,7 @@
 <ion-view id="create-post" view-title="LOOKS TO COMPARE">
-    <ion-content class="has-header">
+    <ion-content class="has-header" ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <form ng-submit="sharePost(captions, occasion.value, other)" name="shareForm">
             <ul class="post-images">
                 <li ng-repeat="cameraPicture in cameraPictues.get()">
@@ -14,7 +16,7 @@
                     <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu()">
                         <div class="add-more-to-compare-button">
                             <i class="icon ion-plus-circled"></i><br>
-                            More Look<br>
+                            Add Look<br>
                             to Compare
                         </div>
                     </div>

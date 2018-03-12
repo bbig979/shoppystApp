@@ -1,5 +1,7 @@
 <ion-view class="post-list" id="compare" view-title="WHICH LOOKS BETTER">
-    <ion-content>
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">

@@ -36,9 +36,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
     //var baseURL = 'http://app.snaplook.today';
-    var baseURL = 'http://localhost:8000';
+    //var baseURL = 'http://localhost:8000';
     //var baseURL = 'http://192.168.56.1:8000';
-    //var baseURL = 'http://localhost:8888';
+    var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -106,6 +106,44 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            refresh: null
         }
     })
+
+    .state('tab.post-compare-home', {
+       url: '/post/compare/:postIds/home/:isMyPostCompare',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/post-compare.html',
+               controller: 'PostCompareCtrl'
+           }
+       }
+    })
+    .state('tab.post-compare-explore', {
+       url: '/post/compare/:postIds/explore/:isMyPostCompare',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/post-compare.html',
+               controller: 'PostCompareCtrl'
+           }
+       }
+    })
+    .state('tab.post-compare-notification', {
+       url: '/post/compare/:postIds/notification/:isMyPostCompare',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/post-compare.html',
+               controller: 'PostCompareCtrl'
+           }
+       }
+    })
+    .state('tab.post-compare-account', {
+       url: '/post/compare/:postIds/account/:isMyPostCompare',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/post-compare.html',
+               controller: 'PostCompareCtrl'
+           }
+       }
+    })
+
     .state('tab.post-detail-home', {
        url: '/post/:postId/home',
        views: {
@@ -212,7 +250,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     })
 
     .state('tab.explore-home', {
-       url: '/explore/:searchTerm/home',
+       url: '/explore/:searchTerm/:type/home',
        views: {
            'tab-home': {
                templateUrl: 'templates/tab-explore.html',
@@ -230,7 +268,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-notification', {
-       url: '/explore/:searchTerm/notification',
+       url: '/explore/:searchTerm/:type/notification',
        views: {
            'tab-notification': {
                templateUrl: 'templates/tab-explore.html',
@@ -239,7 +277,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-compare', {
-       url: '/explore/:searchTerm/compare',
+       url: '/explore/:searchTerm/:type/compare',
        views: {
            'tab-compare': {
                templateUrl: 'templates/tab-explore.html',
@@ -248,7 +286,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-account', {
-       url: '/explore/:searchTerm/account',
+       url: '/explore/:searchTerm/:type/account',
        views: {
            'tab-account': {
                templateUrl: 'templates/tab-explore.html',
@@ -382,7 +420,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        },
        params: {
            refresh: null,
-           activateTab: null
+           activateTab: null,
+           isThisAfterShare: false
        }
    })
 
