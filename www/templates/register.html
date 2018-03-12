@@ -1,5 +1,7 @@
 <ion-view view-title="SIGN UP" id="register">
-    <ion-content>
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <form ng-submit="register(registerData)">
             <div class="list">
                 <label class="item item-input item-floating-label">

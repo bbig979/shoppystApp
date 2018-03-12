@@ -1,16 +1,18 @@
 <ion-view id="invite-friends" view-title="Invite Friends">
-    <ion-content>
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
 	    <form ng-submit="sendInvitation(email)" name="inviteForm">
             <label class="item item-input item-floating-label">
                 <span class="input-label">Email</span>
                 <input type="text" placeholder="Please enter email to invite" class="form-control email" ng-model="email">
             </label>
-	        
+
 	        <div class="padding"></div>
             <div class="padding">
                 <button type="submit" class="button button-block button-positive" ng-click="focusEmailInput();">Send Invitation</button>
             </div>
-	    	
+
 	    </form>
     </ion-content>
 </ion-view>

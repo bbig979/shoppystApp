@@ -34,6 +34,7 @@
   .stats{
     .likes-count{
       color: $primary-color-dark;
+      margin: 0;
     }
     .comments-count{
       color: $grey-dark;
@@ -48,5 +49,8 @@
     white-space: normal;
     font-size: 14px;
     color: #444;
+  }
+  .ion-ios-more-outline{
+    float: right;
   }
 }

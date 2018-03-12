@@ -3,7 +3,7 @@
     .post_img {
       display: block;
       width: 100%;
-      padding-top: 100%;
+      padding-top: 120%;
     }
     width: 100%;
     float: left;
@@ -26,9 +26,12 @@
       color: $grey-dark;
       padding: 5px 5px 0px 10px;
     }
+    .desc_row.profile{
+        padding: 5px 0 5px 5px;
+    }
     .add_to_compare{
       position: absolute;
-      bottom: 5px;
+      bottom: 10px;
       right: 8px;
     }
     .like-button{
@@ -55,9 +58,6 @@
     }
     .add-compare-button {
       float: right;
-      background-color: #FF4C62;
-      border-color: #FF4C62;
-      color: #fff;
       min-width: 20px;
       min-height: 21px;
       height: 21px;
@@ -66,10 +66,13 @@
     }
     .add-compare-button:before {
       line-height: 20px;
-      font-size: 13px;
     }
     .button.button-dark.button-clear.ion-ios-heart {
       color: #FF4C62;
+    }
+    i{
+        width: 15px;
+        text-align: center;
     }
   }
 }

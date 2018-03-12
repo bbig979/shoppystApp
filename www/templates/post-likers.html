@@ -1,5 +1,7 @@
 <ion-view class="follow-toggle-user-list" id="post-likers" view-title="LIKERS">
-    <ion-content>
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">

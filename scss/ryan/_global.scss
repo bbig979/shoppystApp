@@ -91,6 +91,22 @@ a{
     float: right;
     padding-right:15px;
 }
+#blocker-message{
+    position: fixed;
+    top: 44px;
+    height: 40px;
+    width: 100%;
+    background-color: #FFF9C7;
+    font-size: 12px;
+    color: #333;
+    border: 1px solid #FFBF00;
+    z-index: 5;
+    padding: 8px;
+    text-align: center;
+}
+.has-blocker-message{
+    top: 84px;
+}
 #tutorial-wrapper{
     #tutorial-modal{
         #tutorial-title{
@@ -176,6 +192,10 @@ a{
         height: 115px;
         box-shadow: 0px 0px 100px 5000px #000;
     }
+    #tutorial-curtain.highlight.first-share-compare:after {
+        top: calc(375px + 50vw);
+        right: 10px;
+    }
     #tutorial-marker{
         color: white;
         z-index: 11;
@@ -218,6 +238,11 @@ a{
     #tutorial-marker.right-most.top {
         @include rotate(171deg);
         right: 6vw;
+    }
+    #tutorial-marker.first-share-compare {
+        @include rotate(270deg);
+        top: calc(280px + 50vw);
+        right: 35px;
     }
     #tutorial-go-back {
         position: fixed;
