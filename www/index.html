@@ -125,7 +125,7 @@
         <ion-nav-buttons side="right">
             <span class="test-scroll" ng-show="ifTestAccount()" ng-click="scroll()">s</span>
             <i class="button button-clear icon ion-ios-more" ng-show="ifOthersProfile()" ng-click="openOthersProfileMenu()"></i>
-            <i class="button button-clear icon ion-share" ng-show="ifInCompare() && ifMyPostCompare()" ng-click="shareCompare()"></i>
+            <i class="button button-clear icon ion-share" ng-show="ifMyPostCompare()" ng-click="shareCompare()"></i>
         </ion-nav-buttons>
     </ion-nav-bar>
     <!--
@@ -136,7 +136,7 @@
     <ion-nav-view></ion-nav-view>
     <div id="blocker-message" ng-show="blockerMessage.isNeeded()">{{ blockerMessage.get() }}</div>
     <div id="tutorial-wrapper" ng-show="tutorial.isTriggered()" ng-controller="TutorialCtrl">
-        <div id="tutorial-go-back" ng-show="tutorial.isTherePrevious()" ng-click="tutorial.previous()">
+        <div id="tutorial-go-back" ng-show="tutorial.isTriggered() && tutorial.isTherePrevious()" ng-click="tutorial.previous()">
             <i class="fa fa-backward" aria-hidden="true"></i>
         </div>
         <div id="tutorial-modal">
@@ -145,31 +145,31 @@
             <div id="tutorial-ok" ng-click="tutorial.next()">Got it</div>
         </div>
         <div id="tutorial-curtain" ng-class="{
-            'left-most': tutorial.getHorizontalPosition() == 'left-most',
-            'left-center': tutorial.getHorizontalPosition() == 'left-center',
-            'center': tutorial.getHorizontalPosition() == 'center',
-            'right-center': tutorial.getHorizontalPosition() == 'right-center',
-            'right-most': tutorial.getHorizontalPosition() == 'right-most',
-            'top': tutorial.getVerticalPosition() == 'top',
-            'bottom': tutorial.getVerticalPosition() == 'bottom',
-            'compare-look-sort' : tutorial.getVerticalPosition() == 'compare-look-sort',
-            'first-share-compare' : tutorial.getVerticalPosition() == 'first-share-compare',
-            'highlight' : tutorial.isHighlightNeeded(),
-            'non-highlight' : !tutorial.isHighlightNeeded()
+            'left-most': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'left-most',
+            'left-center': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'left-center',
+            'center': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'center',
+            'right-center': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'right-center',
+            'right-most': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'right-most',
+            'top': tutorial.isTriggered() && tutorial.getVerticalPosition() == 'top',
+            'bottom': tutorial.isTriggered() && tutorial.getVerticalPosition() == 'bottom',
+            'compare-look-sort' : tutorial.isTriggered() && tutorial.getVerticalPosition() == 'compare-look-sort',
+            'first-share-compare' : tutorial.isTriggered() && tutorial.getVerticalPosition() == 'first-share-compare',
+            'highlight' : tutorial.isTriggered() && tutorial.isHighlightNeeded(),
+            'non-highlight' : tutorial.isTriggered() && !tutorial.isHighlightNeeded()
         }">
         </div>
         <div id="tutorial-marker" ng-class="{
-            'left-most': tutorial.getHorizontalPosition() == 'left-most',
-            'left-center': tutorial.getHorizontalPosition() == 'left-center',
-            'center': tutorial.getHorizontalPosition() == 'center',
-            'right-center': tutorial.getHorizontalPosition() == 'right-center',
-            'right-most': tutorial.getHorizontalPosition() == 'right-most',
-            'top': tutorial.getVerticalPosition() == 'top',
-            'bottom': tutorial.getVerticalPosition() == 'bottom',
-            'first-share-compare' : tutorial.getVerticalPosition() == 'first-share-compare'
+            'left-most': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'left-most',
+            'left-center': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'left-center',
+            'center': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'center',
+            'right-center': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'right-center',
+            'right-most': tutorial.isTriggered() && tutorial.getHorizontalPosition() == 'right-most',
+            'top': tutorial.isTriggered() && tutorial.getVerticalPosition() == 'top',
+            'bottom': tutorial.isTriggered() && tutorial.getVerticalPosition() == 'bottom',
+            'first-share-compare' : tutorial.isTriggered() && tutorial.getVerticalPosition() == 'first-share-compare'
         }">
-            <img src="img/tutorial_arrow.png" style="width: 30vw;" ng-show="tutorial.isMarkerArrow() && !tutorial.isMarkerNone()">
-            <img src="img/{{ tutorial.getCustomMarker() }}" style="width: 17vw;" ng-show="!tutorial.isMarkerArrow() && !tutorial.isMarkerNone()">
+            <img src="img/tutorial_arrow.png" style="width: 30vw;" ng-show="tutorial.isTriggered() && tutorial.isMarkerArrow() && !tutorial.isMarkerNone()">
+            <img src="img/{{ tutorial.getCustomMarker() }}" style="width: 17vw;" ng-show="tutorial.isTriggered() && !tutorial.isMarkerArrow() && !tutorial.isMarkerNone()">
         </div>
     </div>
   </body>

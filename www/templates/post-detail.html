@@ -4,8 +4,8 @@
             <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
             <div class="user-name" ng-click="goAccount(post.user.slug)">{{ post.user.username }}</div>
         </a>
-        <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{postTimer.icon(post.created_at)}}" aria-hidden="true"></i> {{postTimer.timeLeft(post.created_at)}}</span>
-        <ion-spinner icon="ios-small" ng-if="!post"></ion-spinner>
+        <span class="time-ago grey-small-font desc_time" ng-show="::post"><i class="fa {{::post.display_icon}}" aria-hidden="true"></i> {{::post.display_time}}</span>
+        <ion-spinner icon="ios-small" ng-hide="::post"></ion-spinner>
     </ion-header-bar>
     <ion-content ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
@@ -14,118 +14,120 @@
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
-        <div class="no-result" ng-if="noResult">
+        <div class="no-result" ng-show="noResult">
             This post has been deleted by owner
         </div>
-        <div ng-hide="noResult" class="entity-id-{{post.id}}">
-            <div class="post-image">
-                <img ng-src="{{ photoPath( post.photos[0].img_path, 'l' ) }}">
-            </div>
-            <div class="button-group">
-                <button class= "button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
-                <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="focusComment()"></button>
-                <button class="button button-clear button-dark icon ion-ios-browsers-outline" ng-click="goPostCompare(post.set_ids)"></button>
-                <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption()"></button>
-            </div>
-            <hr size="1" color="#e7e7e7">
-            <div class="analytics-group" ng-show="post.show_stat">
-                <div class="analytics-gender">
-                    <div class="analytics-number">
-                        <div>{{ getStatGenderPercent(post.post_analytic, "m") }}%</div>
-                        <div>{{ getStatGenderPercent(post.post_analytic, "f") }}%</div>
-                    </div>
-                    <div class="analytics-gender-avatar">
-                        <div style="background-position-y: {{ getStatGenderPercentForAvatar(post.post_analytic, 'm') }}%">
-                            <img src="img/gender-men.png">
-                        </div>
-                        <div style="background-position-y: {{ getStatGenderPercentForAvatar(post.post_analytic, 'f') }}%">
-                            <img src="img/gender-women.png">
-                        </div>
-                    </div>
+        <div ng-repeat="post in posts">
+            <div ng-hide="noResult" class="entity-id-{{::post.id}}">
+                <div class="post-image">
+                    <img ng-src="{{ ::photoPath( post.photos[0].img_path, 'l' ) }}">
                 </div>
-                <div class="analytics-divider"></div>
-                {{ setAnalyticsHeight() }}
-                <div class="analytics-age">
-                    <div class="analytics-age-graph">
-                        <div class="analytics-age-graph-group">
-                            <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '10', 'padding') }}px"></div>
-                            <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "10") }}%</div>
-                            </div>
-                            <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '10') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '10', 'block') }}px;"></div>
-                        </div>
-                        <div class="analytics-age-graph-group">
-                            <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '20', 'padding') }}px"></div>
-                            <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "20") }}%</div>
-                            </div>
-                            <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '20') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '20', 'block') }}px;"></div>
-                        </div>
-                        <div class="analytics-age-graph-group">
-                            <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '30', 'padding') }}px"></div>
-                            <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "30") }}%</div>
-                            </div>
-                            <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '30') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '30', 'block') }}px;"></div>
-                        </div>
-                        <div class="analytics-age-graph-group">
-                            <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '40', 'padding') }}px"></div>
-                            <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "40") }}%</div>
-                            </div>
-                            <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '40') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '40', 'block') }}px;"></div>
-                        </div>
-                        <div class="analytics-age-graph-group">
-                            <div class="analytics-padding" style="height: {{ getStatAgeHeight(post.post_analytic, '50', 'padding') }}px"></div>
-                            <div class="analytics-number">
-                                <div>{{ getStatAgePercent(post.post_analytic, "50") }}%</div>
-                            </div>
-                            <div class="analytics-block {{ getStatAgeBlockColor(post.post_analytic, '50') }}" style="height: {{ getStatAgeHeight(post.post_analytic, '50', 'block') }}px;"></div>
-                        </div>
-                    </div>
-                    <div class="analytics-label">
-                        <div>10-19</div>
-                        <div>20-29</div>
-                        <div>30-39</div>
-                        <div>40-49</div>
-                        <div>50-59</div>
-                    </div>
+                <div class="button-group">
+                    <button class= "button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
+                    <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="focusComment()"></button>
+                    <button class="button button-clear button-dark icon ion-ios-browsers-outline" ng-click="goPostCompare(post.set_ids)"></button>
+                    <button class="button button-clear button-dark icon ion-ios-more-outline" ng-click="moreOption()"></button>
                 </div>
-                <div class="clear"></div>
-            </div>
-            <hr size="1" color="#e7e7e7">
-            <div class="stats">
-                <p class="likes-count" ng-click="goPostLikers(post.id)">
-                  <i class="ion-ios-heart"></i> <span class="like-count-number">{{ likesCount(post) }}</span> likes
-                </p>
-            </div>
-            <p class="content" ng-bind-html="linkHashTagAndOccasion(post) | unsafe"></p>
-            <p class="load-more grey-small-font" ng-click="loadMoreComments()" ng-if="commentsHiddenCount">load previous comments ({{ commentsHiddenCount }})</p>
-            <ion-list>
-                <ion-item class="item item-avatar item-text-wrap" ng-repeat="comment in post.latest_ten_comments">
-                    <div class="profile-image" style="background-image: url( {{ photoPath( comment.user.profile_img_path, 's' ) }} )" ng-click="goAccount(comment.user.slug)"></div>
-                    <div class="user-name" ng-click="goAccount(comment.user.slug)">{{ comment.user.username }}</div>
-                    <p>{{ comment.content }}</p>
-                    <span class="time-ago grey-small-font" am-time-ago="comment.created_at | amUtc"></span>
-                    <span class="test-remove-comment" ng-show="ifTestAccount() && ownComment($index)" ng-click="remComment($index)">r</span>
-                    <ion-option-button class="button-assertive" ng-click="remComment($index)" ng-if="ownComment($index)">Delete</ion-option-button>
-                </ion-item>
-            </ion-list>
-            <form name="commentForm" ng-submit="submitComment()">
-                <div class="list">
-                    <div class="item item-input-inset">
-                        <label class="item-input-wrapper">
-                            <input name="comment" type="text" id="comment" placeholder="Write a comment..." ng-model="comment.content">
-                        </label>
-                        <button class="button button-small comment-submit" ng-hide="commentSubmitting">
-                            Submit
-                        </button>
-                        <button class="button button-small comment-submitting" ng-show="commentSubmitting">
-                            <ion-spinner icon="ios-small"></ion-spinner>
-                        </button>
+                <hr size="1" color="#e7e7e7">
+                <div class="analytics-group" ng-show="::post.show_stat">
+                    <div class="analytics-gender">
+                        <div class="analytics-number">
+                            <div>{{ ::getStatGenderPercent(post.post_analytic, "m") }}%</div>
+                            <div>{{ ::getStatGenderPercent(post.post_analytic, "f") }}%</div>
+                        </div>
+                        <div class="analytics-gender-avatar">
+                            <div style="background-position-y: {{ ::getStatGenderPercentForAvatar(post.post_analytic, 'm') }}%">
+                                <img src="img/gender-men.png">
+                            </div>
+                            <div style="background-position-y: {{ ::getStatGenderPercentForAvatar(post.post_analytic, 'f') }}%">
+                                <img src="img/gender-women.png">
+                            </div>
+                        </div>
                     </div>
+                    <div class="analytics-divider"></div>
+                    <div class="dummy-class-to-trigger-function-in-template" ng-show="::!!setAnalyticsHeight()"></div>
+                    <div class="analytics-age">
+                        <div class="analytics-age-graph">
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ ::getStatAgeHeight(post.post_analytic, '10', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ ::getStatAgePercent(post.post_analytic, "10") }}%</div>
+                                </div>
+                                <div class="analytics-block {{ ::getStatAgeBlockColor(post.post_analytic, '10') }}" style="height: {{ ::getStatAgeHeight(post.post_analytic, '10', 'block') }}px;"></div>
+                            </div>
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ ::getStatAgeHeight(post.post_analytic, '20', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ ::getStatAgePercent(post.post_analytic, "20") }}%</div>
+                                </div>
+                                <div class="analytics-block {{ ::getStatAgeBlockColor(post.post_analytic, '20') }}" style="height: {{ ::getStatAgeHeight(post.post_analytic, '20', 'block') }}px;"></div>
+                            </div>
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ ::getStatAgeHeight(post.post_analytic, '30', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ ::getStatAgePercent(post.post_analytic, "30") }}%</div>
+                                </div>
+                                <div class="analytics-block {{ ::getStatAgeBlockColor(post.post_analytic, '30') }}" style="height: {{ ::getStatAgeHeight(post.post_analytic, '30', 'block') }}px;"></div>
+                            </div>
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ ::getStatAgeHeight(post.post_analytic, '40', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ ::getStatAgePercent(post.post_analytic, "40") }}%</div>
+                                </div>
+                                <div class="analytics-block {{ ::getStatAgeBlockColor(post.post_analytic, '40') }}" style="height: {{ ::getStatAgeHeight(post.post_analytic, '40', 'block') }}px;"></div>
+                            </div>
+                            <div class="analytics-age-graph-group">
+                                <div class="analytics-padding" style="height: {{ ::getStatAgeHeight(post.post_analytic, '50', 'padding') }}px"></div>
+                                <div class="analytics-number">
+                                    <div>{{ ::getStatAgePercent(post.post_analytic, "50") }}%</div>
+                                </div>
+                                <div class="analytics-block {{ ::getStatAgeBlockColor(post.post_analytic, '50') }}" style="height: {{ ::getStatAgeHeight(post.post_analytic, '50', 'block') }}px;"></div>
+                            </div>
+                        </div>
+                        <div class="analytics-label">
+                            <div>10-19</div>
+                            <div>20-29</div>
+                            <div>30-39</div>
+                            <div>40-49</div>
+                            <div>50-59</div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
                 </div>
-            </form>
+                <hr size="1" color="#e7e7e7">
+                <div class="stats">
+                    <p class="likes-count" ng-click="goPostLikers(post.id)">
+                      <i class="ion-ios-heart"></i> <span class="like-count-number">{{ likesCount(post) }}</span> likes
+                    </p>
+                </div>
+                <p class="content" ng-bind-html="::linkHashTagAndOccasion(post) | unsafe"></p>
+                <p class="load-more grey-small-font" ng-click="loadMoreComments()" ng-if="commentsHiddenCount">load previous comments ({{ commentsHiddenCount }})</p>
+                <ion-list>
+                    <ion-item class="item item-avatar item-text-wrap" ng-repeat="comment in post.latest_ten_comments">
+                        <div class="profile-image" style="background-image: url( {{ ::photoPath( comment.user.profile_img_path, 's' ) }} )" ng-click="goAccount(comment.user.slug)"></div>
+                        <div class="user-name" ng-click="goAccount(comment.user.slug)">{{ ::comment.user.username }}</div>
+                        <p>{{ ::comment.content }}</p>
+                        <span class="time-ago grey-small-font">{{::getTimeAgo(comment.created_at)}}</span>
+                        <span class="test-remove-comment" ng-show="::ifTestAccount() && ownComment($index)" ng-click="remComment($index)">r</span>
+                        <ion-option-button class="button-assertive" ng-click="remComment($index)" ng-if="::ownComment($index)">Delete</ion-option-button>
+                    </ion-item>
+                </ion-list>
+                <form name="commentForm" ng-submit="submitComment()">
+                    <div class="list">
+                        <div class="item item-input-inset">
+                            <label class="item-input-wrapper">
+                                <input name="comment" type="text" id="comment" placeholder="Write a comment..." ng-model="comment.content">
+                            </label>
+                            <button class="button button-small comment-submit" ng-hide="commentSubmitting">
+                                Submit
+                            </button>
+                            <button class="button button-small comment-submitting" ng-show="commentSubmitting">
+                                <ion-spinner icon="ios-small"></ion-spinner>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </ion-content>
 </ion-view>

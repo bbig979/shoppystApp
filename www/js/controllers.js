@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
             });
         }
     }
-    setInterval(function() {$rootScope.getNotification();}, 5000);
+    //setInterval(function() {$rootScope.getNotification();}, 5000);
 
     $rootScope.goNotification = function() {
         var user = $rootScope.getCurrentUser();
@@ -40,12 +40,6 @@ angular.module('starter.controllers', [])
     $rootScope.ifInNotification = function() {
         var detect = 'auth, forgetpassword, register, register2, root, intro';
         if( detect.indexOf($state.current.name) > -1 || $state.current.name.indexOf('notification') > -1){
-            return true;
-        }
-        return false;
-    }
-    $rootScope.ifInCompare = function() {
-        if($state.current.name.indexOf('post-compare') > -1){
             return true;
         }
         return false;
@@ -312,17 +306,12 @@ angular.module('starter.controllers', [])
         });
     };
     $rootScope.ifOthersProfile = function(){
-        var detect = 'tab.account-home, tab.account-explore, tab.account-notification, tab.account-account';
-        if( detect.indexOf($state.current.name) > -1){
-            var user = $rootScope.getCurrentUser();
-            if(user){
-                if($stateParams.accountSlug == ""){
-                    return false;
-                }
-                if(user.slug != $stateParams.accountSlug ){
-                    return true;
-                }
-            }
+        if(
+            $rootScope.currentUser &&
+            $stateParams.accountSlug &&
+            $rootScope.currentUser.slug != $stateParams.accountSlug
+        ){
+            return true;
         }
         return false;
     };
@@ -656,6 +645,9 @@ angular.module('starter.controllers', [])
             }
         }
     };
+    $rootScope.getTimeAgo = function(time){
+        return moment.utc(time).fromNow();
+    }
     $rootScope.setAnalyticsHeight = function(){
         if ($rootScope.stat_height == 0 && $(".analytics-gender-avatar div").height() > $(".analytics-gender .analytics-number .ng-binding").height())
         {
@@ -1580,13 +1572,12 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, PostTimer, NewPost, $ionicScrollDelegate, ScrollingDetector) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
     $scope.comparePosts = ComparePosts;
-    $scope.postTimer = PostTimer;
     $scope.mostRecentPostID = 0;
     $scope.newPostAvailable = false;
     $scope.loadingNewPost = false;
@@ -1796,8 +1787,8 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup, ComparePosts, PostTimer) {
-    $scope.post = 0; // sloppy hack for not loaded check
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup, ComparePosts) {
+    //$scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
     $scope.saved = false;
@@ -1810,7 +1801,6 @@ angular.module('starter.controllers', [])
     $scope.stat_height = 0;
     $scope.stat_label_height = 0;
     $scope.comparePosts = ComparePosts;
-    $scope.postTimer = PostTimer;
     var user = $rootScope.getCurrentUser();
 
     FetchPosts.get($stateParams.postId).then(function(post){
@@ -1824,6 +1814,7 @@ angular.module('starter.controllers', [])
                 commentsCount = post.comments_count.aggregate;
             }
             $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
+            $scope.posts = [post];
             $scope.post = post;
             if(post.user_liked){
                 $scope.liked = true;
@@ -2011,7 +2002,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, FetchSearchResults, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, PostTimer, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, FetchSearchResults, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector) {
     $scope.search_type_active = "all";
     $scope.searchType = "tag";
     $scope.searchHolder = "Search";
@@ -2031,7 +2022,6 @@ angular.module('starter.controllers', [])
     $scope.noSearchResult = false;
     $scope.showSample = false;
     $scope.comparePosts = ComparePosts;
-    $scope.postTimer = PostTimer;
     $scope.mostRecentPostID = 0;
     $scope.newPostAvailable = false;
     $scope.loadingNewPost = false;
@@ -2293,15 +2283,14 @@ angular.module('starter.controllers', [])
     }
 })
 */
-.controller('PostCompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePostSet, $ionicLoading, PostTimer, $stateParams, Tutorial) {
+.controller('PostCompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePostSet, $ionicLoading, $stateParams, Tutorial) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
     $scope.comparePostSet = ComparePostSet;
-    $scope.postTimer = PostTimer;
     $scope.gender_active = 'all';
     $scope.age_active = 'all';
     $scope.post_id_array = $stateParams.postIds.split(',');
-    $scope.post_array = null;
+    $scope.post_array;
     $scope.top_post_id;
 /*
  * option 1
@@ -2466,7 +2455,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, PostTimer, Tutorial) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, Tutorial) {
     var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;
@@ -2477,7 +2466,6 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     $scope.activatedTab = 'new';
     $scope.comparePosts = ComparePosts;
-    $scope.postTimer = PostTimer;
 
     if($stateParams.isThisAfterShare){
         Tutorial.triggerIfNotCompleted('tutorial_first_share');

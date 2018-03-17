@@ -54,7 +54,7 @@
                                 <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
                             </div>
                             <div class="desc_row">
-                                <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{postTimer.icon(post.created_at)}}" aria-hidden="true"></i> {{postTimer.timeLeft(post.created_at)}}</span>
+                                <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.display_icon}}" aria-hidden="true"></i> {{post.display_time}}</span>
                             </div>
                             <div class="desc_row" ng-show="post.user.id == 1">
                                 <div class="user-type-tag">Demo</div>
