@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics) {
     $rootScope.clientVersion = '1.0';
     //$rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
@@ -45,6 +45,7 @@ angular.module('starter.controllers', [])
         return false;
     }
     $rootScope.shareCompare = function() {
+        UxAnalytics.startScreen('share-compare');
         $ionicLoading.show();
         ComparePostSet.share($stateParams.postIds).then(function(hash){
             if(hash){
@@ -234,6 +235,7 @@ angular.module('starter.controllers', [])
         }
     };
     $rootScope.openCameraMenu = function(){
+        UxAnalytics.startScreen('tab-camera');
         // Show the action sheet
         var navCameraSheet = $ionicActionSheet.show({
             buttons: [
@@ -1010,7 +1012,7 @@ angular.module('starter.controllers', [])
         }
     };
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics) {
     $scope.submitted = false;
     $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
@@ -1018,6 +1020,10 @@ angular.module('starter.controllers', [])
     $scope.occasionList = new Array();
     $scope.shopOptionalOccasion = false;
     $scope.cameraPictues = CameraPictues;
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-create');
+    });
 
     FetchOccasions.get().then(function(response){
         occasions = response;
@@ -1119,8 +1125,12 @@ angular.module('starter.controllers', [])
         $ionicHistory.goBack();
     }
 })
-.controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading) {
+.controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading, UxAnalytics) {
     $scope.post = $stateParams.post;
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-edit');
+    });
 
     $scope.updatePost = function(post){
         $ionicLoading.show();
@@ -1171,6 +1181,13 @@ angular.module('starter.controllers', [])
         disableAnimate: true,
         disableBack: true
     });
+    if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
+        $state.go('tab.explore-explore');
+    }
+    else{
+        $state.go('auth');
+    }
+    /*
     if(localStorage.getItem('have_seen_intro')){
         if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
             $state.go('tab.explore-explore');
@@ -1182,10 +1199,14 @@ angular.module('starter.controllers', [])
     else{
         $state.go('intro');
     }
+    */
 })
 
-.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading, $q) {
+.controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading, $q, UxAnalytics) {
     $scope.registerData = {email:'',password:''};
+
+    UxAnalytics.startScreen('register');
+
     $scope.register = function(registerData){
         $ionicLoading.show();
         $http({
@@ -1327,13 +1348,15 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout, UsernameAvailability) {
+.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout, UsernameAvailability, UxAnalytics) {
     $scope.registerData = {};
     $scope.usernameClass = '';
     var credentials = {
         email: $stateParams.email,
         password: $stateParams.password
     }
+
+    UxAnalytics.startScreen('register2');
 
     if(!localStorage.getItem('user')){
         console.log(credentials);
@@ -1391,8 +1414,13 @@ angular.module('starter.controllers', [])
         });
     }
 })
-.controller('ForgetPasswordCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading) {
+.controller('ForgetPasswordCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading, UxAnalytics) {
     $scope.datas = {email:''};
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('forget-password');
+    });
+
     $scope.sendLink = function(datas){
         $ionicLoading.show({template: 'Sending Password Reset email'});
         $http({
@@ -1412,11 +1440,18 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading, $q) {
+.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading, $q, UxAnalytics) {
 
     $scope.loginData = {};
     $scope.loginError = false;
     $scope.loginErrorText;
+
+    // problem : Appsee starts with 'Main' screen, even though I hardcode to start 'login'.
+    // cause : Appsee auto-stats 'Main' screen asynchronously.
+    // solution : Wait 2 second to start 'login' screen after Appsee auto starts 'Main' screen.
+    setTimeout(function(){
+        UxAnalytics.startScreen('login');
+    }, 2000);
 
     $scope.login = function() {
 
@@ -1572,7 +1607,7 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -1587,6 +1622,7 @@ angular.module('starter.controllers', [])
     $http.get($rootScope.baseURL+'/api/app/'+noAngularVar_device+'/'+noAngularVar_deviceID).success(function(){});
 
     $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('tab-home');
         if($scope.noResult){
             $scope.loadingNewPost = true;
             $scope.doRefresh();
@@ -1733,12 +1769,16 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope, $timeout) {
+.controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope, $timeout, UxAnalytics) {
     $scope.likes = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
     var user = $rootScope.getCurrentUser();
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-likers');
+    });
 
     FetchUsers.liker($stateParams.postId, $scope.page).then(function(response){
         likes = response.data;
@@ -1787,7 +1827,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup, ComparePosts) {
+.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup, ComparePosts, UxAnalytics) {
     //$scope.post = 0; // sloppy hack for not loaded check
     $scope.comment = {};
     $scope.liked = false;
@@ -1802,6 +1842,15 @@ angular.module('starter.controllers', [])
     $scope.stat_label_height = 0;
     $scope.comparePosts = ComparePosts;
     var user = $rootScope.getCurrentUser();
+
+    $scope.$on('$ionicView.enter', function() {
+        if($state.current.name == 'tab.post-comments-home'){
+            UxAnalytics.startScreen('post-comments');
+        }
+        else{
+            UxAnalytics.startScreen('post-detail');
+        }
+    });
 
     FetchPosts.get($stateParams.postId).then(function(post){
         if(post){
@@ -2002,7 +2051,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, FetchSearchResults, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, FetchSearchResults, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
     $scope.search_type_active = "all";
     $scope.searchType = "tag";
     $scope.searchHolder = "Search";
@@ -2038,7 +2087,17 @@ angular.module('starter.controllers', [])
         Tutorial.triggerIfNotCompleted('tutorial_welcome');
     }
 
+    // problem : Appsee starts with 'Main' screen, even though I hardcode to start 'explore'.
+    // cause : Appsee auto-stats 'Main' screen asynchronously.
+    // solution : Wait 2 second to start 'explore' screen after Appsee auto starts 'Main' screen.
+    setTimeout(function(){
+        UxAnalytics.setUserId(user.username);
+        UxAnalytics.startScreen('tab-explore');
+    }, 2000);
+
     $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('tab-explore');
+
         if($scope.noResult){
             $scope.loadingNewPost = true;
             $scope.doRefresh();
@@ -2283,7 +2342,7 @@ angular.module('starter.controllers', [])
     }
 })
 */
-.controller('PostCompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePostSet, $ionicLoading, $stateParams, Tutorial) {
+.controller('PostCompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePostSet, $ionicLoading, $stateParams, Tutorial, UxAnalytics) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
     $scope.comparePostSet = ComparePostSet;
@@ -2292,6 +2351,10 @@ angular.module('starter.controllers', [])
     $scope.post_id_array = $stateParams.postIds.split(',');
     $scope.post_array;
     $scope.top_post_id;
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-compare');
+    });
 /*
  * option 1
  * refresh as sort + refresh as enter view
@@ -2455,7 +2518,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, Tutorial) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, Tutorial, UxAnalytics) {
     var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;
@@ -2466,6 +2529,10 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     $scope.activatedTab = 'new';
     $scope.comparePosts = ComparePosts;
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('tab-account');
+    });
 
     if($stateParams.isThisAfterShare){
         Tutorial.triggerIfNotCompleted('tutorial_first_share');
@@ -2696,8 +2763,13 @@ angular.module('starter.controllers', [])
         });
     }
 })
-.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope, $timeout, RestartApp) {
+.controller('OptionCtrl', function($scope, $stateParams, $http, $state, $ionicPopup, $ionicHistory, $rootScope, $timeout, RestartApp, UxAnalytics) {
     $scope.user = $rootScope.getCurrentUser();
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('account-option');
+    });
+
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
     };
@@ -2716,6 +2788,8 @@ angular.module('starter.controllers', [])
         var onError = function(msg) {
             console.log("invite failed with message: " + msg);
         }
+
+        UxAnalytics.startScreen('invite-friends');
         window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
     };
     $scope.goChangePassword = function(id){
@@ -2741,9 +2815,13 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory, UsernameAvailability, BlockerMessage) {
+.controller('AccountEditCtrl', function($scope, FetchUsers, $http, $rootScope, $ionicHistory, UsernameAvailability, BlockerMessage, UxAnalytics) {
     var user = $rootScope.getCurrentUser();
     $scope.usernameClass = '';
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('account-edit');
+    });
 
     FetchUsers.get(user.slug).then(function(user){
         $scope.user = user;
@@ -2794,8 +2872,13 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('ChangePasswordCtrl', function($scope, $stateParams, $http, $state, $location, $rootScope, $ionicHistory) {
+.controller('ChangePasswordCtrl', function($scope, $stateParams, $http, $state, $location, $rootScope, $ionicHistory, UxAnalytics) {
     var user = $rootScope.getCurrentUser();
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('change-password');
+    });
+
     $scope.changePassword = function(pwd){
         $http({
             method: "POST",
@@ -2868,13 +2951,17 @@ angular.module('starter.controllers', [])
     }
 
 })
-.controller('FollowingCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope, $timeout) {
+.controller('FollowingCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope, $timeout, UxAnalytics) {
     var user = $rootScope.getCurrentUser();
     $scope.me = user;
     $scope.users = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('account-following');
+    });
 
     FetchUsers.following($stateParams.userSlug, $scope.page).then(function(response){
         users = response.data;
@@ -2920,7 +3007,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('FollowerCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope, $timeout) {
+.controller('FollowerCtrl', function($scope, $stateParams, FetchUsers, $http, $rootScope, $timeout, UxAnalytics) {
     var user = $rootScope.getCurrentUser();
     $scope.me = user;
     $scope.users = [];
@@ -2928,6 +3015,10 @@ angular.module('starter.controllers', [])
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
     $scope.userItself = false;
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('account-follower');
+    });
 
     FetchUsers.follower($stateParams.userSlug, $scope.page).then(function(response){
         users = response.data;
@@ -2973,10 +3064,14 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('LikedCtrl', function($scope, $stateParams, FetchPosts, $timeout) {
+.controller('LikedCtrl', function($scope, $stateParams, FetchPosts, $timeout, UxAnalytics) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('account-liked');
+    });
 
     FetchPosts.liked($stateParams.userSlug, $scope.page).then(function(posts){
         $scope.posts = posts;
@@ -3012,12 +3107,16 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope, $state, $timeout) {
+.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope, $state, $timeout, UxAnalytics) {
     var user = $rootScope.getCurrentUser();
     $scope.notifications = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('tab-notification');
+    });
 
     FetchNotifications.new(user.slug, $scope.page).then(function(response){
         notifications = response.data;

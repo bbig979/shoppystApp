@@ -594,6 +594,23 @@ angular.module('starter.services', [])
         }
     }
 })
+// problem : Appsee is not available when testing in web browser.
+// cause : Default behavior of Ionic
+// solution : skip if Appsee is not available
+.factory('UxAnalytics', function(){
+    return {
+        startScreen: function(screen) {
+            if(typeof Appsee !== 'undefined'){
+                Appsee.startScreen(screen);
+            }
+        },
+        setUserId: function(user_id){
+            if(typeof Appsee !== 'undefined'){
+                Appsee.setUserId(user_id);
+            }
+        }
+    }
+})
 .factory('NewPost', function($rootScope, $q, FetchPosts){
     var _default_flags = {
         "from_id" : 0, // just for logging purpose
