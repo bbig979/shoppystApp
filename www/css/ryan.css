@@ -4000,6 +4000,11 @@ div.tab-nav.tabs {
 #post-detail form .item-input-inset {
   border: 0;
 }
+/* line 14, ../../scss/ryan/_post-detail.scss */
+#post-detail .post-image-placeholder {
+  background-color: #f0f0f0;
+  height: 1000px;
+}
 
 /* line 2, ../../scss/ryan/_home.scss */
 #home .post-header {

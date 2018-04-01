@@ -1,8 +1,8 @@
 <ion-view class="comment-list single-post" id="post-detail" view-title="LOOK">
     <ion-header-bar align-title="left" class="bar-subheader post-header" ng-hide="noResult">
         <a>
-            <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
-            <div class="user-name" ng-click="goAccount(post.user.slug)">{{ post.user.username }}</div>
+            <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="::goAccount(post.user.slug)"></div>
+            <div class="user-name" ng-click="::goAccount(post.user.slug)">{{ ::post.user.username }}</div>
         </a>
         <span class="time-ago grey-small-font desc_time" ng-show="::post"><i class="fa {{::post.display_icon}}" aria-hidden="true"></i> {{::post.display_time}}</span>
         <ion-spinner icon="ios-small" ng-hide="::post"></ion-spinner>
@@ -16,6 +16,8 @@
         </ion-refresher>
         <div class="no-result" ng-show="noResult">
             This post has been deleted by owner
+        </div>
+        <div class="post-image-placeholder" ng-hide="::post">
         </div>
         <div ng-repeat="post in posts">
             <div ng-hide="noResult" class="entity-id-{{::post.id}}">
