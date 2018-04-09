@@ -53,11 +53,11 @@
                                 <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
                             </div>
                             <div class="desc_row">
-                                <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{postTimer.icon(post.created_at)}}" aria-hidden="true"></i> {{postTimer.timeLeft(post.created_at)}}</span>
+                                <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.display_icon}}" aria-hidden="true"></i> {{post.display_time}}</span>
                             </div>
                             <div class="add_to_compare">
                                 <button class="button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'" ng-if="notMe(account_info)"></button>
-                                <button class="button button-clear button-dark icon add-compare-button ion-ios-browsers-outline" ng-click="goPostCompare(post.set_ids, isMyAccount)"></button>
+                                <button class="button button-clear button-dark icon add-compare-button ion-ios-checkmark-outline" ng-click="goPostCompare(post.set_ids, isMyAccount)"></button>
                             </div>
                         </div>
                     </div>

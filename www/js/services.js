@@ -65,7 +65,7 @@ angular.module('starter.services', [])
             return message;
         },
         isNeeded: function(){
-            if(Tutorial.isInProgress()){
+            if(Tutorial.isTriggered()){
                 return false;
             }
             return is_needed;
@@ -97,14 +97,16 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchPosts', function($http, $rootScope) {
+.factory('FetchPosts', function($http, $rootScope, PostTimer) {
     var _addToPostTrackArray = function(pagingInfo) {
         $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
     };
     return {
         following: function(mostRecentPostID, pg) {
+            var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/home?page="+pg+"&from_id="+mostRecentPostID).then(function(response){
                 _addToPostTrackArray(response.data);
+                this_factory.addDisplayAttr(response.data.data);
                 return response.data;
             }
             ,function(response){
@@ -120,8 +122,10 @@ angular.module('starter.services', [])
             });
         },
         get: function(postID){
+            var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/post/"+postID).then(function(response){
                 _addToPostTrackArray({data:response.data});
+                this_factory.addDisplayAttr([response.data]);
                 return response.data;
             }
             ,function(response){
@@ -129,8 +133,10 @@ angular.module('starter.services', [])
             });
         },
         new: function(mostRecentPostID, pg, search_term, search_type){
+            var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&search_type="+search_type+"&from_id="+mostRecentPostID).then(function(response){
                 _addToPostTrackArray(response.data);
+                this_factory.addDisplayAttr(response.data.data);
                 return response.data;
             }
             ,function(response){
@@ -154,8 +160,10 @@ angular.module('starter.services', [])
             });
         },
         user: function(userSlug, tab, pg) {
+            var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/user/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
                 _addToPostTrackArray(response.data);
+                this_factory.addDisplayAttr(response.data.data);
                 return response.data;
             }
             ,function(response){
@@ -178,6 +186,13 @@ angular.module('starter.services', [])
             ,function(response){
                 $rootScope.handleHttpError(response.data, response.status);
             });
+        },
+        addDisplayAttr: function(posts){
+            for(var i=0; i<posts.length; i++){
+                var post = posts[i];
+                post.display_time = PostTimer.timeLeft(post.created_at);
+                post.display_icon = PostTimer.icon(post.created_at);
+            }
         }
     };
 })
@@ -416,7 +431,7 @@ angular.module('starter.services', [])
     this.triggerIfNotCompleted = function(group){
         // @todo
         // check flag in current user and return if is_tutorial_completed is true
-        if(! localStorage.getItem(group)){
+        if(! localStorage.getItem(group) && _tutorials != null){
             _current_group = group;
             this.trigger(1);
         }
@@ -489,9 +504,6 @@ angular.module('starter.services', [])
             typeof _current_tutorial.marker.highlight !== 'undefined' &&
             _current_tutorial.marker.highlight
         )
-    }
-    this.isInProgress = function(){
-        return _current_group != '';
     }
 })
 .factory('UsernameAvailability', function($http, $timeout, $rootScope, $q){
@@ -579,6 +591,23 @@ angular.module('starter.services', [])
         record: function(pic){
             _last_position = _current_position;
             _current_position = $ionicScrollDelegate.getScrollPosition().top;
+        }
+    }
+})
+// problem : Appsee is not available when testing in web browser.
+// cause : Default behavior of Ionic
+// solution : skip if Appsee is not available
+.factory('UxAnalytics', function(){
+    return {
+        startScreen: function(screen) {
+            if(typeof Appsee !== 'undefined'){
+                Appsee.startScreen(screen);
+            }
+        },
+        setUserId: function(user_id){
+            if(typeof Appsee !== 'undefined'){
+                Appsee.setUserId(user_id);
+            }
         }
     }
 })
