@@ -22,19 +22,19 @@
             <a ng-class="{ active: age_active === 'teens' }" ng-click="setAge('teens')" class="teens">10s</a>
             <a ng-class="{ active: age_active === 'all' }" ng-click="setAge('all')" class="all">All</a>
         </div>
-        <div class="compare-toggle occasion" ng-hide="post_array[0].occasion == null">
+        <div class="compare-toggle occasion" ng-show="::post_array[0].occasion">
             <div class="label">Occasion</div>
-            <a class="active">{{post_array[0].occasion.name}}</a>
+            <a class="active">{{::post_array[0].occasion.name}}</a>
             <div class="clearfix"></div>
         </div>
-        <div class="expired-message" ng-show="post_array.length == 0">
+        <div class="expired-message" ng-show="::post_array && post_array.length == 0">
             Snaplooks have disappeared.
         </div>
         <ion-list>
             <div>
-                <ion-item ng-repeat="post in post_array" class="post item post_{{post.id}}">
-                    <div class="entity-id-{{post.id}}">
-                        <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})">
+                <ion-item ng-repeat="post in post_array" class="post item post_{{::post.id}}">
+                    <div class="entity-id-{{::post.id}}">
+                        <ion-item style="background-image: url({{ ::photoPath( post.photos[0].img_path, 'm' ) }})">
                             <a class="post_img"></a>
                             <div class="desc_row">
                                 <span class="partial_likes">{{comparePostSet.partialLikes(gender_active, age_active, post.id, post_array)}} likes</span>

@@ -3343,8 +3343,8 @@
 .post-list .post .add-compare-button {
   float: right;
   min-width: 20px;
-  min-height: 21px;
-  height: 21px;
+  min-height: 22px;
+  height: 22px;
   padding-right: 6px;
   margin-right: 6px;
 }
@@ -4000,6 +4000,11 @@ div.tab-nav.tabs {
 #post-detail form .item-input-inset {
   border: 0;
 }
+/* line 14, ../../scss/ryan/_post-detail.scss */
+#post-detail .post-image-placeholder {
+  background-color: #f0f0f0;
+  height: 1000px;
+}
 
 /* line 2, ../../scss/ryan/_home.scss */
 #home .post-header {
@@ -4042,6 +4047,16 @@ div.tab-nav.tabs {
 /* line 9, ../../scss/ryan/_explore.scss */
 #tab-explore .search-clear {
   margin-top: 0;
+}
+/* line 12, ../../scss/ryan/_explore.scss */
+#tab-explore .user-type-tag {
+  font-size: 10px;
+  display: inline-block;
+  background-color: #aaa;
+  color: #fff;
+  padding: 3px 5px;
+  border-radius: 5px;
+  line-height: 1;
 }
 
 /* line 2, ../../scss/ryan/_ranking.scss */
