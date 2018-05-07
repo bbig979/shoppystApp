@@ -892,3 +892,91 @@
   margin-right: 3px;
   font-size: 1.2em;
 }
+
+/* line 2, ../../scss/tw/_search.scss */
+#post-search .search-header {
+  text-align: center;
+  padding: 30px 0;
+}
+/* line 3, ../../scss/tw/_search.scss */
+#post-search .search-header h3 {
+  color: #555;
+}
+/* line 10, ../../scss/tw/_search.scss */
+#post-search .search-clear {
+  margin-top: 0;
+}
+/* line 14, ../../scss/tw/_search.scss */
+#post-search .search-toggle {
+  border-bottom: 1px solid #eee;
+}
+/* line 15, ../../scss/tw/_search.scss */
+#post-search .search-toggle a {
+  padding: 10px;
+  float: left;
+  text-transform: uppercase;
+  width: 33.33%;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+/* line 24, ../../scss/tw/_search.scss */
+#post-search .search-toggle .active {
+  background-color: #FF4C62;
+  color: white;
+  font-weight: 500;
+  padding: 4px 10px;
+  margin-top: 1px;
+  padding-top: 8px;
+  padding-bottom: 10px;
+}
+/* line 37, ../../scss/tw/_search.scss */
+#post-search .search-running {
+  clear: both;
+  padding: 15px;
+  min-height: 55px;
+}
+/* line 42, ../../scss/tw/_search.scss */
+#post-search .search-running i {
+  padding: 0px 5px;
+  margin-right: 8px;
+}
+/* line 50, ../../scss/tw/_search.scss */
+#post-search .explore-search .post .post-item {
+  padding: 4px;
+  min-height: 55px;
+}
+/* line 54, ../../scss/tw/_search.scss */
+#post-search .explore-search .post .post-item .name {
+  font-size: 12px;
+  float: left;
+  padding-top: 14px;
+}
+/* line 59, ../../scss/tw/_search.scss */
+#post-search .explore-search .post .post-item .profile-image {
+  float: left;
+  margin: 10px;
+}
+/* line 64, ../../scss/tw/_search.scss */
+#post-search .explore-search .post .post-item .tag_sign {
+  float: left;
+  color: #cdcdcd;
+  margin: 14px 10px;
+  font-size: 1.0em;
+}
+/* line 71, ../../scss/tw/_search.scss */
+#post-search .explore-search .post .post-item .at_sign {
+  float: left;
+  color: #cdcdcd;
+  margin: 14px 16px;
+  font-size: 1.4em;
+}
+
+/* line 2, ../../scss/tw/_search-result.scss */
+#post-search-result .search-header {
+  text-align: center;
+  padding: 30px 0;
+}
+/* line 3, ../../scss/tw/_search-result.scss */
+#post-search-result .search-header h3 {
+  color: #555;
+}

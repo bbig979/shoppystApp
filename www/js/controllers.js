@@ -1,10 +1,11 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, FetchSettings) {
     $rootScope.clientVersion = '1.0';
+    $rootScope.minimumForceUpdateVersion = "";
     //$rootScope.baseURL = 'http://app.snaplook.today';
-    //$rootScope.baseURL = 'http://localhost:8000';
+    $rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    $rootScope.baseURL = 'http://localhost:8888';
+    //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -15,35 +16,14 @@ angular.module('starter.controllers', [])
     $rootScope.currentUser = null;
     $rootScope.notificationCount = "0";
     $rootScope.blockerMessage = BlockerMessage;
+    $rootScope.notificationPullInterval = 60000;
+    FetchSettings.get("minimum_force_update_version").then(function(response){
+        $rootScope.minimumForceUpdateVersion = response;
+    });
+    FetchSettings.get("notification_pull_interval").then(function(response){
+        $rootScope.notificationPullInterval = response;
+    });
 
-    $rootScope.getNotification = function() {
-        if ($rootScope.currentUser)
-        {
-            var user = $rootScope.getCurrentUser();
-            FetchNotifications.count(user.slug).then(function(response){
-                $rootScope.notificationCount = (response >= 10 ? "9+" : (response ? response : 0));
-            });
-        }
-    }
-    //setInterval(function() {$rootScope.getNotification();}, 5000);
-
-    $rootScope.goNotification = function() {
-        var user = $rootScope.getCurrentUser();
-        $http.get($rootScope.baseURL+'/api/user/'+user.slug+'/notification/open').success(function(){
-            $rootScope.notificationCount = "0";
-        })
-        .error(function(data, status){
-            $rootScope.handleHttpError(data, status);
-        });
-        $state.go('tab.notification');
-    }
-    $rootScope.ifInNotification = function() {
-        var detect = 'auth, forgetpassword, register, register2, root, intro';
-        if( detect.indexOf($state.current.name) > -1 || $state.current.name.indexOf('notification') > -1){
-            return true;
-        }
-        return false;
-    }
     $rootScope.shareCompare = function() {
         UxAnalytics.startScreen('share-compare');
         $ionicLoading.show();
@@ -140,6 +120,7 @@ angular.module('starter.controllers', [])
         $state.go('tab.post-detail-'+tab,{postId: id, user: user, posts: posts, index: index});
     };
     $rootScope.goPostCompare = function(ids, is_my_post_compare = false){
+        console.log(ids);
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-compare-'+tab,{postIds: ids, isMyPostCompare: is_my_post_compare});
     };
@@ -1011,6 +992,47 @@ angular.module('starter.controllers', [])
             }
         }
     };
+
+    $rootScope.getNotification = function(_notificationPullInterval = null) {
+        var user = $rootScope.getCurrentUser();
+        notificationPullInterval = _notificationPullInterval;
+        if (notificationPullInterval == null)
+        {
+            notificationPullInterval = $rootScope.notificationPullInterval;
+        }
+        FetchNotifications.stateChanged(user.slug, notificationPullInterval).then(function(response){
+            if (response != "fail")
+            {
+                $rootScope.notificationCount = (response >= 10 ? "9+" : (response ? response : 0));
+            }
+        });
+    }
+
+    $rootScope.goNotification = function() {
+        var user = $rootScope.getCurrentUser();
+        $http.get($rootScope.baseURL+'/api/user/'+user.slug+'/notification/open').success(function(){
+            $rootScope.notificationCount = "0";
+        })
+        .error(function(data, status){
+            $rootScope.handleHttpError(data, status);
+        });
+        $state.go('tab.notification');
+    }
+    $rootScope.ifInNotification = function() {
+        var detect = 'auth, forgetpassword, register, register2, root, intro';
+        if( detect.indexOf($state.current.name) > -1 || $state.current.name.indexOf('notification') > -1){
+            return true;
+        }
+        return false;
+    }
+
+    $timeout(
+        function(){
+            $rootScope.getNotification(0);
+        }, 500
+    )
+ 
+    setInterval(function() {$rootScope.getNotification();}, $rootScope.notificationPullInterval);
 })
 .controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics) {
     $scope.submitted = false;
@@ -2051,24 +2073,12 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, FetchSearchResults, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
-    $scope.search_type_active = "all";
-    $scope.searchType = "tag";
-    $scope.searchHolder = "Search";
-    $scope.searchNoResultText = "No Results Found";
-    if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'occasion')
-    {
-        $scope.searchType = "occasion";
-    }
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
-    $scope.searchResult = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
-    $scope.isSearchRunning = false;
-    $scope.showSearch = false;
     $scope.noResult = false;
-    $scope.noSearchResult = false;
     $scope.showSample = false;
     $scope.comparePosts = ComparePosts;
     $scope.mostRecentPostID = 0;
@@ -2102,21 +2112,14 @@ angular.module('starter.controllers', [])
             $scope.loadingNewPost = true;
             $scope.doRefresh();
         }
-        if($scope.posts.length > 0 && ! $stateParams.searchTerm && ! $scope.showSearch){
+        if($scope.posts.length > 0){
             NewPost.isAvailable('explore', $scope.mostRecentPostID).then(function(response){
                 $scope.newPostAvailable = response;
             });
         }
     });
-
-    $scope.showNoSearchResultText = function() {
-        return $scope.searchNoResultText;
-    };
-    $scope.showPlaceHolder = function() {
-        return $scope.searchHolder;
-    };
     $scope.fetchPost = function(type) {
-        FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm, $scope.searchType).then(function(response){
+        FetchPosts.new($scope.mostRecentPostID, $scope.page, "", "tag").then(function(response){
             posts = response.data;
             if (type == "new" || type == "refresh")
             {
@@ -2194,36 +2197,147 @@ angular.module('starter.controllers', [])
         NewPost.resetFlags('explore');
         $scope.fetchPost("refresh");
     };
-    $scope.submitSearch = function(search_term, type) {
-        $state.go('tab.explore-explore',{searchTerm: search_term, type: type});
-    };
-    $scope.goSearchPost = function(search_term, type) {
-        $scope.submitSearch(search_term, type);
-    };
-    $scope.noSearchTerm = function() {
-       return !$stateParams.searchTerm;
-    };
-    $scope.showSearchSection = function(){
-        $scope.showSearch = true;
+    $scope.goPostSearch = function(){
+        $state.go('tab.search-explore');
     }
-    $scope.focusSearch = function(){
-        $scope.showSearch = false;
+})
+
+.controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, FetchSettings) {
+    $scope.search_type_active = "tag";
+    $scope.searchHolder = "Search";
+    $scope.searchNoResultText = "No Results Found";
+    $scope.searchResult = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
+    $scope.isSearchRunning = false;
+    $scope.noResult = false;
+    $scope.comparePosts = ComparePosts;
+    $scope.search_term = "";
+    $scope.need_to_stay_idle_milisec = 500;
+    FetchSettings.get("need_to_stay_idle_milisec").then(function(response){
+        $scope.need_to_stay_idle_milisec = response;
+    });
+
+
+    var user = $rootScope.getCurrentUser();
+    if(user.username == user.email){
+        $state.go('register2').then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
     }
-    $scope.focusSearch = function(){
-        Focus('search');
+    else{
+        Tutorial.triggerIfNotCompleted('tutorial_welcome');
     }
-    $scope.showSearchTerm = function(){
-        var termSign = "#";
-        if ($scope.searchType == "occasion")
+
+    setTimeout(function(){
+        UxAnalytics.setUserId(user.username);
+        UxAnalytics.startScreen('post-search');
+    }, 2000);
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-search');
+    });
+
+    $timeout(function(){
+        $scope.fetchSearchResult("new", 0);
+    }, 0);
+
+    $scope.searchTermTyped = function(_search_term, keyEvent, _need_to_stay_idle_milisec = null){
+        var need_to_stay_idle_milisec = _need_to_stay_idle_milisec;
+        $scope.search_term = _search_term;
+
+        if (_search_term == undefined)
         {
-            termSign = "@";
+            $scope.search_term = "_top_posts";
         }
-        if($stateParams.searchTerm){
-            var temp = $stateParams.searchTerm.split(' ');
-            return termSign+temp.join(' '+termSign);
+        else
+        {
+            if (_search_term.length == 1 && _search_term == "#")
+            {
+                $scope.setType(_search_term, "tag");
+                $scope.searchResult = [];
+            }
+            else if (_search_term.length == 1 && _search_term == "@")
+            {
+                $scope.setType(_search_term, "people");
+                $scope.searchResult = [];
+            }            
         }
+
+        if (need_to_stay_idle_milisec == null)
+        {
+            need_to_stay_idle_milisec = $scope.need_to_stay_idle_milisec;
+        }
+
+        $scope.page = 1;
+        $scope.fetchSearchResult("new", need_to_stay_idle_milisec);
     }
-    $scope.setType = function(searchTerm, type, isRefresh) {
+
+    $scope.fetchSearchResult = function(type, _need_to_stay_idle_milisec) {
+        $scope.noResult = false;
+        $scope.isSearchRunning = true;
+        if (type == "new" || type == "refresh")
+        {
+            $scope.searchResult = [];
+        }
+        FetchSearchResult.typed($scope.search_term, $scope.search_type_active, $scope.page, _need_to_stay_idle_milisec).then(function(response){
+            $scope.isSearchRunning = false;
+
+            if (type == "new" || type == "refresh")
+            {
+                if (response == "fail" || response === undefined || response.length == 0)
+                {
+                    $scope.noResult = true;
+                    $scope.noMoreItemsAvailable = true;
+                }
+                else
+                {
+                    $scope.searchResult = response.data;
+                    $scope.noResult = false;
+                }
+                $scope.noMoreItemsAvailable = false;
+            }
+            else if (type == "more")
+            {
+                if (response == "fail" || response === undefined || response.length == 0)
+                {
+                    $scope.noMoreItemsAvailable = true;
+                }
+                $scope.searchResult = $scope.searchResult.concat(response.data);
+                $timeout(function() {
+                  $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+            }
+
+            if (type == "refresh")
+            {
+                $scope.$broadcast('scroll.refreshComplete');
+            }
+
+            if(!response.next_page_url)
+            {
+                $scope.noMoreItemsAvailable = true;
+            }
+            $scope.page++;
+        });
+    };
+    $scope.loadMore = function() {
+        $scope.fetchSearchResult("more", 0);
+    };
+    $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+        $scope.page = 1;
+        $scope.fetchSearchResult("refresh", 0);
+    };
+    $scope.showNoSearchResultText = function() {
+        return $scope.searchNoResultText;
+    };
+    $scope.showPlaceHolder = function() {
+        return $scope.searchHolder;
+    };
+    $scope.setType = function(_searchTerm, type, isRefresh) {
         if (type == "people")
         {
             $scope.searchHolder = "Search people";
@@ -2244,55 +2358,111 @@ angular.module('starter.controllers', [])
             $scope.searchHolder = "Search";
             $scope.searchNoResultText = "No Results Found";
         }
+        $scope.page = 1;
         $scope.search_type_active = type;
     };
-    $scope.fetchSearchResult = function(searchTerm, type = null) {
-        $scope.noSearchResult = false;
-        if (searchTerm.length == 0)
-        {
-            $scope.searchResult = [];
-            return;
-        }
-        else if (searchTerm.length == 1 && searchTerm == "#")
-        {
-            if ($scope.search_type_active != "all")
+    $scope.submitSearch = function(search_term, type) {
+        $state.go('tab.search-result-explore',{searchTerm: search_term, type: type});
+    };
+    $scope.goSearchPost = function(search_term, type) {
+        $scope.submitSearch(search_term, type);
+    };
+})
+
+.controller('PostSearchResultCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
+    $scope.searchNoResultText = "No Results Found";
+    $scope.searchType = "tag";
+    if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'occasion')
+    {
+        $scope.searchType = "occasion";
+    }
+    $scope.tab = $state.current['name'].split("-")[1];
+    $scope.posts = [];
+    $scope.page = 1;
+    $scope.noMoreItemsAvailable = false;
+    $scope.noResult = false;
+    $scope.comparePosts = ComparePosts;
+    $scope.mostRecentPostID = 0;
+
+    var user = $rootScope.getCurrentUser();
+    if(user.username == user.email){
+        $state.go('register2').then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
+    }
+    else{
+        Tutorial.triggerIfNotCompleted('tutorial_welcome');
+    }
+
+    // problem : Appsee starts with 'Main' screen, even though I hardcode to start 'explore'.
+    // cause : Appsee auto-stats 'Main' screen asynchronously.
+    // solution : Wait 2 second to start 'explore' screen after Appsee auto starts 'Main' screen.
+    setTimeout(function(){
+        UxAnalytics.setUserId(user.username);
+        UxAnalytics.startScreen('post-search-result');
+    }, 2000);
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-search-result');
+    });
+    $scope.fetchPost = function(type) {
+        FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm, $scope.searchType).then(function(response){
+            posts = response.data;
+            if (type == "new" || type == "refresh")
             {
-                $scope.setType(searchTerm, "tag");
+                $scope.posts = posts;
+                if(posts && posts.length == 0)
+                {
+                    $scope.noResult = true;
+                }
+                else
+                {
+                    $scope.noResult = false;
+                    $scope.mostRecentPostID = posts[0].id;
+                }
+                $scope.noMoreItemsAvailable = false;
             }
-            $scope.searchResult = [];
-            return;
-        }
-        else if (searchTerm.length == 1 && searchTerm == "@")
-        {
-            if ($scope.search_type_active != "all")
+            else if (type == "more")
             {
-                $scope.setType(searchTerm, "people");
-            }
-            $scope.searchResult = [];
-            return;
-        }
-        else
-        {
-            var term = searchTerm.trim();
-            $scope.showSearch = true;
-            if (type === null)
-            {
-                type = $scope.search_type_active;
-            }
-            if (term[0] == "@" || term[0] == "#")
-            {
-                term = term.substr(1);
+                $scope.posts = $scope.posts.concat(posts);
+                $timeout(function() {
+                  $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
             }
 
-            $scope.isSearchRunning = true;
-            FetchSearchResults.get(term, type).then(function(response){
-                $scope.searchResult = response;
-                $scope.isSearchRunning = false;
-                if ($scope.searchResult === undefined || $scope.searchResult.length == 0)
-                {
-                    $scope.noSearchResult = true;
-                }
-            });
+            if (type == "refresh")
+            {
+                $scope.$broadcast('scroll.refreshComplete');
+            }
+
+            if(!response.next_page_url)
+            {
+                $scope.noMoreItemsAvailable = true;
+            }
+            $scope.page++;
+        });
+    };
+    $scope.fetchPost("new");
+    $scope.loadMore = function() {
+        $scope.fetchPost("more");
+    };
+    $scope.doRefresh = function() {
+        $scope.$broadcast('scroll.infiniteScrollComplete');
+        $scope.page = 1;
+        $scope.mostRecentPostID = 0;
+        NewPost.resetFlags('explore');
+        $scope.fetchPost("refresh");
+    };
+    $scope.showSearchTerm = function(){
+        var termSign = "";
+        if ($scope.searchType == "tag")
+        {
+            termSign = "#";
+        }
+        if($stateParams.searchTerm){
+            return termSign+$stateParams.searchTerm.trim();
         }
     }
 })
