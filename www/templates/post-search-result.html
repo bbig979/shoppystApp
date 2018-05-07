@@ -1,9 +1,4 @@
-<div id="new-post-wrapper">
-    <div id="new-post-button" class="explore" ng-click="loadNewPost()" ng-show="newPostAvailable">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i> New Looks
-    </div>
-</div>
-<ion-view class="post-list" id="tab-explore" view-title="<img class='title-image' src='img/logo.png'/>">
+<ion-view class="post-list" id="post-search-result" view-title="<img class='title-image' src='img/logo.png'/>">
     <ion-content on-scroll="scrollList();scrollDetectWhenNewPostAvailable();" ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
@@ -11,11 +6,8 @@
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
-        <div class="bar bar-header item-input-inset" ng-click="goPostSearch();">
-            <label class="item-input-wrapper">
-                <i class="icon ion-ios-search placeholder-icon"></i>
-                <input type="search" id="search" placeholder="Search" disabled>
-            </label>
+        <div class="search-header" ng-hide="noSearchTerm()">
+            <h3><i class="fa fa-map-marker" aria-hidden="true" ng-show="searchType == 'occasion'"></i> {{ showSearchTerm() }}</h3>
         </div>
         <div class="no-result" ng-if="noResult">
             No look shared in 24 hours. Please invite your friends

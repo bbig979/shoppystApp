@@ -36,9 +36,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
     //var baseURL = 'http://app.snaplook.today';
-    //var baseURL = 'http://localhost:8000';
+    var baseURL = 'http://localhost:8000';
     //var baseURL = 'http://192.168.56.1:8000';
-    var baseURL = 'http://localhost:8888';
+    //var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -106,7 +106,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            refresh: null
         }
     })
-
     .state('tab.post-compare-home', {
        url: '/post/compare/:postIds/home/:isMyPostCompare',
        views: {
@@ -143,7 +142,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-
     .state('tab.post-detail-home', {
        url: '/post/:postId/home',
        views: {
@@ -248,9 +246,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-
     .state('tab.explore-home', {
-       url: '/explore/:searchTerm/:type/home',
+       url: '/explore/home',
        views: {
            'tab-home': {
                templateUrl: 'templates/tab-explore.html',
@@ -259,7 +256,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-explore', {
-       url: '/explore/:searchTerm/:type/explore',
+       url: '/explore/explore',
        views: {
            'tab-explore': {
                templateUrl: 'templates/tab-explore.html',
@@ -268,7 +265,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-notification', {
-       url: '/explore/:searchTerm/:type/notification',
+       url: '/explore/notification',
        views: {
            'tab-notification': {
                templateUrl: 'templates/tab-explore.html',
@@ -277,7 +274,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-compare', {
-       url: '/explore/:searchTerm/:type/compare',
+       url: '/explore/compare',
        views: {
            'tab-compare': {
                templateUrl: 'templates/tab-explore.html',
@@ -286,7 +283,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.explore-account', {
-       url: '/explore/:searchTerm/:type/account',
+       url: '/explore/account',
        views: {
            'tab-account': {
                templateUrl: 'templates/tab-explore.html',
@@ -294,7 +291,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-
+    .state('tab.search-explore', {
+       url: '/search/',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/post-search.html',
+               controller: 'PostSearchCtrl'
+           }
+       }
+    })
+    .state('tab.search-result-explore', {
+       url: '/search/:searchTerm/:type',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/post-search-result.html',
+               controller: 'PostSearchResultCtrl'
+           }
+       }
+    })
     .state('tab.compare', {
        url: '/compare',
        views: {
@@ -383,93 +397,93 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         }
     })
-   .state('tab.account-explore', {
-       url: '/account/:accountSlug/explore',
-       views: {
-           'tab-explore': {
-               templateUrl: 'templates/tab-account.html',
-               controller: 'AccountCtrl'
-           }
-       }
-   })
-   .state('tab.account-notification', {
-       url: '/account/:accountSlug/notification',
-       views: {
-           'tab-notification': {
-               templateUrl: 'templates/tab-account.html',
-               controller: 'AccountCtrl'
-           }
-       }
-   })
-   .state('tab.account-compare', {
-       url: '/account/:accountSlug/compare',
-       views: {
-           'tab-compare': {
-               templateUrl: 'templates/tab-account.html',
-               controller: 'AccountCtrl'
-           }
-       }
-   })
-   .state('tab.account-account', {
-       url: '/account/:accountSlug/account',
-       views: {
-           'tab-account': {
-               templateUrl: 'templates/tab-account.html',
-               controller: 'AccountCtrl'
-           }
-       },
-       params: {
-           refresh: null,
-           activateTab: null,
-           isThisAfterShare: false
-       }
-   })
+	.state('tab.account-explore', {
+	   url: '/account/:accountSlug/explore',
+	   views: {
+	       'tab-explore': {
+	           templateUrl: 'templates/tab-account.html',
+	           controller: 'AccountCtrl'
+	       }
+	   }
+	})
+	.state('tab.account-notification', {
+	   url: '/account/:accountSlug/notification',
+	   views: {
+	       'tab-notification': {
+	           templateUrl: 'templates/tab-account.html',
+	           controller: 'AccountCtrl'
+	       }
+	   }
+	})
+	.state('tab.account-compare', {
+	   url: '/account/:accountSlug/compare',
+	   views: {
+	       'tab-compare': {
+	           templateUrl: 'templates/tab-account.html',
+	           controller: 'AccountCtrl'
+	       }
+	   }
+	})
+	.state('tab.account-account', {
+	   url: '/account/:accountSlug/account',
+	   views: {
+	       'tab-account': {
+	           templateUrl: 'templates/tab-account.html',
+	           controller: 'AccountCtrl'
+	       }
+	   },
+	   params: {
+	       refresh: null,
+	       activateTab: null,
+	       isThisAfterShare: false
+	   }
+	})
 
-  .state('tab.option-account', {
-     url: '/option',
-     views: {
-         'tab-account': {
-             templateUrl: 'templates/account-option.html',
-             controller: 'OptionCtrl'
-         }
-     }
-  })
-  .state('tab.edit-account', {
-     url: '/option/edit',
-     views: {
-         'tab-account': {
-             templateUrl: 'templates/account-edit.html',
-             controller: 'AccountEditCtrl'
-         }
-     }
-  })
-  .state('tab.find-friends', {
-     url: '/find-friends',
-     views: {
-         'tab-account': {
-             templateUrl: 'templates/find-friends.html',
-             controller: 'FindFriendsCtrl'
-         }
-     }
-  })
-  .state('tab.invite-friends', {
-     url: '/invite-friends',
-     views: {
-         'tab-account': {
-             templateUrl: 'templates/invite-friends.html',
-             controller: 'InviteFriendsCtrl'
-         }
-     }
-  })
-  .state('tab.change-password', {
-     url: '/change-password',
-     views: {
-         'tab-account': {
-             templateUrl: 'templates/change-password.html',
-             controller: 'ChangePasswordCtrl'
-         }
-     }
-  })
+	.state('tab.option-account', {
+	 url: '/option',
+	 views: {
+	     'tab-account': {
+	         templateUrl: 'templates/account-option.html',
+	         controller: 'OptionCtrl'
+	     }
+	 }
+	})
+	.state('tab.edit-account', {
+	 url: '/option/edit',
+	 views: {
+	     'tab-account': {
+	         templateUrl: 'templates/account-edit.html',
+	         controller: 'AccountEditCtrl'
+	     }
+	 }
+	})
+	.state('tab.find-friends', {
+	 url: '/find-friends',
+	 views: {
+	     'tab-account': {
+	         templateUrl: 'templates/find-friends.html',
+	         controller: 'FindFriendsCtrl'
+	     }
+	 }
+	})
+	.state('tab.invite-friends', {
+	 url: '/invite-friends',
+	 views: {
+	     'tab-account': {
+	         templateUrl: 'templates/invite-friends.html',
+	         controller: 'InviteFriendsCtrl'
+	     }
+	 }
+	})
+	.state('tab.change-password', {
+	 url: '/change-password',
+	 views: {
+	     'tab-account': {
+	         templateUrl: 'templates/change-password.html',
+	         controller: 'ChangePasswordCtrl'
+	     }
+	 }
+	})
 
     .state('tab.account-following-home', {
         url: '/account/:userSlug/following/home',
@@ -519,7 +533,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            user: null
        }
     })
-
     .state('tab.account-follower-home', {
         url: '/account/:userSlug/follower/home',
         views: {
@@ -614,7 +627,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
    })
-
    .state('tab.notification', {
        url: '/notification',
        views: {

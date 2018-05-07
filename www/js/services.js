@@ -85,18 +85,6 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchSearchResults', function($http, $rootScope) {
-    return {
-        get: function(searchTerm, type){
-            return $http.get($rootScope.baseURL+"/api/search/"+searchTerm+"/"+type).then(function(response){
-                return response.data;
-            }
-            ,function(error){
-                $rootScope.handleHttpError(error);
-            });
-        }
-    };
-})
 .factory('FetchPosts', function($http, $rootScope, PostTimer) {
     var _addToPostTrackArray = function(pagingInfo) {
         $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
@@ -294,22 +282,15 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchNotifications', function($http, $rootScope) {
+
+.factory('FetchSettings', function($http, $rootScope) {
     return {
-        new: function(slug, pg) {
-            return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification?page='+pg).then(function(response){
+        get: function(_setting_key) {
+            return $http.get($rootScope.baseURL+'/api/config/'+ _setting_key).then(function(response){
                 return response.data;
             }
-            ,function(response){
-                $rootScope.handleHttpError(response.data, response.status);
-            });
-        },
-        count: function(slug) {
-            return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification/count').then(function(response){
-                return response.data;
-            }
-            ,function(response){
-                $rootScope.handleHttpError(response.data, response.status);
+            ,function(){
+                // this is not user triggered
             });
         }
     };
@@ -504,6 +485,95 @@ angular.module('starter.services', [])
             typeof _current_tutorial.marker.highlight !== 'undefined' &&
             _current_tutorial.marker.highlight
         )
+    }
+})
+.factory('FetchNotifications', function($http, $timeout, $rootScope, $q){
+    var last_moved_timestmap_milisec = 0;
+
+    return {
+        new: function(slug, pg) {
+            return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification?page='+pg).then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        check: function(_slug){
+            var deferred = $q.defer();
+            var this_factory = this;
+            $http({
+                method : 'GET',
+                url : $rootScope.baseURL+'/api/user/'+_slug+'/notification/count'
+            })
+            .success(function(response){
+                deferred.resolve(response);
+            })
+            .error(function(data, status){
+                deferred.resolve("fail");
+            });
+
+            return deferred.promise;
+        },
+        stateChanged: function(_slug, _need_to_stay_idle_milisec){
+            var deferred = $q.defer();
+            var this_factory = this;
+            last_moved_timestmap_milisec = Date.now();
+            $timeout(
+                function(){
+                    stayed_idle_milisec = Date.now() - last_moved_timestmap_milisec;
+                    if(stayed_idle_milisec >= _need_to_stay_idle_milisec){
+                        this_factory.check(_slug).then(function(response){
+                            deferred.resolve(response);
+                        });
+                    }
+                }, _need_to_stay_idle_milisec
+            )
+            return deferred.promise;
+        }
+    }
+})
+.factory('FetchSearchResult', function($http, $timeout, $rootScope, $q){
+    var last_typed_timestmap_milisec = 0;
+
+    return {
+        check: function(_search_term, _search_type, _page){
+            var deferred = $q.defer();
+            var this_factory = this;
+            var search_term = _search_term;
+            if (_search_term == "")
+            {
+                search_term = "_top_posts";
+            }
+            $http({
+                method : 'GET',
+                url : $rootScope.baseURL+'/api/search/'+search_term+'/'+_search_type+"?page="+_page
+            })
+            .success(function(response){
+                deferred.resolve(response);
+            })
+            .error(function(data, status){
+                deferred.resolve("fail");
+            });
+
+            return deferred.promise;
+        },
+        typed: function(_search_term, _search_type, _page, _need_to_stay_idle_milisec){
+            var deferred = $q.defer();
+            var this_factory = this;
+            last_typed_timestmap_milisec = Date.now();
+            $timeout(
+                function(){
+                    stayed_idle_milisec = Date.now() - last_typed_timestmap_milisec;
+                    if(stayed_idle_milisec >= _need_to_stay_idle_milisec){
+                        this_factory.check(_search_term, _search_type, _page).then(function(response){
+                            deferred.resolve(response);
+                        });
+                    }
+                }, _need_to_stay_idle_milisec
+            )
+            return deferred.promise;
+        }
     }
 })
 .factory('UsernameAvailability', function($http, $timeout, $rootScope, $q){

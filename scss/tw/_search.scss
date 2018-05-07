@@ -1,0 +1,80 @@
+#post-search {
+  .search-header{
+    h3{
+      color: #555;
+    }
+    text-align: center;
+    padding: 30px 0;
+  }
+
+  .search-clear{
+    margin-top: 0;
+  }
+
+  .search-toggle {
+	a {
+	  padding: 10px;
+	  float: left;
+	  text-transform: uppercase;
+	  width: 33.33%;
+	  text-align: center;
+	  border-bottom: 1px solid #eee;
+	}
+
+	.active {
+	  background-color: #FF4C62;
+	  color: white;
+	  font-weight: 500;
+	  padding: 4px 10px;
+	  margin-top: 1px;
+	  padding-top: 8px;
+	  padding-bottom: 10px;
+	}
+
+	border-bottom: 1px solid #eee;
+  }
+
+  .search-running {
+    clear: both;
+    padding: 15px;
+    min-height: 55px;
+
+    i {
+      padding: 0px 5px;
+      margin-right: 8px;
+    }
+  }
+
+  .explore-search {
+    .post {
+      .post-item {
+        padding: 4px;
+        min-height: 55px;
+
+        .name {
+          font-size: 12px;
+          float: left;
+          padding-top: 14px;
+        }
+        .profile-image {
+          float: left;
+          margin: 10px;
+        }
+
+        .tag_sign {
+          float: left;
+          color: #cdcdcd;
+          margin: 14px 10px;
+          font-size: 1.0em;
+        }
+
+        .at_sign {
+          float: left;
+          color: #cdcdcd;
+          margin: 14px 16px;
+          font-size: 1.4em;        
+        }
+      }
+    }
+  }
+}
