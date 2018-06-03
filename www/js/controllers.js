@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, FetchSettings) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     //$rootScope.baseURL = 'http://app.snaplook.today';
@@ -17,11 +17,17 @@ angular.module('starter.controllers', [])
     $rootScope.notificationCount = "0";
     $rootScope.blockerMessage = BlockerMessage;
     $rootScope.notificationPullInterval = 60000;
-    FetchSettings.get("minimum_force_update_version").then(function(response){
-        $rootScope.minimumForceUpdateVersion = response;
-    });
-    FetchSettings.get("notification_pull_interval").then(function(response){
-        $rootScope.notificationPullInterval = response;
+    Config.init().then(function(){
+        var result = Config.get('minimum_force_update_version');
+        if (result)
+        {
+            $rootScope.minimumForceUpdateVersion = result;
+        }
+        result = Config.get('notification_pull_interval');
+        if (result)
+        {
+            $rootScope.notificationPullInterval = result;
+        }
     });
 
     $rootScope.shareCompare = function() {
@@ -1032,7 +1038,7 @@ angular.module('starter.controllers', [])
         }, 500
     )
  
-    setInterval(function() {$rootScope.getNotification();}, $rootScope.notificationPullInterval);
+    setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
 .controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics) {
     $scope.submitted = false;
@@ -1638,6 +1644,7 @@ angular.module('starter.controllers', [])
     $scope.mostRecentPostID = 0;
     $scope.newPostAvailable = false;
     $scope.loadingNewPost = false;
+    $rootScope.getNotification(0); // pull the notification count immediately.
 
     var user = $rootScope.getCurrentUser();
 
@@ -2084,6 +2091,7 @@ angular.module('starter.controllers', [])
     $scope.mostRecentPostID = 0;
     $scope.newPostAvailable = false;
     $scope.loadingNewPost = false;
+    $rootScope.getNotification(0); // pull the notification count immediately.
 
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email){
@@ -2202,7 +2210,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, FetchSettings) {
+.controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config) {
     $scope.search_type_active = "tag";
     $scope.searchHolder = "Search";
     $scope.searchNoResultText = "No Results Found";
@@ -2214,10 +2222,13 @@ angular.module('starter.controllers', [])
     $scope.comparePosts = ComparePosts;
     $scope.search_term = "";
     $scope.need_to_stay_idle_milisec = 500;
-    FetchSettings.get("need_to_stay_idle_milisec").then(function(response){
-        $scope.need_to_stay_idle_milisec = response;
+    Config.init().then(function(){
+        var result = Config.get('need_to_stay_idle_milisec');
+        if (result)
+        {
+            $scope.need_to_stay_idle_milisec = result;
+        }
     });
-
 
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email){
@@ -2699,6 +2710,7 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     $scope.activatedTab = 'new';
     $scope.comparePosts = ComparePosts;
+    $rootScope.getNotification(0); // pull the notification count immediately.
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('tab-account');
@@ -3283,6 +3295,7 @@ angular.module('starter.controllers', [])
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
     $scope.noResult = false;
+    $rootScope.getNotification(0); // pull the notification count immediately.
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('tab-notification');
