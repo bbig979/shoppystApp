@@ -2962,7 +2962,7 @@ angular.module('starter.controllers', [])
         var options = {
             message: 'which looks better?',
             subject: 'Which Looks Better?',
-            url: $rootScope.baseURL + '/s/demo'
+            url: $rootScope.baseURL + '/s/intro'
         }
         var onSuccess = function(result) {
             console.log("invite succeed");
