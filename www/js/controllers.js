@@ -59,6 +59,10 @@ angular.module('starter.controllers', [])
     $rootScope.scroll = function() {
         $ionicScrollDelegate.scrollBy(0, 100);
     }
+    $rootScope.picture = function() {
+        CameraPictues.set('http://localhost:8100/img/_test_1.jpg');
+        CameraPictues.set('http://localhost:8100/img/_test_2.jpg');
+    }
     $rootScope.ifTestAccount = function() {
         if($rootScope.currentUser){
             return $rootScope.currentUser.email == "info@snaplook.today";
@@ -1037,10 +1041,10 @@ angular.module('starter.controllers', [])
             $rootScope.getNotification(0);
         }, 500
     )
- 
+
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http) {
     $scope.submitted = false;
     $location.replace('tab.camera');
     var user = JSON.parse(localStorage.getItem('user'));
@@ -1061,17 +1065,71 @@ angular.module('starter.controllers', [])
         $scope.occasionList.push({value: 'other', label: 'Other'});
     });
 
+    $scope.getBlobImageByURL = function(url) {
+        var dfd = new $.Deferred();
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = function() {
+        dfd.resolve(xhr.response);
+        };
+        xhr.open('GET', url);
+        xhr.send();
+        return dfd.promise();
+    }
+
     $scope.sharePost = function(captions, occasion, other) {
+        var fileURLs = CameraPictues.get();
         var share_post_scope = this;
-        $scope.submitted = true;
-        $ionicLoading.show({template: 'Uploading Photo...'});
-        var options = new FileUploadOptions();
+        var postIdArray = [];
+        var uploadTryCount = 0;
+        var uploadSuccessCount = 0;
         var param_caption = '';
         if (typeof captions != 'undefined')
         {
             param_caption = captions;
         }
-        if (typeof occasion != 'undefined')
+
+        // problem: unit test is not working if simulate user behavior
+        // cause: on web, FileUploadOptions plugin is not working
+        // solution: pass specific caption to notify it is a unit test
+        if(fileURLs[0] == 'http://localhost:8100/img/_test_1.jpg'){
+            for(var i=0; i<fileURLs.length; i++){
+                $scope.getBlobImageByURL(fileURLs[i]).then(function(imgBlob){
+                    $http({
+                      method: 'POST',
+                      url: encodeURI($rootScope.baseURL + '/api/post/create'),
+                      headers: {
+                          'Content-Type': undefined
+                      },
+                      data: {
+                          captions: param_caption,
+                          user_id: user.id,
+                          occasion: occasion,
+                          other: other,
+                      },
+                      transformRequest: function (data, headersGetter) {
+                          var formData = new FormData();
+                          angular.forEach(data, function (value, key) {
+                              if(typeof value !== "undefined"){
+                                  formData.append(key, value);
+                              }
+                          });
+                          var imgName = 'temp.jpg';
+                          formData.append('image', imgBlob, imgName);
+                          return formData;
+                      }
+                    })
+                    .success(success)
+                    .error(fail);
+                });
+            }
+            return;
+        }
+
+        $scope.submitted = true;
+        $ionicLoading.show({template: 'Uploading Photo...'});
+        var options = new FileUploadOptions();
+        if (typeof occasion == 'undefined')
         {
             occasion = null;
         }
@@ -1082,10 +1140,6 @@ angular.module('starter.controllers', [])
         var ft = new FileTransfer();
         var params = { 'captions': param_caption, 'user_id': user.id, 'occasion': occasion, 'other': other };
         options.params = params;
-        var fileURLs = CameraPictues.get();
-        var uploadTryCount = 0;
-        var uploadSuccessCount = 0;
-        var postIdArray = [];
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
@@ -1100,7 +1154,16 @@ angular.module('starter.controllers', [])
 
         // Transfer succeeded
         function success(r) {
-            var result = JSON.parse(r.response);
+            // problem: r from test call and real call is different format
+            // cause: test is getting data from $http and real is getting data from ft.upload
+            // solution: parse differently by checking attribute
+            var result;
+            if (typeof r.response != 'undefined'){
+                result = JSON.parse(r.response);
+            }
+            else{
+                result = r;
+            }
             uploadTryCount++;
             uploadSuccessCount++;
             if(typeof result.id !== 'undefined'){
@@ -1376,7 +1439,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout, UsernameAvailability, UxAnalytics) {
+.controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout, UsernameAvailability, UxAnalytics, BlockerMessage) {
     $scope.registerData = {};
     $scope.usernameClass = '';
     var credentials = {
@@ -1427,6 +1490,7 @@ angular.module('starter.controllers', [])
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
+                BlockerMessage.init();
                 $state.go('tab.explore-explore');
             })
             .error(function(data, status){
@@ -2274,7 +2338,7 @@ angular.module('starter.controllers', [])
             {
                 $scope.setType(_search_term, "people");
                 $scope.searchResult = [];
-            }            
+            }
         }
 
         if (need_to_stay_idle_milisec == null)
