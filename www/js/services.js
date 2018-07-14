@@ -627,6 +627,11 @@ angular.module('starter.services', [])
             return _picture_array;
         },
         set: function(pic){
+            for(var i = 0; i < _picture_array.length; i++){
+                if(_picture_array[i] == pic){
+                    return;
+                }
+            }
             _picture_array.push(pic);
         },
         reset: function(){
