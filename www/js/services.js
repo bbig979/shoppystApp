@@ -194,6 +194,14 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
+        exist: function(post_id_csv) {
+            return $http.get($rootScope.baseURL+"/api/compare/"+post_id_csv+'/share/exist').then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
         update:function(id, channel) {
             $http({
                 method : 'POST',
@@ -208,6 +216,16 @@ angular.module('starter.services', [])
             });
         }
     };
+})
+.service('ShareWatcher', function(){
+    var _post_id_csv_shared_array = [];
+
+    this.isShared = function(post_id_csv){
+        return _post_id_csv_shared_array.indexOf(post_id_csv) > -1;
+    }
+    this.setShared = function(post_id_csv){
+        _post_id_csv_shared_array.push(post_id_csv);
+    }
 })
 .factory('FetchOccasions', function($http, $rootScope) {
     return {

@@ -142,6 +142,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
+    .state('tab.post-compare-temp', {
+       url: '/post/compare/:postIds/temp/:isMyPostCompare',
+       views: {
+           'tab-compare': {
+               templateUrl: 'templates/post-compare.html',
+               controller: 'PostCompareCtrl'
+           }
+       },
+	   params: {
+	       isThisAfterShare: false
+	   }
+    })
     .state('tab.post-detail-home', {
        url: '/post/:postId/home',
        views: {

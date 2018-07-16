@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, ShareWatcher) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     //$rootScope.baseURL = 'http://app.snaplook.today';
@@ -44,6 +44,7 @@ angular.module('starter.controllers', [])
                     console.log($rootScope.baseURL + '/s/' + hash);
                     console.log("Shared to app: " + result.app);
                     FetchShareLink.update(hash, result.app);
+                    ShareWatcher.setShared($stateParams.postIds);
                 }
                 var onError = function(msg) {
                     console.log("Sharing failed with message: " + msg);
@@ -1005,17 +1006,19 @@ angular.module('starter.controllers', [])
 
     $rootScope.getNotification = function(_notificationPullInterval = null) {
         var user = $rootScope.getCurrentUser();
-        notificationPullInterval = _notificationPullInterval;
-        if (notificationPullInterval == null)
-        {
-            notificationPullInterval = $rootScope.notificationPullInterval;
-        }
-        FetchNotifications.stateChanged(user.slug, notificationPullInterval).then(function(response){
-            if (response != "fail")
+        if (typeof user !== 'undefined'){
+            notificationPullInterval = _notificationPullInterval;
+            if (notificationPullInterval == null)
             {
-                $rootScope.notificationCount = (response >= 10 ? "9+" : (response ? response : 0));
+                notificationPullInterval = $rootScope.notificationPullInterval;
             }
-        });
+            FetchNotifications.stateChanged(user.slug, notificationPullInterval).then(function(response){
+                if (response != "fail")
+                {
+                    $rootScope.notificationCount = (response >= 10 ? "9+" : (response ? response : 0));
+                }
+            });
+        }
     }
 
     $rootScope.goNotification = function() {
@@ -1044,14 +1047,34 @@ angular.module('starter.controllers', [])
 
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate) {
     $scope.submitted = false;
     $location.replace('tab.camera');
-    var user = JSON.parse(localStorage.getItem('user'));
     $scope.data = { "ImageURI" :  "Select Image" };
     $scope.occasionList = new Array();
     $scope.shopOptionalOccasion = false;
     $scope.cameraPictues = CameraPictues;
+    $rootScope.getNotification(0); // pull the notification count immediately.
+
+    var user = $rootScope.getCurrentUser();
+    if(user.username == user.email){
+        $state.go('register2').then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
+    }
+    else{
+        Tutorial.triggerIfNotCompleted('tutorial_welcome');
+    }
+
+    // problem : Appsee starts with 'Main' screen, even though I hardcode to start 'explore'.
+    // cause : Appsee auto-stats 'Main' screen asynchronously.
+    // solution : Wait 2 second to start 'explore' screen after Appsee auto starts 'Main' screen.
+    setTimeout(function(){
+        UxAnalytics.setUserId(user.username);
+        UxAnalytics.startScreen('post-create');
+    }, 2000);
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-create');
@@ -1170,11 +1193,13 @@ angular.module('starter.controllers', [])
                 postIdArray.push(result.id);
             }
             if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
+                $ionicScrollDelegate.scrollTop();
                 $ionicLoading.show({
                     template: 'Upload Success ( ' + uploadSuccessCount + ' / ' + uploadTryCount + ' )',
                     duration:500
                 });
-                $http.post($rootScope.baseURL+'/api/compare/'+postIdArray.join(',')+'/create');
+                var postIds = postIdArray.join(',');
+                $http.post($rootScope.baseURL+'/api/compare/'+postIds+'/create');
                 $scope.submitted = false;
                 share_post_scope.occasion = undefined;
                 share_post_scope.captions = undefined;
@@ -1183,7 +1208,8 @@ angular.module('starter.controllers', [])
                 postIdArray = [];
                 $timeout(function(){
                     CameraPictues.reset();
-                    $state.go('tab.account-account', {refresh: true, isThisAfterShare: true});
+                    localStorage.setItem('timestamp_post_shared', new Date().getTime());
+                    $state.go('tab.post-compare-temp', {postIds: postIds, isThisAfterShare: true, isMyPostCompare: true});
                 }, 500);
             }
         }
@@ -1194,8 +1220,6 @@ angular.module('starter.controllers', [])
             if(uploadTryCount == fileURLs.length && uploadSuccessCount == 0){
                 $ionicLoading.show({template: 'Upload Fail', duration:500});
                 $scope.submitted = false;
-                share_post_scope.occasion = undefined;
-                share_post_scope.captions = undefined;
                 uploadTryCount = 0;
                 uploadSuccessCount = 0;
             }
@@ -1211,9 +1235,16 @@ angular.module('starter.controllers', [])
             $scope.shopOptionalOccasion = false;
         }
     }
-    $scope.back = function() {
+    $scope.reset = function() {
         CameraPictues.reset();
-        $ionicHistory.goBack();
+        this.captions = '';
+        this.occasion = null;
+        $ionicScrollDelegate.scrollTop();
+    }
+    $scope.hasContent = function(){
+        return CameraPictues.get().length > 0 ||
+            (typeof(this.captions) !== 'undefined' && this.captions !== '') ||
+            (typeof(this.occasion) !== 'undefined' && this.occasion !== null)
     }
 })
 .controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading, UxAnalytics) {
@@ -1273,24 +1304,11 @@ angular.module('starter.controllers', [])
         disableBack: true
     });
     if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
-        $state.go('tab.explore-explore');
+        $state.go('tab.post-create');
     }
     else{
         $state.go('auth');
     }
-    /*
-    if(localStorage.getItem('have_seen_intro')){
-        if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
-            $state.go('tab.explore-explore');
-        }
-        else{
-            $state.go('auth');
-        }
-    }
-    else{
-        $state.go('intro');
-    }
-    */
 })
 
 .controller('RegisterCtrl', function($scope, $ionicHistory, $state, $rootScope, $http, $auth, $ionicLoading, $q, UxAnalytics) {
@@ -1343,7 +1361,7 @@ angular.module('starter.controllers', [])
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-                    $state.go('tab.explore-explore');
+                    $state.go('tab.post-create');
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
@@ -1408,7 +1426,7 @@ angular.module('starter.controllers', [])
                                 disableBack: true
                             });
                             $ionicLoading.hide();
-                            $state.go('tab.explore-explore');
+                            $state.go('tab.post-create');
                         })
                         .error(function(data, status){
                             $ionicLoading.hide();
@@ -1491,7 +1509,7 @@ angular.module('starter.controllers', [])
                     disableBack: true
                 });
                 BlockerMessage.init();
-                $state.go('tab.explore-explore');
+                $state.go('tab.post-create');
             })
             .error(function(data, status){
                 $rootScope.handleHttpError(data, status);
@@ -1563,7 +1581,7 @@ angular.module('starter.controllers', [])
                     disableBack: true
                 });
                 $ionicLoading.hide();
-                $state.go('tab.explore-explore');
+                $state.go('tab.post-create');
             })
             .error(function(data, status){
                 $ionicLoading.hide();
@@ -1602,7 +1620,7 @@ angular.module('starter.controllers', [])
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-                    $state.go('tab.explore-explore');
+                    $state.go('tab.post-create');
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
@@ -1667,7 +1685,7 @@ angular.module('starter.controllers', [])
                                 disableBack: true
                             });
                             $ionicLoading.hide();
-                            $state.go('tab.explore-explore');
+                            $state.go('tab.post-create');
                         })
                         .error(function(data, status){
                             $ionicLoading.hide();
@@ -2144,7 +2162,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
+.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
@@ -2155,27 +2173,6 @@ angular.module('starter.controllers', [])
     $scope.mostRecentPostID = 0;
     $scope.newPostAvailable = false;
     $scope.loadingNewPost = false;
-    $rootScope.getNotification(0); // pull the notification count immediately.
-
-    var user = $rootScope.getCurrentUser();
-    if(user.username == user.email){
-        $state.go('register2').then(function(){
-            $timeout(function(){
-                window.location.reload();
-            },100);
-        });
-    }
-    else{
-        Tutorial.triggerIfNotCompleted('tutorial_welcome');
-    }
-
-    // problem : Appsee starts with 'Main' screen, even though I hardcode to start 'explore'.
-    // cause : Appsee auto-stats 'Main' screen asynchronously.
-    // solution : Wait 2 second to start 'explore' screen after Appsee auto starts 'Main' screen.
-    setTimeout(function(){
-        UxAnalytics.setUserId(user.username);
-        UxAnalytics.startScreen('tab-explore');
-    }, 2000);
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('tab-explore');
@@ -2587,7 +2584,7 @@ angular.module('starter.controllers', [])
     }
 })
 */
-.controller('PostCompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePostSet, $ionicLoading, $stateParams, Tutorial, UxAnalytics) {
+.controller('PostCompareCtrl', function($scope, FetchPosts, $state, Focus, $rootScope, $http, ComparePostSet, $ionicLoading, $stateParams, Tutorial, UxAnalytics, FetchShareLink, ShareWatcher) {
     var user = $rootScope.getCurrentUser();
     $scope.showInstruction = true;
     $scope.comparePostSet = ComparePostSet;
@@ -2596,6 +2593,7 @@ angular.module('starter.controllers', [])
     $scope.post_id_array = $stateParams.postIds.split(',');
     $scope.post_array;
     $scope.top_post_id;
+    $scope.is_this_shared = true;
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-compare');
@@ -2639,6 +2637,12 @@ angular.module('starter.controllers', [])
 
     if($stateParams.isMyPostCompare == 'true'){
         Tutorial.triggerIfNotCompleted('tutorial_first_compare');
+        FetchShareLink.exist($stateParams.postIds).then(function(is_this_shared){
+            if(is_this_shared == 'false'){
+                $scope.is_this_shared = false;
+                console.log(is_this_shared);
+            }
+        });
     }
 
     $ionicLoading.show();
@@ -2671,6 +2675,14 @@ angular.module('starter.controllers', [])
     $scope.setAge = function(age) {
         $scope.age_active = age;
         $scope.sortPosts($scope.gender_active , $scope.age_active);
+    }
+    $scope.isThisNotSharedYet = function(){
+        // if we get the 'not shared' flag from ajax call
+        if(! $scope.is_this_shared){
+            // start share watcher client side
+            return ! ShareWatcher.isShared($stateParams.postIds);
+        }
+        return false;
     }
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {
@@ -2778,6 +2790,10 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('tab-account');
+        if(localStorage.getItem('timestamp_post_shared') > localStorage.getItem('timestamp_account_tab_clicked')){
+            $scope.doRefresh();
+        }
+        localStorage.setItem('timestamp_account_tab_clicked', new Date().getTime());
     });
 
     if($stateParams.isThisAfterShare){
