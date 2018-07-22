@@ -1,4 +1,4 @@
-<ion-view class="post-list" id="compare" view-title="WHICH LOOKS BETTER">
+<ion-view class="post-list" id="compare" view-title="LOOK BOARD">
     <ion-content ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
@@ -28,7 +28,7 @@
             <div class="clearfix"></div>
         </div>
         <div id="not-shared" ng-show="isThisNotSharedYet()">
-            You have not shared these looks to friends yet.
+            You have not sent these looks to friends yet.
         </div>
         <div class="expired-message" ng-show="::post_array && post_array.length == 0">
             Snaplooks have disappeared.

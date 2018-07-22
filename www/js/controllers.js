@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, ShareWatcher) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, ShareWatcher, Tutorial) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     //$rootScope.baseURL = 'http://app.snaplook.today';
@@ -45,6 +45,7 @@ angular.module('starter.controllers', [])
                     console.log("Shared to app: " + result.app);
                     FetchShareLink.update(hash, result.app);
                     ShareWatcher.setShared($stateParams.postIds);
+                    Tutorial.triggerIfNotCompleted('tutorial_after_share');
                 }
                 var onError = function(msg) {
                     console.log("Sharing failed with message: " + msg);
@@ -52,7 +53,7 @@ angular.module('starter.controllers', [])
                 window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
             }
             else{
-                $rootScope.popupMessage('Oops', 'You cannot share other\'s look');
+                $rootScope.popupMessage('Oops', 'You cannot send other\'s look');
             }
             $ionicLoading.hide();
         });
