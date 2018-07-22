@@ -1113,45 +1113,9 @@ angular.module('starter.controllers', [])
             param_caption = captions;
         }
 
-        // problem: unit test is not working if simulate user behavior
-        // cause: on web, FileUploadOptions plugin is not working
-        // solution: pass specific caption to notify it is a unit test
-        if(fileURLs[0] == 'http://localhost:8100/img/_test_1.jpg'){
-            for(var i=0; i<fileURLs.length; i++){
-                $scope.getBlobImageByURL(fileURLs[i]).then(function(imgBlob){
-                    $http({
-                      method: 'POST',
-                      url: encodeURI($rootScope.baseURL + '/api/post/create'),
-                      headers: {
-                          'Content-Type': undefined
-                      },
-                      data: {
-                          captions: param_caption,
-                          user_id: user.id,
-                          occasion: occasion,
-                          other: other,
-                      },
-                      transformRequest: function (data, headersGetter) {
-                          var formData = new FormData();
-                          angular.forEach(data, function (value, key) {
-                              if(typeof value !== "undefined"){
-                                  formData.append(key, value);
-                              }
-                          });
-                          var imgName = 'temp.jpg';
-                          formData.append('image', imgBlob, imgName);
-                          return formData;
-                      }
-                    })
-                    .success(success)
-                    .error(fail);
-                });
-            }
-            return;
-        }
-
         $scope.submitted = true;
         $ionicLoading.show({template: 'Uploading Photo...'});
+        /*
         var options = new FileUploadOptions();
         if (typeof occasion == 'undefined')
         {
@@ -1164,16 +1128,49 @@ angular.module('starter.controllers', [])
         var ft = new FileTransfer();
         var params = { 'captions': param_caption, 'user_id': user.id, 'occasion': occasion, 'other': other };
         options.params = params;
-
+        */
         if(fileURLs.length < 2){
             $ionicLoading.hide();
             $rootScope.popupMessage('', 'You Need at Least 2 Looks to Compare');
             $scope.submitted = false;
             return;
         }
+        /*
         for(var i=0; i<fileURLs.length; i++){
             options.fileName = fileURLs[i].substr(fileURLs[i].lastIndexOf('/') + 1);
             ft.upload(fileURLs[i], encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, options);
+        }
+        */
+
+        for(var i=0; i<fileURLs.length; i++){
+            $scope.getBlobImageByURL(fileURLs[i]).then(function(imgBlob){
+                $http({
+                  method: 'POST',
+                  url: encodeURI($rootScope.baseURL + '/api/post/create'),
+                  headers: {
+                      'Content-Type': undefined
+                  },
+                  data: {
+                      captions: param_caption,
+                      user_id: user.id,
+                      occasion: occasion,
+                      other: other,
+                  },
+                  transformRequest: function (data, headersGetter) {
+                      var formData = new FormData();
+                      angular.forEach(data, function (value, key) {
+                          if(typeof value !== "undefined"){
+                              formData.append(key, value);
+                          }
+                      });
+                      var imgName = 'temp.jpg';
+                      formData.append('image', imgBlob, imgName);
+                      return formData;
+                  }
+                })
+                .success(success)
+                .error(fail);
+            });
         }
 
         // Transfer succeeded

@@ -362,9 +362,9 @@ angular.module('starter.services', [])
 
         if(sec_remains < 0){
             if(sec_remains >= -1 * sec_in_one_week){
-                return moment(created_at).fromNow();
+                return moment(created_at + "-00:00").fromNow();
             }
-            return moment(created_at).format('LL');
+            return moment(created_at + "-00:00").format('LL');
         }
         if(sec_remains < sec_in_one_hour){
             return Math.floor(sec_remains / sec_in_one_min) + 'm Left';
