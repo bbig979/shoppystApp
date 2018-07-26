@@ -1,4 +1,4 @@
-<ion-view id="create-post" view-title="LOOKS TO COMPARE">
+<ion-view id="create-post" view-title="<img class='title-image' src='img/logo.png'/>">
     <ion-content class="has-header" ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
@@ -16,7 +16,7 @@
                     <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu()">
                         <div class="add-more-to-compare-button">
                             <i class="icon ion-plus-circled"></i><br>
-                            Add Look<br>
+                            Add a Look<br>
                             to Compare
                         </div>
                     </div>
@@ -40,10 +40,10 @@
                 </label>
             </div>
             <div class="padding">
-                <button type="submit" class="button button-block button-positive" ng-disabled="submitted">Share</button>
+                <button type="submit" class="button button-block button-positive" ng-disabled="submitted">Create a Look Board</button>
             </div>
             <div class="padding">
-                <button type="button" class="button button-block button-stable" ng-click="back()" ng-disabled="submitted">Cancel</button>
+                <button type="button" class="button button-block button-stable" ng-click="reset()" ng-disabled="submitted" ng-show="hasContent()">Reset</button>
             </div>
         </form>
     </ion-content>

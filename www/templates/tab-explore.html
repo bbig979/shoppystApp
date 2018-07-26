@@ -3,7 +3,7 @@
         <i class="fa fa-arrow-up" aria-hidden="true"></i> New Looks
     </div>
 </div>
-<ion-view class="post-list" id="tab-explore" view-title="<img class='title-image' src='img/logo.png'/>">
+<ion-view class="post-list" id="tab-explore" view-title="EXPLORE">
     <ion-content on-scroll="scrollList();scrollDetectWhenNewPostAvailable();" ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
@@ -14,7 +14,7 @@
         <div class="bar bar-header item-input-inset" ng-click="goPostSearch();">
             <label class="item-input-wrapper">
                 <i class="icon ion-ios-search placeholder-icon"></i>
-                <input type="search" id="search" placeholder="Search" disabled>
+                <input type="search" id="search" placeholder="Search">
             </label>
         </div>
         <div class="no-result" ng-if="noResult">

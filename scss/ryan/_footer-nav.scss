@@ -29,6 +29,9 @@ ion-tabs .tab-item {
 .tab-item[icon-on=ion-android-person].tab-item-active{
   color: #FF285D;
 }
+.tab-item.dummy-tab-for-temp-compare{
+  display: none;
+}
 div.tab-nav.tabs{
   border-top-width: 0px;
 }

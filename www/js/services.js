@@ -194,6 +194,14 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
+        exist: function(post_id_csv) {
+            return $http.get($rootScope.baseURL+"/api/compare/"+post_id_csv+'/share/exist').then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
         update:function(id, channel) {
             $http({
                 method : 'POST',
@@ -208,6 +216,16 @@ angular.module('starter.services', [])
             });
         }
     };
+})
+.service('ShareWatcher', function(){
+    var _post_id_csv_shared_array = [];
+
+    this.isShared = function(post_id_csv){
+        return _post_id_csv_shared_array.indexOf(post_id_csv) > -1;
+    }
+    this.setShared = function(post_id_csv){
+        _post_id_csv_shared_array.push(post_id_csv);
+    }
 })
 .factory('FetchOccasions', function($http, $rootScope) {
     return {
@@ -344,9 +362,9 @@ angular.module('starter.services', [])
 
         if(sec_remains < 0){
             if(sec_remains >= -1 * sec_in_one_week){
-                return moment(created_at).fromNow();
+                return moment(created_at + "-00:00").fromNow();
             }
-            return moment(created_at).format('LL');
+            return moment(created_at + "-00:00").format('LL');
         }
         if(sec_remains < sec_in_one_hour){
             return Math.floor(sec_remains / sec_in_one_min) + 'm Left';
@@ -627,6 +645,11 @@ angular.module('starter.services', [])
             return _picture_array;
         },
         set: function(pic){
+            for(var i = 0; i < _picture_array.length; i++){
+                if(_picture_array[i] == pic){
+                    return;
+                }
+            }
             _picture_array.push(pic);
         },
         reset: function(){
