@@ -638,6 +638,28 @@
 #create-post .post-image .item {
   padding: 0px;
 }
+/* line 88, ../../scss/tw/_post-create.scss */
+#create-post .visibility {
+  margin: 10px 0;
+}
+/* line 92, ../../scss/tw/_post-create.scss */
+#create-post .selected-visibility {
+  font-size: 12px;
+  padding: 5px;
+  text-align: center;
+  margin-top: 25px;
+  color: #666;
+}
+/* line 100, ../../scss/tw/_post-create.scss */
+#create-post .button-small {
+  font-size: 15px;
+  line-height: 30px;
+  color: #777;
+}
+/* line 106, ../../scss/tw/_post-create.scss */
+#create-post .button-small.button-positive {
+  color: #fff;
+}
 
 /* line 2, ../../scss/tw/_post-detail.scss */
 #post-detail .add-compare-button {

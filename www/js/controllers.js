@@ -3,9 +3,9 @@ angular.module('starter.controllers', [])
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     //$rootScope.baseURL = 'http://app.snaplook.today';
-    $rootScope.baseURL = 'http://localhost:8000';
+    //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    //$rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -1049,6 +1049,7 @@ angular.module('starter.controllers', [])
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
 .controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate) {
+    $scope.visibility = 'friend';
     $scope.submitted = false;
     $location.replace('tab.camera');
     $scope.data = { "ImageURI" :  "Select Image" };
@@ -1155,6 +1156,7 @@ angular.module('starter.controllers', [])
                       user_id: user.id,
                       occasion: occasion,
                       other: other,
+                      visibility: $scope.visibility,
                   },
                   transformRequest: function (data, headersGetter) {
                       var formData = new FormData();
@@ -1199,6 +1201,7 @@ angular.module('starter.controllers', [])
                 var postIds = postIdArray.join(',');
                 $http.post($rootScope.baseURL+'/api/compare/'+postIds+'/create');
                 $scope.submitted = false;
+                $scope.visibility = 'friend';
                 share_post_scope.occasion = undefined;
                 share_post_scope.captions = undefined;
                 uploadTryCount = 0;
@@ -1243,6 +1246,21 @@ angular.module('starter.controllers', [])
         return CameraPictues.get().length > 0 ||
             (typeof(this.captions) !== 'undefined' && this.captions !== '') ||
             (typeof(this.occasion) !== 'undefined' && this.occasion !== null)
+    }
+    $scope.setActive = function(visibility){
+      $scope.visibility = visibility;
+    }
+    $scope.isActive = function(visibility){
+      return visibility === $scope.visibility;
+    }
+    $scope.isVisibleFriend = function(){
+        return $scope.visibility == 'friend';
+    }
+    $scope.isVisiblePublic = function(){
+        return $scope.visibility == 'public';
+    }
+    $scope.isVisiblePermanent = function(){
+        return $scope.visibility == 'permanent';
     }
 })
 .controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading, UxAnalytics) {
