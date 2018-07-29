@@ -1048,7 +1048,7 @@ angular.module('starter.controllers', [])
 
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate, ImageUpload) {
     $scope.visibility = 'friend';
     $scope.submitted = false;
     $location.replace('tab.camera');
@@ -1090,18 +1090,6 @@ angular.module('starter.controllers', [])
         $scope.occasionList.push({value: 'other', label: 'Other'});
     });
 
-    $scope.getBlobImageByURL = function(url) {
-        var dfd = new $.Deferred();
-        var xhr = new XMLHttpRequest();
-        xhr.responseType = 'blob';
-        xhr.onload = function() {
-        dfd.resolve(xhr.response);
-        };
-        xhr.open('GET', url);
-        xhr.send();
-        return dfd.promise();
-    }
-
     $scope.sharePost = function(captions, occasion, other) {
         var fileURLs = CameraPictues.get();
         var share_post_scope = this;
@@ -1116,63 +1104,23 @@ angular.module('starter.controllers', [])
 
         $scope.submitted = true;
         $ionicLoading.show({template: 'Uploading Photo...'});
-        /*
-        var options = new FileUploadOptions();
-        if (typeof occasion == 'undefined')
-        {
-            occasion = null;
-        }
-        options.fileKey = "image";
-        options.mimeType = "image/jpeg";
-        options.chunkedMode = true;
 
-        var ft = new FileTransfer();
-        var params = { 'captions': param_caption, 'user_id': user.id, 'occasion': occasion, 'other': other };
-        options.params = params;
-        */
         if(fileURLs.length < 2){
             $ionicLoading.hide();
             $rootScope.popupMessage('', 'You Need at Least 2 Looks to Compare');
             $scope.submitted = false;
             return;
         }
-        /*
-        for(var i=0; i<fileURLs.length; i++){
-            options.fileName = fileURLs[i].substr(fileURLs[i].lastIndexOf('/') + 1);
-            ft.upload(fileURLs[i], encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, options);
-        }
-        */
 
         for(var i=0; i<fileURLs.length; i++){
-            $scope.getBlobImageByURL(fileURLs[i]).then(function(imgBlob){
-                $http({
-                  method: 'POST',
-                  url: encodeURI($rootScope.baseURL + '/api/post/create'),
-                  headers: {
-                      'Content-Type': undefined
-                  },
-                  data: {
-                      captions: param_caption,
-                      user_id: user.id,
-                      occasion: occasion,
-                      other: other,
-                      visibility: $scope.visibility,
-                  },
-                  transformRequest: function (data, headersGetter) {
-                      var formData = new FormData();
-                      angular.forEach(data, function (value, key) {
-                          if(typeof value !== "undefined"){
-                              formData.append(key, value);
-                          }
-                      });
-                      var imgName = 'temp.jpg';
-                      formData.append('image', imgBlob, imgName);
-                      return formData;
-                  }
-                })
-                .success(success)
-                .error(fail);
-            });
+            data = {
+                captions: param_caption,
+                user_id: user.id,
+                occasion: occasion,
+                other: other,
+                visibility: $scope.visibility,
+            };
+            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, data);
         }
 
         // Transfer succeeded
@@ -2791,7 +2739,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, Tutorial, UxAnalytics) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, Tutorial, UxAnalytics, ImageUpload) {
     var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;
@@ -2922,23 +2870,12 @@ angular.module('starter.controllers', [])
     $scope.updateProfilePicture = function(picData) {
         $ionicLoading.show({template: 'Uploading Photo...', duration:500});
         var fileURL = picData;
-        var options = new FileUploadOptions();
-        options.fileKey = "image";
-        options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
-        options.mimeType = "image/jpeg";
-        options.chunkedMode = true;
-
         var params = {'user_id': user.id };
 
-        options.params = params;
+        ImageUpload.send(fileURL, encodeURI($rootScope.baseURL + '/api/user/'+user.slug+'/editProfilePicture'), success, fail, params);
 
-        var ft = new FileTransfer();
-
-        ft.upload(fileURL, encodeURI($rootScope.baseURL + '/api/user/'+user.slug+'/editProfilePicture'), success, fail, options);
-
-        function success(r) {
+        function success(result) {
             $ionicLoading.show({template: 'Upload Success', duration:500});
-            var result = JSON.parse(r.response);
             $scope.accountImage = $rootScope.photoPath( result.profile_img_path, 's' );
         }
 
