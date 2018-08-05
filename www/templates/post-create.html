@@ -22,10 +22,27 @@
                     </div>
                 </li>
             </ul>
-            <div class="post-caption padding">
+            <div class="clearfix"></div>
+            <div class="padding visibility">
+                <div class="button-bar">
+                    <a class="button button-small" ng-class="{'button-positive': isActive('friend')}" ng-click="setActive('friend')">Friends <i class="icon ion-ios-timer-outline"></i></a>
+                    <a class="button button-small" ng-class="{'button-positive': isActive('public')}" ng-click="setActive('public')">Public <i class="icon ion-ios-timer-outline"></i></a>
+                    <a class="button button-small" ng-class="{'button-positive': isActive('permanent')}" ng-click="setActive('permanent')">Permanent</a>
+                </div>
+                <div class="selected-visibility" ng-show="isVisibleFriend()">
+                    * Visible for a day to friends whom you send this to
+                </div>
+                <div class="selected-visibility" ng-show="isVisiblePublic()">
+                    * Visible for a day to friends and to public in explore tab
+                </div>
+                <div class="selected-visibility" ng-show="isVisiblePermanent()">
+                    * Visible permanently to friends and to public in explore tab
+                </div>
+            </div>
+            <div class="post-caption padding" ng-show="hasContent()">
                 <textarea placeholder="Write a Caption" class="form-control" ng-model="captions"></textarea>
             </div>
-            <label class="item item-input item-select">
+            <label class="item item-input item-select" ng-show="hasContent()">
                 <div class="input-label">
                     Occasion
                 </div>
@@ -40,7 +57,7 @@
                 </label>
             </div>
             <div class="padding">
-                <button type="submit" class="button button-block button-positive" ng-disabled="submitted">Create a Look Board</button>
+                <button type="submit" class="button button-block button-positive" ng-disabled="submitted" ng-show="hasContent()">Create a Look Board</button>
             </div>
             <div class="padding">
                 <button type="button" class="button button-block button-stable" ng-click="reset()" ng-disabled="submitted" ng-show="hasContent()">Reset</button>

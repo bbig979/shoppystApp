@@ -84,4 +84,26 @@
 	.post-image .item {
 		padding: 0px;
 	}
+
+	.visibility{
+		margin: 10px 0;
+	}
+
+	.selected-visibility{
+		font-size: 12px;
+		padding: 5px;
+		text-align: center;
+		margin-top: 25px;
+		color: #666;
+	}
+
+	.button-small{
+		font-size: 15px;
+		line-height: 30px;
+		color: #777;
+	}
+
+	.button-small.button-positive{
+		color: #fff;
+	}
 }

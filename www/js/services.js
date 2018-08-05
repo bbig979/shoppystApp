@@ -958,6 +958,46 @@ console.log(_post_array);
         }
     }
 })
+.factory('ImageUpload', function($http){
+    return {
+        _getBlobImageByURL: function(url) {
+            var dfd = new $.Deferred();
+            var xhr = new XMLHttpRequest();
+            xhr.responseType = 'blob';
+            xhr.onload = function() {
+            dfd.resolve(xhr.response);
+            };
+            xhr.open('GET', url);
+            xhr.send();
+            return dfd.promise();
+        },
+        send: function(image_url, post_url, success, fail, data){
+            this._getBlobImageByURL(image_url).then(function(imgBlob){
+                $http({
+                  method: 'POST',
+                  url: post_url,
+                  headers: {
+                      'Content-Type': undefined
+                  },
+                  data: data,
+                  transformRequest: function (data, headersGetter) {
+                      var formData = new FormData();
+                      angular.forEach(data, function (value, key) {
+                          if(typeof value !== "undefined"){
+                              formData.append(key, value);
+                          }
+                      });
+                      var imgName = image_url.substr(image_url.lastIndexOf('/') + 1);
+                      formData.append('image', imgBlob, imgName);
+                      return formData;
+                  }
+                })
+                .success(success)
+                .error(fail);
+            });
+        }
+    }
+})
 .factory('ComparePostSet', function($http, FetchPosts, FetchShareLink, $q){
     return {
         share: function(post_id_csv){
