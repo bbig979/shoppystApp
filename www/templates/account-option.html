@@ -3,6 +3,7 @@
       'has-blocker-message': blockerMessage.isNeeded()
   }">
     <ion-list>
+        <ion-item ng-click="goLoyaltyPoints()" class="loyalty-points">Beta Loyalty Points</ion-item>
     	<ion-item ng-click="goAccountEdit()" class="edit-profile">Edit Profile</ion-item>
     	<ion-item ng-click="goChangePassword()" ng-if="!user.facebook_user_id" class="change-password">Change Password</ion-item>
     	<ion-item ng-click="goInviteFriends()" class="invite-friends">Invite Friends</ion-item>

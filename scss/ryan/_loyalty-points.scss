@@ -1,0 +1,29 @@
+#account-loyalty-points{
+  .no-result{
+      margin-top: 44px;
+  }
+  .count-wrapper{
+      .label{
+          float: left;
+      }
+      .count{
+          float: right;
+      }
+      padding: 15px;
+      font-size: 1.1em;
+  }
+  .count-wrapper:nth-child(2){
+      padding-top: 0;
+  }
+  .item{
+      .points-entity-description{
+          float: left;
+      }
+      .time-ago{
+          clear: left;
+      }
+      .points-entity-quantity{
+          float: right;
+      }
+  }
+}

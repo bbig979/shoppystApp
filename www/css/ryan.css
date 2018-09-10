@@ -4298,3 +4298,37 @@ div.tab-nav.tabs {
   width: 79%;
   top: 11.1%;
 }
+
+/* line 2, ../../scss/ryan/_loyalty-points.scss */
+#account-loyalty-points .no-result {
+  margin-top: 44px;
+}
+/* line 5, ../../scss/ryan/_loyalty-points.scss */
+#account-loyalty-points .count-wrapper {
+  padding: 15px;
+  font-size: 1.1em;
+}
+/* line 6, ../../scss/ryan/_loyalty-points.scss */
+#account-loyalty-points .count-wrapper .label {
+  float: left;
+}
+/* line 9, ../../scss/ryan/_loyalty-points.scss */
+#account-loyalty-points .count-wrapper .count {
+  float: right;
+}
+/* line 15, ../../scss/ryan/_loyalty-points.scss */
+#account-loyalty-points .count-wrapper:nth-child(2) {
+  padding-top: 0;
+}
+/* line 19, ../../scss/ryan/_loyalty-points.scss */
+#account-loyalty-points .item .points-entity-description {
+  float: left;
+}
+/* line 22, ../../scss/ryan/_loyalty-points.scss */
+#account-loyalty-points .item .time-ago {
+  clear: left;
+}
+/* line 25, ../../scss/ryan/_loyalty-points.scss */
+#account-loyalty-points .item .points-entity-quantity {
+  float: right;
+}
