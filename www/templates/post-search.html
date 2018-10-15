@@ -10,7 +10,7 @@
                     <i class="icon ion-ios-search placeholder-icon"></i>
                     <input type="search" id="search" placeholder="{{ showPlaceHolder() }}" ng-model="searchTerm" autocomplete="off" ng-keyup="searchTermTyped(searchTerm, $event)">
                 </label>
-                <div ng-click="searchTerm = '';" class="button button-clear search-clear" ng-show="showSearch">X</div>
+                <div ng-click="searchTerm = '';searchTermTyped(searchTerm, $event);" class="button button-clear search-clear" ng-show="searchTerm">X</div>
             </div>
         </form>
         <ion-list class="explore-search">

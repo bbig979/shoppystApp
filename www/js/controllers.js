@@ -3,9 +3,9 @@ angular.module('starter.controllers', [])
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     //$rootScope.baseURL = 'http://app.snaplook.today';
-    //$rootScope.baseURL = 'http://localhost:8000';
+    $rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    $rootScope.baseURL = 'http://localhost:8888';
+    // $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -2237,10 +2237,11 @@ angular.module('starter.controllers', [])
 
 .controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config) {
     $scope.search_type_active = "tag";
-    $scope.searchHolder = "Search";
+    $scope.searchHolder = "Search hashtags";
     $scope.searchNoResultText = "No Results Found";
     $scope.searchResult = [];
     $scope.page = 1;
+    $scope.mostRecentPostID = 0;
     $scope.noMoreItemsAvailable = false;
     $scope.isSearchRunning = false;
     $scope.noResult = false;
@@ -2255,30 +2256,18 @@ angular.module('starter.controllers', [])
         }
     });
 
-    var user = $rootScope.getCurrentUser();
-    if(user.username == user.email){
-        $state.go('register2').then(function(){
-            $timeout(function(){
-                window.location.reload();
-            },100);
-        });
-    }
-    else{
-        Tutorial.triggerIfNotCompleted('tutorial_welcome');
-    }
-
-    setTimeout(function(){
-        UxAnalytics.setUserId(user.username);
-        UxAnalytics.startScreen('post-search');
-    }, 2000);
-
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-search');
     });
 
+
     $timeout(function(){
         $scope.fetchSearchResult("new", 0);
     }, 0);
+
+    $timeout(function(){
+        Focus("search");
+    }, 1000);
 
     $scope.searchTermTyped = function(_search_term, keyEvent, _need_to_stay_idle_milisec = null){
         var need_to_stay_idle_milisec = _need_to_stay_idle_milisec;
@@ -2318,8 +2307,9 @@ angular.module('starter.controllers', [])
         {
             $scope.searchResult = [];
         }
-        FetchSearchResult.typed($scope.search_term, $scope.search_type_active, $scope.page, _need_to_stay_idle_milisec).then(function(response){
+        FetchSearchResult.typed($scope.mostRecentPostID, $scope.search_term, $scope.search_type_active, $scope.page, _need_to_stay_idle_milisec).then(function(response){
             $scope.isSearchRunning = false;
+            $scope.mostRecentPostID = response.data[response.data.length-1].id;
 
             if (type == "new" || type == "refresh")
             {
@@ -2395,6 +2385,7 @@ angular.module('starter.controllers', [])
             $scope.searchNoResultText = "No Results Found";
         }
         $scope.page = 1;
+        $scope.mostRecentPostID = 0;
         $scope.search_type_active = type;
     };
     $scope.submitSearch = function(search_term, type) {
@@ -2419,26 +2410,6 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     $scope.comparePosts = ComparePosts;
     $scope.mostRecentPostID = 0;
-
-    var user = $rootScope.getCurrentUser();
-    if(user.username == user.email){
-        $state.go('register2').then(function(){
-            $timeout(function(){
-                window.location.reload();
-            },100);
-        });
-    }
-    else{
-        Tutorial.triggerIfNotCompleted('tutorial_welcome');
-    }
-
-    // problem : Appsee starts with 'Main' screen, even though I hardcode to start 'explore'.
-    // cause : Appsee auto-stats 'Main' screen asynchronously.
-    // solution : Wait 2 second to start 'explore' screen after Appsee auto starts 'Main' screen.
-    setTimeout(function(){
-        UxAnalytics.setUserId(user.username);
-        UxAnalytics.startScreen('post-search-result');
-    }, 2000);
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-search-result');
