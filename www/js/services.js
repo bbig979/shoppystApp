@@ -555,7 +555,7 @@ angular.module('starter.services', [])
     var last_typed_timestmap_milisec = 0;
 
     return {
-        check: function(_search_term, _search_type, _page){
+        check: function(_most_recent_post_id, _search_term, _search_type, _page){
             var deferred = $q.defer();
             var this_factory = this;
             var search_term = _search_term;
@@ -565,7 +565,7 @@ angular.module('starter.services', [])
             }
             $http({
                 method : 'GET',
-                url : $rootScope.baseURL+'/api/search/'+search_term+'/'+_search_type+"?page="+_page
+                url : $rootScope.baseURL+'/api/search/'+search_term+'/'+_search_type+"?page="+_page+"&from_id="+_most_recent_post_id
             })
             .success(function(response){
                 deferred.resolve(response);
@@ -576,7 +576,7 @@ angular.module('starter.services', [])
 
             return deferred.promise;
         },
-        typed: function(_search_term, _search_type, _page, _need_to_stay_idle_milisec){
+        typed: function(_most_recent_post_id, _search_term, _search_type, _page, _need_to_stay_idle_milisec){
             var deferred = $q.defer();
             var this_factory = this;
             last_typed_timestmap_milisec = Date.now();
@@ -584,7 +584,7 @@ angular.module('starter.services', [])
                 function(){
                     stayed_idle_milisec = Date.now() - last_typed_timestmap_milisec;
                     if(stayed_idle_milisec >= _need_to_stay_idle_milisec){
-                        this_factory.check(_search_term, _search_type, _page).then(function(response){
+                        this_factory.check(_most_recent_post_id, _search_term, _search_type, _page).then(function(response){
                             deferred.resolve(response);
                         });
                     }
