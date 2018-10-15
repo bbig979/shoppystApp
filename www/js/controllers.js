@@ -1048,7 +1048,7 @@ angular.module('starter.controllers', [])
 
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate, ImageUpload) {
+.controller('PostCreateCtrl', function(LoyaltyPoints, $scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate, ImageUpload) {
     $scope.visibility = 'friend';
     $scope.submitted = false;
     $location.replace('tab.camera');
@@ -1089,6 +1089,8 @@ angular.module('starter.controllers', [])
         }
         $scope.occasionList.push({value: 'other', label: 'Other'});
     });
+
+    LoyaltyPoints.visit();
 
     $scope.sharePost = function(captions, occasion, other) {
         var fileURLs = CameraPictues.get();
@@ -2988,6 +2990,9 @@ angular.module('starter.controllers', [])
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
     };
+    $scope.goLoyaltyPoints = function(id){
+        $state.go('tab.loyalty-points-account');
+    };
     $scope.goFindFriends = function(id){
         $state.go('tab.find-friends');
     };
@@ -3387,4 +3392,60 @@ angular.module('starter.controllers', [])
             }
         });
     };
+})
+.controller('LoyaltyPointsCtrl', function($scope, $rootScope, $state, $timeout, $ionicPopup, UxAnalytics, LoyaltyPoints) {
+
+    $scope.doRefresh = function() {
+        $scope.noResult = false;
+        LoyaltyPoints.summary().then(function(response){
+            $scope.points_history = response.points_history;
+            if(response.point_count){
+                $scope.point_count = response.point_count;
+            }
+            else{
+                $scope.point_count = 0;
+            }
+            if(response.ticket_count){
+                $scope.ticket_count = response.ticket_count;
+            }
+            else{
+                $scope.ticket_count = 0;
+            }
+            if(response && response.points_history.length == 0){
+                $scope.noResult = true;
+            }
+            $scope.$broadcast('scroll.refreshComplete');
+        });
+    };
+
+    $scope.convert = function() {
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Raffle',
+            template: 'All points will become raffle tickets for next raffle'
+        });
+
+        confirmPopup.then(function(res) {
+            if(res) {
+                LoyaltyPoints.convert().then(function(){
+                    $scope.doRefresh();
+                });
+            }
+        });
+    }
+
+    $scope.explainPoint = function(keyword) {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Point',
+            template: 'this is point'
+        });
+    }
+
+    $scope.explainTicket = function(keyword) {
+        var alertPopup = $ionicPopup.alert({
+            title: 'Ticket',
+            template: 'this is ticket'
+        });
+    }
+
+    $scope.doRefresh();
 });

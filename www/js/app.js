@@ -469,6 +469,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	     }
 	 }
 	})
+    .state('tab.loyalty-points-account', {
+	 url: '/option/loyalty_points',
+	 views: {
+	     'tab-account': {
+	         templateUrl: 'templates/account-loyalty-points.html',
+	         controller: 'LoyaltyPointsCtrl'
+	     }
+	 }
+	})
 	.state('tab.find-friends', {
 	 url: '/find-friends',
 	 views: {

@@ -1093,4 +1093,45 @@ console.log(_post_array);
             return gender + '_' + age_group;
         }
     }
+})
+.factory('LoyaltyPoints', function($http, $rootScope) {
+    return {
+        visit: function(){
+            var interval = 6;
+            var current_timestamp = Math.floor(Date.now() / 1000);
+            var last_timestamp = 0;
+            if(localStorage.getItem('timestamp_loyalty_point_visit')){
+                last_timestamp = localStorage.getItem('timestamp_loyalty_point_visit');
+            }
+
+            if(last_timestamp + 60 * interval <= current_timestamp){
+                localStorage.setItem('timestamp_loyalty_point_visit', current_timestamp);
+                this.create('App visit after ' + interval + ' hours', 1);
+            }
+        },
+        summary: function() {
+            return $http.get($rootScope.baseURL+'/api/loyalty_points/summary').then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        create: function(description, points) {
+            return $http.post($rootScope.baseURL+'/api/loyalty_points/create?description=' + description + '&points=' + points).then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        convert: function() {
+            return $http.post($rootScope.baseURL+'/api/loyalty_points/convert').then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        }
+    };
 });

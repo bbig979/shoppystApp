@@ -1,0 +1,35 @@
+<ion-view id="account-loyalty-points" view-title="Beta Loyalty Points">
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="summary">
+            <div class="count-wrapper clearfix">
+                <div class="label">Total Points Available&nbsp;&nbsp;<i class="ion-ios-help-outline" ng-click="explainPoint()"></i></div>
+                <div class="count">{{ point_count }}</div>
+            </div>
+            <div class="count-wrapper clearfix">
+                <div class="label">Tickets in Next Raffle&nbsp;&nbsp;<i class="ion-ios-help-outline" ng-click="explainTicket()"></i></div>
+                <div class="count">{{ ticket_count }}</div>
+            </div>
+        </div>
+        <div class="padding">
+            <button type="submit" class="button button-block button-positive" ng-click="convert()">Use All Points for Next Raffle</button>
+        </div>
+        <div class="no-result" ng-if="noResult">
+            No points available
+        </div>
+        <ion-list>
+            <ion-item class="item" ng-repeat="points_entity in points_history">
+                <div class="entity-id-{{ ::points_entity.id }}">
+                    <div class="points-entity-description">{{ ::points_entity.description }}</div>
+                    <div class="points-entity-quantity">+{{ ::points_entity.points }} points</div>
+                    <div class="time-ago grey-small-font">{{ ::getTimeAgo(points_entity.created_at) }}</div>
+                </div>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>
