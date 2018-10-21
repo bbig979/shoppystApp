@@ -3,9 +3,9 @@ angular.module('starter.controllers', [])
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     //$rootScope.baseURL = 'http://app.snaplook.today';
-    $rootScope.baseURL = 'http://localhost:8000';
+    //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    // $rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -131,10 +131,10 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-detail-'+tab,{postId: id, user: user, posts: posts, index: index});
     };
-    $rootScope.goPostCompare = function(ids, is_my_post_compare = false){
+    $rootScope.goPostCompare = function(ids, should_show_send = false){
         console.log(ids);
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.post-compare-'+tab,{postIds: ids, isMyPostCompare: is_my_post_compare});
+        $state.go('tab.post-compare-'+tab,{postIds: ids, shouldShowSend: should_show_send});
     };
     $rootScope.goPostLikers = function(id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -310,8 +310,8 @@ angular.module('starter.controllers', [])
         }
         return false;
     };
-    $rootScope.ifMyPostCompare = function(){
-        return $stateParams.isMyPostCompare == 'true';
+    $rootScope.ifShowSend = function(){
+        return $stateParams.shouldShowSend == 'true';
     }
     $rootScope.getMaxStat = function(stat, index) {
         if (stat === undefined || stat.length == 0)
@@ -1160,7 +1160,7 @@ angular.module('starter.controllers', [])
                 $timeout(function(){
                     CameraPictues.reset();
                     localStorage.setItem('timestamp_post_shared', new Date().getTime());
-                    $state.go('tab.post-compare-temp', {postIds: postIds, isThisAfterShare: true, isMyPostCompare: true});
+                    $state.go('tab.post-compare-temp', {postIds: postIds, isThisAfterShare: true, shouldShowSend: true});
                 }, 500);
             }
         }
@@ -2531,6 +2531,7 @@ angular.module('starter.controllers', [])
     $scope.post_array;
     $scope.top_post_id;
     $scope.is_this_shared = true;
+    $scope.visibility = 'permanent';
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-compare');
@@ -2572,12 +2573,11 @@ angular.module('starter.controllers', [])
  * refresh as enter once
  */
 
-    if($stateParams.isMyPostCompare == 'true'){
+    if($stateParams.shouldShowSend == 'true'){
         Tutorial.triggerIfNotCompleted('tutorial_first_compare');
         FetchShareLink.exist($stateParams.postIds).then(function(is_this_shared){
             if(is_this_shared == 'false'){
                 $scope.is_this_shared = false;
-                console.log(is_this_shared);
             }
         });
     }
@@ -2585,6 +2585,7 @@ angular.module('starter.controllers', [])
     $ionicLoading.show();
     ComparePostSet.fetch($scope.post_id_array).then(function(post_array) {
         $scope.post_array = post_array;
+        $scope.visibility = post_array[0].visibility;
         $ionicLoading.hide();
         //ComparePostSet.sort($scope.gender_active, $scope.age_active, $scope.post_array);
         $scope.top_post_id = ComparePostSet.getTopPostId($scope.gender_active, $scope.age_active, $scope.post_array);
@@ -2615,7 +2616,7 @@ angular.module('starter.controllers', [])
     }
     $scope.isThisNotSharedYet = function(){
         // if we get the 'not shared' flag from ajax call
-        if(! $scope.is_this_shared){
+        if(! $scope.is_this_shared && $scope.visibility == 'friend'){
             // start share watcher client side
             return ! ShareWatcher.isShared($stateParams.postIds);
         }

@@ -36,9 +36,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
     //var baseURL = 'http://app.snaplook.today';
-    var baseURL = 'http://localhost:8000';
+    //var baseURL = 'http://localhost:8000';
     //var baseURL = 'http://192.168.56.1:8000';
-    // var baseURL = 'http://localhost:8888';
+    var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -107,7 +107,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
     })
     .state('tab.post-compare-home', {
-       url: '/post/compare/:postIds/home/:isMyPostCompare',
+       url: '/post/compare/:postIds/home/:shouldShowSend',
        views: {
            'tab-home': {
                templateUrl: 'templates/post-compare.html',
@@ -116,7 +116,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-compare-explore', {
-       url: '/post/compare/:postIds/explore/:isMyPostCompare',
+       url: '/post/compare/:postIds/explore/:shouldShowSend',
        views: {
            'tab-explore': {
                templateUrl: 'templates/post-compare.html',
@@ -125,7 +125,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-compare-notification', {
-       url: '/post/compare/:postIds/notification/:isMyPostCompare',
+       url: '/post/compare/:postIds/notification/:shouldShowSend',
        views: {
            'tab-notification': {
                templateUrl: 'templates/post-compare.html',
@@ -134,7 +134,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-compare-account', {
-       url: '/post/compare/:postIds/account/:isMyPostCompare',
+       url: '/post/compare/:postIds/account/:shouldShowSend',
        views: {
            'tab-account': {
                templateUrl: 'templates/post-compare.html',
@@ -143,7 +143,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-compare-temp', {
-       url: '/post/compare/:postIds/temp/:isMyPostCompare',
+       url: '/post/compare/:postIds/temp/:shouldShowSend',
        views: {
            'tab-compare': {
                templateUrl: 'templates/post-compare.html',

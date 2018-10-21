@@ -112,8 +112,10 @@ angular.module('starter.services', [])
         get: function(postID){
             var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/post/"+postID).then(function(response){
-                _addToPostTrackArray({data:response.data});
-                this_factory.addDisplayAttr([response.data]);
+                if(response.data.length > 0){
+                    _addToPostTrackArray({data:response.data});
+                    this_factory.addDisplayAttr([response.data]);
+                }
                 return response.data;
             }
             ,function(response){
