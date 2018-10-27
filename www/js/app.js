@@ -312,10 +312,37 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
+    .state('tab.search-result-home', {
+       url: '/search/:searchTerm/:type/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/post-search-result.html',
+               controller: 'PostSearchResultCtrl'
+           }
+       }
+    })
     .state('tab.search-result-explore', {
-       url: '/search/:searchTerm/:type',
+       url: '/search/:searchTerm/:type/explore',
        views: {
            'tab-explore': {
+               templateUrl: 'templates/post-search-result.html',
+               controller: 'PostSearchResultCtrl'
+           }
+       }
+    })
+    .state('tab.search-result-notification', {
+       url: '/search/:searchTerm/:type/notification',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/post-search-result.html',
+               controller: 'PostSearchResultCtrl'
+           }
+       }
+    })
+    .state('tab.search-result-account', {
+       url: '/search/:searchTerm/:type/account',
+       views: {
+           'tab-account': {
                templateUrl: 'templates/post-search-result.html',
                controller: 'PostSearchResultCtrl'
            }

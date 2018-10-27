@@ -113,11 +113,11 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
 
         if(content){
-            content = content.replace(/(#[a-z\d-_]+)/ig, "<a href='#/tab/explore/$1/tag/"+tab+"'>$1</a>");
+            content = content.replace(/(#[a-z\d-_]+)/ig, "<a href='#/tab/search/$1/tag/"+tab+"'>$1</a>");
             content = content.replace(/(\/#)/g, "/");
         }
         if(post.occasion != null){
-            content += ' <a href="#/tab/explore/' + post.occasion.name + '/occasion/' + tab + '">' +
+            content += ' <a href="#/tab/search/' + post.occasion.name + '/occasion/' + tab + '">' +
                 '<i class="fa fa-map-marker" aria-hidden="true"></i> ' +
                 post.occasion.name + '</a>';
         }
