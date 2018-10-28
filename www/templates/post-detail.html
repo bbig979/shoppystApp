@@ -102,7 +102,7 @@
                       <i class="ion-ios-heart"></i> <span class="like-count-number">{{ likesCount(post) }}</span> likes
                     </p>
                 </div>
-                <p class="content" ng-bind-html="::linkHashTagAndOccasion(post) | unsafe"></p>
+                <p class="content" ng-bind-html="linkHashTagAndOccasion(post) | unsafe"></p>
                 <p class="load-more grey-small-font" ng-click="loadMoreComments()" ng-if="commentsHiddenCount">load previous comments ({{ commentsHiddenCount }})</p>
                 <ion-list>
                     <ion-item class="item item-avatar item-text-wrap" ng-repeat="comment in post.latest_ten_comments">
@@ -123,9 +123,9 @@
                             <button class="button button-small comment-submit" ng-hide="commentSubmitting">
                                 Submit
                             </button>
-                            <button class="button button-small comment-submitting" ng-show="commentSubmitting">
+                            <div class="button button-small comment-submitting" ng-show="commentSubmitting">
                                 <ion-spinner icon="ios-small"></ion-spinner>
-                            </button>
+                            </div>
                         </div>
                     </div>
                 </form>
