@@ -152,12 +152,16 @@ angular.module('starter.controllers', [])
         $state.go('tab.school-detail-'+tab,{schoolId: id, schoolName: name});
     };
     $rootScope.goAccountFollowing = function(slug){
-        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-following-'+tab,{userSlug: slug});
+        if(slug){
+            var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+            $state.go('tab.account-following-'+tab,{userSlug: slug});
+        }
     };
     $rootScope.goAccountFollower = function(slug){
-        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.account-follower-'+tab,{userSlug: slug});
+        if(slug){
+            var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+            $state.go('tab.account-follower-'+tab,{userSlug: slug});
+        }
     };
     $rootScope.goAccountLiked = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
