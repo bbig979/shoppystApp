@@ -1980,9 +1980,9 @@ angular.module('starter.controllers', [])
         });
         $scope.comment.content = '';
     };
-    $scope.remComment = function($index){
-        $http.get($rootScope.baseURL+'/api/comment/'+$scope.post.latest_ten_comments[$index].id+'/delete').success(function(){
-            $scope.post.latest_ten_comments.splice($index, 1);
+    $scope.remComment = function(index){
+        $http.get($rootScope.baseURL+'/api/comment/'+$scope.post.latest_ten_comments[index].id+'/delete').success(function(){
+            $scope.post.latest_ten_comments.splice(index, 1);
             $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)-1);
         })
         .error(function(data, status){
@@ -2005,7 +2005,9 @@ angular.module('starter.controllers', [])
         }
     };
     $scope.ownComment = function($index){
-        return user.id == $scope.post.latest_ten_comments[$index].user.id;
+        if($scope.post.latest_ten_comments && $scope.post.latest_ten_comments[$index]){
+            return user.id == $scope.post.latest_ten_comments[$index].user.id;
+        }
     };
     $scope.ownPost = function(){
         if($scope.post){
@@ -2111,6 +2113,7 @@ angular.module('starter.controllers', [])
                     commentsCount = post.comments_count.aggregate;
                 }
                 $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
+                $scope.posts = [post];
                 $scope.post = post;
                 if(post.user_liked){
                     $scope.liked = true;
