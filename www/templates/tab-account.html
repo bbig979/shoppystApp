@@ -8,7 +8,7 @@
         </ion-refresher>
         <div class="account-top entity-id-{{account_info.id}}">
             <button class="button button-clear icon ion-gear-b account-option-btn" ng-click="goAccountOption()" ng-if="!notMe(account_info)"></button>
-            <button class="button button-small follow-toggle" ng-class="{'following' : account_info.following_check}" ng-click="toggleFollow(account_info)" ng-if="notMe(account_info)"></button>
+            <button class="button button-small follow-toggle" ng-class="{'following' : account_info.following_check}" ng-click="toggleFollow(account_info)" ng-if="account_info && notMe(account_info)"></button>
             <div class="account-image" style="background: url({{accountImage}})" ng-click="changeProfilePicture()"></div>
             <div class="user-name">
                 <ion-spinner icon="ios-small" ng-if="!account_info"></ion-spinner>
