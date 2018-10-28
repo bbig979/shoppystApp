@@ -2264,7 +2264,7 @@ angular.module('starter.controllers', [])
 
 
     $timeout(function(){
-        $scope.fetchSearchResult("new", 0);
+        $scope.fetchSearchResult("new", 0, $scope.search_type_active);
     }, 0);
 
     $timeout(function(){
@@ -2299,10 +2299,10 @@ angular.module('starter.controllers', [])
         }
 
         $scope.page = 1;
-        $scope.fetchSearchResult("new", need_to_stay_idle_milisec);
+        $scope.fetchSearchResult("new", need_to_stay_idle_milisec, $scope.search_type_active);
     }
 
-    $scope.fetchSearchResult = function(type, _need_to_stay_idle_milisec) {
+    $scope.fetchSearchResult = function(type, _need_to_stay_idle_milisec, search_type_active) {
         $scope.noResult = false;
         $scope.isSearchRunning = true;
         if (type == "new" || type == "refresh")
@@ -2311,7 +2311,9 @@ angular.module('starter.controllers', [])
         }
         FetchSearchResult.typed($scope.mostRecentPostID, $scope.search_term, $scope.search_type_active, $scope.page, _need_to_stay_idle_milisec).then(function(response){
             $scope.isSearchRunning = false;
-            $scope.mostRecentPostID = response.data[response.data.length-1].id;
+            if(response.data.length > 0){
+                $scope.mostRecentPostID = response.data[response.data.length-1].id;
+            }
 
             if (type == "new" || type == "refresh")
             {
@@ -2320,7 +2322,10 @@ angular.module('starter.controllers', [])
                     $scope.noResult = true;
                     $scope.noMoreItemsAvailable = true;
                 }
-                else
+                // problem : some times search result sets are duplicated
+                // cause : this happens when user click one tab to the other tab fast
+                // solution : only show result set when current active type was what requested
+                else if($scope.search_type_active == search_type_active)
                 {
                     $scope.searchResult = response.data;
                     $scope.noResult = false;
@@ -2333,7 +2338,13 @@ angular.module('starter.controllers', [])
                 {
                     $scope.noMoreItemsAvailable = true;
                 }
-                $scope.searchResult = $scope.searchResult.concat(response.data);
+                // problem : some times search result sets are duplicated
+                // cause : this happens when user click one tab to the other tab fast
+                // solution : only show result set when current active type was what requested
+                else if($scope.search_type_active == search_type_active)
+                {
+                    $scope.searchResult = $scope.searchResult.concat(response.data);
+                }
                 $timeout(function() {
                   $scope.$broadcast('scroll.infiniteScrollComplete');
                 });
@@ -2352,12 +2363,12 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.loadMore = function() {
-        $scope.fetchSearchResult("more", 0);
+        $scope.fetchSearchResult("more", 0, $scope.search_type_active);
     };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
-        $scope.fetchSearchResult("refresh", 0);
+        $scope.fetchSearchResult("refresh", 0, $scope.search_type_active);
     };
     $scope.showNoSearchResultText = function() {
         return $scope.searchNoResultText;
