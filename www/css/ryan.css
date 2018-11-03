@@ -3308,7 +3308,7 @@
 .post-list .post .add_to_compare {
   position: absolute;
   bottom: 10px;
-  right: 8px;
+  right: 2%;
 }
 /* line 37, ../../scss/ryan/_post-list.scss */
 .post-list .post .like-button {
@@ -3360,6 +3360,16 @@
 .post-list .post i {
   width: 15px;
   text-align: center;
+}
+/* line 78, ../../scss/ryan/_post-list.scss */
+.post-list .post .right-align ion-item {
+  float: right;
+}
+/* line 81, ../../scss/ryan/_post-list.scss */
+.post-list .post .right-align .add_to_compare {
+  position: absolute;
+  bottom: 10px;
+  right: 52%;
 }
 
 /* line 2, ../../scss/ryan/_comment-list.scss */

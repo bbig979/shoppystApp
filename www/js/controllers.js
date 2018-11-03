@@ -132,7 +132,6 @@ angular.module('starter.controllers', [])
         $state.go('tab.post-detail-'+tab,{postId: id, user: user, posts: posts, index: index});
     };
     $rootScope.goPostCompare = function(ids, should_show_send = false){
-        console.log(ids);
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-compare-'+tab,{postIds: ids, shouldShowSend: should_show_send});
     };
@@ -2146,6 +2145,8 @@ angular.module('starter.controllers', [])
     $scope.mostRecentPostID = 0;
     $scope.newPostAvailable = false;
     $scope.loadingNewPost = false;
+    $scope.last_align_class = 'right-align';
+    $scope.last_set_ids = 0;
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('tab-explore');
@@ -2161,8 +2162,10 @@ angular.module('starter.controllers', [])
         }
     });
     $scope.fetchPost = function(type) {
-        FetchPosts.new($scope.mostRecentPostID, $scope.page, "", "tag").then(function(response){
+        FetchPosts.new($scope.mostRecentPostID, $scope.page, "", "tag", $scope.last_align_class, $scope.last_set_ids).then(function(response){
             posts = response.data;
+            $scope.last_align_class = posts[posts.length-1].align_class;
+            $scope.last_set_ids = posts[posts.length-1].set_ids;
             if (type == "new" || type == "refresh")
             {
                 $scope.posts = posts;
@@ -2236,6 +2239,8 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         $scope.mostRecentPostID = 0;
+        $scope.last_align_class = 'right-align';
+        $scope.last_set_ids = 0;
         NewPost.resetFlags('explore');
         $scope.fetchPost("refresh");
     };
@@ -2430,13 +2435,17 @@ angular.module('starter.controllers', [])
     $scope.noResult = false;
     $scope.comparePosts = ComparePosts;
     $scope.mostRecentPostID = 0;
+    $scope.last_align_class = 'right-align';
+    $scope.last_set_ids = 0;
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-search-result');
     });
     $scope.fetchPost = function(type) {
-        FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm, $scope.searchType).then(function(response){
+        FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm, $scope.searchType, $scope.last_align_class, $scope.last_set_ids).then(function(response){
             posts = response.data;
+            $scope.last_align_class = posts[posts.length-1].align_class;
+            $scope.last_set_ids = posts[posts.length-1].set_ids;
             if (type == "new" || type == "refresh")
             {
                 $scope.posts = posts;
@@ -2479,6 +2488,8 @@ angular.module('starter.controllers', [])
         $scope.$broadcast('scroll.infiniteScrollComplete');
         $scope.page = 1;
         $scope.mostRecentPostID = 0;
+        $scope.last_align_class = 'right-align';
+        $scope.last_set_ids = 0;
         NewPost.resetFlags('explore');
         $scope.fetchPost("refresh");
     };
@@ -2743,6 +2754,8 @@ angular.module('starter.controllers', [])
     $scope.activatedTab = 'new';
     $scope.comparePosts = ComparePosts;
     $rootScope.getNotification(0); // pull the notification count immediately.
+    $scope.last_align_class = 'right-align';
+    $scope.last_set_ids = 0;
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('tab-account');
@@ -2769,7 +2782,10 @@ angular.module('starter.controllers', [])
         $scope.currentSlug = $stateParams.accountSlug;
     }
 
-    if (user.id || $stateParams.refresh) {
+    if($stateParams.refresh){
+        $scope.doRefresh();
+    }
+    else if (user.id) {
         FetchUsers.get($scope.currentSlug).then(function(account_info){
             $scope.account_info = account_info;
             $scope.accountImage = $rootScope.photoPath( account_info.profile_img_path, 's' );
@@ -2780,8 +2796,10 @@ angular.module('starter.controllers', [])
                 $rootScope.currentUser = $scope.account_info;
             }
         });
-        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
+        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page, $scope.last_align_class, $scope.last_set_ids).then(function(response){
             posts = response.data;
+            $scope.last_align_class = posts[posts.length-1].align_class;
+            $scope.last_set_ids = posts[posts.length-1].set_ids;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -2900,8 +2918,10 @@ angular.module('starter.controllers', [])
     };
     $scope.loadMore = function() {
         if(!$scope.activatingTab){
-            FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
+            FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page, $scope.last_align_class, $scope.last_set_ids).then(function(response){
                 posts = response.data;
+                $scope.last_align_class = posts[posts.length-1].align_class;
+                $scope.last_set_ids = posts[posts.length-1].set_ids;
                 if(!response.next_page_url){
                     $scope.noMoreItemsAvailable = true;
                 }
@@ -2918,6 +2938,8 @@ angular.module('starter.controllers', [])
         $scope.page = 1;
         $scope.posts = [];
         $scope.activatedTab = 'new';
+        $scope.last_align_class = 'right-align';
+        $scope.last_set_ids = 0;
 
         FetchUsers.get($scope.currentSlug).then(function(account_info){
             $scope.account_info = account_info;
@@ -2926,8 +2948,10 @@ angular.module('starter.controllers', [])
                 $rootScope.currentUser = account_info;
             }
         });
-        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page).then(function(response){
+        FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page, $scope.last_align_class, $scope.last_set_ids).then(function(response){
             posts = response.data;
+            $scope.last_align_class = posts[posts.length-1].align_class;
+            $scope.last_set_ids = posts[posts.length-1].set_ids;
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -2950,10 +2974,14 @@ angular.module('starter.controllers', [])
         $scope.posts = [];
         $scope.activatedTab = tab;
         $scope.noResult = false;
+        $scope.last_align_class = 'right-align';
+        $scope.last_set_ids = 0;
 
-        FetchPosts.user($scope.currentSlug, tab, $scope.page).then(function(response){
+        FetchPosts.user($scope.currentSlug, tab, $scope.page, $scope.last_align_class, $scope.last_set_ids).then(function(response){
             $scope.$broadcast('scroll.infiniteScrollComplete');
             posts = response.data;
+            $scope.last_align_class = posts[posts.length-1].align_class;
+            $scope.last_set_ids = posts[posts.length-1].set_ids;
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;

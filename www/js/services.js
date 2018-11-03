@@ -122,11 +122,12 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        new: function(mostRecentPostID, pg, search_term, search_type){
+        new: function(mostRecentPostID, pg, search_term, search_type, last_align_class, last_set_ids){
             var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&search_type="+search_type+"&from_id="+mostRecentPostID).then(function(response){
                 _addToPostTrackArray(response.data);
                 this_factory.addDisplayAttr(response.data.data);
+                this_factory.addAlignClass(response.data.data, last_align_class, last_set_ids);
                 return response.data;
             }
             ,function(response){
@@ -149,11 +150,12 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        user: function(userSlug, tab, pg) {
+        user: function(userSlug, tab, pg, last_align_class, last_set_ids) {
             var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/user/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
                 _addToPostTrackArray(response.data);
                 this_factory.addDisplayAttr(response.data.data);
+                this_factory.addAlignClass(response.data.data, last_align_class, last_set_ids);
                 return response.data;
             }
             ,function(response){
@@ -182,6 +184,20 @@ angular.module('starter.services', [])
                 var post = posts[i];
                 post.display_time = PostTimer.timeLeft(post.created_at);
                 post.display_icon = PostTimer.icon(post.created_at);
+            }
+        },
+        addAlignClass: function(posts, last_align_class, last_set_ids){
+            for(var i=0; i<posts.length; i++){
+                var post = posts[i];
+
+                var current_align_class = last_align_class;
+                if(last_set_ids != post.set_ids){
+                    current_align_class = (last_align_class == 'left-align') ? 'right-align' : 'left-align';
+                }
+                post.align_class = current_align_class;
+
+                last_set_ids = post.set_ids;
+                last_align_class = post.align_class;
             }
         }
     };

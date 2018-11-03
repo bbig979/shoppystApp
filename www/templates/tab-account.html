@@ -31,7 +31,7 @@
         <ion-list>
             <div>
                 <ion-item collection-repeat="post in posts" class="post" collection-item-width="'100%'">
-                    <div class="entity-id-{{post.id}}">
+                    <div class="entity-id-{{post.id}} {{post.align_class}}">
                         <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id, account_info, posts, $index)">
                             <a class="post_img"></a>
                         </ion-item>

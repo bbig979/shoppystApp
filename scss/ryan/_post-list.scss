@@ -32,7 +32,7 @@
     .add_to_compare{
       position: absolute;
       bottom: 10px;
-      right: 8px;
+      right: 2%;
     }
     .like-button{
       min-width: 20px;
@@ -73,6 +73,16 @@
     i{
         width: 15px;
         text-align: center;
+    }
+    .right-align{
+        ion-item{
+            float: right;
+        }
+        .add_to_compare{
+            position: absolute;
+            bottom: 10px;
+            right: 52%;
+        }
     }
   }
 }
