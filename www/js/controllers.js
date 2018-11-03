@@ -2917,7 +2917,7 @@ angular.module('starter.controllers', [])
         return !$scope.isMyAccount;
     };
     $scope.loadMore = function() {
-        if(!$scope.activatingTab){
+        if($scope.page > 1){
             FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page, $scope.last_align_class, $scope.last_set_ids).then(function(response){
                 posts = response.data;
                 $scope.last_align_class = posts[posts.length-1].align_class;
@@ -2931,6 +2931,9 @@ angular.module('starter.controllers', [])
                 });
                 $scope.page++;
             });
+        }
+        else{
+            $scope.$broadcast('scroll.infiniteScrollComplete');
         }
     };
     $scope.doRefresh = function() {
