@@ -2164,8 +2164,10 @@ angular.module('starter.controllers', [])
     $scope.fetchPost = function(type) {
         FetchPosts.new($scope.mostRecentPostID, $scope.page, "", "tag", $scope.last_align_class, $scope.last_set_ids).then(function(response){
             posts = response.data;
-            $scope.last_align_class = posts[posts.length-1].align_class;
-            $scope.last_set_ids = posts[posts.length-1].set_ids;
+            if(posts.length > 0){
+                $scope.last_align_class = posts[posts.length-1].align_class;
+                $scope.last_set_ids = posts[posts.length-1].set_ids;
+            }
             if (type == "new" || type == "refresh")
             {
                 $scope.posts = posts;
@@ -2444,8 +2446,10 @@ angular.module('starter.controllers', [])
     $scope.fetchPost = function(type) {
         FetchPosts.new($scope.mostRecentPostID, $scope.page, $stateParams.searchTerm, $scope.searchType, $scope.last_align_class, $scope.last_set_ids).then(function(response){
             posts = response.data;
-            $scope.last_align_class = posts[posts.length-1].align_class;
-            $scope.last_set_ids = posts[posts.length-1].set_ids;
+            if(posts.length > 0){
+                $scope.last_align_class = posts[posts.length-1].align_class;
+                $scope.last_set_ids = posts[posts.length-1].set_ids;
+            }
             if (type == "new" || type == "refresh")
             {
                 $scope.posts = posts;
@@ -2798,8 +2802,10 @@ angular.module('starter.controllers', [])
         });
         FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page, $scope.last_align_class, $scope.last_set_ids).then(function(response){
             posts = response.data;
-            $scope.last_align_class = posts[posts.length-1].align_class;
-            $scope.last_set_ids = posts[posts.length-1].set_ids;
+            if(posts.length > 0){
+                $scope.last_align_class = posts[posts.length-1].align_class;
+                $scope.last_set_ids = posts[posts.length-1].set_ids;
+            }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
             }
@@ -2920,8 +2926,10 @@ angular.module('starter.controllers', [])
         if($scope.page > 1){
             FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page, $scope.last_align_class, $scope.last_set_ids).then(function(response){
                 posts = response.data;
-                $scope.last_align_class = posts[posts.length-1].align_class;
-                $scope.last_set_ids = posts[posts.length-1].set_ids;
+                if(posts.length > 0){
+                    $scope.last_align_class = posts[posts.length-1].align_class;
+                    $scope.last_set_ids = posts[posts.length-1].set_ids;
+                }
                 if(!response.next_page_url){
                     $scope.noMoreItemsAvailable = true;
                 }
@@ -2953,8 +2961,10 @@ angular.module('starter.controllers', [])
         });
         FetchPosts.user($scope.currentSlug, $scope.activatedTab, $scope.page, $scope.last_align_class, $scope.last_set_ids).then(function(response){
             posts = response.data;
-            $scope.last_align_class = posts[posts.length-1].align_class;
-            $scope.last_set_ids = posts[posts.length-1].set_ids;
+            if(posts.length > 0){
+                $scope.last_align_class = posts[posts.length-1].align_class;
+                $scope.last_set_ids = posts[posts.length-1].set_ids;
+            }
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -2983,8 +2993,10 @@ angular.module('starter.controllers', [])
         FetchPosts.user($scope.currentSlug, tab, $scope.page, $scope.last_align_class, $scope.last_set_ids).then(function(response){
             $scope.$broadcast('scroll.infiniteScrollComplete');
             posts = response.data;
-            $scope.last_align_class = posts[posts.length-1].align_class;
-            $scope.last_set_ids = posts[posts.length-1].set_ids;
+            if(posts.length > 0){
+                $scope.last_align_class = posts[posts.length-1].align_class;
+                $scope.last_set_ids = posts[posts.length-1].set_ids;
+            }
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
