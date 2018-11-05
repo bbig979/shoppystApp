@@ -2166,7 +2166,7 @@ angular.module('starter.controllers', [])
             posts = response.data;
             if(posts.length > 0){
                 $scope.last_align_class = posts[posts.length-1].align_class;
-                $scope.last_set_ids = posts[posts.length-1].set_ids;
+                $scope.last_set_ids = posts[posts.length-1].post_id_csv;
             }
             if (type == "new" || type == "refresh")
             {
@@ -2448,7 +2448,7 @@ angular.module('starter.controllers', [])
             posts = response.data;
             if(posts.length > 0){
                 $scope.last_align_class = posts[posts.length-1].align_class;
-                $scope.last_set_ids = posts[posts.length-1].set_ids;
+                $scope.last_set_ids = posts[posts.length-1].post_id_csv;
             }
             if (type == "new" || type == "refresh")
             {
@@ -2804,7 +2804,7 @@ angular.module('starter.controllers', [])
             posts = response.data;
             if(posts.length > 0){
                 $scope.last_align_class = posts[posts.length-1].align_class;
-                $scope.last_set_ids = posts[posts.length-1].set_ids;
+                $scope.last_set_ids = posts[posts.length-1].post_id_csv;
             }
             if(!response.next_page_url){
                 $scope.noMoreItemsAvailable = true;
@@ -2928,7 +2928,7 @@ angular.module('starter.controllers', [])
                 posts = response.data;
                 if(posts.length > 0){
                     $scope.last_align_class = posts[posts.length-1].align_class;
-                    $scope.last_set_ids = posts[posts.length-1].set_ids;
+                    $scope.last_set_ids = posts[posts.length-1].post_id_csv;
                 }
                 if(!response.next_page_url){
                     $scope.noMoreItemsAvailable = true;
@@ -2963,7 +2963,7 @@ angular.module('starter.controllers', [])
             posts = response.data;
             if(posts.length > 0){
                 $scope.last_align_class = posts[posts.length-1].align_class;
-                $scope.last_set_ids = posts[posts.length-1].set_ids;
+                $scope.last_set_ids = posts[posts.length-1].post_id_csv;
             }
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){
@@ -2995,7 +2995,7 @@ angular.module('starter.controllers', [])
             posts = response.data;
             if(posts.length > 0){
                 $scope.last_align_class = posts[posts.length-1].align_class;
-                $scope.last_set_ids = posts[posts.length-1].set_ids;
+                $scope.last_set_ids = posts[posts.length-1].post_id_csv;
             }
             $scope.noMoreItemsAvailable = false;
             if(!response.next_page_url){

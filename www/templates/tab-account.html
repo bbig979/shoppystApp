@@ -57,7 +57,7 @@
                             </div>
                             <div class="add_to_compare">
                                 <button class="button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'" ng-if="notMe(account_info)"></button>
-                                <button class="button button-clear button-dark icon add-compare-button ion-ios-checkmark-outline" ng-click="goPostCompare(post.set_ids, isMyAccount && ( post.display_icon != 'fa-calendar' || post.visibility == 'permanent' ))"></button>
+                                <button class="button button-clear button-dark icon add-compare-button ion-ios-checkmark-outline" ng-click="goPostCompare(post.post_id_csv, isMyAccount && ( post.display_icon != 'fa-calendar' || post.visibility == 'permanent' ))"></button>
                             </div>
                         </div>
                     </div>

@@ -191,12 +191,12 @@ angular.module('starter.services', [])
                 var post = posts[i];
 
                 var current_align_class = last_align_class;
-                if(last_set_ids != post.set_ids){
+                if(last_set_ids != post.post_id_csv){
                     current_align_class = (last_align_class == 'left-align') ? 'right-align' : 'left-align';
                 }
                 post.align_class = current_align_class;
 
-                last_set_ids = post.set_ids;
+                last_set_ids = post.post_id_csv;
                 last_align_class = post.align_class;
             }
         }
