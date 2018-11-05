@@ -140,7 +140,7 @@ angular.module('starter.controllers', [])
         $state.go('tab.post-likers-'+tab,{postId: id});
     };
     $rootScope.goAccount = function(slug){
-        if (!$rootScope.canClickInList()) {
+        if (!$rootScope.canClickInList() || $rootScope.currentUser.slug == slug) {
             return;
         }
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
