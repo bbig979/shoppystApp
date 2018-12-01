@@ -1,5 +1,5 @@
 /* line 3, ../../scss/common/_reusable.scss */
-.background-image-handler, .post-list .post .profile-image, .single-post .post-header .profile-image {
+.background-image-handler, .post-set-list .post-set-card .post-set-header .profile-image, .vote-result .look .profile-image, .post-list .post .profile-image, .single-post .post-header .profile-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -3268,7 +3268,271 @@
   margin: 10px;
 }
 
-/* line 2, ../../scss/ryan/_post-list.scss */
+/* line 1, ../../scss/ryan/_post-list.scss */
+.slide-header {
+  transition: top 0.25s ease;
+  top: 0;
+}
+
+/* line 5, ../../scss/ryan/_post-list.scss */
+.has-header {
+  top: 0;
+  padding-top: 44px;
+}
+
+/* line 11, ../../scss/ryan/_post-list.scss */
+body.header-slide-away .slide-header {
+  top: -44px;
+}
+/* line 14, ../../scss/ryan/_post-list.scss */
+body.header-slide-away .title {
+  display: none;
+}
+
+/* line 19, ../../scss/ryan/_post-list.scss */
+.hide-post {
+  visibility: hidden;
+}
+
+/* line 24, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card {
+  padding: 0;
+}
+/* line 27, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .post-set-header {
+  padding: 4vw;
+  font-size: 14px;
+  background-color: #fff;
+}
+/* line 32, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .post-set-header .profile-image {
+  width: 40px;
+  height: 40px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+  background-clip: padding-box;
+  float: left;
+}
+/* line 39, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .post-set-header .profile-text {
+  padding-left: 10px;
+  float: left;
+}
+/* line 43, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .post-set-header .profile-text .time-ago {
+  font-size: 12px;
+  color: #999;
+}
+/* line 49, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .caption {
+  padding: 0 4vw 4vw 4vw;
+  font-size: 14px;
+}
+/* line 54, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .look-list .scroll-bar-h {
+  display: none;
+}
+/* line 57, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .look-list .post {
+  width: 69vw;
+  margin-right: 4vw;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+  display: inline-block;
+  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+  border-radius: 1vw;
+  background-color: #fff;
+}
+/* line 67, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .look-list .post .post-img-wrapper {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-top-left-radius: 1vw;
+  border-top-right-radius: 1vw;
+}
+/* line 74, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .look-list .post .post-img-wrapper .post-img {
+  display: block;
+  width: 100%;
+  padding-top: 120%;
+}
+/* line 80, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .look-list .post .vote-toggle {
+  text-align: center;
+  padding: 10px;
+  height: 15vw;
+}
+/* line 85, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .look-list .post .vote-toggle .check-mark {
+  display: inline-block;
+  color: #ddd;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  width: 10vw;
+  height: 10vw;
+  background: #fff;
+  font-size: 10vw;
+  padding-left: 1vw;
+}
+/* line 96, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .look-list .post .vote-toggle .check-mark.checked {
+  color: #fff;
+  border: 1px solid #fff;
+  background: #ff245d;
+}
+/* line 103, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .look-list .post:first-child {
+  margin-left: 4vw;
+}
+/* line 108, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .post-summary .totals {
+  float: right;
+  font-size: 13px;
+  padding: 4vw;
+}
+/* line 113, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .post-summary .time-ago {
+  float: left;
+  font-size: 13px;
+  padding: 4vw;
+}
+/* line 119, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card hr {
+  border: 0;
+  border-top: 1px solid #f1f1f1;
+}
+/* line 123, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .post-set-footer {
+  background-color: #fff;
+}
+/* line 126, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .post-set-footer .option {
+  width: 50%;
+  float: left;
+  text-align: center;
+}
+/* line 131, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .post-set-footer .option button {
+  font-size: 12px;
+  font-weight: bold;
+  color: #777;
+}
+/* line 138, ../../scss/ryan/_post-list.scss */
+.post-set-list .post-set-card .divider {
+  height: 20px;
+  background-color: #e7e7e7;
+}
+
+/* line 145, ../../scss/ryan/_post-list.scss */
+.vote-result .look {
+  width: 44vw !important;
+  float: left;
+  margin-left: 4vw;
+  margin-top: 4vw;
+  border-radius: 1vw;
+  border: 0px solid #ddd;
+  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+}
+/* line 154, ../../scss/ryan/_post-list.scss */
+.vote-result .look .post_img {
+  display: block;
+  width: 100%;
+  padding-top: 115%;
+}
+/* line 159, ../../scss/ryan/_post-list.scss */
+.vote-result .look .look_wrapper {
+  border: 0;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  float: left;
+  background-color: #f0f0f0;
+}
+/* line 168, ../../scss/ryan/_post-list.scss */
+.vote-result .look .desc_row {
+  float: left;
+  width: 50%;
+  font-size: 14px;
+  color: #aaa;
+  padding: 5px 5px 0px 10px;
+}
+/* line 175, ../../scss/ryan/_post-list.scss */
+.vote-result .look .desc_row.profile {
+  padding: 5px 0 5px 5px;
+}
+/* line 178, ../../scss/ryan/_post-list.scss */
+.vote-result .look .add_to_compare {
+  position: absolute;
+  bottom: 10px;
+  right: 2%;
+}
+/* line 183, ../../scss/ryan/_post-list.scss */
+.vote-result .look .like-button {
+  min-width: 20px;
+  min-height: 21px;
+  height: 21px;
+  padding-right: 5px;
+  margin-right: 10px;
+}
+/* line 190, ../../scss/ryan/_post-list.scss */
+.vote-result .look .like-button:before {
+  line-height: 20px;
+  font-size: 25px;
+}
+/* line 194, ../../scss/ryan/_post-list.scss */
+.vote-result .look .profile-image {
+  width: 25px;
+  height: 25px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+  background-clip: padding-box;
+  float: left;
+  margin-right: 5px;
+}
+/* line 202, ../../scss/ryan/_post-list.scss */
+.vote-result .look .user-name {
+  padding: 2px;
+}
+/* line 205, ../../scss/ryan/_post-list.scss */
+.vote-result .look .add-compare-button {
+  float: right;
+  min-width: 20px;
+  min-height: 22px;
+  height: 22px;
+  padding-right: 6px;
+  margin-right: 6px;
+}
+/* line 213, ../../scss/ryan/_post-list.scss */
+.vote-result .look .add-compare-button:before {
+  line-height: 20px;
+}
+/* line 216, ../../scss/ryan/_post-list.scss */
+.vote-result .look .button.button-dark.button-clear.ion-ios-heart {
+  color: #FF4C62;
+}
+/* line 219, ../../scss/ryan/_post-list.scss */
+.vote-result .look i {
+  width: 15px;
+  text-align: center;
+}
+/* line 224, ../../scss/ryan/_post-list.scss */
+.vote-result .look .right-align ion-item {
+  float: right;
+}
+/* line 227, ../../scss/ryan/_post-list.scss */
+.vote-result .look .right-align .add_to_compare {
+  position: absolute;
+  bottom: 10px;
+  right: 52%;
+}
+
+/* line 236, ../../scss/ryan/_post-list.scss */
 .post-list .post {
   width: 100%;
   float: left;
@@ -3276,13 +3540,13 @@
   position: relative;
   border-right-color: #fff;
 }
-/* line 3, ../../scss/ryan/_post-list.scss */
+/* line 237, ../../scss/ryan/_post-list.scss */
 .post-list .post .post_img {
   display: block;
   width: 100%;
   padding-top: 120%;
 }
-/* line 13, ../../scss/ryan/_post-list.scss */
+/* line 247, ../../scss/ryan/_post-list.scss */
 .post-list .post ion-item {
   border: 0;
   background-position: 50% 50%;
@@ -3292,7 +3556,7 @@
   float: left;
   background-color: #f0f0f0;
 }
-/* line 22, ../../scss/ryan/_post-list.scss */
+/* line 256, ../../scss/ryan/_post-list.scss */
 .post-list .post .desc_row {
   float: left;
   width: 50%;
@@ -3300,17 +3564,17 @@
   color: #aaa;
   padding: 5px 5px 0px 10px;
 }
-/* line 29, ../../scss/ryan/_post-list.scss */
+/* line 263, ../../scss/ryan/_post-list.scss */
 .post-list .post .desc_row.profile {
   padding: 5px 0 5px 5px;
 }
-/* line 32, ../../scss/ryan/_post-list.scss */
+/* line 266, ../../scss/ryan/_post-list.scss */
 .post-list .post .add_to_compare {
   position: absolute;
   bottom: 10px;
   right: 2%;
 }
-/* line 37, ../../scss/ryan/_post-list.scss */
+/* line 271, ../../scss/ryan/_post-list.scss */
 .post-list .post .like-button {
   min-width: 20px;
   min-height: 21px;
@@ -3318,12 +3582,12 @@
   padding-right: 5px;
   margin-right: 10px;
 }
-/* line 44, ../../scss/ryan/_post-list.scss */
+/* line 278, ../../scss/ryan/_post-list.scss */
 .post-list .post .like-button:before {
   line-height: 20px;
   font-size: 25px;
 }
-/* line 48, ../../scss/ryan/_post-list.scss */
+/* line 282, ../../scss/ryan/_post-list.scss */
 .post-list .post .profile-image {
   width: 25px;
   height: 25px;
@@ -3335,11 +3599,11 @@
   float: left;
   margin-right: 5px;
 }
-/* line 56, ../../scss/ryan/_post-list.scss */
+/* line 290, ../../scss/ryan/_post-list.scss */
 .post-list .post .user-name {
   padding: 2px;
 }
-/* line 59, ../../scss/ryan/_post-list.scss */
+/* line 293, ../../scss/ryan/_post-list.scss */
 .post-list .post .add-compare-button {
   float: right;
   min-width: 20px;
@@ -3348,24 +3612,24 @@
   padding-right: 6px;
   margin-right: 6px;
 }
-/* line 67, ../../scss/ryan/_post-list.scss */
+/* line 301, ../../scss/ryan/_post-list.scss */
 .post-list .post .add-compare-button:before {
   line-height: 20px;
 }
-/* line 70, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-list .post .button.button-dark.button-clear.ion-ios-heart {
   color: #FF4C62;
 }
-/* line 73, ../../scss/ryan/_post-list.scss */
+/* line 307, ../../scss/ryan/_post-list.scss */
 .post-list .post i {
   width: 15px;
   text-align: center;
 }
-/* line 78, ../../scss/ryan/_post-list.scss */
+/* line 312, ../../scss/ryan/_post-list.scss */
 .post-list .post .right-align ion-item {
   float: right;
 }
-/* line 81, ../../scss/ryan/_post-list.scss */
+/* line 315, ../../scss/ryan/_post-list.scss */
 .post-list .post .right-align .add_to_compare {
   position: absolute;
   bottom: 10px;

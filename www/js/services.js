@@ -25,6 +25,90 @@ angular.module('starter.services', [])
         }
     };
 }])
+.directive('scrollWatch', function(SlideHeader) {
+    return function(scope, elem, attr) {
+        var cushion_for_subtle_scroll_up = 150;
+        var start_position = 100;
+        var this_scroll_scope_id = scope.$parent.$id;
+
+        SlideHeader.setCurrentScrollScopeId(this_scroll_scope_id);
+        SlideHeader.setShouldHide(this_scroll_scope_id, false);
+        SlideHeader.setPreviousScrollPosition(this_scroll_scope_id, 0);
+
+        elem.bind('scroll', function(e) {
+            var current_scroll_position = e.originalEvent.detail.scrollTop;
+            var previous_scroll_position = SlideHeader.getPreviousScrollPosition(this_scroll_scope_id);
+
+            if (previous_scroll_position == current_scroll_position) {
+                return;
+            }
+            if (current_scroll_position < start_position) {
+                SlideHeader.setShouldHide(this_scroll_scope_id, false);
+                scope.$apply();
+                return;
+            }
+
+            if (previous_scroll_position > current_scroll_position) {
+                if(previous_scroll_position - current_scroll_position < cushion_for_subtle_scroll_up){
+                    return;
+                }
+                SlideHeader.setShouldHide(this_scroll_scope_id, false);
+            }
+            else{
+                SlideHeader.setShouldHide(this_scroll_scope_id, true);
+            }
+
+            SlideHeader.setPreviousScrollPosition(this_scroll_scope_id, current_scroll_position)
+            scope.$apply();
+        });
+    };
+})
+.factory('SlideHeader', function(){
+    var current_scroll_scope_id;
+    var should_hide_map = [];
+    var previous_scroll_position_map = [];
+    return {
+        viewEntered: function(scope){
+            if(should_hide_map[scope.$id] !== undefined){
+                this._enable(scope);
+            }
+            else{
+                this._disable();
+            }
+            this.setShouldHide(current_scroll_scope_id, false);
+        },
+        _enable: function(scope){
+            if(scope.scroll_scope_id){
+                current_scroll_scope_id = scope.scroll_scope_id;
+            }
+            else{
+                scope.scroll_scope_id = current_scroll_scope_id;
+            }
+
+        },
+        _disable: function(){
+            current_scroll_scope_id = 0;
+        },
+        getCurrentScrollScopeId: function(scroll_scope_id){
+            return current_scroll_scope_id;
+        },
+        setCurrentScrollScopeId: function(scroll_scope_id){
+            current_scroll_scope_id = scroll_scope_id;
+        },
+        getShouldHide: function(){
+            return should_hide_map[current_scroll_scope_id];
+        },
+        setShouldHide: function(scope_id, value){
+            should_hide_map[scope_id] = value;
+        },
+        getPreviousScrollPosition: function(scope_id){
+            return previous_scroll_position_map[scope_id];
+        },
+        setPreviousScrollPosition: function(scope_id, value){
+            previous_scroll_position_map[scope_id] = value;
+        }
+    }
+})
 .factory('Config', function($q, $http, $rootScope){
     var data = {};
     return {
@@ -85,6 +169,73 @@ angular.module('starter.services', [])
         }
     };
 })
+.factory('FetchPosts_dev', function($http, $rootScope, PostTimer){
+    return {
+        new: function(last_result_last_id, search_term, search_type){
+            var this_factory = this;
+            return $http.get($rootScope.baseURL+"/api/explore/post_sets?last_result_last_id="+last_result_last_id+"&search_term="+search_term+"&search_type="+search_type).then(function(response){
+                this_factory._addDisplayAttr(response.data.data);
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        _addDisplayAttr: function(posts){
+            for(var i=0; i<posts.length; i++){
+                var post = posts[i];
+                post.display_time = PostTimer.timeLeft(post.created_at);
+            }
+        },
+    };
+})
+.factory('FetchLook', function($http, $rootScope, Vote){
+    return {
+        getList: function(postID){
+            return $http.get($rootScope.baseURL+"/api/post/"+postID+"/vote").then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+    };
+})
+.factory('PostCard', function(Vote){
+    return {
+        commentCount: function(post){
+            var comment_count = 0;
+            if(post.comment_info && post.comment_info.count){
+                comment_count = post.comment_info.count;
+            }
+            return this._countSummaryText(comment_count, 'Comment');
+        },
+        voteCount: function(post){
+            var vote_count = 0;
+            for(var i=0; i< post.photos.length; i++){
+                var look = post.photos[i];
+                if(look.vote_info && look.vote_info.count){
+                    vote_count += look.vote_info.count;
+                }
+            }
+            return this._countSummaryText(vote_count, 'Vote');
+        },
+        voteToggle: function(look){
+            Vote.toggle(look);
+        },
+        _countSummaryText: function(count, domain){
+            if(count == 0){
+                return '';
+            }
+            else if(count == 1){
+                return ' · ' + count + ' ' + domain;
+            }
+            else{
+                return ' · ' + count + ' ' + domain + 's';
+            }
+        }
+    };
+})
 .factory('FetchPosts', function($http, $rootScope, PostTimer) {
     var _addToPostTrackArray = function(pagingInfo) {
         $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
@@ -122,12 +273,11 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        new: function(mostRecentPostID, pg, search_term, search_type, last_align_class, last_set_ids){
+        new: function(mostRecentPostID, pg, search_term, search_type){
             var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&search_type="+search_type+"&from_id="+mostRecentPostID).then(function(response){
                 _addToPostTrackArray(response.data);
                 this_factory.addDisplayAttr(response.data.data);
-                this_factory.addAlignClass(response.data.data, last_align_class, last_set_ids);
                 return response.data;
             }
             ,function(response){
@@ -182,7 +332,10 @@ angular.module('starter.services', [])
         addDisplayAttr: function(posts){
             for(var i=0; i<posts.length; i++){
                 var post = posts[i];
-                post.display_time = PostTimer.timeLeft(post.created_at);
+                post.display_time = PostTimer.timeLeft(post.created_at, post.visibility);
+                if(post.visibility == 'permanent'){
+                    post.display_time += ' · Permanent';
+                }
                 post.display_icon = PostTimer.icon(post.created_at);
             }
         },
@@ -374,20 +527,29 @@ angular.module('starter.services', [])
         }
         return "fa-hourglass-end";
     }
-    this.timeLeft = function(created_at){
+    this.timeLeft = function(created_at, visibility){
         var sec_passed = this._secPassed(created_at);
         var sec_remains = sec_in_one_day - sec_passed;
+        var plural_notation = '';
 
-        if(sec_remains < 0){
+        if(sec_remains < 0 || visibility == 'permanent'){
             if(sec_remains >= -1 * sec_in_one_week){
                 return moment(created_at + "-00:00").fromNow();
             }
             return moment(created_at + "-00:00").format('LL');
         }
         if(sec_remains < sec_in_one_hour){
-            return Math.floor(sec_remains / sec_in_one_min) + 'm Left';
+            var min_remains = Math.floor(sec_remains / sec_in_one_min);
+            if(min_remains > 1){
+                plural_notation = 's';
+            }
+            return min_remains + ' minute' + plural_notation + ' Left';
         }
-        return Math.floor(sec_remains / sec_in_one_hour) + 'h Left';
+        var hour_remains = Math.floor(sec_remains / sec_in_one_hour);
+        if(hour_remains > 1){
+            plural_notation = 's';
+        }
+        return hour_remains + ' hour' + plural_notation + ' Left';
     }
     this._secPassed = function(created_at){
         var t = created_at.split(/[- :]/);
@@ -1112,6 +1274,91 @@ console.log(_post_array);
         }
     }
 })
+.factory('VoteResult', function($http, FetchLook, $q){
+    return {
+        getCount: function(filter_gender, filter_age_group, look_id, look_array){
+            var target_key = this._getTargetKeyForLookAnalytic(filter_gender, filter_age_group);
+            for(var i = 0; i < look_array.length; i++){
+                this_look = look_array[i];
+                if(look_id == this_look.id){
+                    return this_look.look_analytic[target_key];
+                }
+            }
+        },
+        getTopLookId: function(filter_gender, filter_age_group, look_array){
+            var target_key = this._getTargetKeyForLookAnalytic(filter_gender, filter_age_group);
+            var top_vote_count = 0;
+            var top_look_id;
+            for(var i = 0; i < look_array.length; i++){
+                this_look = look_array[i];
+                if(top_vote_count <= parseInt(this_look.look_analytic[target_key])){
+                    top_look_id = this_look.id;
+                    top_vote_count = parseInt(this_look.look_analytic[target_key]);
+                }
+            }
+            if(top_vote_count == 0){
+                return 0;
+            }
+            return top_look_id;
+        },
+        fetch: function(post_id){
+            var deferred = $q.defer();
+            var this_factory = this;
+            FetchLook.getList(post_id).then(function(response){
+                var look_array = response.photos;
+                for (index = 0; index < look_array.length; ++index) {
+                    for(var j = 0; j < response.look_analytic_array.length; ++j){
+                        if(response.look_analytic_array[j].id == look_array[index].id){
+                            look_array[index].look_analytic = response.look_analytic_array[j];
+                        }
+                    }
+                    look_array[index].vote_count = 0;
+                    if(look_array[index].vote_info){
+                        look_array[index].vote_count = look_array[index].vote_info.count;
+                    }
+                    this_factory._setTotalFieldsInLookAnalytic(look_array[index]);
+                }
+                deferred.resolve(look_array);
+            });
+            return deferred.promise;
+        },
+        _setPlaceHolderIfLookAnalyticIsEmpty: function(look_analytic){
+            if(look_analytic === undefined){
+                look_analytic = [];
+            }
+        },
+        _setTotalFieldsInLookAnalytic: function(look){
+            look_analytic = look.look_analytic;
+            this._setPlaceHolderIfLookAnalyticIsEmpty(look_analytic);
+            look_analytic.dummy_total_key = 1;
+            look_analytic.total_all = look.vote_count;
+            look_analytic.total_gender =
+                look_analytic.male +
+                look_analytic.female;
+            look_analytic.total_age_group =
+                look_analytic.teens +
+                look_analytic.twenties +
+                look_analytic.thirties +
+                look_analytic.forties +
+                look_analytic.fifties;
+        },
+        _getTargetKeyForLookAnalytic: function(gender, age_group){
+            if(gender == 'friends'){
+                return gender;
+            }
+            if(gender == 'all' && age_group == 'all'){
+                return 'total_all';
+            }
+            if(gender == 'all' && age_group != 'all'){
+                return age_group;
+            }
+            if(gender != 'all' && age_group == 'all'){
+                return gender;
+            }
+            return gender + '_' + age_group;
+        }
+    }
+})
 .factory('LoyaltyPoints', function($http, $rootScope) {
     return {
         visit: function(){
@@ -1152,4 +1399,60 @@ console.log(_post_array);
             });
         }
     };
+})
+.factory('Vote', function($http, $rootScope){
+    return {
+        toggle: function(look){
+            if(look.user_liked){
+                $http.get($rootScope.baseURL+'/api/look/'+look.id+'/unvote').success(function(){
+                })
+                .error(function(data, status){
+                    $rootScope.handleHttpError(data, status);
+                });
+
+                look.vote_info.count--;
+                if(look.vote_info.count == 0){
+                    look.vote_info = null;
+                }
+            }
+            else{
+                $http.get($rootScope.baseURL+'/api/look/'+look.id+'/vote').success(function(){
+                })
+                .error(function(data, status){
+                    $rootScope.handleHttpError(data, status);
+                });
+                if(look.vote_info){
+                    look.vote_info.count++;
+                }
+                else{
+                    look.vote_info = {count: 1};
+                }
+            }
+            look.user_liked = ! look.user_liked;
+        },
+        /*
+        trackAndUpdateVote: function(look){
+            for(i = 0; i < $rootScope.postTrackArray.length; i++){
+                thisPost = $rootScope.postTrackArray[i];
+                if(post.id == thisPost.id){
+                    if(thisPost.user_liked){
+                        thisPost.likes_count.aggregate--;
+                        if(thisPost.likes_count.aggregate == 0){
+                            thisPost.likes_count = null;
+                        }
+                    }
+                    else{
+                        if(thisPost.likes_count){
+                            thisPost.likes_count.aggregate++;
+                        }
+                        else{
+                            thisPost.likes_count = {aggregate: 1};
+                        }
+                    }
+                    thisPost.user_liked = !thisPost.user_liked;
+                }
+            }
+        }
+        */
+    }
 });

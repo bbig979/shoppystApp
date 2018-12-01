@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, ShareWatcher, Tutorial) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, ShareWatcher, Tutorial, SlideHeader) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     //$rootScope.baseURL = 'http://app.snaplook.today';
@@ -16,6 +16,7 @@ angular.module('starter.controllers', [])
     $rootScope.currentUser = null;
     $rootScope.notificationCount = "0";
     $rootScope.blockerMessage = BlockerMessage;
+    $rootScope.slideHeader = SlideHeader;
     $rootScope.notificationPullInterval = 60000;
     Config.init().then(function(){
         var result = Config.get('minimum_force_update_version');
@@ -134,6 +135,10 @@ angular.module('starter.controllers', [])
     $rootScope.goPostCompare = function(ids, should_show_send = false){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-compare-'+tab,{postIds: ids, shouldShowSend: should_show_send});
+    };
+    $rootScope.goVoteResult = function(post_id){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.vote-result-'+tab,{postId: post_id});
     };
     $rootScope.goPostLikers = function(id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -1099,6 +1104,7 @@ angular.module('starter.controllers', [])
         var fileURLs = CameraPictues.get();
         var share_post_scope = this;
         var postIdArray = [];
+        var lookIdArray = [];
         var uploadTryCount = 0;
         var uploadSuccessCount = 0;
         var param_caption = '';
@@ -1117,15 +1123,15 @@ angular.module('starter.controllers', [])
             return;
         }
 
+        var post_data = {
+            captions: param_caption,
+            user_id: user.id,
+            occasion: occasion,
+            other: other,
+            visibility: $scope.visibility,
+        };
         for(var i=0; i<fileURLs.length; i++){
-            data = {
-                captions: param_caption,
-                user_id: user.id,
-                occasion: occasion,
-                other: other,
-                visibility: $scope.visibility,
-            };
-            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/post/create'), success, fail, data);
+            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/look/create/' + i), success, fail);
         }
 
         // Transfer succeeded
@@ -1143,7 +1149,7 @@ angular.module('starter.controllers', [])
             uploadTryCount++;
             uploadSuccessCount++;
             if(typeof result.id !== 'undefined'){
-                postIdArray.push(result.id);
+                lookIdArray.push(result.id);
             }
             if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
                 $ionicScrollDelegate.scrollTop();
@@ -1151,15 +1157,15 @@ angular.module('starter.controllers', [])
                     template: 'Upload Success ( ' + uploadSuccessCount + ' / ' + uploadTryCount + ' )',
                     duration:500
                 });
-                var postIds = postIdArray.join(',');
-                $http.post($rootScope.baseURL+'/api/compare/'+postIds+'/create');
+                var lookIds = lookIdArray.join(',');
+                $http.post($rootScope.baseURL+'/api/post/create/with_looks/'+lookIds, post_data);
                 $scope.submitted = false;
                 $scope.visibility = 'friend';
                 share_post_scope.occasion = undefined;
                 share_post_scope.captions = undefined;
                 uploadTryCount = 0;
                 uploadSuccessCount = 0;
-                postIdArray = [];
+                lookIdArray = [];
                 $timeout(function(){
                     CameraPictues.reset();
                     localStorage.setItem('timestamp_post_shared', new Date().getTime());
@@ -1686,7 +1692,7 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
+.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, SlideHeader) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -1703,6 +1709,7 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('tab-home');
+        SlideHeader.viewEntered($scope);
         if($scope.noResult){
             $scope.loadingNewPost = true;
             $scope.doRefresh();
@@ -1815,9 +1822,6 @@ angular.module('starter.controllers', [])
                 $scope.mostRecentPostID = posts[0].id;
             }
         });
-    };
-    $scope.commentsPage = function(id){
-        $state.go('tab.post-comments-home',{postId: id});
     };
     $scope.moreOption = function(id){
         $ionicActionSheet.show({
@@ -2134,7 +2138,21 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
+.controller('PostExploreCtrl', function($scope, $rootScope, FetchPosts, SlideHeader, PostCard) {
+    $scope.posts = [];
+    $scope.postCard = PostCard;
+
+    $scope.$on('$ionicView.enter', function() {
+        SlideHeader.viewEntered($scope);
+    });
+
+    FetchPosts.new(0, 1, "", "").then(function(response){
+        $scope.posts = response.data;
+        console.log($scope.posts);
+    });
+})
+
+.controller('PostExploreCtrl_20181126_deprecated', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
     $scope.tab = $state.current['name'].split("-")[1];
     $scope.posts = [];
     $scope.page = 1;
@@ -2654,6 +2672,47 @@ angular.module('starter.controllers', [])
             return ! ShareWatcher.isShared($stateParams.postIds);
         }
         return false;
+    }
+})
+.controller('VoteResultCtrl', function($scope, $rootScope, VoteResult, $ionicLoading, $stateParams, UxAnalytics, SlideHeader) {
+    $scope.voteResult = VoteResult;
+    $scope.gender_active = 'all';
+    $scope.age_active = 'all';
+    $scope.look_array;
+    $scope.top_look_id;
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('vote-result');
+        SlideHeader.viewEntered($scope);
+    });
+
+    $ionicLoading.show();
+    VoteResult.fetch($stateParams.postId).then(function(look_array) {
+        $scope.look_array = look_array;
+        $ionicLoading.hide();
+        $scope.markLook($scope.gender_active, $scope.age_active);
+    });
+
+    $scope.markLook = function(gender, age) {
+        $scope.top_look_id = VoteResult.getTopLookId(gender, age, $scope.look_array);
+    }
+
+    $scope.doRefresh = function(){
+        VoteResult.fetch($stateParams.postId).then(function(look_array) {
+            $scope.look_array = look_array;
+            $scope.$broadcast('scroll.refreshComplete');
+            $scope.markLook($scope.gender_active, $scope.age_active);
+        });
+    }
+
+    $scope.setGender = function(gender) {
+        $scope.gender_active = gender;
+        $scope.markLook($scope.gender_active, $scope.age_active);
+    }
+
+    $scope.setAge = function(age) {
+        $scope.age_active = age;
+        $scope.markLook($scope.gender_active , $scope.age_active);
     }
 })
 .controller('RankingCtrl', function($scope, FetchSchools, $timeout) {

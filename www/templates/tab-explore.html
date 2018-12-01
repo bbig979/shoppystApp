@@ -1,70 +1,57 @@
-<div id="new-post-wrapper">
-    <div id="new-post-button" class="explore" ng-click="loadNewPost()" ng-show="newPostAvailable">
-        <i class="fa fa-arrow-up" aria-hidden="true"></i> New Looks
-    </div>
-</div>
-<ion-view class="post-list" id="tab-explore" view-title="EXPLORE">
-    <ion-content on-scroll="scrollList();scrollDetectWhenNewPostAvailable();" ng-class="{
+<ion-view class="post-set-list" id="tab-explore" view-title="EXPLORE">
+    <ion-content scroll-watch ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
-        <ion-refresher
-                pulling-text="Pull to refresh..."
-                on-refresh="doRefresh()">
-        </ion-refresher>
         <div class="bar bar-header item-input-inset" ng-click="goPostSearch();">
             <label class="item-input-wrapper">
                 <i class="icon ion-ios-search placeholder-icon"></i>
                 <input type="search" placeholder="Search">
             </label>
         </div>
-        <div class="no-result" ng-if="noResult">
-            No look shared in 24 hours. Please invite your friends
-        </div>
-        <div class="loading-spinner" data-loading ng-if="posts.length == 0 && !noMoreItemsAvailable">
-            <ion-spinner></ion-spinner>
-        </div>
-        <ion-list ng-hide="showSearch">
+        <ion-list>
             <div>
-                <ion-item collection-repeat="post in posts" class="post" collection-item-width="'100%'">
-                    <div class="entity-id-{{post.id}} {{post.align_class}}">
-                        <ion-item style="background-image: url({{ photoPath( post.photos[0].img_path, 'm' ) }})" ng-click="goPostDetail(post.id)">
-                            <a class="post_img"></a>
-                        </ion-item>
-                        <div>
-                            <div class="desc_row profile">
+                <ion-item ng-repeat="post in posts track by $index" class="post-set-card">
+                    <div class="entity-id-{{post.id}}" ng-class="{'hide-post': post.hide}">
+                        <div class="post-set-header clearfix">
+                            <div class="profile">
                                 <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
-                                <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}}</div>
+                                <div class="profile-text">
+                                    <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}}</div>
+                                    <div class="time-ago" ng-click="goAccount(post.user.slug)">{{post.display_time}}</div>
+                                </div>
                             </div>
-                            <div class="desc_row">
-                                <span class="likes-count">
-                                    <i class="fa fa-heart" aria-hidden="true"></i>
-                                    <span class="like-count-number">{{ likesCount(post) }}</span> likes
-                                </span>
+                        </div>
+                        <div class="caption" ng-bind-html="linkHashTagAndOccasion(post) | unsafe"></div>
+                        <div class="look-list">
+                            <ion-scroll direction="x" delegate-handle="handle-horizontal">
+                                <div ng-repeat="photo in post.photos" class="post">
+                                    <div class="post-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'm' ) }})" ng-click="goPostDetail(post.id)">
+                                        <a class="post-img"></a>
+                                    </div>
+                                    <div class="vote-toggle">
+                                        <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
+                                    </div>
+                                </div>
+                            </ion-scroll>
+                        </div>
+                        <div class="post-summary clearfix">
+                            <div class="totals">
+                                {{ post.photos.length }} Looks{{ postCard.commentCount(post) }}{{ postCard.voteCount(post) }}
                             </div>
-                            <div class="desc_row" ng-hide="post.occasion == null">
-                                <span class="occasion grey-small-font"><i class="fa fa-map-marker" aria-hidden="true"></i> {{post.occasion.name}}</span>
+                        </div>
+                        <hr>
+                        <div class="post-set-footer clearfix">
+                            <div class="option comment">
+                                <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="goPostComment(post.id)"> Comment</button>
                             </div>
-                            <div class="desc_row" ng-hide="isStatNotAvailable(post)">
-                                <span class="desc_stat"><i class="fa {{getCardGenderStatIcon(post.post_analytic)}}" aria-hidden="true"></i> {{getMaxStat(post.post_analytic, 'gender')}}% &nbsp; {{getMaxStat(post.post_analytic, 'age')}}%</span>
-                            </div>
-                            <div class="desc_row">
-                                <span class="time-ago grey-small-font desc_time" ng-if="post"><i class="fa {{post.display_icon}}" aria-hidden="true"></i> {{post.display_time}}</span>
-                            </div>
-                            <div class="desc_row" ng-show="post.user.id == 1">
-                                <div class="user-type-tag">Demo</div>
-                            </div>
-                            <div class="desc_row" ng-show="post.user.is_permanent_post_allowed == 1">
-                                <div class="user-type-tag">Partner</div>
-                            </div>
-                            <div class="add_to_compare">
-                                <button class="button button-clear button-dark icon like-button" ng-click="toggleLike($event,post)" ng-class="post.user_liked ? 'ion-ios-heart' : 'ion-ios-heart-outline'"></button>
-                                <button class="button button-clear button-dark icon add-compare-button ion-ios-checkmark-outline" ng-click="goPostCompare(post.post_id_csv)"></button>
+                            <div class="option result">
+                                <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post.id)"> Result</button>
                             </div>
                         </div>
                     </div>
+                    <div class="divider"></div>
                 </ion-item>
             </div>
         </ion-list>
-        <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%" immediate-check="false"></ion-infinite-scroll>
     </ion-content>
 </ion-view>

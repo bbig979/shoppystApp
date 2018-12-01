@@ -106,6 +106,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            refresh: null
         }
     })
+    .state('tab.vote-result-home', {
+       url: '/vote/result/:postId/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
+           }
+       }
+    })
+    .state('tab.vote-result-explore', {
+       url: '/post/compare/:postId/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
+           }
+       }
+    })
+    .state('tab.vote-result-notification', {
+       url: '/post/compare/:postId/notification',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
+           }
+       }
+    })
+    .state('tab.vote-result-account', {
+       url: '/post/compare/:postId/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
+           }
+       }
+    })
     .state('tab.post-compare-home', {
        url: '/post/compare/:postIds/home/:shouldShowSend',
        views: {

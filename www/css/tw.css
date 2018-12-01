@@ -428,18 +428,13 @@
 #compare .item .desc_row {
   width: 100%;
   text-align: center;
-  color: #fff;
-  background: #000;
-  background: rgba(0, 0, 0, 0.5);
   padding-bottom: 5px;
-  position: absolute;
-  bottom: 0;
 }
-/* line 60, ../../scss/tw/_compare.scss */
+/* line 55, ../../scss/tw/_compare.scss */
 #compare .sort {
   margin-bottom: 0;
 }
-/* line 63, ../../scss/tw/_compare.scss */
+/* line 58, ../../scss/tw/_compare.scss */
 #compare .expired-message {
   background-color: #fff;
   padding: 70px 0 70px 0;
