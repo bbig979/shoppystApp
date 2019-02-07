@@ -1081,7 +1081,7 @@ angular.module('starter.controllers', [])
 
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
-.controller('PostCreateCtrl', function(LoyaltyPoints, $scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate, ImageUpload) {
+.controller('PostCreateCtrl', function(LoyaltyPoints, $scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'friend';
     $scope.submitted = false;
     $location.replace('tab.camera');
@@ -1113,6 +1113,7 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-create');
+        SlideHeader.viewEntered($scope);
     });
 
     FetchOccasions.get().then(function(response){
@@ -3064,10 +3065,10 @@ angular.module('starter.controllers', [])
     var user = $rootScope.getCurrentUser();
 
     var method = 'my_profile';
-    $scope.currentSlug = user.slug;
+    $scope.profile_user_slug = user.slug;
     if($stateParams.accountSlug != ''){
         method = 'others_profile';
-        $scope.currentSlug = $stateParams.accountSlug;
+        $scope.profile_user_slug = $stateParams.accountSlug;
     }
 
     $scope.postCard = PostCard;
@@ -3077,7 +3078,7 @@ angular.module('starter.controllers', [])
         preload : true
     };
     var fetchAccount = function(){
-        FetchUsers.get($scope.currentSlug).then(function(account_info){
+        FetchUsers.get($scope.profile_user_slug).then(function(account_info){
             $scope.account_info = account_info;
             $scope.accountImage = $rootScope.photoPath( account_info.profile_img_path, 's' );
 
@@ -3815,7 +3816,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope, $state, $timeout, UxAnalytics) {
+.controller('NotificationCtrl', function($scope, FetchNotifications, $rootScope, $state, $timeout, UxAnalytics, SlideHeader) {
     var user = $rootScope.getCurrentUser();
     $scope.notifications = [];
     $scope.page = 1;
@@ -3825,6 +3826,7 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('tab-notification');
+        SlideHeader.viewEntered($scope);
     });
 
     FetchNotifications.new(user.slug, $scope.page).then(function(response){

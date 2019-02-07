@@ -219,7 +219,7 @@ angular.module('starter.services', [])
                 method : config.method,
                 page : $scope.page,
                 scope_start_timestamp : $scope.scope_start_timestamp,
-                profile_user_id : $scope.profile_user_id,
+                profile_user_slug : $scope.profile_user_slug,
                 search_type : $scope.search_type,
                 search_term : $scope.search_term,
             };
