@@ -2,10 +2,10 @@ angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, ComparePostSet, CameraPictues, $cordovaSocialSharing, FetchShareLink, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, ShareWatcher, Tutorial, SlideHeader) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
-    //$rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    $rootScope.baseURL = 'http://localhost:8888';
+    //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -135,6 +135,10 @@ angular.module('starter.controllers', [])
     $rootScope.goPostCompare = function(ids, should_show_send = false){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-compare-'+tab,{postIds: ids, shouldShowSend: should_show_send});
+    };
+    $rootScope.goPostComment = function(post_id){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.post-comments-'+tab,{post_id: post_id});
     };
     $rootScope.goVoteResult = function(post_id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -904,7 +908,28 @@ angular.module('starter.controllers', [])
             return false;
         }
     };
-    $rootScope.toggleLike = function($event,post){
+    $rootScope.toggleLike = function($event,comment){
+        $event.preventDefault();
+        if(comment.user_liked){
+            $http.get($rootScope.baseURL+'/api/comment/'+comment.id+'/unlike').success(function(){
+            })
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
+            });
+            comment.like_count--;
+        }
+        else{
+            $http.get($rootScope.baseURL+'/api/comment/'+comment.id+'/like').success(function(){
+            })
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
+            });
+            comment.like_count++;
+        }
+        //$rootScope.trackAndUpdateLike(comment);
+        comment.user_liked = !comment.user_liked;
+    };
+    $rootScope.toggleLike_deprecated_20180106 = function($event,post){
         $event.preventDefault();
         if(post.user_liked){
             $http.get($rootScope.baseURL+'/api/post/'+post.id+'/unlike').success(function(){
@@ -1692,7 +1717,39 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, SlideHeader) {
+.controller('HomeCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics) {
+    $scope.postCard = PostCard;
+    $scope.business_object_list_config = {
+        type : 'post',
+        method : 'following',
+        preload : true
+    };
+
+    BusinessObjectList.reset($scope);
+    BusinessObjectList.load($scope);
+
+    $scope.refresh = function(){
+        BusinessObjectList.reset($scope);
+        $scope.is_list_loading = false;
+        BusinessObjectList.load($scope);
+        $scope.$broadcast('scroll.refreshComplete');
+    }
+
+    $scope.load = function(){
+        $ionicScrollDelegate.scrollTop();
+        $scope.list = [];
+        $scope.is_list_loading = true;
+
+        BusinessObjectList.render($scope, $scope.preloaded_response);
+        BusinessObjectList.preload($scope);
+    }
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('tab-home');
+        SlideHeader.viewEntered($scope);
+    });
+})
+.controller('HomeCtrl_deprecated_20190127', function($scope, FetchPosts, $http, $state, $rootScope, $stateParams, $ionicActionSheet, $ionicLoading, $ionicPopup, $timeout, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, SlideHeader) {
     $scope.posts = [];
     $scope.page = 1;
     $scope.noMoreItemsAvailable = false;
@@ -2138,18 +2195,164 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, $rootScope, FetchPosts, SlideHeader, PostCard) {
-    $scope.posts = [];
-    $scope.postCard = PostCard;
+.controller('PostCommentCtrl', function($scope, $rootScope, $stateParams, PostComment, SlideHeader, $ionicActionSheet, $ionicPopup, $http, $ionicLoading, $ionicScrollDelegate, Focus, $timeout, BusinessObjectList, UxAnalytics) {
+    $scope.post_id = $stateParams.post_id;
+    var user = $rootScope.getCurrentUser();
+    var resetCommentFormVariables = function(){
+        $scope.new_comment = {content:''};
+        $scope.new_comment_parent_id = 0;
+        $scope.is_comment_submitting = false;
+    }
+    $scope.business_object_list_config = {
+        type : 'comment',
+        method : 'fetch',
+        callback : resetCommentFormVariables
+    };
+
+    BusinessObjectList.reset($scope);
+    BusinessObjectList.load($scope);
+
+    $scope.refresh = function(){
+        BusinessObjectList.reset($scope);
+        $scope.is_list_loading = false;
+        BusinessObjectList.load($scope);
+        $scope.$broadcast('scroll.refreshComplete');
+    }
+
+    $scope.load = function() {
+        BusinessObjectList.load($scope);
+    };
 
     $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-comment');
         SlideHeader.viewEntered($scope);
     });
 
-    FetchPosts.new(0, 1, "", "").then(function(response){
-        $scope.posts = response.data;
-        console.log($scope.posts);
+    $scope.replyClicked = function(username, parent_id){
+        $scope.new_comment_parent_id = parent_id;
+        $scope.new_comment.content = '@' + username + ' ';
+        Focus('new_comment');
+    };
+
+    $scope.submitComment = function(){
+        if($scope.new_comment.content.trim() == ''){
+            return;
+        }
+        if(! $scope.is_comment_submitting){
+            $scope.is_comment_submitting = true;
+            PostComment.submit(
+                $scope.new_comment.content,
+                $scope.post_id,
+                $scope.new_comment_parent_id
+            ).then(function(response){
+                PostComment.insert(
+                    response,
+                    $scope.list,
+                    $scope.new_comment_parent_id
+                );
+                submitCommentDone($scope.new_comment_parent_id);
+            }, function(){
+                submitCommentDone();
+            });
+        }
+    };
+
+    var submitCommentDone = function(new_comment_parent_id){
+        if(new_comment_parent_id == 0){
+            $ionicScrollDelegate.scrollTop();
+        }
+        $scope.is_result_empty = false;
+        $ionicLoading.hide();
+        resetCommentFormVariables();
+    }
+
+    $scope.moreOption = function(comment, comments, index){
+        if(user.id == comment.user.id){
+            var hideSheet = $ionicActionSheet.show({
+                destructiveText: 'Delete',
+                cancelText: 'Cancel',
+                cancel: function() {
+
+                },
+                destructiveButtonClicked: function() {
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Delete',
+                        template: 'Are you sure to delete this comment?'
+                    });
+
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            comments.splice(index,1);
+                            PostComment.delete(comment);
+                            if(comments.length == 0){
+                                $scope.is_result_empty = true;
+                            }
+                            hideSheet();
+                        }
+                    });
+                }
+            });
+        }
+        else{
+            var hideSheet = $ionicActionSheet.show({
+                destructiveText: 'Report',
+                cancelText: 'Cancel',
+                cancel: function() {
+
+                },
+                destructiveButtonClicked: function() {
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: 'Report',
+                        template: 'Are you sure to report this comment?'
+                    });
+
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            PostComment.report(comment);
+                            hideSheet();
+                        }
+                    });
+                }
+            });
+        }
+    };
+})
+
+.controller('PostExploreCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state) {
+    $scope.postCard = PostCard;
+    $scope.business_object_list_config = {
+        type : 'post',
+        method : 'explore',
+        preload : true
+    };
+
+    BusinessObjectList.reset($scope);
+    BusinessObjectList.load($scope);
+
+    $scope.refresh = function(){
+        BusinessObjectList.reset($scope);
+        $scope.is_list_loading = false;
+        BusinessObjectList.load($scope);
+        $scope.$broadcast('scroll.refreshComplete');
+    }
+
+    $scope.load = function(){
+        $ionicScrollDelegate.scrollTop();
+        $scope.list = [];
+        $scope.is_list_loading = true;
+
+        BusinessObjectList.render($scope, $scope.preloaded_response);
+        BusinessObjectList.preload($scope);
+    }
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('tab-explore');
+        SlideHeader.viewEntered($scope);
     });
+
+    $scope.goPostSearch = function(){
+        $state.go('tab.search-explore');
+    }
 })
 
 .controller('PostExploreCtrl_20181126_deprecated', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
@@ -2269,7 +2472,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config) {
+.controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config, SlideHeader) {
     $scope.search_type_active = "tag";
     $scope.searchHolder = "Search hashtags";
     $scope.searchNoResultText = "No Results Found";
@@ -2292,6 +2495,7 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-search');
+        SlideHeader.viewEntered($scope);
     });
 
 
@@ -2441,7 +2645,57 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostSearchResultCtrl', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
+.controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams) {
+    $scope.search_type = "tag";
+    $scope.search_term = $stateParams.searchTerm;
+    if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'occasion')
+    {
+        $scope.search_type = "occasion";
+    }
+    $scope.postCard = PostCard;
+    $scope.business_object_list_config = {
+        type : 'post',
+        method : 'search',
+        preload : true
+    };
+
+    BusinessObjectList.reset($scope);
+    BusinessObjectList.load($scope);
+
+    $scope.refresh = function(){
+        BusinessObjectList.reset($scope);
+        $scope.is_list_loading = false;
+        BusinessObjectList.load($scope);
+        $scope.$broadcast('scroll.refreshComplete');
+    }
+
+    $scope.load = function(){
+        $ionicScrollDelegate.scrollTop();
+        $scope.list = [];
+        $scope.is_list_loading = true;
+
+        BusinessObjectList.render($scope, $scope.preloaded_response);
+        BusinessObjectList.preload($scope);
+    }
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-search-result');
+        SlideHeader.viewEntered($scope);
+    });
+
+    $scope.showSearchTerm = function(){
+        var termSign = "#";
+        if ($scope.search_type == "occasion")
+        {
+            termSign = '<i class="fa fa-map-marker" aria-hidden="true"></i> ';
+        }
+        if($stateParams.searchTerm){
+            return termSign+$stateParams.searchTerm.trim();
+        }
+    }
+})
+
+.controller('PostSearchResultCtrl_deprecated_20190205', function($scope, FetchPosts, $stateParams, $state, Focus, $rootScope, $timeout, $http, ComparePosts, Tutorial, NewPost, $ionicScrollDelegate, ScrollingDetector, UxAnalytics) {
     $scope.searchNoResultText = "No Results Found";
     $scope.searchType = "tag";
     if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'occasion')
@@ -2805,7 +3059,149 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, Tutorial, UxAnalytics, ImageUpload) {
+
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, Tutorial, UxAnalytics, ImageUpload, PostCard, BusinessObjectList, SlideHeader, $ionicScrollDelegate) {
+    var user = $rootScope.getCurrentUser();
+
+    var method = 'my_profile';
+    $scope.currentSlug = user.slug;
+    if($stateParams.accountSlug != ''){
+        method = 'others_profile';
+        $scope.currentSlug = $stateParams.accountSlug;
+    }
+
+    $scope.postCard = PostCard;
+    $scope.business_object_list_config = {
+        type : 'post',
+        method : method,
+        preload : true
+    };
+    var fetchAccount = function(){
+        FetchUsers.get($scope.currentSlug).then(function(account_info){
+            $scope.account_info = account_info;
+            $scope.accountImage = $rootScope.photoPath( account_info.profile_img_path, 's' );
+
+            if (user.id == $scope.account_info.id)
+            {
+                $scope.isMyAccount = true;
+                $rootScope.currentUser = $scope.account_info;
+            }
+        });
+    }
+
+    fetchAccount();
+    BusinessObjectList.reset($scope);
+    BusinessObjectList.load($scope);
+
+    $scope.refresh = function(){
+        fetchAccount();
+        BusinessObjectList.reset($scope);
+        $scope.is_list_loading = false;
+        BusinessObjectList.load($scope);
+        $scope.$broadcast('scroll.refreshComplete');
+    }
+
+    $scope.load = function(){
+        $ionicScrollDelegate.scrollTop();
+        $scope.list = [];
+        $scope.is_list_loading = true;
+
+        BusinessObjectList.render($scope, $scope.preloaded_response);
+        BusinessObjectList.preload($scope);
+    }
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('tab-account');
+        SlideHeader.viewEntered($scope);
+    });
+
+    $scope.changeProfilePicture = function(){
+        if ($scope.notMe())
+            return;
+        // Show the action sheet
+        var navCameraSheet = $ionicActionSheet.show({
+            buttons: [
+                { text: 'Take a Picture' },
+                { text: 'Choose from Gallery' }
+            ],
+            titleText: 'Share Your Look',
+            cancelText: 'Cancel',
+            cancel: function() {
+                // code for cancel if necessary.
+            },
+            buttonClicked: function(index) {
+                switch (index){
+                    case 0 :
+                        var options = {
+                            quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
+                            correctOrientation: true,
+                            destinationType: Camera.DestinationType.FILE_URL,
+                            sourceType: Camera.PictureSourceType.CAMERA
+                        };
+                        $cordovaCamera.getPicture(options).then(
+                            function(imageData) {
+                                localStorage.setItem('photo', imageData);
+                                $ionicLoading.show({template: 'Loading Photo', duration:500});
+                                $scope.updateProfilePicture(imageData);
+                            },
+                            function(err){
+                            }
+                        )
+                        return true;
+                    case 1 :
+                        var options = {
+                            quality: 100,
+                            targetWidth: 600,
+                            targetHeight: 600,
+                            correctOrientation: true,
+                            destinationType: Camera.DestinationType.FILE_URI,
+                            sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+                        };
+
+                        $cordovaCamera.getPicture(options).then(
+                            function(imageURI) {
+                                window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
+                                    localStorage.setItem('photo', fileEntry.nativeURL);
+                                    $ionicLoading.show({template: 'Loading Photo', duration:500});
+                                    $scope.updateProfilePicture(fileEntry.nativeURL);
+                                });
+                            },
+                            function(err){
+                            }
+                        )
+                        //Handle Move Button
+                        return true;
+                }
+            }
+        });
+    }
+
+    $scope.updateProfilePicture = function(picData) {
+        $ionicLoading.show({template: 'Uploading Photo...', duration:500});
+        var fileURL = picData;
+        var params = {'user_id': user.id };
+
+        ImageUpload.send(fileURL, encodeURI($rootScope.baseURL + '/api/user/'+user.slug+'/editProfilePicture'), success, fail, params);
+
+        function success(result) {
+            $ionicLoading.show({template: 'Upload Success', duration:500});
+            $scope.accountImage = $rootScope.photoPath( result.profile_img_path, 's' );
+        }
+
+        // Transfer failed
+        function fail(error) {
+            $ionicLoading.show({template: 'Upload Fail', duration:500});
+        }
+    }
+
+    $scope.notMe = function(like) {
+        return !$scope.isMyAccount;
+    };
+
+})
+.controller('AccountCtrl_deprecated_20190204', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, ComparePosts, Tutorial, UxAnalytics, ImageUpload) {
     var user = $rootScope.getCurrentUser();
     $scope.page = 1;
     $scope.isMyAccount = false;

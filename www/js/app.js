@@ -35,10 +35,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
-    //var baseURL = 'http://app.snaplook.today';
+    var baseURL = 'http://app.snaplook.today';
     //var baseURL = 'http://localhost:8000';
     //var baseURL = 'http://192.168.56.1:8000';
-    var baseURL = 'http://localhost:8888';
+    //var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -241,11 +241,38 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-comments-home', {
-       url: '/post/:postId/comments/home',
+       url: '/post/:post_id/comments/home',
        views: {
            'tab-home': {
                templateUrl: 'templates/post-comments.html',
-               controller: 'PostDetailCtrl'
+               controller: 'PostCommentCtrl'
+           }
+       }
+    })
+    .state('tab.post-comments-explore', {
+       url: '/post/:post_id/comments/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/post-comments.html',
+               controller: 'PostCommentCtrl'
+           }
+       }
+    })
+    .state('tab.post-comments-notification', {
+       url: '/post/:post_id/comments/notification',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/post-comments.html',
+               controller: 'PostCommentCtrl'
+           }
+       }
+    })
+    .state('tab.post-comments-account', {
+       url: '/post/:post_id/comments/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/post-comments.html',
+               controller: 'PostCommentCtrl'
            }
        }
     })
@@ -724,4 +751,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/root');
 
+});
+moment.updateLocale('en', {
+    relativeTime : {
+        future: "in %s",
+        past:   "%s",
+        s:  "1m",
+        m:  "1m",
+        mm: "%dm",
+        h:  "1h",
+        hh: "%dh",
+        d:  "1d",
+        dd: "%dd",
+        M:  "1m",
+        MM: "%dm",
+        y:  "1y",
+        yy: "%dy"
+    }
 });

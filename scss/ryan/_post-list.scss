@@ -20,11 +20,11 @@ body.header-slide-away {
     visibility:hidden;
 }
 
-.post-set-list{
-    .post-set-card{
+.post-card-list{
+    .post-card{
         padding : 0;
 
-        .post-set-header{
+        .post-card-header{
             padding : 4vw;
             font-size: 14px;
             background-color: #fff;
@@ -44,6 +44,10 @@ body.header-slide-away {
                     font-size: 12px;
                     color: #999;
                 }
+            }
+            .more-option{
+                float: right;
+                font-size: 6vw;
             }
         }
         .caption{
@@ -120,8 +124,9 @@ body.header-slide-away {
             border: 0;
             border-top: 1px solid #f1f1f1;
         }
-        .post-set-footer{
+        .post-card-footer{
             background-color: #fff;
+            padding: 0 4vw;
 
             .option{
                 width: 50%;
@@ -134,11 +139,17 @@ body.header-slide-away {
                     color: #777;
                 }
             }
+            .option.my-post{
+                width: 33%;
+            }
         }
         .divider{
             height: 20px;
             background-color: #e7e7e7;
         }
+    }
+    .load-more-snaplooks{
+        padding: 0 4vw;
     }
 }
 .vote-result {

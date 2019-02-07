@@ -1,24 +1,34 @@
-<ion-view class="post-set-list" id="tab-explore" view-title="EXPLORE">
+<ion-view class="post-card-list" id="tab-explore" view-title="EXPLORE">
     <ion-content scroll-watch ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
-        <div class="bar bar-header item-input-inset" ng-click="goPostSearch();">
+        <div class="bar bar-header item-input-inset" ng-click="goPostSearch()">
             <label class="item-input-wrapper">
                 <i class="icon ion-ios-search placeholder-icon"></i>
                 <input type="search" placeholder="Search">
             </label>
         </div>
+        <div class="loading-spinner" data-loading ng-if="is_list_loading">
+            <ion-spinner></ion-spinner>
+        </div>
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="refresh()">
+        </ion-refresher>
         <ion-list>
             <div>
-                <ion-item ng-repeat="post in posts track by $index" class="post-set-card">
+                <ion-item ng-repeat="post in list track by $index" class="post-card">
                     <div class="entity-id-{{post.id}}" ng-class="{'hide-post': post.hide}">
-                        <div class="post-set-header clearfix">
+                        <div class="post-card-header clearfix">
                             <div class="profile">
                                 <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
                                 <div class="profile-text">
                                     <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}}</div>
                                     <div class="time-ago" ng-click="goAccount(post.user.slug)">{{post.display_time}}</div>
                                 </div>
+                            </div>
+                            <div class="more-option">
+                                <span class="icon ion-ios-more" ng-click="postCard.moreOption(list, $index)"></span>
                             </div>
                         </div>
                         <div class="caption" ng-bind-html="linkHashTagAndOccasion(post) | unsafe"></div>
@@ -40,12 +50,12 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="post-set-footer clearfix">
+                        <div class="post-card-footer clearfix">
                             <div class="option comment">
-                                <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="goPostComment(post.id)"> Comment</button>
+                                <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="goPostComment(post.id)">&nbsp;&nbsp;Comment</button>
                             </div>
                             <div class="option result">
-                                <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post.id)"> Result</button>
+                                <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post.id)">&nbsp;&nbsp;Result</button>
                             </div>
                         </div>
                     </div>
@@ -53,5 +63,8 @@
                 </ion-item>
             </div>
         </ion-list>
+        <div class="load-more-snaplooks" ng-show="list.length > 0 && ! is_pagination_done">
+            <button class="button button-block button-positive" ng-click="load()">Load More SnapLooks</button>
+        </div>
     </ion-content>
 </ion-view>
