@@ -760,12 +760,49 @@
 }
 
 /* line 2, ../../scss/tw/_post-edit.scss */
+#edit-post .item {
+  padding: 0;
+  border-width: 0px;
+}
+/* line 7, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .scroll-bar-h {
+  display: none;
+}
+/* line 10, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .post {
+  width: 40vw;
+  margin-right: 2vw;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+  border-radius: 1vw;
+  background-color: #fff;
+}
+/* line 20, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .post .post-img-wrapper {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 1vw;
+}
+/* line 26, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .post .post-img-wrapper .post-img {
+  display: block;
+  width: 100%;
+  padding-top: 120%;
+}
+/* line 33, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .post:first-child {
+  margin-left: 10px;
+}
+/* line 38, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image {
   width: 50%;
   padding: 10px auto;
   margin: 12px;
 }
-/* line 6, ../../scss/tw/_post-edit.scss */
+/* line 42, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image img {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -773,7 +810,7 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 12, ../../scss/tw/_post-edit.scss */
+/* line 48, ../../scss/tw/_post-edit.scss */
 #edit-post .post-caption textarea {
   width: 100%;
   border: 1px solid #ddd;
@@ -784,18 +821,18 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 20, ../../scss/tw/_post-edit.scss */
+/* line 56, ../../scss/tw/_post-edit.scss */
 #edit-post img {
   max-height: 300px;
   max-width: 100%;
 }
-/* line 25, ../../scss/tw/_post-edit.scss */
+/* line 61, ../../scss/tw/_post-edit.scss */
 #edit-post .item-image img:first-child,
 #edit-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-/* line 31, ../../scss/tw/_post-edit.scss */
+/* line 67, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image .item {
   padding: 0px;
 }

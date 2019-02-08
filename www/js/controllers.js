@@ -1248,11 +1248,12 @@ angular.module('starter.controllers', [])
         return $scope.visibility == 'permanent';
     }
 })
-.controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading, UxAnalytics) {
+.controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading, UxAnalytics, SlideHeader) {
     $scope.post = $stateParams.post;
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-edit');
+        SlideHeader.viewEntered($scope);
     });
 
     $scope.updatePost = function(post){

@@ -341,7 +341,7 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http){
+.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state){
     return {
         commentCount: function(post){
             var comment_count = 0;
@@ -366,16 +366,29 @@ angular.module('starter.services', [])
         moreOption: function(list, index, is_mine = false){
             var action = 'report';
             var action_pascal_case = 'Report';
+            var buttons = [];
             if(is_mine){
                 action = 'delete';
                 action_pascal_case = 'Delete';
+                buttons = [
+                    { text: 'Edit' }
+                ];
             }
             $ionicActionSheet.show({
+                buttons: buttons,
                 destructiveText: action_pascal_case,
                 cancelText: 'Cancel',
                 cancel: function() {
 
-                },destructiveButtonClicked: function() {
+                },
+                buttonClicked: function(button_index) {
+                    switch (button_index){
+                        case 0:
+                            $state.go('tab.post-edit',{post: list[index]});
+                            return true;
+                    }
+                },
+                destructiveButtonClicked: function() {
                     var confirmPopup = $ionicPopup.confirm({
                         title: action_pascal_case,
                         template: 'Are you sure to '+action+' this post?'
