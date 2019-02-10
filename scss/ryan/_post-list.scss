@@ -58,7 +58,7 @@ body.header-slide-away {
             .scroll-bar-h{
                 display: none;
             }
-            .post{
+            .look{
                 width: 69vw;
                 margin-right: 4vw;
                 margin-top: 1vw;
@@ -68,18 +68,21 @@ body.header-slide-away {
                 border-radius: 1vw;
                 background-color: #fff;
 
-                .post-img-wrapper{
+                .look-img-wrapper{
                     background-position: 50% 50%;
                     background-repeat: no-repeat;
                     background-size: cover;
                     border-top-left-radius: 1vw;
                     border-top-right-radius: 1vw;
 
-                    .post-img {
+                    .look-img {
                         display: block;
                         width: 100%;
                         padding-top: 120%;
                     }
+                }
+                .look-img-wrapper.my-look{
+                    border-radius: 1vw;
                 }
                 .vote-toggle{
                     text-align: center;
@@ -104,7 +107,7 @@ body.header-slide-away {
                     }
                 }
             }
-            .post:first-child{
+            .look:first-child{
                 margin-left: 4vw;
             }
         }

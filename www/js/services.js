@@ -341,7 +341,7 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state){
+.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state, UxAnalytics, PostShare){
     return {
         commentCount: function(post){
             var comment_count = 0;
@@ -409,6 +409,32 @@ angular.module('starter.services', [])
                     });
                     return true;
                 }
+            });
+        },
+        share: function(post) {
+            UxAnalytics.startScreen('share-post');
+            $ionicLoading.show();
+            PostShare.getHash(post.id).then(function(hash){
+                if(hash){
+                    var options = {
+                        message: 'which looks better?',
+                        subject: 'Which Looks Better?',
+                        url: $rootScope.baseURL + '/s/' + hash
+                    }
+                    var onSuccess = function(result) {
+                        console.log($rootScope.baseURL + '/s/' + hash);
+                        console.log("Shared to app: " + result.app);
+                        PostShare.update(hash, result.app);
+                    }
+                    var onError = function(msg) {
+                        console.log("Sharing failed with message: " + msg);
+                    }
+                    window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+                }
+                else{
+                    $rootScope.popupMessage('Oops', 'You cannot send other\'s look');
+                }
+                $ionicLoading.hide();
             });
         },
         _countSummaryText: function(count, domain){
@@ -565,6 +591,31 @@ angular.module('starter.services', [])
                 last_set_ids = post.post_id_csv;
                 last_align_class = post.align_class;
             }
+        }
+    };
+})
+.factory('PostShare', function($http, $rootScope) {
+    return {
+        getHash: function(post_id) {
+            return $http.get($rootScope.baseURL+"/api/post/"+post_id+'/share').then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        update:function(id, channel) {
+            $http({
+                method : 'POST',
+                url : $rootScope.baseURL+"/api/share/"+id+'/edit',
+                data : {channel:channel}
+            })
+            .success(function(response){
+                //
+            })
+            .error(function(error){
+                // this is not user triggered
+            });
         }
     };
 })
