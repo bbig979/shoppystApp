@@ -24,19 +24,76 @@
             </ul>
             <div class="clearfix"></div>
             <div class="padding visibility">
+                <div class="title">
+                    Visibility
+                </div>
                 <div class="button-bar">
-                    <a class="button button-small" ng-class="{'button-positive': isActive('friend')}" ng-click="setActive('friend')">Friends <i class="icon ion-ios-timer-outline"></i></a>
-                    <a class="button button-small" ng-class="{'button-positive': isActive('public')}" ng-click="setActive('public')">Public <i class="icon ion-ios-timer-outline"></i></a>
+                    <a class="button button-small" ng-class="{'button-positive': isActive('friend')}" ng-click="setActive('friend')">Friends</a>
+                    <a class="button button-small" ng-class="{'button-positive': isActive('public')}" ng-click="setActive('public')">Public</a>
                     <a class="button button-small" ng-class="{'button-positive': isActive('permanent')}" ng-click="setActive('permanent')">Permanent</a>
                 </div>
-                <div class="selected-visibility" ng-show="isVisibleFriend()">
-                    * Visible for a day to friends whom you send this to
+                <div class="selected-visibility friend" ng-show="isVisibleFriend()">
+                    <div class="compare-table">
+                        <div class="compare-row">
+                            <span class="label">Visible to Other Users</span>
+                            <span class="mark"><i class="icon ion-close-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Disappear After a Day</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Share to Friends</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <hr>
+                    <div class="recommendation">
+                        Recommended When You Want to Ask Friends Only
+                    </div>
                 </div>
-                <div class="selected-visibility" ng-show="isVisiblePublic()">
-                    * Visible for a day to friends and to public in explore tab
+                <div class="selected-visibility public" ng-show="isVisiblePublic()">
+                    <div class="compare-table">
+                        <div class="compare-row">
+                            <span class="label">Visible to Other Users</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Disappear After a Day</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Share to Friends</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <hr>
+                    <div class="recommendation">
+                        Recommended When You Want More Accurate Result
+                    </div>
                 </div>
-                <div class="selected-visibility" ng-show="isVisiblePermanent()">
-                    * Visible permanently to friends and to public in explore tab
+                <div class="selected-visibility permanent" ng-show="isVisiblePermanent()">
+                    <div class="compare-table">
+                        <div class="compare-row">
+                            <span class="label">Visible to Other Users</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Disappear After a Day</span>
+                            <span class="mark"><i class="icon ion-close-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Share to Friends</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <hr>
+                    <div class="recommendation">
+                        Recommended When You Want to Inspire Others
+                    </div>
                 </div>
             </div>
             <div class="post-caption padding" ng-show="hasContent()">
@@ -56,10 +113,10 @@
                     <input type="text" placeholder="Please fill out occasion" class="form-control" ng-model="other">
                 </label>
             </div>
-            <div class="padding">
+            <div class="button-padding padding-top">
                 <button type="submit" class="button button-block button-positive" ng-disabled="submitted" ng-show="hasContent()">Create</button>
             </div>
-            <div class="padding">
+            <div class="button-padding">
                 <button type="button" class="button button-block button-stable" ng-click="reset()" ng-disabled="submitted" ng-show="hasContent()">Reset</button>
             </div>
         </form>

@@ -21,7 +21,11 @@ body.header-slide-away {
 }
 
 .post-card-list{
+    .post-card:nth-child(1){
+        border-top: 1px solid #f1f1f1;
+    }
     .post-card{
+        border-top: 1px solid #e6e6e6;
         padding : 0;
 
         .post-card-header{
@@ -148,7 +152,8 @@ body.header-slide-away {
         }
         .divider{
             height: 20px;
-            background-color: #e7e7e7;
+            background-color: #f7f7f7;
+            border-top: 1px solid #e6e6e6;
         }
     }
     .load-more-snaplooks{
