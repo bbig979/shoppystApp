@@ -572,9 +572,7 @@ angular.module('starter.services', [])
             for(var i=0; i<posts.length; i++){
                 var post = posts[i];
                 post.display_time = PostTimer.timeLeft(post.created_at, post.visibility);
-                if(post.visibility == 'permanent'){
-                    post.display_time += ' · Permanent';
-                }
+                post.display_time += ' · ' + post.visibility.charAt(0).toUpperCase() + post.visibility.slice(1);
                 post.display_icon = PostTimer.icon(post.created_at);
             }
         },
