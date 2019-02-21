@@ -6,12 +6,11 @@
                 pulling-text="Pull to refresh..."
                 on-refresh="doRefresh()">
         </ion-refresher>
-        <div class="compare-toggle">
-            <div class="label">From</div>
-            <a ng-class="{ active: gender_active === 'friends' }" ng-click="setGender('friends')" class="friends">Friends</a>
+        <div class="compare-toggle gender">
+            <div class="label">Gender</div>
             <a ng-class="{ active: gender_active === 'female' }" ng-click="setGender('female')" class="female">Female</a>
             <a ng-class="{ active: gender_active === 'male' }" ng-click="setGender('male')" class="male">Male</a>
-            <a ng-class="{ active: gender_active === 'all' }" ng-click="setGender('all')" class="everyone">Everyone</a>
+            <a ng-class="{ active: gender_active === 'all' }" ng-click="setGender('all')" class="everyone">All</a>
         </div>
         <div class="compare-toggle age" ng-hide="gender_active == 'friends'">
             <div class="label">Age</div>

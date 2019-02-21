@@ -392,25 +392,33 @@
   margin-top: 6px;
 }
 /* line 22, ../../scss/tw/_compare.scss */
+#compare .compare-toggle.gender a {
+  padding: 10px 5%;
+}
+/* line 25, ../../scss/tw/_compare.scss */
+#compare .compare-toggle.gender .active {
+  padding: 4px 5%;
+}
+/* line 28, ../../scss/tw/_compare.scss */
 #compare .compare-toggle.occasion {
   margin-right: 5px;
 }
-/* line 25, ../../scss/tw/_compare.scss */
+/* line 31, ../../scss/tw/_compare.scss */
 #compare .compare-toggle:after {
   content: "";
   display: table;
   clear: both;
 }
-/* line 30, ../../scss/tw/_compare.scss */
+/* line 36, ../../scss/tw/_compare.scss */
 #compare .post.item {
   width: 50%;
 }
-/* line 33, ../../scss/tw/_compare.scss */
+/* line 39, ../../scss/tw/_compare.scss */
 #compare .item {
   width: 100%;
   padding: 0;
 }
-/* line 34, ../../scss/tw/_compare.scss */
+/* line 40, ../../scss/tw/_compare.scss */
 #compare .item .winner {
   position: absolute;
   left: 2vw;
@@ -424,17 +432,17 @@
   background: #ff245d;
   padding-left: 3vw;
 }
-/* line 47, ../../scss/tw/_compare.scss */
+/* line 53, ../../scss/tw/_compare.scss */
 #compare .item .desc_row {
   width: 100%;
   text-align: center;
   padding-bottom: 5px;
 }
-/* line 55, ../../scss/tw/_compare.scss */
+/* line 61, ../../scss/tw/_compare.scss */
 #compare .sort {
   margin-bottom: 0;
 }
-/* line 58, ../../scss/tw/_compare.scss */
+/* line 64, ../../scss/tw/_compare.scss */
 #compare .expired-message {
   background-color: #fff;
   padding: 70px 0 70px 0;
