@@ -574,6 +574,10 @@ angular.module('starter.services', [])
                 post.display_time = PostTimer.timeLeft(post.created_at, post.visibility);
                 post.display_time += ' · ' + post.visibility.charAt(0).toUpperCase() + post.visibility.slice(1);
                 post.display_icon = PostTimer.icon(post.created_at);
+                post.display_share = true;
+                if(post.visibility != 'permanent' && post.display_time.indexOf('Left') == -1){
+                    post.display_share = false;
+                }
             }
         },
         addAlignClass: function(posts, last_align_class, last_set_ids){

@@ -58,22 +58,22 @@
                             </ion-scroll>
                         </div>
                         <div class="post-summary clearfix">
-                            <div class="totals" ng-hide="post.visibility == 'friend' && post.post_shares.length == 0">
+                            <div class="totals" ng-hide="post.visibility == 'friend' && post.post_shares.length == 0  && post.display_share">
                                 {{ post.photos.length }} Looks{{ postCard.commentCount(post) }}{{ postCard.voteCount(post) }}
                             </div>
-                            <div class="share-warning" ng-show="post.visibility == 'friend' && post.post_shares.length == 0">
+                            <div class="share-warning" ng-show="post.visibility == 'friend' && post.post_shares.length == 0 && post.display_share">
                                 <i class="icon ion-alert-circled"></i> This is <b>NOT</b> visible to anyone until you share
                             </div>
                         </div>
                         <hr>
                         <div class="post-card-footer clearfix">
-                            <div class="option comment" ng-class="{'my-post': isMyAccount}">
+                            <div class="option comment" ng-class="{'my-post': isMyAccount && post.display_share}">
                                 <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="goPostComment(post.id)">&nbsp;&nbsp;Comment</button>
                             </div>
-                            <div class="option result" ng-class="{'my-post': isMyAccount}">
+                            <div class="option result" ng-class="{'my-post': isMyAccount && post.display_share}">
                                 <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post.id)">&nbsp;&nbsp;Result</button>
                             </div>
-                            <div class="option result"  ng-class="{'my-post': isMyAccount}" ng-show="isMyAccount">
+                            <div class="option result"  ng-class="{'my-post': isMyAccount && post.display_share}" ng-show="isMyAccount && post.display_share">
                                 <button class="button button-clear button-dark icon ion-ios-redo-outline" ng-click="postCard.share(post)">&nbsp;&nbsp;Share</button>
                             </div>
                         </div>
