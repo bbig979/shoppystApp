@@ -127,6 +127,35 @@ body.header-slide-away {
                 padding: 4vw;
             }
         }
+        .share-warning{
+            margin: 2vw 4vw 4vw 4vw;
+            padding: 4vw;
+            background-color: #FEEFB3;
+            color: #9F6000;
+            border-radius: 1vw;
+            font-size: 14px;
+            position: relative;
+            text-align: center;
+
+            i{
+                vertical-align: sub;
+                font-size: 20px;
+            }
+        }
+        .share-warning:after{
+            top: 100%;
+            right: 15%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+            border-color: rgba(136, 183, 213, 0);
+            border-top-color: #FEEFB3;
+            border-width: 10px;
+            margin-left: -10px;
+        }
         hr{
             border: 0;
             border-top: 1px solid #f1f1f1;
