@@ -363,7 +363,7 @@ angular.module('starter.services', [])
         voteToggle: function(look){
             Vote.toggle(look);
         },
-        moreOption: function(list, index, is_mine = false){
+        moreOption: function(list, index, is_mine = false, account_info = null){
             var action = 'report';
             var action_pascal_case = 'Report';
             var buttons = [];
@@ -400,6 +400,9 @@ angular.module('starter.services', [])
                             $http.post($rootScope.baseURL+'/api/post/'+list[index].id+'/'+action).success(function(){
                                 $ionicLoading.hide();
                                 list.splice(index,1);
+                                if(is_mine){
+                                    account_info.posts_count--;
+                                }
                                 return true;
                             })
                             .error(function(data, status){
