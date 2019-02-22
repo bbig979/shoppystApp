@@ -1022,7 +1022,7 @@ angular.module('starter.controllers', [])
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
 .controller('PostCreateCtrl', function(LoyaltyPoints, $scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate, ImageUpload, SlideHeader) {
-    $scope.visibility = 'friend';
+    $scope.visibility = 'public';
     $scope.submitted = false;
     $location.replace('tab.camera');
     $scope.data = { "ImageURI" :  "Select Image" };
@@ -1126,7 +1126,7 @@ angular.module('starter.controllers', [])
                 var lookIds = lookIdArray.join(',');
                 $http.post($rootScope.baseURL+'/api/post/create/with_looks/'+lookIds, post_data);
                 $scope.submitted = false;
-                $scope.visibility = 'friend';
+                $scope.visibility = 'public';
                 share_post_scope.occasion = undefined;
                 share_post_scope.captions = undefined;
                 uploadTryCount = 0;
@@ -1134,8 +1134,7 @@ angular.module('starter.controllers', [])
                 lookIdArray = [];
                 $timeout(function(){
                     CameraPictues.reset();
-                    localStorage.setItem('timestamp_post_shared', new Date().getTime());
-                    $state.go('tab.post-compare-temp', {postIds: postIds, isThisAfterShare: true, shouldShowSend: true});
+                    $state.go('tab.account-account', {refresh : new Date().getTime()});
                 }, 500);
             }
         }
@@ -2433,6 +2432,15 @@ angular.module('starter.controllers', [])
     fetchAccount();
     BusinessObjectList.reset($scope);
     BusinessObjectList.load($scope);
+
+    if($stateParams.refresh){
+        var repeatUntillScrolled = setInterval(function(){
+            $ionicScrollDelegate.scrollTo(0, 340, true);
+            if($ionicScrollDelegate.getScrollPosition().top == 340){
+                clearInterval(repeatUntillScrolled);
+            }
+        }, 500);
+    }
 
     $scope.refresh = function(){
         fetchAccount();
