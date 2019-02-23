@@ -116,11 +116,11 @@
     </script>
 
   </head>
-  <body ng-app="starter">
+  <body ng-app="starter" ng-class="{'header-slide-away': slideHeader.getShouldHide()}">
     <!--
       The nav bar that will be updated as we navigate between views.
     -->
-    <ion-nav-bar class="bar-stable">
+    <ion-nav-bar class="bar-stable slide-header">
         <ion-nav-back-button class="button-clear">
             <i class="button button-clear icon ion-arrow-left-c"></i>
         </ion-nav-back-button>
@@ -128,7 +128,7 @@
             <span class="test-scroll" ng-show="ifTestAccount()" ng-click="scroll()">s</span>
             <span class="test-picture" ng-show="ifTestAccount()" ng-click="picture()">p</span>
             <i class="button button-clear icon ion-ios-more" ng-show="ifOthersProfile()" ng-click="openOthersProfileMenu()"></i>
-            <i class="button button-clear icon ion-ios-paperplane" ng-show="ifMyPostCompare()" ng-click="shareCompare()"></i>
+            <i class="button button-clear icon ion-ios-paperplane" ng-show="ifShowSend()" ng-click="shareCompare()"></i>
         </ion-nav-buttons>
     </ion-nav-bar>
     <!--

@@ -25,6 +25,93 @@ angular.module('starter.services', [])
         }
     };
 }])
+.directive('scrollWatch', function(SlideHeader) {
+    return function(scope, elem, attr) {
+        var cushion_for_subtle_scroll_up = 150;
+        var start_position = 100;
+        var this_scroll_scope_id = scope.$parent.$id;
+
+        SlideHeader.setCurrentScrollScopeId(this_scroll_scope_id);
+        SlideHeader.setShouldHide(this_scroll_scope_id, false);
+        SlideHeader.setPreviousScrollPosition(this_scroll_scope_id, 0);
+
+        elem.bind('scroll', function(e) {
+            if(e.originalEvent.detail === undefined){
+                return;
+            }
+            var current_scroll_position = e.originalEvent.detail.scrollTop;
+            var previous_scroll_position = SlideHeader.getPreviousScrollPosition(this_scroll_scope_id);
+
+            if (previous_scroll_position == current_scroll_position) {
+                return;
+            }
+            if (current_scroll_position < start_position) {
+                SlideHeader.setShouldHide(this_scroll_scope_id, false);
+                scope.$apply();
+                return;
+            }
+
+            if (previous_scroll_position > current_scroll_position) {
+                if(previous_scroll_position - current_scroll_position < cushion_for_subtle_scroll_up){
+                    return;
+                }
+                SlideHeader.setShouldHide(this_scroll_scope_id, false);
+            }
+            else{
+                SlideHeader.setShouldHide(this_scroll_scope_id, true);
+            }
+
+            SlideHeader.setPreviousScrollPosition(this_scroll_scope_id, current_scroll_position)
+            scope.$apply();
+        });
+    };
+})
+.factory('SlideHeader', function(){
+    var current_scroll_scope_id;
+    var should_hide_map = [];
+    var previous_scroll_position_map = [];
+    return {
+        viewEntered: function(scope){
+            if(should_hide_map[scope.$id] !== undefined){
+                this._enable(scope);
+            }
+            else{
+                this._disable();
+            }
+            this.setShouldHide(current_scroll_scope_id, false);
+        },
+        _enable: function(scope){
+            if(scope.scroll_scope_id){
+                current_scroll_scope_id = scope.scroll_scope_id;
+            }
+            else{
+                scope.scroll_scope_id = current_scroll_scope_id;
+            }
+
+        },
+        _disable: function(){
+            current_scroll_scope_id = 0;
+        },
+        getCurrentScrollScopeId: function(scroll_scope_id){
+            return current_scroll_scope_id;
+        },
+        setCurrentScrollScopeId: function(scroll_scope_id){
+            current_scroll_scope_id = scroll_scope_id;
+        },
+        getShouldHide: function(){
+            return should_hide_map[current_scroll_scope_id];
+        },
+        setShouldHide: function(scope_id, value){
+            should_hide_map[scope_id] = value;
+        },
+        getPreviousScrollPosition: function(scope_id){
+            return previous_scroll_position_map[scope_id];
+        },
+        setPreviousScrollPosition: function(scope_id, value){
+            previous_scroll_position_map[scope_id] = value;
+        }
+    }
+})
 .factory('Config', function($q, $http, $rootScope){
     var data = {};
     return {
@@ -85,14 +172,320 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchPosts', function($http, $rootScope, PostTimer) {
+.factory('FetchLook', function($http, $rootScope, Vote){
+    return {
+        getList: function(postID){
+            return $http.get($rootScope.baseURL+"/api/post/"+postID+"/vote").then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+    };
+})
+.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts){
+    return {
+        reset: function($scope){
+            var config = $scope.business_object_list_config;
+
+            $scope.scope_start_timestamp = Math.floor(Date.now() / 1000);
+            $scope.is_pagination_done = false;
+            $scope.page = 1;
+            $scope.list = [];
+            $scope.preloaded_response = [];
+            $scope.is_list_loading = true;
+            $scope.is_result_empty = false;
+
+            if(config.callback && typeof config.callback === "function") {
+                config.callback();
+            }
+        },
+        _fetch: function($scope){
+            var config = $scope.business_object_list_config;
+
+            if('comment' == config.type){
+                return PostComment[config.method]($scope.post_id, $scope.scope_start_timestamp, $scope.page);
+            }
+            else if('post' == config.type){
+                return FetchPosts.index(this._buildRequestObject($scope));
+            }
+        },
+        _buildRequestObject: function($scope){
+            var config = $scope.business_object_list_config;
+
+            return {
+                type : config.type,
+                method : config.method,
+                page : $scope.page,
+                scope_start_timestamp : $scope.scope_start_timestamp,
+                profile_user_slug : $scope.profile_user_slug,
+                search_type : $scope.search_type,
+                search_term : $scope.search_term,
+            };
+        },
+        preload: function($scope){
+            if(! $scope.is_pagination_done){
+                var this_factory = this;
+
+                this_factory._fetch($scope).then(function(response){
+                    $scope.preloaded_response = response;
+                    var image_array = this_factory._getImageArray(response.data);
+                    preloader.preloadImages(image_array);
+                });
+            }
+        },
+        load: function($scope){
+            var this_factory = this;
+            var config = $scope.business_object_list_config;
+
+            this_factory._fetch($scope).then(function(response){
+                this_factory.render($scope, response);
+                if(config.preload){
+                    this_factory.preload($scope, response);
+                }
+            });
+        },
+        render: function($scope, response){
+            if($scope.page == 1){
+                if(response.data.length == 0){
+                    $scope.is_result_empty = true;
+                }
+            }
+            else{
+                $timeout(function() {
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                });
+            }
+
+            if(!response.next_page_url){
+                $scope.is_pagination_done = true;
+            }
+            $scope.list = $scope.list.concat(response.data);
+            $scope.page++;
+            $scope.is_list_loading = false;
+        },
+        _getImageArray: function(data){
+            var image_array = [];
+            for(var i=0; i<data.length; i++){
+                image_array.push( $rootScope.photoPath( data[i].user.profile_img_path, 's' ));
+                for(var j=0; j<data[i].photos.length; j++){
+                    image_array.push( $rootScope.photoPath( data[i].photos[j].img_path, 'm' ));
+                }
+            }
+            return image_array;
+        }
+    }
+})
+.factory('PostComment', function($http, $rootScope, $q){
+    return {
+        fetch: function(post_id, scope_start_timestamp, page){
+            return $http.get($rootScope.baseURL+"/api/post/"+post_id+"/comment?scope_start_timestamp="+scope_start_timestamp+"&page="+page).then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        delete: function(comment){
+            $http.post($rootScope.baseURL+'/api/comment/'+comment.id+'/delete').success(function(){
+                // do nothing
+            })
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
+            });
+        },
+        report: function(comment){
+            $http.post($rootScope.baseURL+'/api/comment/'+comment.id+'/report', {
+                content: comment.content
+            })
+            .success(function(){
+                // do nothing
+            })
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
+            });
+        },
+        submit: function(message, post_id, parent_id = 0){
+            var deferred = $q.defer();
+            var url = $rootScope.baseURL+'/api/post/'+post_id+'/comment/create';
+            if(parent_id){
+                url = $rootScope.baseURL+'/api/post/'+post_id+'/comment/'+parent_id+'/reply/create';
+            }
+
+            $http({
+                method : 'POST',
+                url : url,
+                data : {comment:message}
+            })
+            .success(function(data, status){
+                deferred.resolve(data);
+            })
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
+                deferred.reject();
+            });
+            return deferred.promise;
+        },
+        insert: function(new_comment, comments, parent_id){
+            if(parent_id){
+                for (var i=0; i<comments.length; i++) {
+                    if(comments[i].id == parent_id){
+                        comments[i].replies.unshift(new_comment);
+                    }
+                }
+            }
+            else{
+                comments.unshift(new_comment);
+            }
+        }
+    };
+})
+.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state, UxAnalytics, PostShare){
+    return {
+        commentCount: function(post){
+            var comment_count = 0;
+            if(post.comment_info && post.comment_info.count){
+                comment_count = post.comment_info.count;
+            }
+            return this._countSummaryText(comment_count, 'Comment');
+        },
+        voteCount: function(post){
+            var vote_count = 0;
+            for(var i=0; i< post.photos.length; i++){
+                var look = post.photos[i];
+                if(look.vote_info && look.vote_info.count){
+                    vote_count += look.vote_info.count;
+                }
+            }
+            return this._countSummaryText(vote_count, 'Vote');
+        },
+        voteToggle: function(look){
+            Vote.toggle(look);
+        },
+        moreOption: function(list, index, is_mine = false, account_info = null){
+            var action = 'report';
+            var action_pascal_case = 'Report';
+            var buttons = [];
+            if(is_mine){
+                action = 'delete';
+                action_pascal_case = 'Delete';
+                buttons = [
+                    { text: 'Edit' }
+                ];
+            }
+            $ionicActionSheet.show({
+                buttons: buttons,
+                destructiveText: action_pascal_case,
+                cancelText: 'Cancel',
+                cancel: function() {
+
+                },
+                buttonClicked: function(button_index) {
+                    switch (button_index){
+                        case 0:
+                            $state.go('tab.post-edit',{post: list[index]});
+                            return true;
+                    }
+                },
+                destructiveButtonClicked: function() {
+                    var confirmPopup = $ionicPopup.confirm({
+                        title: action_pascal_case,
+                        template: 'Are you sure to '+action+' this post?'
+                    });
+
+                    confirmPopup.then(function(res) {
+                        if(res) {
+                            $ionicLoading.show();
+                            $http.post($rootScope.baseURL+'/api/post/'+list[index].id+'/'+action).success(function(){
+                                $ionicLoading.hide();
+                                list.splice(index,1);
+                                if(is_mine){
+                                    account_info.posts_count--;
+                                }
+                                return true;
+                            })
+                            .error(function(data, status){
+                                $rootScope.handleHttpError(data, status);
+                            });
+                        }
+                    });
+                    return true;
+                }
+            });
+        },
+        share: function(post) {
+            UxAnalytics.startScreen('share-post');
+            $ionicLoading.show();
+            PostShare.getHash(post.id).then(function(hash){
+                if(hash){
+                    var options = {
+                        message: 'which looks better?',
+                        subject: 'Which Looks Better?',
+                        url: $rootScope.baseURL + '/s/' + hash
+                    }
+                    var onSuccess = function(result) {
+                        console.log($rootScope.baseURL + '/s/' + hash);
+                        console.log("Shared to app: " + result.app);
+                        PostShare.update(hash, result.app);
+                    }
+                    var onError = function(msg) {
+                        console.log("Sharing failed with message: " + msg);
+                    }
+                    window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+                }
+                else{
+                    $rootScope.popupMessage('Oops', 'You cannot send other\'s look');
+                }
+                $ionicLoading.hide();
+            });
+        },
+        _countSummaryText: function(count, domain){
+            if(count == 0){
+                return '';
+            }
+            else if(count == 1){
+                return ' · ' + count + ' ' + domain;
+            }
+            else{
+                return ' · ' + count + ' ' + domain + 's';
+            }
+        }
+    };
+})
+.factory('Util', function() {
+    return {
+        serialize: function(obj) {
+            var parts = [];
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    parts.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
+                }
+            }
+            return "?" + parts.join('&');
+        }
+    };
+})
+.factory('FetchPosts', function($http, $rootScope, PostTimer, Util) {
     var _addToPostTrackArray = function(pagingInfo) {
         $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
     };
     return {
-        following: function(mostRecentPostID, pg) {
+        index: function(arg_info) {
             var this_factory = this;
-            return $http.get($rootScope.baseURL+"/api/home?page="+pg+"&from_id="+mostRecentPostID).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/post"+Util.serialize(arg_info)).then(function(response){
+                _addToPostTrackArray(response.data);
+                this_factory.addDisplayAttr(response.data.data);
+                console.log(response.data);
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        following: function($scope) {
+            var this_factory = this;
+            return $http.get($rootScope.baseURL+"/api/home?page="+$scope.page+"&scope_start_timestamp="+$scope.scope_start_timestamp).then(function(response){
                 _addToPostTrackArray(response.data);
                 this_factory.addDisplayAttr(response.data.data);
                 return response.data;
@@ -112,17 +505,19 @@ angular.module('starter.services', [])
         get: function(postID){
             var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/post/"+postID).then(function(response){
-                _addToPostTrackArray({data:response.data});
-                this_factory.addDisplayAttr([response.data]);
+                if(response.data.length > 0){
+                    _addToPostTrackArray({data:response.data});
+                    this_factory.addDisplayAttr([response.data]);
+                }
                 return response.data;
             }
             ,function(response){
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        new: function(mostRecentPostID, pg, search_term, search_type){
+        new: function($scope){
             var this_factory = this;
-            return $http.get($rootScope.baseURL+"/api/explore?page="+pg+"&search_term="+search_term+"&search_type="+search_type+"&from_id="+mostRecentPostID).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/explore?page="+$scope.page+"&search_term="+$scope.search_term+"&search_type="+$scope.search_type+"&scope_start_timestamp="+$scope.scope_start_timestamp).then(function(response){
                 _addToPostTrackArray(response.data);
                 this_factory.addDisplayAttr(response.data.data);
                 return response.data;
@@ -147,11 +542,12 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        user: function(userSlug, tab, pg) {
+        user: function(userSlug, tab, pg, last_align_class, last_set_ids) {
             var this_factory = this;
             return $http.get($rootScope.baseURL+"/api/user/"+userSlug+"/post?tab="+tab+"&page="+pg).then(function(response){
                 _addToPostTrackArray(response.data);
                 this_factory.addDisplayAttr(response.data.data);
+                this_factory.addAlignClass(response.data.data, last_align_class, last_set_ids);
                 return response.data;
             }
             ,function(response){
@@ -178,24 +574,35 @@ angular.module('starter.services', [])
         addDisplayAttr: function(posts){
             for(var i=0; i<posts.length; i++){
                 var post = posts[i];
-                post.display_time = PostTimer.timeLeft(post.created_at);
+                post.display_time = PostTimer.timeLeft(post.created_at, post.visibility);
+                post.display_time += ' · ' + post.visibility.charAt(0).toUpperCase() + post.visibility.slice(1);
                 post.display_icon = PostTimer.icon(post.created_at);
+                post.display_share = true;
+                if(post.visibility != 'permanent' && post.display_time.indexOf('Left') == -1){
+                    post.display_share = false;
+                }
+            }
+        },
+        addAlignClass: function(posts, last_align_class, last_set_ids){
+            for(var i=0; i<posts.length; i++){
+                var post = posts[i];
+
+                var current_align_class = last_align_class;
+                if(last_set_ids != post.post_id_csv){
+                    current_align_class = (last_align_class == 'left-align') ? 'right-align' : 'left-align';
+                }
+                post.align_class = current_align_class;
+
+                last_set_ids = post.post_id_csv;
+                last_align_class = post.align_class;
             }
         }
     };
 })
-.factory('FetchShareLink', function($http, $rootScope) {
+.factory('PostShare', function($http, $rootScope) {
     return {
-        get: function(post_id_csv) {
-            return $http.get($rootScope.baseURL+"/api/compare/"+post_id_csv+'/share').then(function(response){
-                return response.data;
-            }
-            ,function(response){
-                $rootScope.handleHttpError(response.data, response.status);
-            });
-        },
-        exist: function(post_id_csv) {
-            return $http.get($rootScope.baseURL+"/api/compare/"+post_id_csv+'/share/exist').then(function(response){
+        getHash: function(post_id) {
+            return $http.get($rootScope.baseURL+"/api/post/"+post_id+'/share').then(function(response){
                 return response.data;
             }
             ,function(response){
@@ -216,16 +623,6 @@ angular.module('starter.services', [])
             });
         }
     };
-})
-.service('ShareWatcher', function(){
-    var _post_id_csv_shared_array = [];
-
-    this.isShared = function(post_id_csv){
-        return _post_id_csv_shared_array.indexOf(post_id_csv) > -1;
-    }
-    this.setShared = function(post_id_csv){
-        _post_id_csv_shared_array.push(post_id_csv);
-    }
 })
 .factory('FetchOccasions', function($http, $rootScope) {
     return {
@@ -288,18 +685,6 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchSchools', function($http, $rootScope) {
-    return {
-        ranking: function(pg) {
-            return $http.get($rootScope.baseURL+'/api/ranking/school?page='+pg).then(function(response){
-                return response.data.data;
-            }
-            ,function(response){
-                $rootScope.handleHttpError(response.data, response.status);
-            });
-        }
-    };
-})
 
 .factory('FetchSettings', function($http, $rootScope) {
     return {
@@ -356,20 +741,29 @@ angular.module('starter.services', [])
         }
         return "fa-hourglass-end";
     }
-    this.timeLeft = function(created_at){
+    this.timeLeft = function(created_at, visibility){
         var sec_passed = this._secPassed(created_at);
         var sec_remains = sec_in_one_day - sec_passed;
+        var plural_notation = '';
 
-        if(sec_remains < 0){
+        if(sec_remains < 0 || visibility == 'permanent'){
             if(sec_remains >= -1 * sec_in_one_week){
                 return moment(created_at + "-00:00").fromNow();
             }
             return moment(created_at + "-00:00").format('LL');
         }
         if(sec_remains < sec_in_one_hour){
-            return Math.floor(sec_remains / sec_in_one_min) + 'm Left';
+            var min_remains = Math.floor(sec_remains / sec_in_one_min);
+            if(min_remains > 1){
+                plural_notation = 's';
+            }
+            return min_remains + ' minute' + plural_notation + ' Left';
         }
-        return Math.floor(sec_remains / sec_in_one_hour) + 'h Left';
+        var hour_remains = Math.floor(sec_remains / sec_in_one_hour);
+        if(hour_remains > 1){
+            plural_notation = 's';
+        }
+        return hour_remains + ' hour' + plural_notation + ' Left';
     }
     this._secPassed = function(created_at){
         var t = created_at.split(/[- :]/);
@@ -737,227 +1131,6 @@ angular.module('starter.services', [])
         }
     }
 })
-.factory('ComparePosts', function($http, FetchPosts, FetchShareLink, $rootScope, $q, PostTimer){
-    var _post_array = [];
-    var _post_id_array = [];
-    var _is_post_added_map = [];
-    var _last_filter_gender = null;
-    var _last_filter_age_group = null;
-
-    return {
-        share: function(){
-            var deferred = $q.defer();
-            if(_post_id_array.length == 0){
-                deferred.resolve();
-                return deferred.promise;
-            }
-            FetchShareLink.get(_post_id_array).then(function(response){
-                deferred.resolve(response);
-            });
-            return deferred.promise;
-        },
-        refresh: function(){
-            var deferred = $q.defer();
-            this.sort(_last_filter_gender, _last_filter_age_group).then(function() {
-                deferred.resolve();
-            });
-            return deferred.promise;
-        },
-        sort: function(gender, age_group){
-            var deferred = $q.defer();
-            var this_factory = this;
-            this._fetch().then(function() {
-                var target_key = this_factory._getTargetKeyForPostAnalytic(gender, age_group);
-console.log(target_key);
-console.log(_post_array);
-                _post_array.sort(function(a, b){
-                    var keyA = parseInt(a.post_analytic[0][target_key]);
-                    var keyB = parseInt(b.post_analytic[0][target_key]);
-                    if(keyA < keyB) return 1;
-                    if(keyA > keyB) return -1;
-                    return 0;
-                });
-                deferred.resolve();
-            });
-            this._logLastFilters(gender, age_group);
-            return deferred.promise;
-        },
-        partialLikes: function(post_id){
-            var target_key = this._getTargetKeyForPostAnalytic(_last_filter_gender, _last_filter_age_group);
-            for(var i = 0; i < _post_array.length; i++){
-                this_post = _post_array[i];
-                if(post_id == this_post.id){
-                    return this_post.post_analytic[0][target_key];
-                }
-            }
-        },
-        toggle: function(post_id){
-            if (_post_id_array.indexOf(post_id) != -1) {
-                _post_id_array.splice(_post_id_array.indexOf(post_id), 1);
-                _is_post_added_map[post_id] = false;
-                this._removeFromPostArray(post_id);
-            }
-            else{
-                _post_id_array.push(post_id);
-                _is_post_added_map[post_id] = true;
-            }
-            localStorage.setItem('post_id_array', JSON.stringify(_post_id_array));
-        },
-        get: function(){
-            return _post_array;
-        },
-        has: function(post_id){
-            return _is_post_added_map[post_id];
-        },
-        length: function(){
-            if(_post_id_array.length == 0){
-                this._restoreFromLocalStorage();
-            }
-            return _post_id_array.length;
-        },
-        reset: function(){
-            _post_array = [];
-            _post_id_array = [];
-            _is_post_added_map = [];
-        },
-        getLastFilters: function(){
-            this._setLastFiltersIfNull();
-            return {
-                gender: _last_filter_gender,
-                age: _last_filter_age_group,
-            }
-        },
-        isFriendsSelected: function(){
-            return _last_filter_gender == 'friends';
-        },
-        isAnyPostExpired: function(){
-            for(var i = 0; i < _post_array.length; i++){
-                if(PostTimer.elapsed(_post_array[i].created_at)){
-                    return true;
-                }
-            }
-            return false;
-        },
-        _restoreFromLocalStorage: function(){
-            if(localStorage.getItem('post_id_array')){
-                _post_id_array = JSON.parse(localStorage.getItem('post_id_array'));
-                for(var i = 0; i < _post_id_array.length; i++){
-                    _is_post_added_map[_post_id_array[i]] = true;
-                }
-            }
-        },
-        _fetch: function(){
-            var deferred = $q.defer();
-            var this_factory = this;
-            if(_post_id_array.length == 0){
-                deferred.resolve();
-                return deferred.promise;
-            }
-            FetchPosts.compare(_post_id_array).then(function(response){
-                posts = response;
-                for (index = 0; index < posts.length; ++index) {
-                    this_factory._setTotalFieldsInPostAnalytic(posts[index].post_analytic);
-                }
-                _post_array = posts;
-                this_factory._syncClientIfDeleted(posts);
-                deferred.resolve();
-            });
-            return deferred.promise;
-        },
-        _syncClientIfDeleted: function(posts){
-            if(posts.length != _post_id_array.length){
-                for (var i = 0; i < _post_id_array.length; i++) {
-                    var found = false;
-                    for(var j = 0; j < posts.length; j++){
-                        if(posts[j].id == _post_id_array[i]){
-                            found = true;
-                            break;
-                        }
-                    }
-                    if(!found){
-                        this.toggle(_post_id_array[i]);
-                        i--;
-                    }
-                }
-            }
-        },
-        _setPlaceHolderIfPostAnalyticIsEmpty: function(post_analytic){
-            if(post_analytic[0] === undefined){
-                post_analytic[0] = [];
-            }
-        },
-        _setTotalFieldsInPostAnalytic: function(post_analytic){
-            this._setPlaceHolderIfPostAnalyticIsEmpty(post_analytic);
-            post_analytic[0].dummy_total_key = 1;
-            post_analytic[0].total_all = posts[index].like_count;
-            post_analytic[0].total_gender =
-                post_analytic[0].male +
-                post_analytic[0].female;
-            post_analytic[0].total_age_group =
-                post_analytic[0].teens +
-                post_analytic[0].twenties +
-                post_analytic[0].thirties +
-                post_analytic[0].forties +
-                post_analytic[0].fifties;
-        },
-        _removeFromPostArray: function(post_id){
-            for(var i = 0; i < _post_array.length; i++){
-                this_post = _post_array[i];
-                if(post_id == this_post.id){
-                    _post_array.splice(i, 1);
-                    return;
-                }
-            }
-        },
-        _setLastFiltersIfNull: function(){
-            if(_last_filter_gender == null) {
-                _last_filter_gender = localStorage.getItem('last_filter_gender');
-                _last_filter_age_group = localStorage.getItem('last_filter_age_group');
-                if(_last_filter_gender == null) {
-                    var user_obj = JSON.parse(localStorage.getItem('user'));
-                    var user_gender = user_obj.gender;
-                    if(user_gender == 'male'){
-                        _last_filter_gender = 'female';
-                    }
-                    else{
-                        _last_filter_gender = 'male';
-                    }
-                    _last_filter_age_group = 'all';
-                }
-            }
-        },
-        _logLastFilters: function(gender, age_group){
-            localStorage.setItem('last_filter_gender', gender);
-            localStorage.setItem('last_filter_age_group', age_group);
-            _last_filter_gender = gender;
-            _last_filter_age_group = age_group;
-        },
-        _getTargetKeyForPostAnalytic: function(gender, age_group){
-            if(gender == 'friends'){
-                return gender;
-            }
-            if(gender == 'all' && age_group == 'all'){
-                return 'total_all';
-            }
-            if(gender == 'all' && age_group != 'all'){
-                return age_group;
-            }
-            if(gender != 'all' && age_group == 'all'){
-                return gender;
-            }
-            return gender + '_' + age_group;
-        },
-        _getTotalKeyForPostAnalytic: function(gender, age_group){
-            if(gender == 'all' && age_group == 'all'){
-                return 'dummy_total_key';
-            }
-            if(gender == 'all' && age_group != 'all'){
-                return 'total_age_group';
-            }
-            return 'total_gender';
-        }
-    }
-})
 .factory('ImageUpload', function($http){
     return {
         _getBlobImageByURL: function(url) {
@@ -998,86 +1171,75 @@ console.log(_post_array);
         }
     }
 })
-.factory('ComparePostSet', function($http, FetchPosts, FetchShareLink, $q){
+.factory('VoteResult', function($http, FetchLook, $q){
     return {
-        share: function(post_id_csv){
-            var deferred = $q.defer();
-            FetchShareLink.get(post_id_csv).then(function(response){
-                deferred.resolve(response);
-            });
-            return deferred.promise;
-        },
-        sort: function(gender, age_group, post_array){
-            var this_factory = this;
-            var target_key = this_factory._getTargetKeyForPostAnalytic(gender, age_group);
-            post_array.sort(function(a, b){
-                if(a.post_analytic[0][target_key] == b.post_analytic[0][target_key]){
-                    if(a.like_count == b.like_count){
-                        return parseInt(a.id) < parseInt(b.id) ? 1 : -1;
-                    }
-                    return parseInt(a.like_count) < parseInt(b.like_count) ? 1 : -1;
-                }
-                return parseInt(a.post_analytic[0][target_key]) < parseInt(b.post_analytic[0][target_key]) ? 1 : -1;
-            });
-        },
-        partialLikes: function(filter_gender, filter_age_group, post_id, post_array){
-            var target_key = this._getTargetKeyForPostAnalytic(filter_gender, filter_age_group);
-            for(var i = 0; i < post_array.length; i++){
-                this_post = post_array[i];
-                if(post_id == this_post.id){
-                    return this_post.post_analytic[0][target_key];
+        getCount: function(filter_gender, filter_age_group, look_id, look_array){
+            var target_key = this._getTargetKeyForLookAnalytic(filter_gender, filter_age_group);
+            for(var i = 0; i < look_array.length; i++){
+                this_look = look_array[i];
+                if(look_id == this_look.id){
+                    return this_look.look_analytic[target_key];
                 }
             }
         },
-        getTopPostId: function(filter_gender, filter_age_group, post_array){
-            var target_key = this._getTargetKeyForPostAnalytic(filter_gender, filter_age_group);
-            var top_like_count = 0;
-            var top_post_id;
-            for(var i = 0; i < post_array.length; i++){
-                this_post = post_array[i];
-                if(top_like_count <= parseInt(this_post.post_analytic[0][target_key])){
-                    top_post_id = this_post.id;
-                    top_like_count = parseInt(this_post.post_analytic[0][target_key]);
+        getTopLookId: function(filter_gender, filter_age_group, look_array){
+            var target_key = this._getTargetKeyForLookAnalytic(filter_gender, filter_age_group);
+            var top_vote_count = 0;
+            var top_look_id;
+            for(var i = 0; i < look_array.length; i++){
+                this_look = look_array[i];
+                if(top_vote_count <= parseInt(this_look.look_analytic[target_key])){
+                    top_look_id = this_look.id;
+                    top_vote_count = parseInt(this_look.look_analytic[target_key]);
                 }
             }
-            if(top_like_count == 0){
+            if(top_vote_count == 0){
                 return 0;
             }
-            return top_post_id;
+            return top_look_id;
         },
-        fetch: function(post_id_array){
+        fetch: function(post_id){
             var deferred = $q.defer();
             var this_factory = this;
-            FetchPosts.compare(post_id_array).then(function(response){
-                post_array = response;
-                for (index = 0; index < post_array.length; ++index) {
-                    this_factory._setTotalFieldsInPostAnalytic(post_array[index]);
+            FetchLook.getList(post_id).then(function(response){
+                var look_array = response.photos;
+                for (index = 0; index < look_array.length; ++index) {
+                    for(var j = 0; j < response.look_analytic_array.length; ++j){
+                        if(response.look_analytic_array[j].id == look_array[index].id){
+                            look_array[index].look_analytic = response.look_analytic_array[j];
+                        }
+                    }
+                    look_array[index].vote_count = 0;
+                    if(look_array[index].vote_info){
+                        look_array[index].vote_count = look_array[index].vote_info.count;
+                    }
+                    this_factory._setTotalFieldsInLookAnalytic(look_array[index]);
                 }
-                deferred.resolve(post_array);
+                deferred.resolve(look_array);
             });
             return deferred.promise;
         },
-        _setPlaceHolderIfPostAnalyticIsEmpty: function(post_analytic){
-            if(post_analytic[0] === undefined){
-                post_analytic[0] = [];
+        _setPlaceHolderIfLookAnalyticIsEmpty: function(look_analytic){
+            if(look_analytic === undefined){
+                look_analytic = [];
             }
         },
-        _setTotalFieldsInPostAnalytic: function(post){
-            post_analytic = post.post_analytic;
-            this._setPlaceHolderIfPostAnalyticIsEmpty(post_analytic);
-            post_analytic[0].dummy_total_key = 1;
-            post_analytic[0].total_all = post.like_count;
-            post_analytic[0].total_gender =
-                post_analytic[0].male +
-                post_analytic[0].female;
-            post_analytic[0].total_age_group =
-                post_analytic[0].teens +
-                post_analytic[0].twenties +
-                post_analytic[0].thirties +
-                post_analytic[0].forties +
-                post_analytic[0].fifties;
+        _setTotalFieldsInLookAnalytic: function(look){
+            look_analytic = look.look_analytic;
+            this._setPlaceHolderIfLookAnalyticIsEmpty(look_analytic);
+            look_analytic.dummy_total_key = 1;
+            look_analytic.total_all = look.vote_count;
+            look_analytic.total_gender =
+                look_analytic.male +
+                look_analytic.female;
+            look_analytic.total_age_group =
+                look_analytic.teens +
+                look_analytic.twenties +
+                look_analytic.thirties +
+                look_analytic.forties +
+                look_analytic.fifties;
         },
-        _getTargetKeyForPostAnalytic: function(gender, age_group){
+        _getTargetKeyForLookAnalytic: function(gender, age_group){
             if(gender == 'friends'){
                 return gender;
             }
@@ -1134,4 +1296,208 @@ console.log(_post_array);
             });
         }
     };
+})
+.factory('Vote', function($http, $rootScope){
+    return {
+        toggle: function(look){
+            if(look.user_liked){
+                $http.get($rootScope.baseURL+'/api/look/'+look.id+'/unvote').success(function(){
+                })
+                .error(function(data, status){
+                    $rootScope.handleHttpError(data, status);
+                });
+
+                look.vote_info.count--;
+                if(look.vote_info.count == 0){
+                    look.vote_info = null;
+                }
+            }
+            else{
+                $http.get($rootScope.baseURL+'/api/look/'+look.id+'/vote').success(function(){
+                })
+                .error(function(data, status){
+                    $rootScope.handleHttpError(data, status);
+                });
+                if(look.vote_info){
+                    look.vote_info.count++;
+                }
+                else{
+                    look.vote_info = {count: 1};
+                }
+            }
+            look.user_liked = ! look.user_liked;
+        },
+        /*
+        trackAndUpdateVote: function(look){
+            for(i = 0; i < $rootScope.postTrackArray.length; i++){
+                thisPost = $rootScope.postTrackArray[i];
+                if(post.id == thisPost.id){
+                    if(thisPost.user_liked){
+                        thisPost.likes_count.aggregate--;
+                        if(thisPost.likes_count.aggregate == 0){
+                            thisPost.likes_count = null;
+                        }
+                    }
+                    else{
+                        if(thisPost.likes_count){
+                            thisPost.likes_count.aggregate++;
+                        }
+                        else{
+                            thisPost.likes_count = {aggregate: 1};
+                        }
+                    }
+                    thisPost.user_liked = !thisPost.user_liked;
+                }
+            }
+        }
+        */
+    }
+})
+// ref : https://github.com/dabit3/angular-easy-image-preloader
+.factory('preloader', function( $q, $rootScope ) {
+    // I manage the preloading of image objects. Accepts an array of image URLs.
+    function Preloader( imageLocations ) {
+        // I am the image SRC values to preload.
+        this.imageLocations = imageLocations;
+        // As the images load, we'll need to keep track of the load/error
+        // counts when announing the progress on the loading.
+        this.imageCount = this.imageLocations.length;
+        this.loadCount = 0;
+        this.errorCount = 0;
+        // I am the possible states that the preloader can be in.
+        this.states = {
+            PENDING: 1,
+            LOADING: 2,
+            RESOLVED: 3,
+            REJECTED: 4
+        };
+        // I keep track of the current state of the preloader.
+        this.state = this.states.PENDING;
+        // When loading the images, a promise will be returned to indicate
+        // when the loading has completed (and / or progressed).
+        this.deferred = $q.defer();
+        this.promise = this.deferred.promise;
+    }
+    // ---
+    // STATIC METHODS.
+    // ---
+    // I reload the given images [Array] and return a promise. The promise
+    // will be resolved with the array of image locations.
+    Preloader.preloadImages = function( imageLocations ) {
+        var preloader = new Preloader( imageLocations );
+        return( preloader.load() );
+    };
+    // ---
+    // INSTANCE METHODS.
+    // ---
+    Preloader.prototype = {
+        // Best practice for "instnceof" operator.
+        constructor: Preloader,
+        // ---
+        // PUBLIC METHODS.
+        // ---
+        // I determine if the preloader has started loading images yet.
+        isInitiated: function isInitiated() {
+            return( this.state !== this.states.PENDING );
+        },
+        // I determine if the preloader has failed to load all of the images.
+        isRejected: function isRejected() {
+            return( this.state === this.states.REJECTED );
+        },
+        // I determine if the preloader has successfully loaded all of the images.
+        isResolved: function isResolved() {
+            return( this.state === this.states.RESOLVED );
+        },
+        // I initiate the preload of the images. Returns a promise.
+        load: function load() {
+            // If the images are already loading, return the existing promise.
+            if ( this.isInitiated() ) {
+                return( this.promise );
+            }
+            this.state = this.states.LOADING;
+            for ( var i = 0 ; i < this.imageCount ; i++ ) {
+                this.loadImageLocation( this.imageLocations[ i ] );
+            }
+            // Return the deferred promise for the load event.
+            return( this.promise );
+        },
+        // ---
+        // PRIVATE METHODS.
+        // ---
+        // I handle the load-failure of the given image location.
+        handleImageError: function handleImageError( imageLocation ) {
+            this.errorCount++;
+            // If the preload action has already failed, ignore further action.
+            if ( this.isRejected() ) {
+                return;
+            }
+            this.state = this.states.REJECTED;
+            this.deferred.reject( imageLocation );
+        },
+        // I handle the load-success of the given image location.
+        handleImageLoad: function handleImageLoad( imageLocation ) {
+            this.loadCount++;
+            // If the preload action has already failed, ignore further action.
+            if ( this.isRejected() ) {
+                return;
+            }
+            // Notify the progress of the overall deferred. This is different
+            // than Resolving the deferred - you can call notify many times
+            // before the ultimate resolution (or rejection) of the deferred.
+            this.deferred.notify({
+                percent: Math.ceil( this.loadCount / this.imageCount * 100 ),
+                imageLocation: imageLocation
+            });
+            // If all of the images have loaded, we can resolve the deferred
+            // value that we returned to the calling context.
+            if ( this.loadCount === this.imageCount ) {
+                this.state = this.states.RESOLVED;
+                this.deferred.resolve( this.imageLocations );
+            }
+        },
+        // I load the given image location and then wire the load / error
+        // events back into the preloader instance.
+        // --
+        // NOTE: The load/error events trigger a $digest.
+        loadImageLocation: function loadImageLocation( imageLocation ) {
+            var preloader = this;
+            // When it comes to creating the image object, it is critical that
+            // we bind the event handlers BEFORE we actually set the image
+            // source. Failure to do so will prevent the events from proper
+            // triggering in some browsers.
+            // --
+            // The below removes a dependency on jQuery, based on a comment
+            // on Ben Nadel's original blog by user Adriaan:
+            // http://www.bennadel.com/members/11887-adriaan.htm
+            var image = angular.element( new Image() )
+                .bind('load', function( event ) {
+                    // Since the load event is asynchronous, we have to
+                    // tell AngularJS that something changed.
+                    $rootScope.$apply(
+                        function() {
+                            preloader.handleImageLoad( event.target.src );
+                            // Clean up object reference to help with the
+                            // garbage collection in the closure.
+                            preloader = image = event = null;
+                        }
+                    );
+                })
+                .bind('error', function( event ) {
+                    // Since the load event is asynchronous, we have to
+                    // tell AngularJS that something changed.
+                    $rootScope.$apply(
+                        function() {
+                            preloader.handleImageError( event.target.src );
+                            // Clean up object reference to help with the
+                            // garbage collection in the closure.
+                            preloader = image = event = null;
+                        }
+                    );
+                })
+                .attr( 'src', imageLocation )
+            ;
+        }
+    };
+    // Return the factory instance.
+    return( Preloader );
 });

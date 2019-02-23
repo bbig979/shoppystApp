@@ -108,7 +108,7 @@
   margin-right: -5px;
   margin-top: -5px;
   padding-top: 5px;
-  padding-bottom: 50px;
+  padding-bottom: 22px;
 }
 /* line 3, ../../scss/tw/_account.scss */
 #tab-account .account-top .account-option-btn, #tab-account .account-top .follow-toggle {
@@ -134,81 +134,80 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 3px solid white;
   margin: auto;
   margin-bottom: 10px;
   clear: both;
   margin-top: 20px;
 }
-/* line 41, ../../scss/tw/_account.scss */
+/* line 40, ../../scss/tw/_account.scss */
 #tab-account .user-school {
   text-align: center;
   margin-bottom: 10px;
   text-decoration: underline;
 }
-/* line 47, ../../scss/tw/_account.scss */
+/* line 46, ../../scss/tw/_account.scss */
 #tab-account .user-joined {
   text-align: center;
 }
-/* line 51, ../../scss/tw/_account.scss */
+/* line 50, ../../scss/tw/_account.scss */
 #tab-account .account-option-btn {
   color: white;
   float: right;
   margin-right: 10px;
   font-size: 0.8em;
 }
-/* line 58, ../../scss/tw/_account.scss */
+/* line 57, ../../scss/tw/_account.scss */
 #tab-account .account-achievement {
   margin-top: 10px;
 }
-/* line 61, ../../scss/tw/_account.scss */
+/* line 60, ../../scss/tw/_account.scss */
 #tab-account .account-achievement button {
   color: white;
   line-height: 120%;
   font-weight: 400;
 }
-/* line 67, ../../scss/tw/_account.scss */
+/* line 66, ../../scss/tw/_account.scss */
 #tab-account .account-achievement div {
   color: white;
   line-height: 150%;
   font-size: 1.1em;
 }
-/* line 73, ../../scss/tw/_account.scss */
+/* line 72, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col {
   text-align: center;
 }
-/* line 77, ../../scss/tw/_account.scss */
+/* line 76, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(1) {
   color: #FF4B62;
 }
-/* line 80, ../../scss/tw/_account.scss */
+/* line 79, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(2) {
   color: #FF7167;
 }
-/* line 83, ../../scss/tw/_account.scss */
+/* line 82, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(3) {
   color: #FF986C;
 }
-/* line 86, ../../scss/tw/_account.scss */
+/* line 85, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .col:nth-child(4) {
   color: #FFBD71;
 }
-/* line 90, ../../scss/tw/_account.scss */
+/* line 89, ../../scss/tw/_account.scss */
 #tab-account .account-achievement .ion-camera,
 #tab-account .account-achievement .ion-ios-heart,
 #tab-account .account-achievement .ion-ios-people,
 #tab-account .account-achievement .ion-android-person {
   font-size: 1.5em;
 }
-/* line 98, ../../scss/tw/_account.scss */
+/* line 97, ../../scss/tw/_account.scss */
 #tab-account .account-social-network {
   font-size: 0.6em;
 }
-/* line 100, ../../scss/tw/_account.scss */
+/* line 99, ../../scss/tw/_account.scss */
 #tab-account .account-social-network div {
   color: #FF4C62;
 }
-/* line 105, ../../scss/tw/_account.scss */
+/* line 104, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle {
   font-size: 11px;
   float: right;
@@ -220,44 +219,44 @@
   color: #FF4C62;
   width: 90px;
 }
-/* line 116, ../../scss/tw/_account.scss */
+/* line 115, ../../scss/tw/_account.scss */
 #tab-account .follow-toggle:after {
   padding-top: 7px;
   content: "FOLLOW";
 }
-/* line 120, ../../scss/tw/_account.scss */
+/* line 119, ../../scss/tw/_account.scss */
 #tab-account .following {
   background-color: #FF4C62;
   border-color: #FF4C62;
   color: #fff;
 }
-/* line 125, ../../scss/tw/_account.scss */
+/* line 124, ../../scss/tw/_account.scss */
 #tab-account .following:after {
   content: "UNFOLLOW";
 }
-/* line 128, ../../scss/tw/_account.scss */
+/* line 127, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activated {
   margin-top: 0px;
   border-style: solid;
   border-width: 0 0 0 0;
   border-color: #444;
 }
-/* line 134, ../../scss/tw/_account.scss */
+/* line 133, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tab-item.activatedd {
   margin-bottom: -2px;
   border-style: solid;
   border-width: 0 0 2px 0;
   border-color: #FF4C62;
 }
-/* line 140, ../../scss/tw/_account.scss */
+/* line 139, ../../scss/tw/_account.scss */
 #tab-account .tabs-striped .tabs {
   border-bottom: 0px solid #ddd;
 }
-/* line 143, ../../scss/tw/_account.scss */
+/* line 142, ../../scss/tw/_account.scss */
 #tab-account ion-list .list {
   margin-top: -15px;
 }
-/* line 147, ../../scss/tw/_account.scss */
+/* line 146, ../../scss/tw/_account.scss */
 #tab-account .profile-post-like-count {
   color: white;
   text-align: right;
@@ -393,25 +392,33 @@
   margin-top: 6px;
 }
 /* line 22, ../../scss/tw/_compare.scss */
+#compare .compare-toggle.gender a {
+  padding: 10px 5%;
+}
+/* line 25, ../../scss/tw/_compare.scss */
+#compare .compare-toggle.gender .active {
+  padding: 4px 5%;
+}
+/* line 28, ../../scss/tw/_compare.scss */
 #compare .compare-toggle.occasion {
   margin-right: 5px;
 }
-/* line 25, ../../scss/tw/_compare.scss */
+/* line 31, ../../scss/tw/_compare.scss */
 #compare .compare-toggle:after {
   content: "";
   display: table;
   clear: both;
 }
-/* line 30, ../../scss/tw/_compare.scss */
+/* line 36, ../../scss/tw/_compare.scss */
 #compare .post.item {
   width: 50%;
 }
-/* line 33, ../../scss/tw/_compare.scss */
+/* line 39, ../../scss/tw/_compare.scss */
 #compare .item {
   width: 100%;
   padding: 0;
 }
-/* line 34, ../../scss/tw/_compare.scss */
+/* line 40, ../../scss/tw/_compare.scss */
 #compare .item .winner {
   position: absolute;
   left: 2vw;
@@ -425,22 +432,17 @@
   background: #ff245d;
   padding-left: 3vw;
 }
-/* line 47, ../../scss/tw/_compare.scss */
+/* line 53, ../../scss/tw/_compare.scss */
 #compare .item .desc_row {
   width: 100%;
   text-align: center;
-  color: #fff;
-  background: #000;
-  background: rgba(0, 0, 0, 0.5);
   padding-bottom: 5px;
-  position: absolute;
-  bottom: 0;
 }
-/* line 60, ../../scss/tw/_compare.scss */
+/* line 61, ../../scss/tw/_compare.scss */
 #compare .sort {
   margin-bottom: 0;
 }
-/* line 63, ../../scss/tw/_compare.scss */
+/* line 64, ../../scss/tw/_compare.scss */
 #compare .expired-message {
   background-color: #fff;
   padding: 70px 0 70px 0;
@@ -599,21 +601,21 @@
 }
 /* line 50, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-button {
-  border: dashed 0.8vw #ccc;
+  border: dashed 0.8vw #aaa;
   border-radius: 2vw;
   height: 100%;
-  color: #ccc;
+  color: #aaa;
   font-weight: bold;
   font-size: 4.5vw;
   line-height: 9vw;
   text-align: center;
   padding-top: 13vw;
 }
-/* line 60, ../../scss/tw/_post-create.scss */
+/* line 61, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-button .ion-plus-circled {
-  font-size: 8vw;
+  font-size: 10vw;
 }
-/* line 66, ../../scss/tw/_post-create.scss */
+/* line 67, ../../scss/tw/_post-create.scss */
 #create-post .post-caption textarea {
   width: 100%;
   border: 1px solid #ddd;
@@ -624,41 +626,132 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 74, ../../scss/tw/_post-create.scss */
+/* line 75, ../../scss/tw/_post-create.scss */
 #create-post img {
   max-width: 100%;
 }
-/* line 78, ../../scss/tw/_post-create.scss */
+/* line 79, ../../scss/tw/_post-create.scss */
 #create-post .item-image img:first-child,
 #create-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-/* line 84, ../../scss/tw/_post-create.scss */
+/* line 85, ../../scss/tw/_post-create.scss */
 #create-post .post-image .item {
   padding: 0px;
 }
-/* line 88, ../../scss/tw/_post-create.scss */
-#create-post .visibility {
-  margin: 10px 0;
-}
-/* line 92, ../../scss/tw/_post-create.scss */
-#create-post .selected-visibility {
-  font-size: 12px;
-  padding: 5px;
+/* line 90, ../../scss/tw/_post-create.scss */
+#create-post .visibility .title {
   text-align: center;
-  margin-top: 25px;
-  color: #666;
+  padding-bottom: 20px;
+  color: #444;
+  font-size: 16px;
+}
+/* line 96, ../../scss/tw/_post-create.scss */
+#create-post .visibility .button {
+  border-color: #ddd;
+  background-color: #fff;
 }
 /* line 100, ../../scss/tw/_post-create.scss */
+#create-post .visibility .button.button-positive {
+  border-color: #FF4C62;
+  background-color: #FF4C62;
+}
+/* line 106, ../../scss/tw/_post-create.scss */
+#create-post .selected-visibility {
+  font-size: 12px;
+  padding: 15px;
+  margin-top: 25px;
+  color: #fff;
+  background-color: #454a54;
+  border-radius: 5px;
+  position: relative;
+}
+/* line 116, ../../scss/tw/_post-create.scss */
+#create-post .selected-visibility:after {
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(136, 183, 213, 0);
+  border-bottom-color: #454a54;
+  border-width: 10px;
+  margin-left: -10px;
+}
+/* line 129, ../../scss/tw/_post-create.scss */
+#create-post .selected-visibility.friend:after {
+  bottom: 100%;
+  left: 18%;
+}
+/* line 134, ../../scss/tw/_post-create.scss */
+#create-post .selected-visibility.public:after {
+  bottom: 100%;
+  left: 50%;
+}
+/* line 139, ../../scss/tw/_post-create.scss */
+#create-post .selected-visibility.permanent:after {
+  bottom: 100%;
+  left: 82%;
+}
+/* line 144, ../../scss/tw/_post-create.scss */
 #create-post .button-small {
   font-size: 15px;
   line-height: 30px;
   color: #777;
 }
-/* line 106, ../../scss/tw/_post-create.scss */
+/* line 150, ../../scss/tw/_post-create.scss */
 #create-post .button-small.button-positive {
   color: #fff;
+}
+/* line 154, ../../scss/tw/_post-create.scss */
+#create-post .recommendation {
+  text-align: center;
+}
+/* line 158, ../../scss/tw/_post-create.scss */
+#create-post hr {
+  border: 0;
+  border-top: 1px solid #777;
+  margin: 10px 0;
+  width: 100%;
+}
+/* line 165, ../../scss/tw/_post-create.scss */
+#create-post .compare-table {
+  font-weight: bold;
+}
+/* line 168, ../../scss/tw/_post-create.scss */
+#create-post .compare-table .compare-row {
+  clear: both;
+}
+/* line 171, ../../scss/tw/_post-create.scss */
+#create-post .compare-table .compare-row .ion-close-round {
+  color: #FF4C62;
+}
+/* line 174, ../../scss/tw/_post-create.scss */
+#create-post .compare-table .compare-row .ion-checkmark-round {
+  color: #00dba2;
+}
+/* line 177, ../../scss/tw/_post-create.scss */
+#create-post .compare-table .compare-row .label, #create-post .compare-table .compare-row .mark {
+  width: 50%;
+  float: left;
+}
+/* line 181, ../../scss/tw/_post-create.scss */
+#create-post .compare-table .compare-row .label {
+  text-align: right;
+}
+/* line 184, ../../scss/tw/_post-create.scss */
+#create-post .compare-table .compare-row .mark {
+  text-align: center;
+}
+/* line 190, ../../scss/tw/_post-create.scss */
+#create-post .button-padding {
+  padding: 5px 10px;
+}
+/* line 193, ../../scss/tw/_post-create.scss */
+#create-post .padding-top {
+  padding-top: 20px;
 }
 
 /* line 2, ../../scss/tw/_post-detail.scss */
@@ -766,12 +859,49 @@
 }
 
 /* line 2, ../../scss/tw/_post-edit.scss */
+#edit-post .item {
+  padding: 0;
+  border-width: 0px;
+}
+/* line 7, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .scroll-bar-h {
+  display: none;
+}
+/* line 10, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .post {
+  width: 40vw;
+  margin-right: 2vw;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
+  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+  border-radius: 1vw;
+  background-color: #fff;
+}
+/* line 20, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .post .post-img-wrapper {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 1vw;
+}
+/* line 26, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .post .post-img-wrapper .post-img {
+  display: block;
+  width: 100%;
+  padding-top: 120%;
+}
+/* line 33, ../../scss/tw/_post-edit.scss */
+#edit-post .look-list .post:first-child {
+  margin-left: 10px;
+}
+/* line 38, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image {
   width: 50%;
   padding: 10px auto;
   margin: 12px;
 }
-/* line 6, ../../scss/tw/_post-edit.scss */
+/* line 42, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image img {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -779,7 +909,7 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 12, ../../scss/tw/_post-edit.scss */
+/* line 48, ../../scss/tw/_post-edit.scss */
 #edit-post .post-caption textarea {
   width: 100%;
   border: 1px solid #ddd;
@@ -790,18 +920,18 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 20, ../../scss/tw/_post-edit.scss */
+/* line 56, ../../scss/tw/_post-edit.scss */
 #edit-post img {
   max-height: 300px;
   max-width: 100%;
 }
-/* line 25, ../../scss/tw/_post-edit.scss */
+/* line 61, ../../scss/tw/_post-edit.scss */
 #edit-post .item-image img:first-child,
 #edit-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-/* line 31, ../../scss/tw/_post-edit.scss */
+/* line 67, ../../scss/tw/_post-edit.scss */
 #edit-post .post-image .item {
   padding: 0px;
 }

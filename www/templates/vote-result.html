@@ -1,0 +1,42 @@
+<ion-view class="vote-result" id="compare" view-title="VOTE RESULT">
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="compare-toggle gender">
+            <div class="label">Gender</div>
+            <a ng-class="{ active: gender_active === 'female' }" ng-click="setGender('female')" class="female">Female</a>
+            <a ng-class="{ active: gender_active === 'male' }" ng-click="setGender('male')" class="male">Male</a>
+            <a ng-class="{ active: gender_active === 'all' }" ng-click="setGender('all')" class="everyone">All</a>
+        </div>
+        <div class="compare-toggle age" ng-hide="gender_active == 'friends'">
+            <div class="label">Age</div>
+            <a ng-class="{ active: age_active === 'fifties' }" ng-click="setAge('fifties')" class="fifties">50 <</a>
+            <a ng-class="{ active: age_active === 'forties' }" ng-click="setAge('forties')" class="forties">40s</a>
+            <a ng-class="{ active: age_active === 'thirties' }" ng-click="setAge('thirties')" class="thirties">30s</a>
+            <a ng-class="{ active: age_active === 'twenties' }" ng-click="setAge('twenties')" class="twenties">20s</a>
+            <a ng-class="{ active: age_active === 'teens' }" ng-click="setAge('teens')" class="teens">10s</a>
+            <a ng-class="{ active: age_active === 'all' }" ng-click="setAge('all')" class="all">All</a>
+        </div>
+        <div class="expired-message" ng-show="::look_array && look_array.length == 0">
+            Snaplooks have disappeared.
+        </div>
+        <ion-list>
+            <div>
+                <ion-item ng-repeat="look in look_array" class="look item">
+                    <div class="look_wrapper entity-id-{{::look.id}}" style="background-image: url({{ ::photoPath( look.img_path, 'm' ) }})">
+                        <a class="post_img"></a>
+
+                        <div class="winner icon ion-ios-checkmark-empty" ng-show="look.id == top_look_id"></div>
+                    </div>
+                    <div class="desc_row">
+                        <span class="partial_likes">{{voteResult.getCount(gender_active, age_active, look.id, look_array)}} votes</span>
+                    </div>
+                </ion-item>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-view>

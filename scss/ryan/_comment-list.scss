@@ -1,34 +1,79 @@
 .comment-list{
-  .item-avatar{
+    ion-content{
+        margin-bottom: 50px;
+    }
     .user-name{
       font-size: 14px;
+      float: left;
+      margin-right: 5px;
     }
-    .item-content{
-      .profile-image{
-        width: 35px;
-        height: 35px;
-        float: left;
-        margin: 3px 6px 0 0;
-      }
-      padding: 14px;
-      min-height: 55px;
+    .item{
+        .like-button{
+            position: absolute;
+            right: 0;
+        }
+        .like-button:before{
+            font-size: 15px;
+            line-height: 30px;
+        }
+        .ion-ios-heart{
+            color: #FF4C62;
+        }
+        .left-section{
+            .profile-image{
+                width: 35px;
+                height: 35px;
+            }
+            width: 45px;
+            position: absolute;
+        }
+        .reply .left-section{
+            .profile-image{
+                width: 30px;
+                height: 30px;
+            }
+        }
+        .right-section{
+            .text-wrapper{
+                padding-right: 30px;
+            }
+            .control-wrapper{
+                span{
+                    padding: 0 10px;
+                    font-size: 0.9em;
+                }
+                .like-count, .reply, .extra{
+                    font-weight: bold;
+                }
+                .time-ago{
+                    padding-left: 0;
+                }
+                font-size: 13px;
+            }
+            padding-left: 45px;
+        }
+        .reply .right-section{
+            padding-left: 40px;
+        }
+        padding: 14px;
+        min-height: 55px;
+        position: relative;
+        border-color: $grey-light;
     }
-    padding: 0;
-    min-height: 55px;
-  }
-  .item{
-    .time-ago{
-      position: absolute;
-      top: 15px;
-      right: 10px;
-      font-size: 13px;
+    .reply.item{
+        .like-button{
+            position: absolute;
+            right: -13px;
+        }
+        padding: 14px 0;
+        border-width: 0;
     }
-    border-color: $grey-light;
-  }
-  .load-more{
-    padding: 10px;
-  }
-  .button-small{
-    line-height: 0;
-  }
+}
+form[name=commentForm]{
+    position: fixed;
+    bottom: 49px;
+    width: 100%;
+    .spinner{
+        max-height: 31px;
+    }
 }

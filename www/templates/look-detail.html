@@ -1,0 +1,16 @@
+<ion-view class="single-look" id="look-detail" view-title="LOOK">
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
+        <ion-scroll id="mapImage"
+                zooming="true"
+                direction="xy"
+                delegate-handle="zoom-pane"
+                class="zoom-pane"
+                min-zoom="1"
+                max-zoom="15"
+                overflow-scroll="false">
+            <img ng-src="{{ photoPath( look.img_path, 'l' ) }}">
+        </ion-scroll>
+    </ion-content>
+</ion-view>

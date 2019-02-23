@@ -35,10 +35,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
-    //var baseURL = 'http://app.snaplook.today';
-    var baseURL = 'http://localhost:8000';
+    var baseURL = 'http://app.snaplook.today';
+    //var baseURL = 'http://localhost:8000';
     //var baseURL = 'http://192.168.56.1:8000';
-    // var baseURL = 'http://localhost:8888';
+    //var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -106,110 +106,123 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            refresh: null
         }
     })
-    .state('tab.post-compare-home', {
-       url: '/post/compare/:postIds/home/:isMyPostCompare',
+    .state('tab.vote-result-home', {
+       url: '/vote/result/:postId/home',
        views: {
            'tab-home': {
-               templateUrl: 'templates/post-compare.html',
-               controller: 'PostCompareCtrl'
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
            }
        }
     })
-    .state('tab.post-compare-explore', {
-       url: '/post/compare/:postIds/explore/:isMyPostCompare',
+    .state('tab.vote-result-explore', {
+       url: '/vote/result/:postId/explore',
        views: {
            'tab-explore': {
-               templateUrl: 'templates/post-compare.html',
-               controller: 'PostCompareCtrl'
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
            }
        }
     })
-    .state('tab.post-compare-notification', {
-       url: '/post/compare/:postIds/notification/:isMyPostCompare',
+    .state('tab.vote-result-notification', {
+       url: '/vote/result/:postId/notification',
        views: {
            'tab-notification': {
-               templateUrl: 'templates/post-compare.html',
-               controller: 'PostCompareCtrl'
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
            }
        }
     })
-    .state('tab.post-compare-account', {
-       url: '/post/compare/:postIds/account/:isMyPostCompare',
+    .state('tab.vote-result-account', {
+       url: '/vote/result/:postId/account',
        views: {
            'tab-account': {
-               templateUrl: 'templates/post-compare.html',
-               controller: 'PostCompareCtrl'
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
            }
        }
     })
-    .state('tab.post-compare-temp', {
-       url: '/post/compare/:postIds/temp/:isMyPostCompare',
-       views: {
-           'tab-compare': {
-               templateUrl: 'templates/post-compare.html',
-               controller: 'PostCompareCtrl'
-           }
-       },
-	   params: {
-	       isThisAfterShare: false
-	   }
-    })
-    .state('tab.post-detail-home', {
-       url: '/post/:postId/home',
+    .state('tab.look-detail-home', {
+       url: '/look/home',
        views: {
            'tab-home': {
-               templateUrl: 'templates/post-detail.html',
-               controller: 'PostDetailCtrl'
-           }
-       }
-    })
-    .state('tab.post-detail-explore', {
-       url: '/post/:postId/explore',
-       views: {
-           'tab-explore': {
-               templateUrl: 'templates/post-detail.html',
-               controller: 'PostDetailCtrl'
-           }
-       }
-    })
-    .state('tab.post-detail-notification', {
-       url: '/post/:postId/notification',
-       views: {
-           'tab-notification': {
-               templateUrl: 'templates/post-detail.html',
-               controller: 'PostDetailCtrl'
-           }
-       }
-    })
-    .state('tab.post-detail-compare', {
-       url: '/post/:postId/compare',
-       views: {
-           'tab-compare': {
-               templateUrl: 'templates/post-detail.html',
-               controller: 'PostDetailCtrl'
-           }
-       }
-    })
-    .state('tab.post-detail-account', {
-       url: '/post/:postId/account',
-       views: {
-           'tab-account': {
-               templateUrl: 'templates/post-detail.html',
-               controller: 'PostDetailCtrl'
+               templateUrl: 'templates/look-detail.html',
+               controller: 'LookDetailCtrl'
            }
        },
        params: {
-           user: null,
-           posts: null,
-           index: null,
+          look: null
+       }
+    })
+    .state('tab.look-detail-explore', {
+       url: '/look/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/look-detail.html',
+               controller: 'LookDetailCtrl'
+           }
+       },
+       params: {
+          look: null
+       }
+    })
+    .state('tab.look-detail-notification', {
+       url: '/look/notification',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/look-detail.html',
+               controller: 'LookDetailCtrl'
+           }
+       },
+       params: {
+          look: null
+       }
+    })
+    .state('tab.look-detail-account', {
+       url: '/look/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/look-detail.html',
+               controller: 'LookDetailCtrl'
+           }
+       },
+       params: {
+          look: null
        }
     })
     .state('tab.post-comments-home', {
-       url: '/post/:postId/comments/home',
+       url: '/post/:post_id/comments/home',
        views: {
            'tab-home': {
                templateUrl: 'templates/post-comments.html',
-               controller: 'PostDetailCtrl'
+               controller: 'PostCommentCtrl'
+           }
+       }
+    })
+    .state('tab.post-comments-explore', {
+       url: '/post/:post_id/comments/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/post-comments.html',
+               controller: 'PostCommentCtrl'
+           }
+       }
+    })
+    .state('tab.post-comments-notification', {
+       url: '/post/:post_id/comments/notification',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/post-comments.html',
+               controller: 'PostCommentCtrl'
+           }
+       }
+    })
+    .state('tab.post-comments-account', {
+       url: '/post/:post_id/comments/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/post-comments.html',
+               controller: 'PostCommentCtrl'
            }
        }
     })
@@ -235,15 +248,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/post/:postId/likers/notification',
        views: {
            'tab-notification': {
-               templateUrl: 'templates/post-likers.html',
-               controller: 'PostLikersCtrl'
-           }
-       }
-    })
-    .state('tab.post-likers-compare', {
-       url: '/post/:postId/likers/compare',
-       views: {
-           'tab-compare': {
                templateUrl: 'templates/post-likers.html',
                controller: 'PostLikersCtrl'
            }
@@ -285,15 +289,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.explore-compare', {
-       url: '/explore/compare',
-       views: {
-           'tab-compare': {
-               templateUrl: 'templates/tab-explore.html',
-               controller: 'PostExploreCtrl'
-           }
-       }
-    })
     .state('tab.explore-account', {
        url: '/explore/account',
        views: {
@@ -312,8 +307,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
+    .state('tab.search-result-home', {
+       url: '/search/:searchTerm/:type/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/post-search-result.html',
+               controller: 'PostSearchResultCtrl'
+           }
+       }
+    })
     .state('tab.search-result-explore', {
-       url: '/search/:searchTerm/:type',
+       url: '/search/:searchTerm/:type/explore',
        views: {
            'tab-explore': {
                templateUrl: 'templates/post-search-result.html',
@@ -321,19 +325,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.compare', {
-       url: '/compare',
+    .state('tab.search-result-notification', {
+       url: '/search/:searchTerm/:type/notification',
        views: {
-           'tab-compare': {
-               templateUrl: 'templates/tab-compare.html',
-               controller: 'CompareCtrl'
+           'tab-notification': {
+               templateUrl: 'templates/post-search-result.html',
+               controller: 'PostSearchResultCtrl'
            }
-       },
-       params: {
-           isThisAfterShare: false,
        }
     })
-
+    .state('tab.search-result-account', {
+       url: '/search/:searchTerm/:type/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/post-search-result.html',
+               controller: 'PostSearchResultCtrl'
+           }
+       }
+    })
     .state('tab.post-create', {
       url: '/post/create',
       views: {
@@ -354,51 +363,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       params: {
         post: null
       }
-    })
-    .state('tab.school-detail-home', {
-       url: '/school/:schoolId/:schoolName/home',
-       views: {
-           'tab-home': {
-               templateUrl: 'templates/school-detail.html',
-               controller: 'SchoolCtrl'
-           }
-       }
-    })
-    .state('tab.school-detail-explore', {
-       url: '/school/:schoolId/:schoolName/explore',
-       views: {
-           'tab-explore': {
-               templateUrl: 'templates/school-detail.html',
-               controller: 'SchoolCtrl'
-           }
-       }
-    })
-    .state('tab.school-detail-notification', {
-       url: '/school/:schoolId/:schoolName/notification',
-       views: {
-           'tab-notification': {
-               templateUrl: 'templates/school-detail.html',
-               controller: 'SchoolCtrl'
-           }
-       }
-    })
-    .state('tab.school-detail-compare', {
-       url: '/school/:schoolId/:schoolName/compare',
-       views: {
-           'tab-compare': {
-               templateUrl: 'templates/school-detail.html',
-               controller: 'SchoolCtrl'
-           }
-       }
-    })
-    .state('tab.school-detail-account', {
-       url: '/school/:schoolId/:schoolName/account',
-       views: {
-           'tab-account': {
-               templateUrl: 'templates/school-detail.html',
-               controller: 'SchoolCtrl'
-           }
-       }
     })
     .state('tab.account-home', {
         url: '/account/:accountSlug/home',
@@ -422,15 +386,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	   url: '/account/:accountSlug/notification',
 	   views: {
 	       'tab-notification': {
-	           templateUrl: 'templates/tab-account.html',
-	           controller: 'AccountCtrl'
-	       }
-	   }
-	})
-	.state('tab.account-compare', {
-	   url: '/account/:accountSlug/compare',
-	   views: {
-	       'tab-compare': {
 	           templateUrl: 'templates/tab-account.html',
 	           controller: 'AccountCtrl'
 	       }
@@ -533,15 +488,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.account-following-compare', {
-       url: '/account/:userSlug/following/compare',
-       views: {
-           'tab-compare': {
-               templateUrl: 'templates/account-following.html',
-               controller: 'FollowingCtrl'
-           }
-       }
-    })
     .state('tab.account-following-account', {
        url: '/account/:userSlug/following/account',
        views: {
@@ -576,15 +522,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/account/:userSlug/follower/notification',
        views: {
            'tab-notification': {
-               templateUrl: 'templates/account-follower.html',
-               controller: 'FollowerCtrl'
-           }
-       }
-    })
-    .state('tab.account-follower-compare', {
-       url: '/account/:userSlug/follower/compare',
-       views: {
-           'tab-compare': {
                templateUrl: 'templates/account-follower.html',
                controller: 'FollowerCtrl'
            }
@@ -630,15 +567,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
    })
-   .state('tab.account-liked-compare', {
-       url: '/account/:userSlug/liked/compare',
-       views: {
-           'tab-compare': {
-               templateUrl: 'templates/account-liked.html',
-               controller: 'LikedCtrl'
-           }
-       }
-   })
    .state('tab.account-liked-account', {
        url: '/account/:userSlug/liked/account',
        views: {
@@ -661,4 +589,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/root');
 
+});
+moment.updateLocale('en', {
+    relativeTime : {
+        future: "in %s",
+        past:   "%s",
+        s:  "1m",
+        m:  "1m",
+        mm: "%dm",
+        h:  "1h",
+        hh: "%dh",
+        d:  "1d",
+        dd: "%dd",
+        M:  "1m",
+        MM: "%dm",
+        y:  "1y",
+        yy: "%dy"
+    }
 });
