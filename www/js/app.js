@@ -142,45 +142,52 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.post-detail-home', {
-       url: '/post/:postId/home',
+    .state('tab.look-detail-home', {
+       url: '/look/home',
        views: {
            'tab-home': {
-               templateUrl: 'templates/post-detail.html',
-               controller: 'PostDetailCtrl'
-           }
-       }
-    })
-    .state('tab.post-detail-explore', {
-       url: '/post/:postId/explore',
-       views: {
-           'tab-explore': {
-               templateUrl: 'templates/post-detail.html',
-               controller: 'PostDetailCtrl'
-           }
-       }
-    })
-    .state('tab.post-detail-notification', {
-       url: '/post/:postId/notification',
-       views: {
-           'tab-notification': {
-               templateUrl: 'templates/post-detail.html',
-               controller: 'PostDetailCtrl'
-           }
-       }
-    })
-    .state('tab.post-detail-account', {
-       url: '/post/:postId/account',
-       views: {
-           'tab-account': {
-               templateUrl: 'templates/post-detail.html',
-               controller: 'PostDetailCtrl'
+               templateUrl: 'templates/look-detail.html',
+               controller: 'LookDetailCtrl'
            }
        },
        params: {
-           user: null,
-           posts: null,
-           index: null,
+          look: null
+       }
+    })
+    .state('tab.look-detail-explore', {
+       url: '/look/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/look-detail.html',
+               controller: 'LookDetailCtrl'
+           }
+       },
+       params: {
+          look: null
+       }
+    })
+    .state('tab.look-detail-notification', {
+       url: '/look/notification',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/look-detail.html',
+               controller: 'LookDetailCtrl'
+           }
+       },
+       params: {
+          look: null
+       }
+    })
+    .state('tab.look-detail-account', {
+       url: '/look/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/look-detail.html',
+               controller: 'LookDetailCtrl'
+           }
+       },
+       params: {
+          look: null
        }
     })
     .state('tab.post-comments-home', {

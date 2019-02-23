@@ -97,12 +97,12 @@ angular.module('starter.controllers', [])
 
         return content;
     };
-    $rootScope.goPostDetail = function(id, user, posts, index){
+    $rootScope.goLookDetail = function(look){
         if (!$rootScope.canClickInList()) {
             return;
         }
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.post-detail-'+tab,{postId: id, user: user, posts: posts, index: index});
+        $state.go('tab.look-detail-'+tab,{look: look});
     };
     $rootScope.goPostComment = function(post_id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -1749,227 +1749,13 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostDetailCtrl', function($scope, $stateParams, FetchPosts, $http, Focus, $rootScope, $ionicActionSheet, $ionicHistory, $ionicLoading, $state, $ionicPopup, UxAnalytics) {
-    //$scope.post = 0; // sloppy hack for not loaded check
-    $scope.comment = {};
-    $scope.liked = false;
-    $scope.saved = false;
-    $scope.commentsHiddenCount = 0;
-    $scope.page = 2;
-    $scope.clientVersionUpToDate = true;
-    $scope.commentSubmitting = false;
-    $scope.lessThanHidingTime = false;
-    $scope.noResult = false;
-    $scope.stat_height = 0;
-    $scope.stat_label_height = 0;
-    var user = $rootScope.getCurrentUser();
+.controller('LookDetailCtrl', function($scope, $stateParams, UxAnalytics, SlideHeader){
+    $scope.look = $stateParams.look;
 
     $scope.$on('$ionicView.enter', function() {
-        if($state.current.name == 'tab.post-comments-home'){
-            UxAnalytics.startScreen('post-comments');
-        }
-        else{
-            UxAnalytics.startScreen('post-detail');
-        }
+        UxAnalytics.startScreen('look-detail');
+        SlideHeader.viewEntered($scope);
     });
-
-    FetchPosts.get($stateParams.postId).then(function(post){
-        if(post){
-            if(post.is_visible){
-                $scope.lessThanHidingTime = true;
-            }
-            post.latest_ten_comments.reverse();
-            var commentsCount = 0;
-            if(post.comments_count){
-                commentsCount = post.comments_count.aggregate;
-            }
-            $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
-            $scope.posts = [post];
-            $scope.post = post;
-            if(post.user_liked){
-                $scope.liked = true;
-            }
-            if ($rootScope.isStatNotAvailable(post))
-            {
-                post.show_stat = false;
-            }
-            else
-            {
-                post.show_stat = true;
-            }
-        }
-        else{
-            $scope.noResult = true;
-        }
-    });
-    $scope.submitComment = function(){
-        $scope.commentSubmitting = true;
-        $http({
-            method : 'POST',
-            url : $rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment/create',
-            data : {comment:$scope.comment.content}
-        })
-        .success(function(data){
-            data.user = user;
-            $scope.post.latest_ten_comments.push(data);
-            $scope.commentSubmitting = false;
-            $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)+1);
-        })
-        .error(function(data, status){
-            $rootScope.handleHttpError(data, status);
-        });
-        $scope.comment.content = '';
-    };
-    $scope.remComment = function(index){
-        $http.get($rootScope.baseURL+'/api/comment/'+$scope.post.latest_ten_comments[index].id+'/delete').success(function(){
-            $scope.post.latest_ten_comments.splice(index, 1);
-            $('.dynamic-comment-count#'+$scope.post.id).html(parseInt($('.dynamic-comment-count#'+$scope.post.id).html(), 10)-1);
-        })
-        .error(function(data, status){
-            $rootScope.handleHttpError(data, status);
-        });
-    };
-    $scope.loadMoreComments = function(){
-        if($scope.commentsHiddenCount > 0){
-            $http.get($rootScope.baseURL+'/api/post/'+$scope.post.id+'/comment?page='+$scope.page).success(function(data){
-                $scope.post.latest_ten_comments = data.data.reverse().concat($scope.post.latest_ten_comments);
-                $scope.commentsHiddenCount -= data.data.length;
-                if($scope.commentsHiddenCount < 0){
-                    $scope.commentsHiddenCount = 0;
-                }
-                $scope.page++;
-            })
-            .error(function(data, status){
-                $rootScope.handleHttpError(data, status);
-            });
-        }
-    };
-    $scope.ownComment = function($index){
-        if($scope.post.latest_ten_comments && $scope.post.latest_ten_comments[$index]){
-            return user.id == $scope.post.latest_ten_comments[$index].user.id;
-        }
-    };
-    $scope.ownPost = function(){
-        if($scope.post){
-            return user.id == $scope.post.user.id;
-        }
-    };
-    $scope.focusComment = function(){
-        Focus('comment');
-    };
-    $scope.moreOption = function(){
-        if(user.id == $scope.post.user.id){
-            $ionicActionSheet.show({
-                buttons: [
-                    { text: 'Edit' },
-                ],
-                destructiveText: 'Delete',
-                cancelText: 'Cancel',
-                cancel: function() {
-
-                },
-                buttonClicked: function(index) {
-                    switch (index){
-                        case 0:
-                            $state.go('tab.post-edit',{post: $scope.post});
-                            return true;
-                    }
-                },
-                destructiveButtonClicked: function() {
-                    var confirmPopup = $ionicPopup.confirm({
-                        title: 'Delete',
-                        template: 'Are you sure to delete post?'
-                    });
-
-                    confirmPopup.then(function(res) {
-                        if(res) {
-                            $ionicLoading.show();
-                            $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/delete').success(function(){
-                                if($stateParams.posts){
-                                    $stateParams.posts.splice($stateParams.index,1);
-                                    $stateParams.user.posts_count--;
-                                }
-                                $ionicLoading.hide();
-                                $ionicHistory.goBack();
-                                return true;
-                            })
-                            .error(function(data, status){
-                                $rootScope.handleHttpError(data, status);
-                            });
-                        }
-                    });
-                }
-            });
-        }
-        else{
-            $ionicActionSheet.show({
-                destructiveText: 'Report',
-                cancelText: 'Cancel',
-                cancel: function() {
-
-                },destructiveButtonClicked: function() {
-                    var confirmPopup = $ionicPopup.confirm({
-                        title: 'Report',
-                        template: 'Are you sure to report this post?'
-                    });
-
-                    confirmPopup.then(function(res) {
-                        if(res) {
-                            $ionicLoading.show();
-                            $http.post($rootScope.baseURL+'/api/post/'+$scope.post.id+'/report').success(function(){
-                                $ionicLoading.hide();
-                                return true;
-                            })
-                            .error(function(data, status){
-                                $rootScope.handleHttpError(data, status);
-                            });
-                        }
-                    });
-                    return true;
-                }
-            });
-        }
-
-    };
-    $scope.doRefresh = function() {
-        $scope.post = 0; // sloppy hack for not loaded check
-        $scope.comment = {};
-        $scope.liked = false;
-        $scope.saved = false;
-        $scope.commentsHiddenCount = 0;
-        $scope.page = 2;
-        $scope.noResult = false;
-        FetchPosts.get($stateParams.postId).then(function(post){
-            if(post){
-                if(post.is_visible){
-                    $scope.lessThanHidingTime = true;
-                }
-                post.latest_ten_comments.reverse();
-                var commentsCount = 0;
-                if(post.comments_count){
-                    commentsCount = post.comments_count.aggregate;
-                }
-                $scope.commentsHiddenCount = commentsCount - post.latest_ten_comments.length;
-                $scope.posts = [post];
-                $scope.post = post;
-                if(post.user_liked){
-                    $scope.liked = true;
-                }
-                if ($rootScope.isStatNotAvailable(post))
-                {
-                    post.show_stat = false;
-                }
-                else
-                {
-                    post.show_stat = true;
-                }
-            }
-            else{
-                $scope.noResult = true;
-            }
-            $scope.$broadcast('scroll.refreshComplete');
-        });
-    };
 })
 
 .controller('PostCommentCtrl', function($scope, $rootScope, $stateParams, PostComment, SlideHeader, $ionicActionSheet, $ionicPopup, $http, $ionicLoading, $ionicScrollDelegate, Focus, $timeout, BusinessObjectList, UxAnalytics) {
