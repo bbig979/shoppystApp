@@ -2,10 +2,10 @@ angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
-    $rootScope.baseURL = 'http://app.snaplook.today';
+    //$rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    //$rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -1028,7 +1028,7 @@ angular.module('starter.controllers', [])
 
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
-.controller('PostCreateCtrl', function(LoyaltyPoints, $scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'public';
     $scope.submitted = false;
     $location.replace('tab.camera');
@@ -1070,8 +1070,6 @@ angular.module('starter.controllers', [])
         }
         $scope.occasionList.push({value: 'other', label: 'Other'});
     });
-
-    LoyaltyPoints.visit();
 
     $scope.sharePost = function(captions, occasion, other) {
         var fileURLs = CameraPictues.get();
@@ -2357,9 +2355,6 @@ angular.module('starter.controllers', [])
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
     };
-    $scope.goLoyaltyPoints = function(id){
-        $state.go('tab.loyalty-points-account');
-    };
     $scope.goFindFriends = function(id){
         $state.go('tab.find-friends');
     };
@@ -2761,7 +2756,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('LoyaltyPointsCtrl', function($scope, $rootScope, $state, $timeout, $ionicPopup, UxAnalytics, LoyaltyPoints) {
+.controller('LoyaltyPointsCtrl_deprecated_20190224', function($scope, $rootScope, $state, $timeout, $ionicPopup, UxAnalytics, LoyaltyPoints) {
 
     $scope.doRefresh = function() {
         $scope.noResult = false;
