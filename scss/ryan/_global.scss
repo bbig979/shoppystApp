@@ -114,8 +114,8 @@ a{
     padding: 8px;
     text-align: center;
 }
-.has-blocker-message{
-    top: 84px;
+.has-blocker-message.has-header{
+    top: 40px;
 }
 #tutorial-wrapper{
     #tutorial-modal{
@@ -301,5 +301,25 @@ a{
 .platform-ios {
     #new-post-wrapper{
         top: 92px;
+    }
+}
+.slide-header {
+    transition: top 0.25s ease;
+    top: 0;
+}
+.has-header {
+    top: 0;
+    padding-top: 44px;
+}
+
+body.header-slide-away {
+    .slide-header {
+        top: -44px;
+    }
+    .title{
+        display: none;
+    }
+    #blocker-message{
+        top: 0;
     }
 }

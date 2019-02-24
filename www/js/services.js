@@ -142,7 +142,7 @@ angular.module('starter.services', [])
                 return;
             }
             if(this._isNewVersionAvailable()){
-                message = "New features are added. Let's update an app!";
+                message = "New version is available. Let's update an app!";
                 is_needed = true;
                 return;
             }

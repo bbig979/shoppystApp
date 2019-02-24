@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, Tutorial, SlideHeader) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     $rootScope.baseURL = 'http://app.snaplook.today';
@@ -19,6 +19,13 @@ angular.module('starter.controllers', [])
     $rootScope.slideHeader = SlideHeader;
     $rootScope.notificationPullInterval = 60000;
     Config.init().then(function(){
+        $rootScope.config = Config;
+        /*
+        Tutorial.init(Config.get('tutorials'));
+        $rootScope.tutorial = Tutorial;
+        */
+        BlockerMessage.init();
+
         var result = Config.get('minimum_force_update_version');
         if (result)
         {
@@ -1021,7 +1028,7 @@ angular.module('starter.controllers', [])
 
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
-.controller('PostCreateCtrl', function(LoyaltyPoints, $scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate, ImageUpload, SlideHeader) {
+.controller('PostCreateCtrl', function(LoyaltyPoints, $scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'public';
     $scope.submitted = false;
     $location.replace('tab.camera');
@@ -1040,7 +1047,7 @@ angular.module('starter.controllers', [])
         });
     }
     else{
-        Tutorial.triggerIfNotCompleted('tutorial_welcome');
+        //Tutorial.triggerIfNotCompleted('tutorial_welcome');
     }
 
     // problem : Appsee starts with 'Main' screen, even though I hardcode to start 'explore'.
@@ -1212,7 +1219,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('TutorialCtrl',function($scope, Tutorial, Config, BlockerMessage){
+.controller('TutorialCtrl_deprecated_20190222',function($scope, Tutorial, Config, BlockerMessage){
     Config.init().then(function(){
         Tutorial.init(Config.get('tutorials'));
         $scope.tutorial = Tutorial;
@@ -1881,7 +1888,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state) {
+.controller('PostExploreCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state, $timeout) {
     $scope.postCard = PostCard;
     $scope.business_object_list_config = {
         type : 'post',
@@ -1918,7 +1925,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, Tutorial, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config, SlideHeader) {
+.controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config, SlideHeader) {
     $scope.search_type_active = "tag";
     $scope.searchHolder = "Search hashtags";
     $scope.searchNoResultText = "No Results Found";
@@ -1929,14 +1936,7 @@ angular.module('starter.controllers', [])
     $scope.isSearchRunning = false;
     $scope.noResult = false;
     $scope.search_term = "";
-    $scope.need_to_stay_idle_milisec = 500;
-    Config.init().then(function(){
-        var result = Config.get('need_to_stay_idle_milisec');
-        if (result)
-        {
-            $scope.need_to_stay_idle_milisec = result;
-        }
-    });
+    $scope.need_to_stay_idle_milisec = $rootScope.config.get('need_to_stay_idle_milisec');
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-search');
@@ -2186,7 +2186,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, Tutorial, UxAnalytics, ImageUpload, PostCard, BusinessObjectList, SlideHeader, $ionicScrollDelegate) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, UxAnalytics, ImageUpload, PostCard, BusinessObjectList, SlideHeader, $ionicScrollDelegate) {
     var user = $rootScope.getCurrentUser();
 
     var method = 'my_profile';
