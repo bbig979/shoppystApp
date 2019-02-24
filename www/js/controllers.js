@@ -1252,7 +1252,7 @@ angular.module('starter.controllers', [])
         disableBack: true
     });
     if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
-        $state.go('tab.post-create');
+        $state.go('tab.explore-explore');
     }
     else{
         $state.go('auth');
@@ -1309,7 +1309,7 @@ angular.module('starter.controllers', [])
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-                    $state.go('tab.post-create');
+                    $state.go('tab.explore-explore');
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
@@ -1374,7 +1374,7 @@ angular.module('starter.controllers', [])
                                 disableBack: true
                             });
                             $ionicLoading.hide();
-                            $state.go('tab.post-create');
+                            $state.go('tab.explore-explore');
                         })
                         .error(function(data, status){
                             $ionicLoading.hide();
@@ -1457,7 +1457,7 @@ angular.module('starter.controllers', [])
                     disableBack: true
                 });
                 BlockerMessage.init();
-                $state.go('tab.post-create');
+                $state.go('tab.explore-explore');
             })
             .error(function(data, status){
                 $rootScope.handleHttpError(data, status);
@@ -1529,7 +1529,7 @@ angular.module('starter.controllers', [])
                     disableBack: true
                 });
                 $ionicLoading.hide();
-                $state.go('tab.post-create');
+                $state.go('tab.explore-explore');
             })
             .error(function(data, status){
                 $ionicLoading.hide();
@@ -1568,7 +1568,7 @@ angular.module('starter.controllers', [])
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-                    $state.go('tab.post-create');
+                    $state.go('tab.explore-explore');
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
@@ -1633,7 +1633,7 @@ angular.module('starter.controllers', [])
                                 disableBack: true
                             });
                             $ionicLoading.hide();
-                            $state.go('tab.post-create');
+                            $state.go('tab.explore-explore');
                         })
                         .error(function(data, status){
                             $ionicLoading.hide();
@@ -1889,6 +1889,16 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PostExploreCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state, $timeout) {
+    var user = $rootScope.getCurrentUser();
+    if(user.username == user.email){
+        $state.go('register2').then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
+        return;
+    }
+
     $scope.postCard = PostCard;
     $scope.business_object_list_config = {
         type : 'post',
