@@ -4516,17 +4516,13 @@ div.tab-nav.tabs {
   line-height: 1;
 }
 /* line 25, ../../scss/ryan/_explore.scss */
-#tab-explore ion-content {
-  margin-top: 44px;
+#tab-explore .list {
+  margin-top: 45px;
 }
 
 /* line 31, ../../scss/ryan/_explore.scss */
 body.header-slide-away #tab-explore .search-bar {
   top: -44px;
-}
-/* line 35, ../../scss/ryan/_explore.scss */
-body.header-slide-away #tab-explore ion-content {
-  margin-top: -44px;
 }
 
 /* line 2, ../../scss/ryan/_ranking.scss */

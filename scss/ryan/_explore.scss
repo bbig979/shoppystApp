@@ -22,8 +22,8 @@
     border-radius: 5px;
     line-height: 1;
   }
-  ion-content{
-    margin-top: 44px;
+  .list{
+      margin-top: 45px;
   }
 }
 body.header-slide-away {
@@ -31,9 +31,6 @@ body.header-slide-away {
         .search-bar{
             //transition: top 0.25s ease;
             top: -44px;
-        }
-        ion-content{
-            margin-top: -44px;
         }
     }
 }
