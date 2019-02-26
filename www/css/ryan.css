@@ -4260,7 +4260,6 @@ a {
 
 /* line 306, ../../scss/ryan/_global.scss */
 .slide-header {
-  transition: top 0.25s ease;
   top: 0;
 }
 
@@ -4489,19 +4488,24 @@ div.tab-nav.tabs {
 }
 
 /* line 2, ../../scss/ryan/_explore.scss */
+#tab-explore .search-bar {
+  position: fixed;
+  top: 44px;
+}
+/* line 6, ../../scss/ryan/_explore.scss */
 #tab-explore .search-header {
   text-align: center;
   padding: 30px 0;
 }
-/* line 3, ../../scss/ryan/_explore.scss */
+/* line 7, ../../scss/ryan/_explore.scss */
 #tab-explore .search-header h3 {
   color: #555;
 }
-/* line 9, ../../scss/ryan/_explore.scss */
+/* line 13, ../../scss/ryan/_explore.scss */
 #tab-explore .search-clear {
   margin-top: 0;
 }
-/* line 12, ../../scss/ryan/_explore.scss */
+/* line 16, ../../scss/ryan/_explore.scss */
 #tab-explore .user-type-tag {
   font-size: 10px;
   display: inline-block;
@@ -4510,6 +4514,19 @@ div.tab-nav.tabs {
   padding: 3px 5px;
   border-radius: 5px;
   line-height: 1;
+}
+/* line 25, ../../scss/ryan/_explore.scss */
+#tab-explore ion-content {
+  margin-top: 44px;
+}
+
+/* line 31, ../../scss/ryan/_explore.scss */
+body.header-slide-away #tab-explore .search-bar {
+  top: -44px;
+}
+/* line 35, ../../scss/ryan/_explore.scss */
+body.header-slide-away #tab-explore ion-content {
+  margin-top: -44px;
 }
 
 /* line 2, ../../scss/ryan/_ranking.scss */

@@ -1,13 +1,13 @@
 <ion-view class="post-card-list" id="tab-explore" view-title="EXPLORE">
+    <div class="bar bar-header item-input-inset search-bar" ng-click="goPostSearch()">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i>
+            <input type="search" placeholder="Search">
+        </label>
+    </div>
     <ion-content scroll-watch ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
-        <div class="bar bar-header item-input-inset" ng-click="goPostSearch()">
-            <label class="item-input-wrapper">
-                <i class="icon ion-ios-search placeholder-icon"></i>
-                <input type="search" placeholder="Search">
-            </label>
-        </div>
         <div class="loading-spinner" data-loading ng-if="is_list_loading">
             <ion-spinner></ion-spinner>
         </div>

@@ -1,4 +1,8 @@
 #tab-explore{
+  .search-bar{
+    position: fixed;
+    top: 44px;
+  }
   .search-header{
     h3{
       color: #555;
@@ -18,4 +22,18 @@
     border-radius: 5px;
     line-height: 1;
   }
+  ion-content{
+    margin-top: 44px;
+  }
+}
+body.header-slide-away {
+    #tab-explore{
+        .search-bar{
+            //transition: top 0.25s ease;
+            top: -44px;
+        }
+        ion-content{
+            margin-top: -44px;
+        }
+    }
 }
