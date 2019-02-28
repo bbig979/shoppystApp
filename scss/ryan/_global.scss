@@ -302,12 +302,12 @@ a{
     #new-post-wrapper{
         top: 92px;
     }
-}
-.platform-ios.platform-cordova:not(.fullscreen) .has-header {
-    top: 20px;
     #tab-explore .search-bar {
         top: 64px;
     }
+}
+.platform-ios.platform-cordova:not(.fullscreen) .has-header {
+    top: 20px;
 }
 .slide-header {
     // transition: top 0.25s ease;

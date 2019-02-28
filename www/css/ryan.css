@@ -4257,14 +4257,14 @@ a {
 .platform-ios #new-post-wrapper {
   top: 92px;
 }
+/* line 305, ../../scss/ryan/_global.scss */
+.platform-ios #tab-explore .search-bar {
+  top: 64px;
+}
 
-/* line 306, ../../scss/ryan/_global.scss */
+/* line 309, ../../scss/ryan/_global.scss */
 .platform-ios.platform-cordova:not(.fullscreen) .has-header {
   top: 20px;
-}
-/* line 308, ../../scss/ryan/_global.scss */
-.platform-ios.platform-cordova:not(.fullscreen) .has-header #tab-explore .search-bar {
-  top: 64px;
 }
 
 /* line 312, ../../scss/ryan/_global.scss */
