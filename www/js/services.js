@@ -39,6 +39,9 @@ angular.module('starter.services', [])
             if(e.originalEvent.detail === undefined){
                 return;
             }
+            if(e.originalEvent.detail.scrollTop === undefined){
+                return;
+            }
             var current_scroll_position = e.originalEvent.detail.scrollTop;
             var previous_scroll_position = SlideHeader.getPreviousScrollPosition(this_scroll_scope_id);
 
