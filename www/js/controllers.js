@@ -1182,15 +1182,6 @@ angular.module('starter.controllers', [])
     $scope.isActive = function(visibility){
       return visibility === $scope.visibility;
     }
-    $scope.isVisibleFriend = function(){
-        return $scope.visibility == 'friend';
-    }
-    $scope.isVisiblePublic = function(){
-        return $scope.visibility == 'public';
-    }
-    $scope.isVisiblePermanent = function(){
-        return $scope.visibility == 'permanent';
-    }
 })
 .controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading, UxAnalytics, SlideHeader) {
     $scope.post = $stateParams.post;
