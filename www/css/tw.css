@@ -261,6 +261,10 @@
   color: white;
   text-align: right;
 }
+/* line 151, ../../scss/tw/_account.scss */
+#tab-account ion-content .scroll {
+  min-height: 900px;
+}
 
 /* line 2, ../../scss/tw/_explore.scss */
 #tab-explore .compare-toggle {
