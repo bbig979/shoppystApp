@@ -28,7 +28,7 @@ angular.module('starter.services', [])
 .directive('scrollWatch', function(SlideHeader) {
     return function(scope, elem, attr) {
         var cushion_for_subtle_scroll_up = 150;
-        var start_position = 100;
+        var start_position = 500;
         var this_scroll_scope_id = scope.$parent.$id;
 
         SlideHeader.setCurrentScrollScopeId(this_scroll_scope_id);

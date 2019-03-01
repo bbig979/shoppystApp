@@ -2220,8 +2220,8 @@ angular.module('starter.controllers', [])
 
     if($stateParams.refresh){
         var repeatUntillScrolled = setInterval(function(){
-            $ionicScrollDelegate.scrollTo(0, 340, true);
-            if($ionicScrollDelegate.getScrollPosition().top == 340){
+            $ionicScrollDelegate.scrollTo(0, 296, true);
+            if($ionicScrollDelegate.getScrollPosition().top == 296){
                 clearInterval(repeatUntillScrolled);
             }
         }, 500);
