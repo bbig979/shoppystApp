@@ -4253,40 +4253,75 @@ a {
   padding: 10px 0 0 0;
 }
 
-/* line 302, ../../scss/ryan/_global.scss */
+/* line 301, ../../scss/ryan/_global.scss */
+#tab-explore .has-blocker-message + .search-bar {
+  top: 84px;
+}
+
+/* line 305, ../../scss/ryan/_global.scss */
 .platform-ios #new-post-wrapper {
   top: 92px;
 }
-/* line 305, ../../scss/ryan/_global.scss */
+/* line 308, ../../scss/ryan/_global.scss */
 .platform-ios #tab-explore .search-bar {
   top: 64px;
 }
+/* line 311, ../../scss/ryan/_global.scss */
+.platform-ios #tab-explore .has-blocker-message + .search-bar {
+  top: 104px;
+}
+/* line 314, ../../scss/ryan/_global.scss */
+.platform-ios #blocker-message {
+  top: 64px;
+}
+/* line 318, ../../scss/ryan/_global.scss */
+.platform-ios.header-slide-away #blocker-message {
+  top: 20px;
+}
+/* line 321, ../../scss/ryan/_global.scss */
+.platform-ios.header-slide-away #tab-explore .has-blocker-message + .search-bar {
+  top: 60px;
+}
 
-/* line 309, ../../scss/ryan/_global.scss */
+/* line 326, ../../scss/ryan/_global.scss */
+.platform-ios.platform-cordova:not(.fullscreen) .bar-header.search-bar {
+  height: 44px;
+}
+
+/* line 329, ../../scss/ryan/_global.scss */
 .platform-ios.platform-cordova:not(.fullscreen) .has-header {
   top: 20px;
 }
+/* line 331, ../../scss/ryan/_global.scss */
+.platform-ios.platform-cordova:not(.fullscreen) .has-header.has-blocker-message {
+  top: 60px;
+}
 
-/* line 312, ../../scss/ryan/_global.scss */
+/* line 335, ../../scss/ryan/_global.scss */
+.platform-android #tab-explore .scroll-refresher {
+  margin-top: 44px;
+}
+
+/* line 338, ../../scss/ryan/_global.scss */
 .slide-header {
   top: 0;
 }
 
-/* line 316, ../../scss/ryan/_global.scss */
+/* line 342, ../../scss/ryan/_global.scss */
 .has-header {
   top: 0;
   padding-top: 44px;
 }
 
-/* line 322, ../../scss/ryan/_global.scss */
+/* line 348, ../../scss/ryan/_global.scss */
 body.header-slide-away .slide-header {
-  top: -44px;
+  top: -100px;
 }
-/* line 325, ../../scss/ryan/_global.scss */
+/* line 351, ../../scss/ryan/_global.scss */
 body.header-slide-away .title {
   display: none;
 }
-/* line 328, ../../scss/ryan/_global.scss */
+/* line 354, ../../scss/ryan/_global.scss */
 body.header-slide-away #blocker-message {
   top: 0;
 }

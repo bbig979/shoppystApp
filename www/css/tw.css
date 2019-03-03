@@ -262,7 +262,7 @@
   text-align: right;
 }
 /* line 151, ../../scss/tw/_account.scss */
-#tab-account ion-content .scroll {
+#tab-account ion-content > .scroll {
   min-height: 900px;
 }
 
