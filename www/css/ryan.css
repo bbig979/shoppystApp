@@ -4275,53 +4275,73 @@ a {
   top: 64px;
 }
 /* line 318, ../../scss/ryan/_global.scss */
+.platform-ios.keyboard-open form[name=commentForm] {
+  bottom: unset;
+  top: 64px;
+}
+/* line 322, ../../scss/ryan/_global.scss */
+.platform-ios.keyboard-open .has-blocker-message + form[name=commentForm] {
+  bottom: unset;
+  top: 104px;
+}
+/* line 328, ../../scss/ryan/_global.scss */
 .platform-ios.header-slide-away #blocker-message {
   top: 20px;
 }
-/* line 321, ../../scss/ryan/_global.scss */
+/* line 331, ../../scss/ryan/_global.scss */
 .platform-ios.header-slide-away #tab-explore .has-blocker-message + .search-bar {
   top: 60px;
 }
+/* line 334, ../../scss/ryan/_global.scss */
+.platform-ios.header-slide-away form[name=commentForm] {
+  bottom: unset;
+  top: 20px;
+}
+/* line 338, ../../scss/ryan/_global.scss */
+.platform-ios.header-slide-away .has-blocker-message + form[name=commentForm] {
+  bottom: unset;
+  top: 60px;
+}
 
-/* line 326, ../../scss/ryan/_global.scss */
+/* line 344, ../../scss/ryan/_global.scss */
 .platform-ios.platform-cordova:not(.fullscreen) .bar-header.search-bar {
   height: 44px;
 }
 
-/* line 329, ../../scss/ryan/_global.scss */
+/* line 347, ../../scss/ryan/_global.scss */
 .platform-ios.platform-cordova:not(.fullscreen) .has-header {
   top: 20px;
 }
-/* line 331, ../../scss/ryan/_global.scss */
+/* line 349, ../../scss/ryan/_global.scss */
 .platform-ios.platform-cordova:not(.fullscreen) .has-header.has-blocker-message {
   top: 60px;
 }
 
-/* line 335, ../../scss/ryan/_global.scss */
+/* line 353, ../../scss/ryan/_global.scss */
 .platform-android #tab-explore .scroll-refresher {
   margin-top: 44px;
 }
 
-/* line 338, ../../scss/ryan/_global.scss */
+/* line 356, ../../scss/ryan/_global.scss */
 .slide-header {
   top: 0;
 }
 
-/* line 342, ../../scss/ryan/_global.scss */
+/* line 360, ../../scss/ryan/_global.scss */
 .has-header {
   top: 0;
   padding-top: 44px;
 }
 
-/* line 348, ../../scss/ryan/_global.scss */
+/* line 366, ../../scss/ryan/_global.scss */
 body.header-slide-away .slide-header {
   top: -100px;
 }
-/* line 351, ../../scss/ryan/_global.scss */
+/* line 369, ../../scss/ryan/_global.scss */
 body.header-slide-away .title {
   display: none;
 }
-/* line 354, ../../scss/ryan/_global.scss */
+/* line 372, ../../scss/ryan/_global.scss */
 body.header-slide-away #blocker-message {
   top: 0;
 }

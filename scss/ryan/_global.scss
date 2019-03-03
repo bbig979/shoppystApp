@@ -314,11 +314,29 @@ a{
     #blocker-message{
         top: 64px;
     }
+    &.keyboard-open{
+        form[name=commentForm]{
+            bottom: unset;
+            top: 64px;
+        }
+        .has-blocker-message + form[name=commentForm]{
+            bottom: unset;
+            top: 104px;
+        }
+    }
     &.header-slide-away {
         #blocker-message{
             top: 20px;
         }
         #tab-explore .has-blocker-message + .search-bar {
+            top: 60px;
+        }
+        form[name=commentForm]{
+            bottom: unset;
+            top: 20px;
+        }
+        .has-blocker-message + form[name=commentForm]{
+            bottom: unset;
             top: 60px;
         }
     }
