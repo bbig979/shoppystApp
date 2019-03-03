@@ -231,11 +231,11 @@ angular.module('starter.controllers', [])
                 switch (index){
                     case 0 :
                         var options = {
-                            quality: 100,
-                            targetWidth: 600,
-                            targetHeight: 600,
+                            quality: 50,
+                            targetWidth: 2400,
+                            targetHeight: 2400,
                             correctOrientation: true,
-                            destinationType: Camera.DestinationType.FILE_URL,
+                            destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
                         $cordovaCamera.getPicture(options).then(
@@ -253,9 +253,9 @@ angular.module('starter.controllers', [])
                         return true;
                     case 1 :
                         var options = {
-                            quality: 100,
-                            targetWidth: 600,
-                            targetHeight: 600,
+                            quality: 50,
+                            targetWidth: 2400,
+                            targetHeight: 2400,
                             correctOrientation: true,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
