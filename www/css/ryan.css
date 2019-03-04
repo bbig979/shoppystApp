@@ -4335,13 +4335,17 @@ a {
 
 /* line 366, ../../scss/ryan/_global.scss */
 body.header-slide-away .slide-header {
+  top: -44px;
+}
+/* line 368, ../../scss/ryan/_global.scss */
+body.header-slide-away .slide-header .back-button {
   top: -100px;
 }
-/* line 369, ../../scss/ryan/_global.scss */
+/* line 372, ../../scss/ryan/_global.scss */
 body.header-slide-away .title {
   display: none;
 }
-/* line 372, ../../scss/ryan/_global.scss */
+/* line 375, ../../scss/ryan/_global.scss */
 body.header-slide-away #blocker-message {
   top: 0;
 }

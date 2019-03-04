@@ -364,7 +364,10 @@ a{
 
 body.header-slide-away {
     .slide-header {
-        top: -100px;
+        top: -44px;
+        .back-button{
+            top: -100px;
+        }
     }
     .title{
         display: none;
