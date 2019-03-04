@@ -1085,7 +1085,7 @@ angular.module('starter.controllers', [])
         }
 
         $scope.submitted = true;
-        $ionicLoading.show({template: 'Uploading Photo...'});
+        $ionicLoading.show({template: 'Uploading Photo...<br/><br/><ion-spinner></ion-spinner>'});
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
