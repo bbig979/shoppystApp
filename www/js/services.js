@@ -4,6 +4,17 @@ angular.module('starter.services', [])
        return $sce.trustAsHtml(val);
    }
 })
+.directive('imageonload', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.bind('load', function() {
+                //call the function that was passed
+                scope.$apply(attrs.imageonload);
+            });
+        }
+    };
+})
 .directive('loading', ['$http' ,function ($http)
 {
     return {

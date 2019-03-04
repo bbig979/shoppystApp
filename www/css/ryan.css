@@ -4522,6 +4522,10 @@ div.tab-nav.tabs {
   width: 100% !important;
   vertical-align: top !important;
 }
+/* line 65, ../../scss/ryan/_post-detail.scss */
+#look-detail ion-spinner {
+  margin-top: 50px;
+}
 
 /* line 2, ../../scss/ryan/_home.scss */
 #home .post-header {

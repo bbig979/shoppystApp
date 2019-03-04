@@ -1749,6 +1749,10 @@ angular.module('starter.controllers', [])
 .controller('LookDetailCtrl', function($scope, $stateParams, UxAnalytics, SlideHeader){
     $scope.look = $stateParams.look;
 
+    $scope.imageLoaded = function(object) {
+        object.loaded = true;
+    }
+
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('look-detail');
         SlideHeader.viewEntered($scope);
