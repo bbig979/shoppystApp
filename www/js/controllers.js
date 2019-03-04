@@ -111,9 +111,9 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.look-detail-'+tab,{look: look});
     };
-    $rootScope.goPostComment = function(post_id){
+    $rootScope.goPostComment = function(post){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.post-comments-'+tab,{post_id: post_id});
+        $state.go('tab.post-comments-'+tab,{post: post});
     };
     $rootScope.goVoteResult = function(post_id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -1487,7 +1487,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading, $q, UxAnalytics) {
+.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading, $q, UxAnalytics, BlockerMessage) {
 
     $scope.loginData = {};
     $scope.loginError = false;
@@ -1514,6 +1514,7 @@ angular.module('starter.controllers', [])
             $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
                 var user = data.user;
                 $rootScope.setCurrentUser(user);
+                BlockerMessage.init();
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
@@ -1755,7 +1756,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PostCommentCtrl', function($scope, $rootScope, $stateParams, PostComment, SlideHeader, $ionicActionSheet, $ionicPopup, $http, $ionicLoading, $ionicScrollDelegate, Focus, $timeout, BusinessObjectList, UxAnalytics) {
-    $scope.post_id = $stateParams.post_id;
+    $scope.post_id = $stateParams.post.id;
     var user = $rootScope.getCurrentUser();
     var resetCommentFormVariables = function(){
         $scope.new_comment = {content:''};
@@ -1809,6 +1810,12 @@ angular.module('starter.controllers', [])
                     $scope.list,
                     $scope.new_comment_parent_id
                 );
+                if($stateParams.post.comment_info){
+                    $stateParams.post.comment_info.count++;
+                }
+                else{
+                    $stateParams.post.comment_info = {count:1};
+                }
                 submitCommentDone($scope.new_comment_parent_id);
             }, function(){
                 submitCommentDone();
@@ -1843,6 +1850,12 @@ angular.module('starter.controllers', [])
                         if(res) {
                             comments.splice(index,1);
                             PostComment.delete(comment);
+                            if($stateParams.post.comment_info){
+                                $stateParams.post.comment_info.count--;
+                            }
+                            else{
+                                $stateParams.post.comment_info = null;
+                            }
                             if(comments.length == 0){
                                 $scope.is_result_empty = true;
                             }
