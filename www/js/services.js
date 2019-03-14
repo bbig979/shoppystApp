@@ -4,6 +4,17 @@ angular.module('starter.services', [])
        return $sce.trustAsHtml(val);
    }
 })
+.directive('imageonload', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.bind('load', function() {
+                //call the function that was passed
+                scope.$apply(attrs.imageonload);
+            });
+        }
+    };
+})
 .directive('loading', ['$http' ,function ($http)
 {
     return {
@@ -28,7 +39,7 @@ angular.module('starter.services', [])
 .directive('scrollWatch', function(SlideHeader) {
     return function(scope, elem, attr) {
         var cushion_for_subtle_scroll_up = 150;
-        var start_position = 100;
+        var start_position = 500;
         var this_scroll_scope_id = scope.$parent.$id;
 
         SlideHeader.setCurrentScrollScopeId(this_scroll_scope_id);
@@ -37,6 +48,9 @@ angular.module('starter.services', [])
 
         elem.bind('scroll', function(e) {
             if(e.originalEvent.detail === undefined){
+                return;
+            }
+            if(e.originalEvent.detail.scrollTop === undefined){
                 return;
             }
             var current_scroll_position = e.originalEvent.detail.scrollTop;
@@ -142,7 +156,7 @@ angular.module('starter.services', [])
                 return;
             }
             if(this._isNewVersionAvailable()){
-                message = "New features are added. Let's update an app!";
+                message = "New version is available. Let's update an app!";
                 is_needed = true;
                 return;
             }

@@ -35,39 +35,40 @@
 }
 
 /* line 14, ../../scss/tw/_global.scss */
-.platform-ios.platform-cordova:not(.fullscreen) #tab-explore .bar-header:not(.bar-subheader).item-input-inset .item-input-wrapper {
+.platform-ios.platform-cordova:not(.fullscreen) #tab-explore .bar-header:not(.bar-subheader).item-input-inset .item-input-wrapper,
+.platform-ios.platform-cordova:not(.fullscreen) #post-search .bar-header:not(.bar-subheader).item-input-inset .item-input-wrapper {
   margin-top: 0px !important;
 }
 
-/* line 18, ../../scss/tw/_global.scss */
+/* line 19, ../../scss/tw/_global.scss */
 .clearfix:before,
 .clearfix:after {
   content: " ";
   display: table;
 }
 
-/* line 24, ../../scss/tw/_global.scss */
+/* line 25, ../../scss/tw/_global.scss */
 .clearfix:after {
   clear: both;
 }
 
-/* line 28, ../../scss/tw/_global.scss */
+/* line 29, ../../scss/tw/_global.scss */
 .clearfix {
   *zoom: 1;
 }
 
-/* line 32, ../../scss/tw/_global.scss */
+/* line 33, ../../scss/tw/_global.scss */
 .clear {
   clear: both;
 }
 
-/* line 36, ../../scss/tw/_global.scss */
+/* line 37, ../../scss/tw/_global.scss */
 .platform-android .tabs-striped .tab-item.tab-item-active, .tabs-striped .tab-item.active, .tabs-striped .tab-item.activated {
   border-style: none;
   border-color: none;
 }
 
-/* line 41, ../../scss/tw/_global.scss */
+/* line 42, ../../scss/tw/_global.scss */
 .compare-button {
   background-color: #FF4C62;
   border-color: #FF4C62;
@@ -82,7 +83,7 @@
   font-size: 11px !important;
 }
 
-/* line 55, ../../scss/tw/_global.scss */
+/* line 56, ../../scss/tw/_global.scss */
 .small-badge {
   background-color: #FF4C62;
   border-radius: 10px;
@@ -260,6 +261,10 @@
 #tab-account .profile-post-like-count {
   color: white;
   text-align: right;
+}
+/* line 151, ../../scss/tw/_account.scss */
+#tab-account ion-content > .scroll {
+  min-height: 900px;
 }
 
 /* line 2, ../../scss/tw/_explore.scss */

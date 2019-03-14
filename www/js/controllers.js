@@ -1,11 +1,11 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, Tutorial, SlideHeader) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
-    $rootScope.baseURL = 'http://app.snaplook.today';
+    //$rootScope.baseURL = 'http://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    //$rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -19,6 +19,13 @@ angular.module('starter.controllers', [])
     $rootScope.slideHeader = SlideHeader;
     $rootScope.notificationPullInterval = 60000;
     Config.init().then(function(){
+        $rootScope.config = Config;
+        /*
+        Tutorial.init(Config.get('tutorials'));
+        $rootScope.tutorial = Tutorial;
+        */
+        BlockerMessage.init();
+
         var result = Config.get('minimum_force_update_version');
         if (result)
         {
@@ -104,9 +111,9 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.look-detail-'+tab,{look: look});
     };
-    $rootScope.goPostComment = function(post_id){
+    $rootScope.goPostComment = function(post){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.post-comments-'+tab,{post_id: post_id});
+        $state.go('tab.post-comments-'+tab,{post: post});
     };
     $rootScope.goVoteResult = function(post_id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -224,11 +231,11 @@ angular.module('starter.controllers', [])
                 switch (index){
                     case 0 :
                         var options = {
-                            quality: 100,
-                            targetWidth: 600,
-                            targetHeight: 600,
+                            quality: 50,
+                            targetWidth: 2400,
+                            targetHeight: 2400,
                             correctOrientation: true,
-                            destinationType: Camera.DestinationType.FILE_URL,
+                            destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
                         $cordovaCamera.getPicture(options).then(
@@ -246,9 +253,9 @@ angular.module('starter.controllers', [])
                         return true;
                     case 1 :
                         var options = {
-                            quality: 100,
-                            targetWidth: 600,
-                            targetHeight: 600,
+                            quality: 50,
+                            targetWidth: 2400,
+                            targetHeight: 2400,
                             correctOrientation: true,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
@@ -1021,7 +1028,7 @@ angular.module('starter.controllers', [])
 
     setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
 })
-.controller('PostCreateCtrl', function(LoyaltyPoints, $scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, Tutorial, $ionicScrollDelegate, ImageUpload, SlideHeader) {
+.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'public';
     $scope.submitted = false;
     $location.replace('tab.camera');
@@ -1040,7 +1047,7 @@ angular.module('starter.controllers', [])
         });
     }
     else{
-        Tutorial.triggerIfNotCompleted('tutorial_welcome');
+        //Tutorial.triggerIfNotCompleted('tutorial_welcome');
     }
 
     // problem : Appsee starts with 'Main' screen, even though I hardcode to start 'explore'.
@@ -1064,8 +1071,6 @@ angular.module('starter.controllers', [])
         $scope.occasionList.push({value: 'other', label: 'Other'});
     });
 
-    LoyaltyPoints.visit();
-
     $scope.sharePost = function(captions, occasion, other) {
         var fileURLs = CameraPictues.get();
         var share_post_scope = this;
@@ -1080,7 +1085,7 @@ angular.module('starter.controllers', [])
         }
 
         $scope.submitted = true;
-        $ionicLoading.show({template: 'Uploading Photo...'});
+        $ionicLoading.show({template: 'Uploading Photo...<br/><br/><ion-spinner></ion-spinner>'});
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
@@ -1177,15 +1182,6 @@ angular.module('starter.controllers', [])
     $scope.isActive = function(visibility){
       return visibility === $scope.visibility;
     }
-    $scope.isVisibleFriend = function(){
-        return $scope.visibility == 'friend';
-    }
-    $scope.isVisiblePublic = function(){
-        return $scope.visibility == 'public';
-    }
-    $scope.isVisiblePermanent = function(){
-        return $scope.visibility == 'permanent';
-    }
 })
 .controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading, UxAnalytics, SlideHeader) {
     $scope.post = $stateParams.post;
@@ -1212,7 +1208,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('TutorialCtrl',function($scope, Tutorial, Config, BlockerMessage){
+.controller('TutorialCtrl_deprecated_20190222',function($scope, Tutorial, Config, BlockerMessage){
     Config.init().then(function(){
         Tutorial.init(Config.get('tutorials'));
         $scope.tutorial = Tutorial;
@@ -1245,7 +1241,7 @@ angular.module('starter.controllers', [])
         disableBack: true
     });
     if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
-        $state.go('tab.post-create');
+        $state.go('tab.explore-explore');
     }
     else{
         $state.go('auth');
@@ -1302,7 +1298,7 @@ angular.module('starter.controllers', [])
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-                    $state.go('tab.post-create');
+                    $state.go('tab.explore-explore');
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
@@ -1367,7 +1363,7 @@ angular.module('starter.controllers', [])
                                 disableBack: true
                             });
                             $ionicLoading.hide();
-                            $state.go('tab.post-create');
+                            $state.go('tab.explore-explore');
                         })
                         .error(function(data, status){
                             $ionicLoading.hide();
@@ -1450,7 +1446,7 @@ angular.module('starter.controllers', [])
                     disableBack: true
                 });
                 BlockerMessage.init();
-                $state.go('tab.post-create');
+                $state.go('tab.explore-explore');
             })
             .error(function(data, status){
                 $rootScope.handleHttpError(data, status);
@@ -1491,7 +1487,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading, $q, UxAnalytics) {
+.controller('AuthCtrl', function($scope, $location, $stateParams, $ionicHistory, $http, $state, $auth, $rootScope, $ionicLoading, $q, UxAnalytics, BlockerMessage) {
 
     $scope.loginData = {};
     $scope.loginError = false;
@@ -1518,11 +1514,12 @@ angular.module('starter.controllers', [])
             $http.get($rootScope.baseURL+'/api/authenticate/user').success(function(data){
                 var user = data.user;
                 $rootScope.setCurrentUser(user);
+                BlockerMessage.init();
                 $ionicHistory.nextViewOptions({
                     disableBack: true
                 });
                 $ionicLoading.hide();
-                $state.go('tab.post-create');
+                $state.go('tab.explore-explore');
             })
             .error(function(data, status){
                 $ionicLoading.hide();
@@ -1561,7 +1558,7 @@ angular.module('starter.controllers', [])
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-                    $state.go('tab.post-create');
+                    $state.go('tab.explore-explore');
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
@@ -1626,7 +1623,7 @@ angular.module('starter.controllers', [])
                                 disableBack: true
                             });
                             $ionicLoading.hide();
-                            $state.go('tab.post-create');
+                            $state.go('tab.explore-explore');
                         })
                         .error(function(data, status){
                             $ionicLoading.hide();
@@ -1752,6 +1749,10 @@ angular.module('starter.controllers', [])
 .controller('LookDetailCtrl', function($scope, $stateParams, UxAnalytics, SlideHeader){
     $scope.look = $stateParams.look;
 
+    $scope.imageLoaded = function(object) {
+        object.loaded = true;
+    }
+
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('look-detail');
         SlideHeader.viewEntered($scope);
@@ -1759,7 +1760,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PostCommentCtrl', function($scope, $rootScope, $stateParams, PostComment, SlideHeader, $ionicActionSheet, $ionicPopup, $http, $ionicLoading, $ionicScrollDelegate, Focus, $timeout, BusinessObjectList, UxAnalytics) {
-    $scope.post_id = $stateParams.post_id;
+    $scope.post_id = $stateParams.post.id;
     var user = $rootScope.getCurrentUser();
     var resetCommentFormVariables = function(){
         $scope.new_comment = {content:''};
@@ -1813,6 +1814,12 @@ angular.module('starter.controllers', [])
                     $scope.list,
                     $scope.new_comment_parent_id
                 );
+                if($stateParams.post.comment_info){
+                    $stateParams.post.comment_info.count++;
+                }
+                else{
+                    $stateParams.post.comment_info = {count:1};
+                }
                 submitCommentDone($scope.new_comment_parent_id);
             }, function(){
                 submitCommentDone();
@@ -1847,6 +1854,12 @@ angular.module('starter.controllers', [])
                         if(res) {
                             comments.splice(index,1);
                             PostComment.delete(comment);
+                            if($stateParams.post.comment_info){
+                                $stateParams.post.comment_info.count--;
+                            }
+                            else{
+                                $stateParams.post.comment_info = null;
+                            }
                             if(comments.length == 0){
                                 $scope.is_result_empty = true;
                             }
@@ -1881,7 +1894,17 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state) {
+.controller('PostExploreCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state, $timeout) {
+    var user = $rootScope.getCurrentUser();
+    if(user.username == user.email){
+        $state.go('register2').then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
+        return;
+    }
+
     $scope.postCard = PostCard;
     $scope.business_object_list_config = {
         type : 'post',
@@ -1918,7 +1941,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, Tutorial, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config, SlideHeader) {
+.controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config, SlideHeader) {
     $scope.search_type_active = "tag";
     $scope.searchHolder = "Search hashtags";
     $scope.searchNoResultText = "No Results Found";
@@ -1929,14 +1952,7 @@ angular.module('starter.controllers', [])
     $scope.isSearchRunning = false;
     $scope.noResult = false;
     $scope.search_term = "";
-    $scope.need_to_stay_idle_milisec = 500;
-    Config.init().then(function(){
-        var result = Config.get('need_to_stay_idle_milisec');
-        if (result)
-        {
-            $scope.need_to_stay_idle_milisec = result;
-        }
-    });
+    $scope.need_to_stay_idle_milisec = $rootScope.config.get('need_to_stay_idle_milisec');
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('post-search');
@@ -2186,7 +2202,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, Tutorial, UxAnalytics, ImageUpload, PostCard, BusinessObjectList, SlideHeader, $ionicScrollDelegate) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, UxAnalytics, ImageUpload, PostCard, BusinessObjectList, SlideHeader, $ionicScrollDelegate) {
     var user = $rootScope.getCurrentUser();
 
     var method = 'my_profile';
@@ -2221,8 +2237,8 @@ angular.module('starter.controllers', [])
 
     if($stateParams.refresh){
         var repeatUntillScrolled = setInterval(function(){
-            $ionicScrollDelegate.scrollTo(0, 340, true);
-            if($ionicScrollDelegate.getScrollPosition().top == 340){
+            $ionicScrollDelegate.scrollTo(0, 296, true);
+            if($ionicScrollDelegate.getScrollPosition().top == 296){
                 clearInterval(repeatUntillScrolled);
             }
         }, 500);
@@ -2346,9 +2362,6 @@ angular.module('starter.controllers', [])
 
     $scope.goAccountEdit = function(id){
         $state.go('tab.edit-account');
-    };
-    $scope.goLoyaltyPoints = function(id){
-        $state.go('tab.loyalty-points-account');
     };
     $scope.goFindFriends = function(id){
         $state.go('tab.find-friends');
@@ -2751,7 +2764,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('LoyaltyPointsCtrl', function($scope, $rootScope, $state, $timeout, $ionicPopup, UxAnalytics, LoyaltyPoints) {
+.controller('LoyaltyPointsCtrl_deprecated_20190224', function($scope, $rootScope, $state, $timeout, $ionicPopup, UxAnalytics, LoyaltyPoints) {
 
     $scope.doRefresh = function() {
         $scope.noResult = false;

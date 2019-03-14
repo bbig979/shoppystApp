@@ -32,7 +32,7 @@
                     <a class="button button-small" ng-class="{'button-positive': isActive('public')}" ng-click="setActive('public')">Public</a>
                     <a class="button button-small" ng-class="{'button-positive': isActive('permanent')}" ng-click="setActive('permanent')">Permanent</a>
                 </div>
-                <div class="selected-visibility friend" ng-show="isVisibleFriend()">
+                <div class="selected-visibility ng-hide friend" ng-class="visibility == 'friend' ? 'ng-show' : 'ng-hide'">
                     <div class="compare-table">
                         <div class="compare-row">
                             <span class="label">Visible to Other Users</span>
@@ -53,7 +53,7 @@
                         Recommended When You Want to Ask Friends Only
                     </div>
                 </div>
-                <div class="selected-visibility public" ng-show="isVisiblePublic()">
+                <div class="selected-visibility public" ng-class="visibility == 'public' ? 'ng-show' : 'ng-hide'">
                     <div class="compare-table">
                         <div class="compare-row">
                             <span class="label">Visible to Other Users</span>
@@ -74,7 +74,7 @@
                         Recommended When You Want More Accurate Result
                     </div>
                 </div>
-                <div class="selected-visibility permanent" ng-show="isVisiblePermanent()">
+                <div class="selected-visibility ng-hide permanent" ng-class="visibility == 'permanent' ? 'ng-show' : 'ng-hide'">
                     <div class="compare-table">
                         <div class="compare-row">
                             <span class="label">Visible to Other Users</span>

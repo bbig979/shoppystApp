@@ -18,7 +18,7 @@
 }
 #look-detail{
     background-color: #000;
-    
+
     .zoom-pane {
         width: 100% !important;
         height: 100% !important;
@@ -49,15 +49,20 @@
         -webkit-align-content: stretch;
         -ms-flex-line-pack: stretch;
         align-content: stretch;
-        -webkit-box-align: center;
-        -moz-box-align: center;
-        -webkit-align-items: center;
-        -ms-flex-align: center;
-        align-items: center;
+        -webkit-box-align: flex-start;
+        -moz-box-align: flex-start;
+        -webkit-align-items: flex-start;
+        -ms-flex-align: flex-start;
+        align-items: flex-start;
+        height: 100vh;
     }
 
     .zoom-pane img {
         width: 100% !important;
         vertical-align: top !important;
+    }
+
+    ion-spinner{
+        margin-top: 50px;
     }
 }

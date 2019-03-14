@@ -35,10 +35,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
-    var baseURL = 'http://app.snaplook.today';
+    //var baseURL = 'http://app.snaplook.today';
     //var baseURL = 'http://localhost:8000';
     //var baseURL = 'http://192.168.56.1:8000';
-    //var baseURL = 'http://localhost:8888';
+    var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -191,39 +191,51 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-comments-home', {
-       url: '/post/:post_id/comments/home',
+       url: '/post/comments/home',
        views: {
            'tab-home': {
                templateUrl: 'templates/post-comments.html',
                controller: 'PostCommentCtrl'
            }
+       },
+       params: {
+         post: null
        }
     })
     .state('tab.post-comments-explore', {
-       url: '/post/:post_id/comments/explore',
+       url: '/post/comments/explore',
        views: {
            'tab-explore': {
                templateUrl: 'templates/post-comments.html',
                controller: 'PostCommentCtrl'
            }
+       },
+       params: {
+         post: null
        }
     })
     .state('tab.post-comments-notification', {
-       url: '/post/:post_id/comments/notification',
+       url: '/post/comments/notification',
        views: {
            'tab-notification': {
                templateUrl: 'templates/post-comments.html',
                controller: 'PostCommentCtrl'
            }
+       },
+       params: {
+         post: null
        }
     })
     .state('tab.post-comments-account', {
-       url: '/post/:post_id/comments/account',
+       url: '/post/comments/account',
        views: {
            'tab-account': {
                templateUrl: 'templates/post-comments.html',
                controller: 'PostCommentCtrl'
            }
+       },
+       params: {
+         post: null
        }
     })
     .state('tab.post-likers-home', {

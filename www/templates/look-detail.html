@@ -10,7 +10,8 @@
                 min-zoom="1"
                 max-zoom="15"
                 overflow-scroll="false">
-            <img ng-src="{{ photoPath( look.img_path, 'l' ) }}">
+            <img ng-src="{{ photoPath( look.img_path, 'l' )}}" imageonload="imageLoaded(look)" ng-show="look.loaded">
+            <ion-spinner ng-show="!look.loaded"></ion-spinner>
         </ion-scroll>
     </ion-content>
 </ion-view>
