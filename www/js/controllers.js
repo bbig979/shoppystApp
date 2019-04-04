@@ -97,9 +97,8 @@ angular.module('starter.controllers', [])
             content = content.replace(/(\/#)/g, "/");
         }
         if(post.occasion != null){
-            content += ' <a href="#/tab/search/' + post.occasion.name + '/occasion/' + tab + '">' +
-                '<i class="fa fa-map-marker" aria-hidden="true"></i> ' +
-                post.occasion.name + '</a>';
+            content = '<div class="occasion-tag"><a href="#/tab/search/' + post.occasion.name + '/occasion/' + tab + '">' +
+                post.occasion.name + '</a></div><br/>' + content;
         }
 
         return content;
@@ -1181,6 +1180,220 @@ angular.module('starter.controllers', [])
     }
     $scope.isActive = function(visibility){
       return visibility === $scope.visibility;
+    }
+})
+.controller('PostCreateStep1Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, BusinessObjectList, OccasionBO) {
+    $scope.search_term = '';
+    $scope.business_object_list_config = {
+        type : 'occasion',
+        method : 'trending',
+    };
+    var deterred_function = null;
+
+    BusinessObjectList.reset($scope);
+    BusinessObjectList.load($scope);
+
+    $scope.load = function() {
+        BusinessObjectList.load($scope);
+    };
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-create-step-1');
+        SlideHeader.viewEntered($scope);
+    });
+
+    $scope.goStep2 = function(){
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+        $state.go('tab.post-create-step-2', {refresh : new Date().getTime()});
+    }
+
+    $scope.setOccasion = function(occasion){
+        localStorage.setItem('post_create_occasion', JSON.stringify(occasion));
+        $scope.goStep2();
+    }
+
+    $scope.storeOccasion = function(){
+        OccasionBO.create(this.search_term).then(function(new_occasion){
+            $scope.setOccasion(new_occasion);
+        });
+    }
+
+    $scope.searchTermSuggestion = function(defer = true){
+        var this_scope = this;
+        BusinessObjectList.reset($scope);
+
+        $timeout.cancel(deterred_function);
+        deterred_function = $timeout(function() {
+            $scope.search_term = this_scope.search_term;
+            BusinessObjectList.reset($scope);
+            BusinessObjectList.load($scope);
+        }, $rootScope.config.get('need_to_stay_idle_milisec'));
+    }
+
+    $scope.getProspectSearchTerm = function(){
+        return $scope.search_term.replace(/\s+/g, "_");
+    }
+
+    $scope.setMethod = function(method){
+        $scope.business_object_list_config.method = method;
+        $scope.searchTermSuggestion();
+    }
+
+    $scope.isMethod = function(method){
+        return method == $scope.business_object_list_config.method;
+    }
+})
+.controller('PostCreateStep2Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
+    $scope.occasion = JSON.parse(localStorage.getItem('post_create_occasion'));
+
+    $scope.goStep1 = function(call_back_func = null){
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+        $state.go('tab.post-create-step-1', {refresh : new Date().getTime()}).then(function(){
+            if(call_back_func){
+                call_back_func();
+            }
+        });
+    }
+
+    $scope.resetPreviousStep = function(){
+        $scope.occasion = null;
+        localStorage.removeItem('post_create_occasion');
+    }
+
+    $scope.resetThisStep = function(){
+        CameraPictues.reset();
+        localStorage.removeItem('post_create_visibility');
+        localStorage.removeItem('post_create_captions');
+        this.captions = '';
+        $scope.visibility = 'public';
+    }
+
+    $scope.resetAllSteps = function(){
+        localStorage.removeItem('post_create_occasion');
+        $scope.resetThisStep();
+        $scope.goStep1(function(){
+            $state.go('tab.account-account', {refresh : new Date().getTime()});
+        });
+    }
+
+    $scope.setCaption = function(){
+        localStorage.setItem('post_create_captions', this.captions);
+    }
+
+    $scope.getCaption = function(){
+        if(localStorage.getItem('post_create_captions')){
+            this.captions = localStorage.getItem('post_create_captions');
+        }
+    }
+
+
+
+    $scope.getCaption();
+    $scope.visibility = 'public';
+    if(localStorage.getItem('post_create_visibility')){
+        $scope.visibility = localStorage.getItem('post_create_visibility');
+    }
+    $scope.submitted = false;
+    $scope.cameraPictues = CameraPictues;
+
+    var user = $rootScope.getCurrentUser();
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-create-step-2');
+        SlideHeader.viewEntered($scope);
+    });
+
+    $scope.sharePost = function(captions, occasion_id, other) {
+        var fileURLs = CameraPictues.get();
+        var share_post_scope = this;
+        var lookIdArray = [];
+        var uploadTryCount = 0;
+        var uploadSuccessCount = 0;
+        var param_caption = '';
+        if (typeof captions != 'undefined')
+        {
+            param_caption = captions;
+        }
+
+        $scope.submitted = true;
+        $ionicLoading.show({template: 'Uploading Photo...<br/><br/><ion-spinner></ion-spinner>'});
+
+        if(fileURLs.length < 2){
+            $ionicLoading.hide();
+            $rootScope.popupMessage('', 'You Need at Least 2 Looks to Compare');
+            $scope.submitted = false;
+            return;
+        }
+
+        var post_data = {
+            captions: param_caption,
+            user_id: user.id,
+            occasion: occasion_id,
+            other: other,
+            visibility: $scope.visibility,
+        };
+        for(var i=0; i<fileURLs.length; i++){
+            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/look/create/' + i), success, fail);
+        }
+
+        // Transfer succeeded
+        function success(r) {
+            // problem: r from test call and real call is different format
+            // cause: test is getting data from $http and real is getting data from ft.upload
+            // solution: parse differently by checking attribute
+            var result;
+            if (typeof r.response != 'undefined'){
+                result = JSON.parse(r.response);
+            }
+            else{
+                result = r;
+            }
+            uploadTryCount++;
+            uploadSuccessCount++;
+            if(typeof result.id !== 'undefined'){
+                lookIdArray.push(result.id);
+            }
+            if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
+                $ionicScrollDelegate.scrollTop();
+                $ionicLoading.show({
+                    template: 'Upload Success ( ' + uploadSuccessCount + ' / ' + uploadTryCount + ' )',
+                    duration:500
+                });
+                var lookIds = lookIdArray.join(',');
+                $http.post($rootScope.baseURL+'/api/post/create/with_looks/'+lookIds, post_data).success(function(){
+                    $scope.resetAllSteps();
+                })
+                .error(function(data, status){
+                    $rootScope.handleHttpError(data, status);
+                });
+            }
+        }
+
+        // Transfer failed
+        function fail(error) {
+            uploadTryCount++;
+            if(uploadTryCount == fileURLs.length && uploadSuccessCount == 0){
+                $ionicLoading.show({template: 'Upload Fail', duration:500});
+                $scope.submitted = false;
+                uploadTryCount = 0;
+                uploadSuccessCount = 0;
+            }
+        }
+    }
+    $scope.hasContent = function(){
+        return CameraPictues.get().length > 0 ||
+            (typeof(this.captions) !== 'undefined' && this.captions !== '')
+    }
+    $scope.setActive = function(visibility){
+        $scope.visibility = visibility;
+        localStorage.setItem('post_create_visibility', visibility);
+    }
+    $scope.isActive = function(visibility){
+        return visibility === $scope.visibility;
     }
 })
 .controller('PostEditCtrl', function($scope, $http, $stateParams, $rootScope, FetchPosts, $ionicHistory, $ionicLoading, UxAnalytics, SlideHeader) {

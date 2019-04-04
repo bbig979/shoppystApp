@@ -1,0 +1,120 @@
+<ion-view id="create-post" view-title="CREATE">
+    <ion-content class="has-header" ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
+        <div class="steps">
+            <div class="line completed"></div>
+            <a class="step step-1 completed" ng-click="goStep1()"><span class="label"></span></a>
+            <a class="step step-2 active"><span class="label"></span></a>
+        </div>
+        <div class="step-message">
+            <div class="occasion-tag" ng-click="resetPreviousStep();goStep1()" ng-show="{{ occasion != null }}">{{ occasion.name }} <i class="icon ion-close-circled"></i></div>
+            <div class="occasion-tag" ng-click="goStep1()" ng-show="{{ occasion == null}}">nothing particular <i class="icon ion-close-circled"></i></div>
+        </div>
+
+        <form ng-submit="sharePost(captions, occasion.id, other)" name="shareForm">
+            <ul class="post-images">
+                <li ng-repeat="cameraPicture in cameraPictues.get()">
+                    <div class="post-image">
+                        <img class="item" ng-src="{{cameraPicture}}" />
+                    </div>
+                    <div class="remove-image" ng-click="cameraPictues.remove(cameraPicture)">
+                        <i class="icon ion-close-circled"></i>
+                    </div>
+                </li>
+                <li>
+                    <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu()">
+                        <div class="add-more-to-compare-button">
+                            <i class="icon ion-plus-circled"></i><br>
+                            Add a Look<br>
+                            to Compare
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+            <div class="padding visibility">
+                <div class="title">
+                    Visibility
+                </div>
+                <div class="button-bar">
+                    <a class="button button-small" ng-class="{'button-positive': isActive('friend')}" ng-click="setActive('friend')">Friends</a>
+                    <a class="button button-small" ng-class="{'button-positive': isActive('public')}" ng-click="setActive('public')">Public</a>
+                    <a class="button button-small" ng-class="{'button-positive': isActive('permanent')}" ng-click="setActive('permanent')">Permanent</a>
+                </div>
+                <div class="selected-visibility friend" ng-class="visibility == 'friend' ? 'ng-show' : 'ng-hide'">
+                    <div class="compare-table">
+                        <div class="compare-row">
+                            <span class="label">Visible to Other Users</span>
+                            <span class="mark"><i class="icon ion-close-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Shareable to Friends</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Invisible After a Day</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <hr>
+                    <div class="recommendation">
+                        Recommended When You Want to Ask Friends Only
+                    </div>
+                </div>
+                <div class="selected-visibility public" ng-class="visibility == 'public' ? 'ng-show' : 'ng-hide'">
+                    <div class="compare-table">
+                        <div class="compare-row">
+                            <span class="label">Visible to Other Users</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Shareable to Friends</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Invisible After a Day</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <hr>
+                    <div class="recommendation">
+                        Recommended When You Want More Accurate Result
+                    </div>
+                </div>
+                <div class="selected-visibility permanent" ng-class="visibility == 'permanent' ? 'ng-show' : 'ng-hide'">
+                    <div class="compare-table">
+                        <div class="compare-row">
+                            <span class="label">Visible to Other Users</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Shareable to Friends</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Invisible After a Day</span>
+                            <span class="mark"><i class="icon ion-close-round"></i></span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <hr>
+                    <div class="recommendation">
+                        Recommended When You Want to Inspire Others
+                    </div>
+                </div>
+            </div>
+            <div class="post-caption padding" ng-show="hasContent()">
+                <textarea placeholder="Write a Caption" class="form-control" ng-model="captions" ng-change="setCaption()"></textarea>
+            </div>
+            <div class="button-padding padding-top">
+                <button type="submit" class="button button-block button-positive" ng-disabled="submitted" ng-show="hasContent()">Create</button>
+            </div>
+            <div class="button-padding">
+                <button type="button" class="button button-block button-stable" ng-click="resetThisStep()" ng-disabled="submitted" ng-show="hasContent()">Reset</button>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

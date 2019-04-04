@@ -4,6 +4,7 @@ angular.module('starter.services', [])
        return $sce.trustAsHtml(val);
    }
 })
+// ref: https://medium.com/one-tap-software/show-an-ionic-1-spinner-while-online-images-load-8dd65fa51efc
 .directive('imageonload', function() {
     return {
         restrict: 'A',
@@ -198,7 +199,7 @@ angular.module('starter.services', [])
         },
     };
 })
-.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts){
+.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts, OccasionBO){
     return {
         reset: function($scope){
             var config = $scope.business_object_list_config;
@@ -223,6 +224,9 @@ angular.module('starter.services', [])
             }
             else if('post' == config.type){
                 return FetchPosts.index(this._buildRequestObject($scope));
+            }
+            else if('occasion' == config.type){
+                return OccasionBO.index(this._buildRequestObject($scope));
             }
         },
         _buildRequestObject: function($scope){
@@ -477,6 +481,11 @@ angular.module('starter.services', [])
                 }
             }
             return "?" + parts.join('&');
+        },
+        numberWithCommas: function(x) {
+            var parts = x.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join(".");
         }
     };
 })
@@ -638,7 +647,7 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchOccasions', function($http, $rootScope) {
+.factory('FetchOccasions', function($http, $rootScope, Util) {
     return {
         get: function() {
             return $http.get($rootScope.baseURL+'/api/occasion').then(function(response){
@@ -647,6 +656,44 @@ angular.module('starter.services', [])
             ,function(){
                 // this is not user triggered
             });
+        }
+    };
+})
+.factory('OccasionBO', function($http, $rootScope, Util, $q) {
+    return {
+        create: function(search_term){
+            var deferred = $q.defer();
+
+            $http({
+                method : 'POST',
+                url : $rootScope.baseURL+"/api/occasion/create",
+                data : {search_term:search_term}
+            })
+            .success(function(data, status){
+                deferred.resolve(data);
+            })
+            .error(function(data, status){
+                $rootScope.handleHttpError(data, status);
+                deferred.reject();
+            });
+
+            return deferred.promise;
+        },
+        index: function(arg_info) {
+            var this_factory = this;
+            return $http.get($rootScope.baseURL+"/api/occasions"+Util.serialize(arg_info)).then(function(response){
+                this_factory.addDisplayAttr(response.data.data);
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
+        },
+        addDisplayAttr: function(occasions){
+            for(var i=0; i<occasions.length; i++){
+                var occasion = occasions[i];
+                occasion.display_count = Util.numberWithCommas(occasion.count);
+            }
         }
     };
 })

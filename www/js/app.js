@@ -364,6 +364,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
+    .state('tab.post-create-step-1', {
+      url: '/post/create/step/1',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/post-create-step-1.html',
+          controller: 'PostCreateStep1Ctrl'
+        }
+      },
+      params: {
+        refresh: null
+      }
+    })
+    .state('tab.post-create-step-2', {
+      url: '/post/create/step/2',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/post-create-step-2.html',
+          controller: 'PostCreateStep2Ctrl'
+        }
+      },
+      params: {
+        refresh: null
+      }
+    })
     .state('tab.post-edit', {
       url: '/post/edit',
       views: {

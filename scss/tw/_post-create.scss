@@ -1,3 +1,102 @@
+#create-post-step-1, #create-post{
+	.steps{
+		width: 40vw;
+		height: 14vw;
+		margin: 0 auto;
+		position: relative;
+		margin-top: 7vw;
+
+		.line{
+			position: absolute;
+			background-color: #eee;
+			width: 90%;
+			height: 0.5vw;
+			top: 3vw;
+			left: 5%;
+		}
+		.line.completed{
+			background-color: #ff495e;
+		}
+		.step{
+			display: inline-block;
+			background-color: #eee;
+			color: #ccc;
+			font-weight: bolder;
+			@include border-radius(50%);
+
+			span{
+				display: inline-block;
+    		    margin: 0.5vw 2.19vw;
+			}
+		}
+		.step.active, .step.completed{
+			background-color: #ff495e;
+			color: #fff;
+		}
+		.step-1{
+			position: absolute;
+			left: 0;
+		}
+		.step-2{
+			position: absolute;
+			right: 0;
+		}
+		.step-1 .label:before{
+			content: "1";
+		}
+		.step-2 .label:before{
+			content: "2";
+		}
+	}
+	.step-message{
+		text-align: center;
+		color: #555;
+		font-size: 5vw;
+		margin-bottom: 7vw;
+	}
+	.occasion-tag{
+		background-color: #454a54;
+		padding: 5px 10px;
+		display: inline-block;
+		@include border-radius(5px);
+		color: #fff;
+		font-size: 16px;
+	}
+}
+#create-post-step-1{
+	.button-positive{
+		margin-top: 50px;
+	}
+	.search-toggle {
+	    border-top: 1px solid #eee;
+		a {
+		    padding: 10px;
+		    float: left;
+		    text-transform: uppercase;
+		    width: 33.33%;
+		    text-align: center;
+		    border-bottom: 1px solid #eee;
+		}
+		a.active {
+		    background-color: #FF4C62;
+		    color: white;
+		    font-weight: 500;
+		}
+	}
+	.item{
+		padding: 12px;
+	}
+	ion-item:first-child{
+		border-top: none;
+	}
+	.occasion-name{
+		font-size: 13px;
+	}
+	.occasion-count{
+		font-size: 12px;
+    	color: #999;
+	}
+}
 #create-post {
 	.post-images{
 		li{
@@ -49,7 +148,7 @@
 
 	.add-more-to-compare-button{
 		border: dashed 0.8vw #aaa;
-		border-radius: 2vw;
+		@include border-radius(2vw);
 		height: 100%;
 		color: #aaa;
 		font-weight: bold;
@@ -109,7 +208,7 @@
 		margin-top: 25px;
 		color: #fff;
 	    background-color: #454a54;
-	    border-radius: 5px;
+		@include border-radius(5px);
 		position: relative;
 	}
 
