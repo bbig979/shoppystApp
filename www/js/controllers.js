@@ -234,6 +234,7 @@ angular.module('starter.controllers', [])
                             targetWidth: 2400,
                             targetHeight: 2400,
                             correctOrientation: true,
+                            allowEdit: true,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
@@ -256,6 +257,7 @@ angular.module('starter.controllers', [])
                             targetWidth: 2400,
                             targetHeight: 2400,
                             correctOrientation: true,
+                            allowEdit: true,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
                         };
@@ -2501,6 +2503,7 @@ angular.module('starter.controllers', [])
                             targetWidth: 600,
                             targetHeight: 600,
                             correctOrientation: true,
+                            allowEdit: true,
                             destinationType: Camera.DestinationType.FILE_URL,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
@@ -2520,6 +2523,7 @@ angular.module('starter.controllers', [])
                             targetWidth: 600,
                             targetHeight: 600,
                             correctOrientation: true,
+                            allowEdit: true,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
                         };
