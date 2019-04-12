@@ -1,4 +1,4 @@
-<ion-view class="vote-result" id="compare" view-title="VOTE RESULT">
+<ion-view class="vote-result" id="compare" view-title="VOTE RESULTS">
     <ion-content ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
@@ -8,12 +8,15 @@
         </ion-refresher>
         <div class="compare-toggle gender">
             <div class="label">Gender</div>
+            <a ng-class="{ active: gender_active === 'no_gender' }" ng-click="setGender('no_gender')" class="no_gender">PND</a>
+            <a ng-class="{ active: gender_active === 'non_binary' }" ng-click="setGender('non_binary')" class="non-binary">Non-binary</a>
             <a ng-class="{ active: gender_active === 'female' }" ng-click="setGender('female')" class="female">Female</a>
             <a ng-class="{ active: gender_active === 'male' }" ng-click="setGender('male')" class="male">Male</a>
             <a ng-class="{ active: gender_active === 'all' }" ng-click="setGender('all')" class="everyone">All</a>
         </div>
         <div class="compare-toggle age" ng-hide="gender_active == 'friends'">
             <div class="label">Age</div>
+            <a ng-class="{ active: age_active === 'no_age' }" ng-click="setAge('no_age')" class="no_age">PND</a>
             <a ng-class="{ active: age_active === 'fifties' }" ng-click="setAge('fifties')" class="fifties">50 <</a>
             <a ng-class="{ active: age_active === 'forties' }" ng-click="setAge('forties')" class="forties">40s</a>
             <a ng-class="{ active: age_active === 'thirties' }" ng-click="setAge('thirties')" class="thirties">30s</a>

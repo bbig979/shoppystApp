@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     //$rootScope.baseURL = 'http://app.snaplook.today';
@@ -1027,7 +1027,15 @@ angular.module('starter.controllers', [])
         }, 500
     )
 
-    setInterval(function() {$rootScope.getNotification($rootScope.notificationPullInterval);}, $rootScope.notificationPullInterval + 500);
+    setInterval(function() {
+        if($rootScope.currentUser){
+            $rootScope.getNotification($rootScope.notificationPullInterval);
+        }
+    }, $rootScope.notificationPullInterval + 500);
+
+    setInterval(function() {
+        FCMHandler.registerNewToken();
+    }, 1000);
 })
 .controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'public';
@@ -1610,7 +1618,10 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout, UsernameAvailability, UxAnalytics, BlockerMessage) {
-    $scope.registerData = {};
+    $scope.registerData = {
+        age: '10',
+        gender: 'female',
+    };
     $scope.usernameClass = '';
     var credentials = {
         email: $stateParams.email,

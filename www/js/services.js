@@ -173,6 +173,7 @@ angular.module('starter.services', [])
             return is_needed;
         },
         _isInfoIncompleted: function(){
+            return false;
             if(localStorage.getItem('user')){
                 var user = JSON.parse(localStorage.getItem('user'));
                 return user.age == 0 || user.gender == "";
@@ -468,6 +469,41 @@ angular.module('starter.services', [])
             else{
                 return ' · ' + count + ' ' + domain + 's';
             }
+        }
+    };
+})
+.factory('FCMHandler', function($http, $rootScope, $q) {
+    return {
+        storeNewToken: function() {
+            var deferred = $q.defer();
+
+            $http({
+                method : 'POST',
+                url : $rootScope.baseURL+"/api/fcm",
+                data : {
+                    type: noAngularVar_device,
+                    token: noAngularVar_fcmToken
+                }
+            })
+            .success(function(data, status){
+                deferred.resolve(data);
+            })
+            .error(function(data, status){
+                deferred.reject();
+            });
+
+            return deferred.promise;
+        },
+        registerNewToken: function() {
+            if(this.isNewTokenFound()){
+                this.storeNewToken().then(function(response){
+                    localStorage.setItem('fcm_token', noAngularVar_fcmToken);
+                });
+            }
+        },
+        isNewTokenFound: function() {
+            return noAngularVar_fcmToken != null &&
+                   noAngularVar_fcmToken != localStorage.getItem('fcm_token');
         }
     };
 })

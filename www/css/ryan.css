@@ -4693,7 +4693,7 @@ body.header-slide-away #tab-explore .search-bar {
 }
 /* line 15, ../../scss/ryan/_register.scss */
 #register2 .item-select {
-  border-top: 0;
+  border: 0;
 }
 
 /* line 1, ../../scss/ryan/_intro.scss */
