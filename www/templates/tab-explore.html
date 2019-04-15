@@ -25,7 +25,7 @@
                                 <span class="icon ion-ios-more" ng-click="postCard.moreOption(list, $index)"></span>
                             </div>
                         </div>
-                        <div class="caption" ng-bind-html="linkHashTagAndOccasion(post) | unsafe"></div>
+                        <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
                         <div class="look-list">
                             <ion-scroll direction="x" delegate-handle="handle-horizontal">
                                 <div ng-repeat="look in post.photos" class="look">

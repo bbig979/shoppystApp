@@ -19,7 +19,7 @@
             <div class="search-toggle">
                 <a ng-class="{ active: search_type_active === 'tag' }" ng-click="setType(searchTerm, 'tag');searchTermTyped(searchTerm, null, 0);">Tag</a>
                 <a ng-class="{ active: search_type_active === 'people' }" ng-click="setType(searchTerm, 'people');searchTermTyped(searchTerm, null, 0);">People</a>
-                <a ng-class="{ active: search_type_active === 'occasion' }" ng-click="setType(searchTerm, 'occasion');searchTermTyped(searchTerm, null, 0);">Occasion</a>
+                <a ng-class="{ active: search_type_active === 'goal' }" ng-click="setType(searchTerm, 'goal');searchTermTyped(searchTerm, null, 0);">Goal</a>
             </div>
             <div class="search-running" ng-if="isSearchRunning">
                 <i class="fa fa-search" aria-hidden="true"></i> Searching...
@@ -30,7 +30,7 @@
             <div>
                 <ion-item ng-show="!noSearchResult" ng-repeat="line in searchResult" class="post">
                     <div ng-if="line.type == 'tag'" ng-click="goSearchPost(line.name, 'tag')" class="post-item"><span class="tag_sign">&nbsp;<i class="fa fa-hashtag" aria-hidden="true"></i>&nbsp;</span><span class="name">{{line.name}}</span></div>
-                    <div ng-if="line.type == 'occasion'" ng-click="goSearchPost(line.name, 'occasion')" class="post-item"><span class="at_sign"><i class="fa fa-map-marker" aria-hidden="true"></i></span><span class="name">{{line.name}}</span></div>
+                    <div ng-if="line.type == 'goal'" ng-click="goSearchPost(line.name, 'goal')" class="post-item"><span class="at_sign"><i class="fa fa-map-marker" aria-hidden="true"></i></span><span class="name">{{line.name}}</span></div>
                     <div ng-if="line.type == 'user'" class="entity-id-{{line.id}} post-item">
                         <div ng-click="goAccount(line.slug)" style="background-image: url( {{ photoPath( line.profile_img_path, 's' ) }} )" class="profile-image"></div>
                         <div ng-click="goAccount(line.slug)" class="name">{{ line.name }}</div>

@@ -200,7 +200,7 @@ angular.module('starter.services', [])
         },
     };
 })
-.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts, OccasionBO){
+.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts, GoalBO){
     return {
         reset: function($scope){
             var config = $scope.business_object_list_config;
@@ -226,8 +226,8 @@ angular.module('starter.services', [])
             else if('post' == config.type){
                 return FetchPosts.index(this._buildRequestObject($scope));
             }
-            else if('occasion' == config.type){
-                return OccasionBO.index(this._buildRequestObject($scope));
+            else if('goal' == config.type){
+                return GoalBO.index(this._buildRequestObject($scope));
             }
         },
         _buildRequestObject: function($scope){
@@ -683,10 +683,10 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchOccasions', function($http, $rootScope, Util) {
+.factory('FetchGoals', function($http, $rootScope, Util) {
     return {
         get: function() {
-            return $http.get($rootScope.baseURL+'/api/occasion').then(function(response){
+            return $http.get($rootScope.baseURL+'/api/goal').then(function(response){
                 return response.data;
             }
             ,function(){
@@ -695,14 +695,14 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('OccasionBO', function($http, $rootScope, Util, $q) {
+.factory('GoalBO', function($http, $rootScope, Util, $q) {
     return {
         create: function(search_term){
             var deferred = $q.defer();
 
             $http({
                 method : 'POST',
-                url : $rootScope.baseURL+"/api/occasion/create",
+                url : $rootScope.baseURL+"/api/goal/create",
                 data : {search_term:search_term}
             })
             .success(function(data, status){
@@ -717,7 +717,7 @@ angular.module('starter.services', [])
         },
         index: function(arg_info) {
             var this_factory = this;
-            return $http.get($rootScope.baseURL+"/api/occasions"+Util.serialize(arg_info)).then(function(response){
+            return $http.get($rootScope.baseURL+"/api/goals"+Util.serialize(arg_info)).then(function(response){
                 this_factory.addDisplayAttr(response.data.data);
                 return response.data;
             }
@@ -725,10 +725,10 @@ angular.module('starter.services', [])
                 $rootScope.handleHttpError(response.data, response.status);
             });
         },
-        addDisplayAttr: function(occasions){
-            for(var i=0; i<occasions.length; i++){
-                var occasion = occasions[i];
-                occasion.display_count = Util.numberWithCommas(occasion.count);
+        addDisplayAttr: function(goals){
+            for(var i=0; i<goals.length; i++){
+                var goal = goals[i];
+                goal.display_count = Util.numberWithCommas(goal.count);
             }
         }
     };

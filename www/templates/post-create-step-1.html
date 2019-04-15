@@ -13,7 +13,7 @@
             <div class="bar bar-header item-input-inset search-bar">
                 <label class="item-input-wrapper">
                     <i class="icon ion-ios-search placeholder-icon"></i>
-                    <input type="search" id="search" placeholder="Search looks" ng-model="search_term" autocomplete="off" ng-keyup="searchTermSuggestion()">
+                    <input type="search" id="search" placeholder="Search goal in adjective" ng-model="search_term" autocomplete="off" ng-keyup="searchTermSuggestion()">
                 </label>
                 <div ng-click="search_term = '';searchTermSuggestion();" class="button button-clear search-clear" ng-show="search_term != ''">X</div>
             </div>
@@ -26,19 +26,19 @@
         <div class="loading-spinner" data-loading ng-if="is_list_loading">
             <ion-spinner></ion-spinner>
         </div>
-        <div class="no-result" ng-if="list.length == 0 && is_result_empty && !isMethod('favorite')">
-            <span class="occasion-tag">{{ getProspectSearchTerm() }}</span>
-            <button class="button button-block button-positive" ng-click="storeOccasion()">Create New</button>
+        <div class="no-result" ng-if="list.length == 0 && is_result_empty && !isMethod('favorites')">
+            <span class="goal-tag">{{ getProspectSearchTerm() }}</span>
+            <button class="button button-block button-positive" ng-click="storeGoal()">Create New</button>
         </div>
-        <div class="no-result" ng-if="list.length == 0 && is_result_empty && isMethod('favorite')">
-            You have not used any yet
+        <div class="no-result" ng-if="list.length == 0 && is_result_empty && isMethod('favorites')">
+            You have not used any goal yet
         </div>
         <ion-list>
             <div>
-                <ion-item ng-repeat="occasion in list" class="occasion-card">
-                    <div ng-click="setOccasion(occasion)" class="occasion-item">
-                        <div class="occasion-name">{{occasion.name}}</div>
-                        <div class="occasion-count">{{occasion.display_count}} posts</div>
+                <ion-item ng-repeat="goal in list" class="goal-card">
+                    <div ng-click="setGoal(goal)" class="goal-item">
+                        <div class="goal-name">{{goal.name}}</div>
+                        <div class="goal-count">{{goal.display_count}} posts</div>
                     </div>
                 </ion-item>
             </div>

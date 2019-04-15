@@ -3321,7 +3321,7 @@
   white-space: pre-line;
 }
 /* line 44, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .caption .occasion-tag {
+.post-card-list .post-card .caption .goal-tag {
   display: inline-block;
   background-color: #FF4C62;
   padding: 0 10px;
@@ -3329,7 +3329,7 @@
   margin-bottom: 5px;
 }
 /* line 51, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .caption .occasion-tag a {
+.post-card-list .post-card .caption .goal-tag a {
   color: #fff;
 }
 /* line 57, ../../scss/ryan/_post-list.scss */

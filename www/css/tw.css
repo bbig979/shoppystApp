@@ -405,7 +405,7 @@
   padding: 4px 4%;
 }
 /* line 28, ../../scss/tw/_compare.scss */
-#compare .compare-toggle.occasion {
+#compare .compare-toggle.goal {
   margin-right: 5px;
 }
 /* line 31, ../../scss/tw/_compare.scss */
@@ -625,7 +625,7 @@
   margin-bottom: 7vw;
 }
 /* line 57, ../../scss/tw/_post-create.scss */
-#create-post-step-1 .occasion-tag, #create-post .occasion-tag {
+#create-post-step-1 .goal-tag, #create-post .goal-tag {
   background-color: #454a54;
   padding: 5px 10px;
   display: inline-block;
@@ -670,11 +670,11 @@
   border-top: none;
 }
 /* line 92, ../../scss/tw/_post-create.scss */
-#create-post-step-1 .occasion-name {
+#create-post-step-1 .goal-name {
   font-size: 13px;
 }
 /* line 95, ../../scss/tw/_post-create.scss */
-#create-post-step-1 .occasion-count {
+#create-post-step-1 .goal-count {
   font-size: 12px;
   color: #999;
 }

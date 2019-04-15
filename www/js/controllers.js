@@ -88,7 +88,7 @@ angular.module('starter.controllers', [])
             return str;
         }
     };
-    $rootScope.linkHashTagAndOccasion = function(post){
+    $rootScope.linkHashTagAndGoal = function(post){
         var content = post.content;
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
 
@@ -96,9 +96,9 @@ angular.module('starter.controllers', [])
             content = content.replace(/(#[a-z\d-_]+)/ig, "<a href='#/tab/search/$1/tag/"+tab+"'>$1</a>");
             content = content.replace(/(\/#)/g, "/");
         }
-        if(post.occasion != null){
-            content = '<div class="occasion-tag"><a href="#/tab/search/' + post.occasion.name + '/occasion/' + tab + '">' +
-                post.occasion.name + '</a></div><br/>' + content;
+        if(post.goal != null){
+            content = '<div class="goal-tag"><a href="#/tab/search/' + post.goal.name + '/goal/' + tab + '">' +
+                post.goal.name + '</a></div><br/>' + content;
         }
 
         return content;
@@ -1037,13 +1037,13 @@ angular.module('starter.controllers', [])
         FCMHandler.registerNewToken();
     }, 1000);
 })
-.controller('PostCreateCtrl', function($scope, FetchOccasions, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
+.controller('PostCreateCtrl', function($scope, FetchGoals, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'public';
     $scope.submitted = false;
     $location.replace('tab.camera');
     $scope.data = { "ImageURI" :  "Select Image" };
-    $scope.occasionList = new Array();
-    $scope.shopOptionalOccasion = false;
+    $scope.goalList = new Array();
+    $scope.shopOptionalGoal = false;
     $scope.cameraPictues = CameraPictues;
     $rootScope.getNotification(0); // pull the notification count immediately.
 
@@ -1072,15 +1072,15 @@ angular.module('starter.controllers', [])
         SlideHeader.viewEntered($scope);
     });
 
-    FetchOccasions.get().then(function(response){
-        occasions = response;
-        for (index = 0; index < occasions.length; ++index) {
-            $scope.occasionList.push({value: occasions[index].id, label: occasions[index].name});
+    FetchGoals.get().then(function(response){
+        goals = response;
+        for (index = 0; index < goals.length; ++index) {
+            $scope.goalList.push({value: goals[index].id, label: goals[index].name});
         }
-        $scope.occasionList.push({value: 'other', label: 'Other'});
+        $scope.goalList.push({value: 'other', label: 'Other'});
     });
 
-    $scope.sharePost = function(captions, occasion, other) {
+    $scope.sharePost = function(captions, goal, other) {
         var fileURLs = CameraPictues.get();
         var share_post_scope = this;
         var postIdArray = [];
@@ -1106,7 +1106,7 @@ angular.module('starter.controllers', [])
         var post_data = {
             captions: param_caption,
             user_id: user.id,
-            occasion: occasion,
+            goal: goal,
             other: other,
             visibility: $scope.visibility,
         };
@@ -1141,7 +1141,7 @@ angular.module('starter.controllers', [])
                 $http.post($rootScope.baseURL+'/api/post/create/with_looks/'+lookIds, post_data);
                 $scope.submitted = false;
                 $scope.visibility = 'public';
-                share_post_scope.occasion = undefined;
+                share_post_scope.goal = undefined;
                 share_post_scope.captions = undefined;
                 uploadTryCount = 0;
                 uploadSuccessCount = 0;
@@ -1164,26 +1164,26 @@ angular.module('starter.controllers', [])
             }
         }
     }
-    $scope.checkOccasion = function(_occasion) {
-        if (_occasion != null && _occasion.value == "other")
+    $scope.checkGoal = function(_goal) {
+        if (_goal != null && _goal.value == "other")
         {
-            $scope.shopOptionalOccasion = true;
+            $scope.shopOptionalGoal = true;
         }
         else
         {
-            $scope.shopOptionalOccasion = false;
+            $scope.shopOptionalGoal = false;
         }
     }
     $scope.reset = function() {
         CameraPictues.reset();
         this.captions = '';
-        this.occasion = null;
+        this.goal = null;
         $ionicScrollDelegate.scrollTop();
     }
     $scope.hasContent = function(){
         return CameraPictues.get().length > 0 ||
             (typeof(this.captions) !== 'undefined' && this.captions !== '') ||
-            (typeof(this.occasion) !== 'undefined' && this.occasion !== null)
+            (typeof(this.goal) !== 'undefined' && this.goal !== null)
     }
     $scope.setActive = function(visibility){
       $scope.visibility = visibility;
@@ -1192,10 +1192,10 @@ angular.module('starter.controllers', [])
       return visibility === $scope.visibility;
     }
 })
-.controller('PostCreateStep1Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, BusinessObjectList, OccasionBO) {
+.controller('PostCreateStep1Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, BusinessObjectList, GoalBO) {
     $scope.search_term = '';
     $scope.business_object_list_config = {
-        type : 'occasion',
+        type : 'goal',
         method : 'trending',
     };
     var deterred_function = null;
@@ -1219,14 +1219,14 @@ angular.module('starter.controllers', [])
         $state.go('tab.post-create-step-2', {refresh : new Date().getTime()});
     }
 
-    $scope.setOccasion = function(occasion){
-        localStorage.setItem('post_create_occasion', JSON.stringify(occasion));
+    $scope.setGoal = function(goal){
+        localStorage.setItem('post_create_goal', JSON.stringify(goal));
         $scope.goStep2();
     }
 
-    $scope.storeOccasion = function(){
-        OccasionBO.create(this.search_term).then(function(new_occasion){
-            $scope.setOccasion(new_occasion);
+    $scope.storeGoal = function(){
+        GoalBO.create(this.search_term).then(function(new_goal){
+            $scope.setGoal(new_goal);
         });
     }
 
@@ -1256,7 +1256,7 @@ angular.module('starter.controllers', [])
     }
 })
 .controller('PostCreateStep2Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
-    $scope.occasion = JSON.parse(localStorage.getItem('post_create_occasion'));
+    $scope.goal = JSON.parse(localStorage.getItem('post_create_goal'));
 
     $scope.goStep1 = function(call_back_func = null){
         $ionicHistory.nextViewOptions({
@@ -1270,8 +1270,8 @@ angular.module('starter.controllers', [])
     }
 
     $scope.resetPreviousStep = function(){
-        $scope.occasion = null;
-        localStorage.removeItem('post_create_occasion');
+        $scope.goal = null;
+        localStorage.removeItem('post_create_goal');
     }
 
     $scope.resetThisStep = function(){
@@ -1283,7 +1283,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.resetAllSteps = function(){
-        localStorage.removeItem('post_create_occasion');
+        localStorage.removeItem('post_create_goal');
         $scope.resetThisStep();
         $scope.goStep1(function(){
             $state.go('tab.account-account', {refresh : new Date().getTime()});
@@ -1317,7 +1317,7 @@ angular.module('starter.controllers', [])
         SlideHeader.viewEntered($scope);
     });
 
-    $scope.sharePost = function(captions, occasion_id, other) {
+    $scope.sharePost = function(captions, goal_id, other) {
         var fileURLs = CameraPictues.get();
         var share_post_scope = this;
         var lookIdArray = [];
@@ -1342,7 +1342,7 @@ angular.module('starter.controllers', [])
         var post_data = {
             captions: param_caption,
             user_id: user.id,
-            occasion: occasion_id,
+            goal: goal_id,
             other: other,
             visibility: $scope.visibility,
         };
@@ -2310,10 +2310,10 @@ angular.module('starter.controllers', [])
             $scope.searchHolder = "Search hashtags";
             $scope.searchNoResultText = "No hashtags found.";
         }
-        else if (type == "occasion")
+        else if (type == "goal")
         {
-            $scope.searchHolder = "Search occasions";
-            $scope.searchNoResultText = "No occasions found.";
+            $scope.searchHolder = "Search goals";
+            $scope.searchNoResultText = "No goals found.";
         }
         else
         {
@@ -2335,9 +2335,9 @@ angular.module('starter.controllers', [])
 .controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams) {
     $scope.search_type = "tag";
     $scope.search_term = $stateParams.searchTerm;
-    if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'occasion')
+    if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'goal')
     {
-        $scope.search_type = "occasion";
+        $scope.search_type = "goal";
     }
     $scope.postCard = PostCard;
     $scope.business_object_list_config = {
@@ -2372,7 +2372,7 @@ angular.module('starter.controllers', [])
 
     $scope.showSearchTerm = function(){
         var termSign = "#";
-        if ($scope.search_type == "occasion")
+        if ($scope.search_type == "goal")
         {
             termSign = '<i class="fa fa-map-marker" aria-hidden="true"></i> ';
         }

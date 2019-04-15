@@ -8,11 +8,11 @@
             <a class="step step-2 active"><span class="label"></span></a>
         </div>
         <div class="step-message">
-            <div class="occasion-tag" ng-click="resetPreviousStep();goStep1()" ng-show="{{ occasion != null }}">{{ occasion.name }} <i class="icon ion-close-circled"></i></div>
-            <div class="occasion-tag" ng-click="goStep1()" ng-show="{{ occasion == null}}">nothing particular <i class="icon ion-close-circled"></i></div>
+            <div class="goal-tag" ng-click="resetPreviousStep();goStep1()" ng-show="{{ goal != null }}">{{ goal.name }} <i class="icon ion-close-circled"></i></div>
+            <div class="goal-tag" ng-click="goStep1()" ng-show="{{ goal == null}}">nothing particular <i class="icon ion-close-circled"></i></div>
         </div>
 
-        <form ng-submit="sharePost(captions, occasion.id, other)" name="shareForm">
+        <form ng-submit="sharePost(captions, goal.id, other)" name="shareForm">
             <ul class="post-images">
                 <li ng-repeat="cameraPicture in cameraPictues.get()">
                     <div class="post-image">
