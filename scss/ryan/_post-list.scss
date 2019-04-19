@@ -43,14 +43,11 @@
 
             .goal-tag{
                 display: inline-block;
-                background-color: #FF4C62;
-                padding: 0 10px;
+                color: $primary-color;
+                border: 1px solid $primary-color-light;
+                padding: 5px 10px;
                 border-radius: 5px;
                 margin-bottom: 5px;
-
-                a{
-                    color: #fff;
-                }
             }
         }
         .look-list{
@@ -102,7 +99,7 @@
                     .check-mark.checked{
                         color: #fff;
                         border: 1px solid #fff;
-                        background: #ff245d;
+                        background: $primary-color;
                     }
                 }
             }
@@ -160,7 +157,7 @@
             padding: 0 4vw;
 
             .option{
-                width: 50%;
+                width: 33%;
                 float: left;
                 text-align: center;
 
@@ -170,8 +167,8 @@
                     color: #777;
                 }
             }
-            .option.my-post{
-                width: 33%;
+            .option.expired-post{
+                width: 50%;
             }
         }
         .divider{
