@@ -410,7 +410,7 @@ angular.module('starter.services', [])
                 destructiveButtonClicked: function() {
                     var confirmPopup = $ionicPopup.confirm({
                         title: action_pascal_case,
-                        template: 'Are you sure to '+action+' this post?'
+                        template: 'Are you sure you want to '+action+' this post?'
                     });
 
                     confirmPopup.then(function(res) {
@@ -439,8 +439,8 @@ angular.module('starter.services', [])
             PostShare.getHash(post.id).then(function(hash){
                 if(hash){
                     var options = {
-                        message: 'which looks better?',
-                        subject: 'Which Looks Better?',
+                        message: 'Choose your favorite outfit!',
+                        subject: 'Choose Your Favorite Outfit!',
                         url: $rootScope.baseURL + '/s/' + hash
                     }
                     var onSuccess = function(result) {

@@ -9,7 +9,7 @@
         </div>
         <div class="step-message">
             <div class="goal-tag" ng-click="resetPreviousStep();goStep1()" ng-show="{{ goal != null }}">{{ goal.name }} <i class="icon ion-close-circled"></i></div>
-            <div class="goal-tag" ng-click="goStep1()" ng-show="{{ goal == null}}">nothing particular <i class="icon ion-close-circled"></i></div>
+            <div class="goal-tag" ng-click="goStep1()" ng-show="{{ goal == null}}">nothing in particular <i class="icon ion-close-circled"></i></div>
         </div>
 
         <form ng-submit="sharePost(captions, goal.id, other)" name="shareForm">
@@ -26,8 +26,7 @@
                     <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu()">
                         <div class="add-more-to-compare-button">
                             <i class="icon ion-plus-circled"></i><br>
-                            Add a Look<br>
-                            to Compare
+                            Add an Outfit
                         </div>
                     </div>
                 </li>

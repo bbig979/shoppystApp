@@ -1,6 +1,6 @@
 #create-post-step-1, #create-post{
 	.steps{
-		width: 40vw;
+		width: 50vw;
 		height: 14vw;
 		margin: 0 auto;
 		position: relative;
@@ -11,7 +11,7 @@
 			background-color: #eee;
 			width: 90%;
 			height: 0.5vw;
-			top: 3vw;
+			top: 4vw;
 			left: 5%;
 		}
 		.line.completed{
@@ -26,7 +26,7 @@
 
 			span{
 				display: inline-block;
-    		    margin: 0.5vw 2.19vw;
+    		    margin: 1.5vw 3.19vw;
 			}
 		}
 		.step.active, .step.completed{

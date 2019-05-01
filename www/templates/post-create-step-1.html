@@ -7,7 +7,7 @@
             <a class="step step-1 active"><span class="label"></span></a>
             <a class="step step-2" ng-click="goStep2()"><span class="label"></span></a>
         </div>
-        <div class="step-message">How do you want to look today?</div>
+        <div class="step-message">How do you want to look?</div>
 
         <form name="searchForm" ng-submit="submitSearchTerm()">
             <div class="bar bar-header item-input-inset search-bar">
@@ -28,10 +28,10 @@
         </div>
         <div class="no-result" ng-if="list.length == 0 && is_result_empty && !isMethod('favorites')">
             <span class="goal-tag">{{ getProspectSearchTerm() }}</span>
-            <button class="button button-block button-positive" ng-click="storeGoal()">Create New</button>
+            <button class="button button-block button-positive" ng-click="storeGoal()">Create a New Look</button>
         </div>
         <div class="no-result" ng-if="list.length == 0 && is_result_empty && isMethod('favorites')">
-            You have not used any goal yet
+            You have not set a look yet
         </div>
         <ion-list>
             <div>

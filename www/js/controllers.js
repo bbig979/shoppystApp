@@ -822,7 +822,7 @@ angular.module('starter.controllers', [])
                     case 0 :
                         var confirmPopup = $ionicPopup.confirm({
                             title: 'Block',
-                            template: 'Are you sure to block this user?'
+                            template: 'Are you sure you want to block this user?'
                         });
 
                         confirmPopup.then(function(res) {
@@ -841,7 +841,7 @@ angular.module('starter.controllers', [])
                     case 1 :
                         var confirmPopup = $ionicPopup.confirm({
                             title: 'Report',
-                            template: 'Are you sure to report this user?'
+                            template: 'Are you sure you want to report this user?'
                         });
 
                         confirmPopup.then(function(res) {
@@ -1098,7 +1098,7 @@ angular.module('starter.controllers', [])
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
-            $rootScope.popupMessage('', 'You Need at Least 2 Looks to Compare');
+            $rootScope.popupMessage('', 'Show off Your Outfit Ideas with 2 or More Outfits! ');
             $scope.submitted = false;
             return;
         }
@@ -1157,7 +1157,7 @@ angular.module('starter.controllers', [])
         function fail(error) {
             uploadTryCount++;
             if(uploadTryCount == fileURLs.length && uploadSuccessCount == 0){
-                $ionicLoading.show({template: 'Upload Fail', duration:500});
+                $ionicLoading.show({template: 'Upload Failed', duration:500});
                 $scope.submitted = false;
                 uploadTryCount = 0;
                 uploadSuccessCount = 0;
@@ -1334,7 +1334,7 @@ angular.module('starter.controllers', [])
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
-            $rootScope.popupMessage('', 'You Need at Least 2 Looks to Compare');
+            $rootScope.popupMessage('', 'You Need at Least 2 Outfits for Voting');
             $scope.submitted = false;
             return;
         }
@@ -2073,7 +2073,7 @@ angular.module('starter.controllers', [])
                 destructiveButtonClicked: function() {
                     var confirmPopup = $ionicPopup.confirm({
                         title: 'Delete',
-                        template: 'Are you sure to delete this comment?'
+                        template: 'Are you sure you want to delete this comment?'
                     });
 
                     confirmPopup.then(function(res) {
@@ -2105,7 +2105,7 @@ angular.module('starter.controllers', [])
                 destructiveButtonClicked: function() {
                     var confirmPopup = $ionicPopup.confirm({
                         title: 'Report',
-                        template: 'Are you sure to report this comment?'
+                        template: 'Are you sure you want to report this comment?'
                     });
 
                     confirmPopup.then(function(res) {
@@ -2302,7 +2302,7 @@ angular.module('starter.controllers', [])
     $scope.setType = function(_searchTerm, type, isRefresh) {
         if (type == "people")
         {
-            $scope.searchHolder = "Search people";
+            $scope.searchHolder = "Search users";
             $scope.searchNoResultText = "No users found.";
         }
         else if (type == "tag")
@@ -2312,8 +2312,8 @@ angular.module('starter.controllers', [])
         }
         else if (type == "goal")
         {
-            $scope.searchHolder = "Search goals";
-            $scope.searchNoResultText = "No goals found.";
+            $scope.searchHolder = "Search looks";
+            $scope.searchNoResultText = "No looks found.";
         }
         else
         {
@@ -2501,7 +2501,7 @@ angular.module('starter.controllers', [])
                 { text: 'Take a Picture' },
                 { text: 'Choose from Gallery' }
             ],
-            titleText: 'Share Your Look',
+            titleText: 'Change Profile Picture',
             cancelText: 'Cancel',
             cancel: function() {
                 // code for cancel if necessary.
@@ -2565,13 +2565,13 @@ angular.module('starter.controllers', [])
         ImageUpload.send(fileURL, encodeURI($rootScope.baseURL + '/api/user/'+user.slug+'/editProfilePicture'), success, fail, params);
 
         function success(result) {
-            $ionicLoading.show({template: 'Upload Success', duration:500});
+            $ionicLoading.show({template: 'Upload Successful', duration:500});
             $scope.accountImage = $rootScope.photoPath( result.profile_img_path, 's' );
         }
 
         // Transfer failed
         function fail(error) {
-            $ionicLoading.show({template: 'Upload Fail', duration:500});
+            $ionicLoading.show({template: 'Upload Failed', duration:500});
         }
     }
 
@@ -2596,8 +2596,8 @@ angular.module('starter.controllers', [])
     };
     $scope.goInviteFriends = function(id){
         var options = {
-            message: 'which looks better?',
-            subject: 'Which Looks Better?',
+            message: 'Browse outfits to inspire your next look!',
+            subject: 'Browse Outfits to Inspire Your Next Look!',
             url: $rootScope.baseURL + '/s/intro'
         }
         var onSuccess = function(result) {
@@ -2616,7 +2616,7 @@ angular.module('starter.controllers', [])
     $scope.logout = function(id){
         var confirmPopup = $ionicPopup.confirm({
             title: 'Log Out',
-            template: 'Are you sure to log out?'
+            template: 'Are you sure you want to log out?'
         });
 
         confirmPopup.then(function(res) {
@@ -2669,7 +2669,7 @@ angular.module('starter.controllers', [])
             data: user
         })
         .success(function(updated_user){
-            $rootScope.popupMessage('Message', 'Profile Has been updated');
+            $rootScope.popupMessage('', 'Changes successfully updated');
             for(i = 0; i < $rootScope.userTrackArray.length; i++){
                 thisUser = $rootScope.userTrackArray[i];
                 if(thisUser.id == $scope.user.id){
@@ -2704,7 +2704,7 @@ angular.module('starter.controllers', [])
             data: pwd
         })
         .success(function(){
-            $rootScope.popupMessage('Message', 'Password Has been updated');
+            $rootScope.popupMessage('', 'Updates successful');
             $ionicHistory.goBack();
         })
         .error(function(data, status){
@@ -2756,7 +2756,7 @@ angular.module('starter.controllers', [])
             data: {'email' : email }
         })
         .success(function(){
-            $rootScope.popupMessage('Message', 'Invitation has been sent');
+            $rootScope.popupMessage('', 'Invitation has been sent');
             $( ".email" ).val("");
         })
         .error(function(data, status){

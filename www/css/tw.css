@@ -560,7 +560,7 @@
 
 /* line 2, ../../scss/tw/_post-create.scss */
 #create-post-step-1 .steps, #create-post .steps {
-  width: 40vw;
+  width: 50vw;
   height: 14vw;
   margin: 0 auto;
   position: relative;
@@ -572,7 +572,7 @@
   background-color: #eee;
   width: 90%;
   height: 0.5vw;
-  top: 3vw;
+  top: 4vw;
   left: 5%;
 }
 /* line 17, ../../scss/tw/_post-create.scss */
@@ -594,7 +594,7 @@
 /* line 27, ../../scss/tw/_post-create.scss */
 #create-post-step-1 .steps .step span, #create-post .steps .step span {
   display: inline-block;
-  margin: 0.5vw 2.19vw;
+  margin: 1.5vw 3.19vw;
 }
 /* line 32, ../../scss/tw/_post-create.scss */
 #create-post-step-1 .steps .step.active, #create-post-step-1 .steps .step.completed, #create-post .steps .step.active, #create-post .steps .step.completed {

@@ -10,7 +10,7 @@
             <ion-spinner></ion-spinner>
         </div>
         <div class="no-result" ng-if="list.length == 0 && is_result_empty">
-            No Snaplook Found
+            No Outfit Ideas Found
         </div>
         <ion-list>
             <div>
@@ -43,7 +43,7 @@
                         </div>
                         <div class="post-summary clearfix">
                             <div class="totals">
-                                {{ post.photos.length }} Looks{{ postCard.commentCount(post) }}{{ postCard.voteCount(post) }}
+                                {{ post.photos.length }} Outfits{{ postCard.commentCount(post) }}{{ postCard.voteCount(post) }}
                             </div>
                         </div>
                         <hr>
@@ -64,7 +64,7 @@
             </div>
         </ion-list>
         <div class="load-more-snaplooks" ng-show="list.length > 0 && ! is_pagination_done">
-            <button class="button button-block button-positive" ng-click="load()">Load More SnapLooks</button>
+            <button class="button button-block button-positive" ng-click="load()">Load More Outfit Ideas</button>
         </div>
     </ion-content>
 </ion-view>
