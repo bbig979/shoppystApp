@@ -24,19 +24,19 @@
             <a ng-class="{ active: age_active === 'teens' }" ng-click="setAge('teens')" class="teens">10s</a>
             <a ng-class="{ active: age_active === 'all' }" ng-click="setAge('all')" class="all">All</a>
         </div>
-        <div class="expired-message" ng-show="::look_array && look_array.length == 0">
+        <div class="expired-message" ng-show="::photo_array && photo_array.length == 0">
             Outfits have disappeared.
         </div>
         <ion-list>
             <div>
-                <ion-item ng-repeat="look in look_array" class="look item">
-                    <div class="look_wrapper entity-id-{{::look.id}}" style="background-image: url({{ ::photoPath( look.img_path, 'm' ) }})">
+                <ion-item ng-repeat="photo in photo_array" class="photo item">
+                    <div class="photo_wrapper entity-id-{{::photo.id}}" style="background-image: url({{ ::photoPath( photo.img_path, 'm' ) }})">
                         <a class="post_img"></a>
 
-                        <div class="winner icon ion-ios-checkmark-empty" ng-show="look.id == top_look_id"></div>
+                        <div class="winner icon ion-ios-checkmark-empty" ng-show="photo.id == top_photo_id"></div>
                     </div>
                     <div class="desc_row">
-                        <span class="partial_likes">{{voteResult.getCount(gender_active, age_active, look.id, look_array)}} votes</span>
+                        <span class="partial_likes">{{voteResult.getCount(gender_active, age_active, photo.id, photo_array)}} votes</span>
                     </div>
                 </ion-item>
             </div>

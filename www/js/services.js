@@ -188,7 +188,7 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchLook', function($http, $rootScope, Vote){
+.factory('FetchPhoto', function($http, $rootScope, Vote){
     return {
         getList: function(postID){
             return $http.get($rootScope.baseURL+"/api/post/"+postID+"/vote").then(function(response){
@@ -372,15 +372,15 @@ angular.module('starter.services', [])
         voteCount: function(post){
             var vote_count = 0;
             for(var i=0; i< post.photos.length; i++){
-                var look = post.photos[i];
-                if(look.vote_info && look.vote_info.count){
-                    vote_count += look.vote_info.count;
+                var photo = post.photos[i];
+                if(photo.vote_info && photo.vote_info.count){
+                    vote_count += photo.vote_info.count;
                 }
             }
             return this._countSummaryText(vote_count, 'Vote');
         },
-        voteToggle: function(look){
-            Vote.toggle(look);
+        voteToggle: function(photo){
+            Vote.toggle(photo);
         },
         moreOption: function(list, index, is_mine = false, account_info = null){
             var action = 'report';
@@ -454,7 +454,7 @@ angular.module('starter.services', [])
                     window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
                 }
                 else{
-                    $rootScope.popupMessage('Oops', 'You cannot send other\'s look');
+                    $rootScope.popupMessage('Oops', 'You cannot send other\'s outfit');
                 }
                 $ionicLoading.hide();
             });
@@ -1268,75 +1268,75 @@ angular.module('starter.services', [])
         }
     }
 })
-.factory('VoteResult', function($http, FetchLook, $q){
+.factory('VoteResult', function($http, FetchPhoto, $q){
     return {
-        getCount: function(filter_gender, filter_age_group, look_id, look_array){
-            var target_key = this._getTargetKeyForLookAnalytic(filter_gender, filter_age_group);
-            for(var i = 0; i < look_array.length; i++){
-                this_look = look_array[i];
-                if(look_id == this_look.id){
-                    return this_look.look_analytic[target_key];
+        getCount: function(filter_gender, filter_age_group, photo_id, photo_array){
+            var target_key = this._getTargetKeyForPhotoAnalytic(filter_gender, filter_age_group);
+            for(var i = 0; i < photo_array.length; i++){
+                this_photo = photo_array[i];
+                if(photo_id == this_photo.id){
+                    return this_photo.photo_analytic[target_key];
                 }
             }
         },
-        getTopLookId: function(filter_gender, filter_age_group, look_array){
-            var target_key = this._getTargetKeyForLookAnalytic(filter_gender, filter_age_group);
+        getTopPhotoId: function(filter_gender, filter_age_group, photo_array){
+            var target_key = this._getTargetKeyForPhotoAnalytic(filter_gender, filter_age_group);
             var top_vote_count = 0;
-            var top_look_id;
-            for(var i = 0; i < look_array.length; i++){
-                this_look = look_array[i];
-                if(top_vote_count <= parseInt(this_look.look_analytic[target_key])){
-                    top_look_id = this_look.id;
-                    top_vote_count = parseInt(this_look.look_analytic[target_key]);
+            var top_photo_id;
+            for(var i = 0; i < photo_array.length; i++){
+                this_photo = photo_array[i];
+                if(top_vote_count <= parseInt(this_photo.photo_analytic[target_key])){
+                    top_photo_id = this_photo.id;
+                    top_vote_count = parseInt(this_photo.photo_analytic[target_key]);
                 }
             }
             if(top_vote_count == 0){
                 return 0;
             }
-            return top_look_id;
+            return top_photo_id;
         },
         fetch: function(post_id){
             var deferred = $q.defer();
             var this_factory = this;
-            FetchLook.getList(post_id).then(function(response){
-                var look_array = response.photos;
-                for (index = 0; index < look_array.length; ++index) {
-                    for(var j = 0; j < response.look_analytic_array.length; ++j){
-                        if(response.look_analytic_array[j].id == look_array[index].id){
-                            look_array[index].look_analytic = response.look_analytic_array[j];
+            FetchPhoto.getList(post_id).then(function(response){
+                var photo_array = response.photos;
+                for (index = 0; index < photo_array.length; ++index) {
+                    for(var j = 0; j < response.photo_analytic_array.length; ++j){
+                        if(response.photo_analytic_array[j].id == photo_array[index].id){
+                            photo_array[index].photo_analytic = response.photo_analytic_array[j];
                         }
                     }
-                    look_array[index].vote_count = 0;
-                    if(look_array[index].vote_info){
-                        look_array[index].vote_count = look_array[index].vote_info.count;
+                    photo_array[index].vote_count = 0;
+                    if(photo_array[index].vote_info){
+                        photo_array[index].vote_count = photo_array[index].vote_info.count;
                     }
-                    this_factory._setTotalFieldsInLookAnalytic(look_array[index]);
+                    this_factory._setTotalFieldsInPhotoAnalytic(photo_array[index]);
                 }
-                deferred.resolve(look_array);
+                deferred.resolve(photo_array);
             });
             return deferred.promise;
         },
-        _setPlaceHolderIfLookAnalyticIsEmpty: function(look_analytic){
-            if(look_analytic === undefined){
-                look_analytic = [];
+        _setPlaceHolderIfPhotoAnalyticIsEmpty: function(photo_analytic){
+            if(photo_analytic === undefined){
+                photo_analytic = [];
             }
         },
-        _setTotalFieldsInLookAnalytic: function(look){
-            look_analytic = look.look_analytic;
-            this._setPlaceHolderIfLookAnalyticIsEmpty(look_analytic);
-            look_analytic.dummy_total_key = 1;
-            look_analytic.total_all = look.vote_count;
-            look_analytic.total_gender =
-                look_analytic.male +
-                look_analytic.female;
-            look_analytic.total_age_group =
-                look_analytic.teens +
-                look_analytic.twenties +
-                look_analytic.thirties +
-                look_analytic.forties +
-                look_analytic.fifties;
+        _setTotalFieldsInPhotoAnalytic: function(photo){
+            photo_analytic = photo.photo_analytic;
+            this._setPlaceHolderIfPhotoAnalyticIsEmpty(photo_analytic);
+            photo_analytic.dummy_total_key = 1;
+            photo_analytic.total_all = photo.vote_count;
+            photo_analytic.total_gender =
+                photo_analytic.male +
+                photo_analytic.female;
+            photo_analytic.total_age_group =
+                photo_analytic.teens +
+                photo_analytic.twenties +
+                photo_analytic.thirties +
+                photo_analytic.forties +
+                photo_analytic.fifties;
         },
-        _getTargetKeyForLookAnalytic: function(gender, age_group){
+        _getTargetKeyForPhotoAnalytic: function(gender, age_group){
             if(gender == 'friends'){
                 return gender;
             }
@@ -1396,36 +1396,36 @@ angular.module('starter.services', [])
 })
 .factory('Vote', function($http, $rootScope){
     return {
-        toggle: function(look){
-            if(look.user_liked){
-                $http.get($rootScope.baseURL+'/api/look/'+look.id+'/unvote').success(function(){
+        toggle: function(photo){
+            if(photo.user_liked){
+                $http.get($rootScope.baseURL+'/api/photo/'+photo.id+'/unvote').success(function(){
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
                 });
 
-                look.vote_info.count--;
-                if(look.vote_info.count == 0){
-                    look.vote_info = null;
+                photo.vote_info.count--;
+                if(photo.vote_info.count == 0){
+                    photo.vote_info = null;
                 }
             }
             else{
-                $http.get($rootScope.baseURL+'/api/look/'+look.id+'/vote').success(function(){
+                $http.get($rootScope.baseURL+'/api/photo/'+photo.id+'/vote').success(function(){
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
                 });
-                if(look.vote_info){
-                    look.vote_info.count++;
+                if(photo.vote_info){
+                    photo.vote_info.count++;
                 }
                 else{
-                    look.vote_info = {count: 1};
+                    photo.vote_info = {count: 1};
                 }
             }
-            look.user_liked = ! look.user_liked;
+            photo.user_liked = ! photo.user_liked;
         },
         /*
-        trackAndUpdateVote: function(look){
+        trackAndUpdateVote: function(photo){
             for(i = 0; i < $rootScope.postTrackArray.length; i++){
                 thisPost = $rootScope.postTrackArray[i];
                 if(post.id == thisPost.id){

@@ -45,14 +45,14 @@
                             </div>
                         </div>
                         <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
-                        <div class="look-list">
+                        <div class="photo-list">
                             <ion-scroll direction="x" delegate-handle="handle-horizontal">
-                                <div ng-repeat="look in post.photos" class="look">
-                                    <div class="look-img-wrapper entity-id-{{look.id}}" ng-class="{'my-look': isMyAccount}" style="background-image: url({{ photoPath( look.img_path, 'm' ) }})" ng-click="goLookDetail(look)">
-                                        <a class="look-img"></a>
+                                <div ng-repeat="photo in post.photos" class="photo">
+                                    <div class="photo-img-wrapper entity-id-{{photo.id}}" ng-class="{'my-photo': isMyAccount}" style="background-image: url({{ photoPath( photo.img_path, 'm' ) }})" ng-click="goPhotoDetail(photo)">
+                                        <a class="photo-img"></a>
                                     </div>
                                     <div class="vote-toggle" ng-hide="isMyAccount">
-                                        <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(look)" ng-class="look.user_liked ? 'checked' : 'not-checked'"></div>
+                                        <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
                                     </div>
                                 </div>
                             </ion-scroll>
@@ -62,7 +62,7 @@
                                 {{ post.photos.length }} Outfits{{ postCard.commentCount(post) }}{{ postCard.voteCount(post) }}
                             </div>
                             <div class="share-warning" ng-show="post.visibility == 'friend' && post.post_shares.length == 0 && post.display_share">
-                                <i class="icon ion-alert-circled"></i> This is <b>NOT</b> visible to anyone until you share
+                                <i class="icon ion-alert-circled"></i> This is <b>NOT</b> visible to anyone until you share it
                             </div>
                         </div>
                         <hr>

@@ -141,52 +141,52 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.look-detail-home', {
-       url: '/look/home',
+    .state('tab.photo-detail-home', {
+       url: '/photo/home',
        views: {
            'tab-home': {
-               templateUrl: 'templates/look-detail.html',
-               controller: 'LookDetailCtrl'
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
            }
        },
        params: {
-          look: null
+          photo: null
        }
     })
-    .state('tab.look-detail-explore', {
-       url: '/look/explore',
+    .state('tab.photo-detail-explore', {
+       url: '/photo/explore',
        views: {
            'tab-explore': {
-               templateUrl: 'templates/look-detail.html',
-               controller: 'LookDetailCtrl'
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
            }
        },
        params: {
-          look: null
+          photo: null
        }
     })
-    .state('tab.look-detail-notification', {
-       url: '/look/notification',
+    .state('tab.photo-detail-notification', {
+       url: '/photo/notification',
        views: {
            'tab-notification': {
-               templateUrl: 'templates/look-detail.html',
-               controller: 'LookDetailCtrl'
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
            }
        },
        params: {
-          look: null
+          photo: null
        }
     })
-    .state('tab.look-detail-account', {
-       url: '/look/account',
+    .state('tab.photo-detail-account', {
+       url: '/photo/account',
        views: {
            'tab-account': {
-               templateUrl: 'templates/look-detail.html',
-               controller: 'LookDetailCtrl'
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
            }
        },
        params: {
-          look: null
+          photo: null
        }
     })
     .state('tab.post-comments-home', {

@@ -1,5 +1,5 @@
 /* line 3, ../../scss/common/_reusable.scss */
-.background-image-handler, .post-card-list .post-card .post-card-header .profile-image, .vote-result .look .profile-image, .post-list .post .profile-image, .single-post .post-header .profile-image {
+.background-image-handler, .post-card-list .post-card .post-card-header .profile-image, .vote-result .photo .profile-image, .post-list .post .profile-image, .single-post .post-header .profile-image {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -3330,11 +3330,11 @@
   margin-bottom: 5px;
 }
 /* line 54, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .look-list .scroll-bar-h {
+.post-card-list .post-card .photo-list .scroll-bar-h {
   display: none;
 }
 /* line 57, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .look-list .look {
+.post-card-list .post-card .photo-list .photo {
   width: 69vw;
   margin-right: 4vw;
   margin-top: 1vw;
@@ -3345,7 +3345,7 @@
   background-color: #fff;
 }
 /* line 67, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .look-list .look .look-img-wrapper {
+.post-card-list .post-card .photo-list .photo .photo-img-wrapper {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -3353,23 +3353,23 @@
   border-top-right-radius: 1vw;
 }
 /* line 74, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .look-list .look .look-img-wrapper .look-img {
+.post-card-list .post-card .photo-list .photo .photo-img-wrapper .photo-img {
   display: block;
   width: 100%;
   padding-top: 120%;
 }
 /* line 80, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .look-list .look .look-img-wrapper.my-look {
+.post-card-list .post-card .photo-list .photo .photo-img-wrapper.my-photo {
   border-radius: 1vw;
 }
 /* line 83, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .look-list .look .vote-toggle {
+.post-card-list .post-card .photo-list .photo .vote-toggle {
   text-align: center;
   padding: 10px;
   height: 15vw;
 }
 /* line 88, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .look-list .look .vote-toggle .check-mark {
+.post-card-list .post-card .photo-list .photo .vote-toggle .check-mark {
   display: inline-block;
   color: #ddd;
   border-radius: 50%;
@@ -3381,13 +3381,13 @@
   padding-left: 1vw;
 }
 /* line 99, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .look-list .look .vote-toggle .check-mark.checked {
+.post-card-list .post-card .photo-list .photo .vote-toggle .check-mark.checked {
   color: #fff;
   border: 1px solid #fff;
   background: #5CC196;
 }
 /* line 106, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .look-list .look:first-child {
+.post-card-list .post-card .photo-list .photo:first-child {
   margin-left: 4vw;
 }
 /* line 111, ../../scss/ryan/_post-list.scss */
@@ -3471,7 +3471,7 @@
 }
 
 /* line 185, ../../scss/ryan/_post-list.scss */
-.vote-result .look {
+.vote-result .photo {
   width: 44vw !important;
   float: left;
   margin-left: 4vw;
@@ -3481,13 +3481,13 @@
   box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
 }
 /* line 194, ../../scss/ryan/_post-list.scss */
-.vote-result .look .post_img {
+.vote-result .photo .post_img {
   display: block;
   width: 100%;
   padding-top: 115%;
 }
 /* line 199, ../../scss/ryan/_post-list.scss */
-.vote-result .look .look_wrapper {
+.vote-result .photo .photo_wrapper {
   border: 0;
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -3497,7 +3497,7 @@
   background-color: #f0f0f0;
 }
 /* line 208, ../../scss/ryan/_post-list.scss */
-.vote-result .look .desc_row {
+.vote-result .photo .desc_row {
   float: left;
   width: 50%;
   font-size: 14px;
@@ -3505,17 +3505,17 @@
   padding: 5px 5px 0px 10px;
 }
 /* line 215, ../../scss/ryan/_post-list.scss */
-.vote-result .look .desc_row.profile {
+.vote-result .photo .desc_row.profile {
   padding: 5px 0 5px 5px;
 }
 /* line 218, ../../scss/ryan/_post-list.scss */
-.vote-result .look .add_to_compare {
+.vote-result .photo .add_to_compare {
   position: absolute;
   bottom: 10px;
   right: 2%;
 }
 /* line 223, ../../scss/ryan/_post-list.scss */
-.vote-result .look .like-button {
+.vote-result .photo .like-button {
   min-width: 20px;
   min-height: 21px;
   height: 21px;
@@ -3523,12 +3523,12 @@
   margin-right: 10px;
 }
 /* line 230, ../../scss/ryan/_post-list.scss */
-.vote-result .look .like-button:before {
+.vote-result .photo .like-button:before {
   line-height: 20px;
   font-size: 25px;
 }
 /* line 234, ../../scss/ryan/_post-list.scss */
-.vote-result .look .profile-image {
+.vote-result .photo .profile-image {
   width: 25px;
   height: 25px;
   -webkit-border-radius: 50%;
@@ -3540,11 +3540,11 @@
   margin-right: 5px;
 }
 /* line 242, ../../scss/ryan/_post-list.scss */
-.vote-result .look .user-name {
+.vote-result .photo .user-name {
   padding: 2px;
 }
 /* line 245, ../../scss/ryan/_post-list.scss */
-.vote-result .look .add-compare-button {
+.vote-result .photo .add-compare-button {
   float: right;
   min-width: 20px;
   min-height: 22px;
@@ -3553,24 +3553,24 @@
   margin-right: 6px;
 }
 /* line 253, ../../scss/ryan/_post-list.scss */
-.vote-result .look .add-compare-button:before {
+.vote-result .photo .add-compare-button:before {
   line-height: 20px;
 }
 /* line 256, ../../scss/ryan/_post-list.scss */
-.vote-result .look .button.button-dark.button-clear.ion-ios-heart {
+.vote-result .photo .button.button-dark.button-clear.ion-ios-heart {
   color: #FF4C62;
 }
 /* line 259, ../../scss/ryan/_post-list.scss */
-.vote-result .look i {
+.vote-result .photo i {
   width: 15px;
   text-align: center;
 }
 /* line 264, ../../scss/ryan/_post-list.scss */
-.vote-result .look .right-align ion-item {
+.vote-result .photo .right-align ion-item {
   float: right;
 }
 /* line 267, ../../scss/ryan/_post-list.scss */
-.vote-result .look .right-align .add_to_compare {
+.vote-result .photo .right-align .add_to_compare {
   position: absolute;
   bottom: 10px;
   right: 52%;
@@ -4488,16 +4488,16 @@ div.tab-nav.tabs {
 }
 
 /* line 19, ../../scss/ryan/_post-detail.scss */
-#look-detail {
-  background-color: #000;
+#photo-detail {
+  background-color: #f7f7f7;
 }
 /* line 22, ../../scss/ryan/_post-detail.scss */
-#look-detail .zoom-pane {
+#photo-detail .zoom-pane {
   width: 100% !important;
   height: 100% !important;
 }
 /* line 27, ../../scss/ryan/_post-detail.scss */
-#look-detail .zoom-pane .scroll {
+#photo-detail .zoom-pane .scroll {
   min-height: 100% !important;
   display: -webkit-box;
   display: -moz-box;
@@ -4530,12 +4530,12 @@ div.tab-nav.tabs {
   height: 100vh;
 }
 /* line 60, ../../scss/ryan/_post-detail.scss */
-#look-detail .zoom-pane img {
+#photo-detail .zoom-pane img {
   width: 100% !important;
   vertical-align: top !important;
 }
 /* line 65, ../../scss/ryan/_post-detail.scss */
-#look-detail ion-spinner {
+#photo-detail ion-spinner {
   margin-top: 50px;
 }
 

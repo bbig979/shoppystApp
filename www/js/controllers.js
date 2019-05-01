@@ -103,12 +103,12 @@ angular.module('starter.controllers', [])
 
         return content;
     };
-    $rootScope.goLookDetail = function(look){
+    $rootScope.goPhotoDetail = function(photo){
         if (!$rootScope.canClickInList()) {
             return;
         }
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.look-detail-'+tab,{look: look});
+        $state.go('tab.photo-detail-'+tab,{photo: photo});
     };
     $rootScope.goPostComment = function(post){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -1084,7 +1084,7 @@ angular.module('starter.controllers', [])
         var fileURLs = CameraPictues.get();
         var share_post_scope = this;
         var postIdArray = [];
-        var lookIdArray = [];
+        var photoIdArray = [];
         var uploadTryCount = 0;
         var uploadSuccessCount = 0;
         var param_caption = '';
@@ -1098,7 +1098,7 @@ angular.module('starter.controllers', [])
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
-            $rootScope.popupMessage('', 'Show off Your Outfit Ideas with 2 or More Outfits! ');
+            $rootScope.popupMessage('', 'Show off Your Outfit Ideas with 2 or More Outfits!');
             $scope.submitted = false;
             return;
         }
@@ -1111,7 +1111,7 @@ angular.module('starter.controllers', [])
             visibility: $scope.visibility,
         };
         for(var i=0; i<fileURLs.length; i++){
-            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/look/create/' + i), success, fail);
+            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/photo/create/' + i), success, fail);
         }
 
         // Transfer succeeded
@@ -1129,7 +1129,7 @@ angular.module('starter.controllers', [])
             uploadTryCount++;
             uploadSuccessCount++;
             if(typeof result.id !== 'undefined'){
-                lookIdArray.push(result.id);
+                photoIdArray.push(result.id);
             }
             if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
                 $ionicScrollDelegate.scrollTop();
@@ -1137,15 +1137,15 @@ angular.module('starter.controllers', [])
                     template: 'Upload Success ( ' + uploadSuccessCount + ' / ' + uploadTryCount + ' )',
                     duration:500
                 });
-                var lookIds = lookIdArray.join(',');
-                $http.post($rootScope.baseURL+'/api/post/create/with_looks/'+lookIds, post_data);
+                var photoIds = photoIdArray.join(',');
+                $http.post($rootScope.baseURL+'/api/post/create/with_photos/'+photoIds, post_data);
                 $scope.submitted = false;
                 $scope.visibility = 'public';
                 share_post_scope.goal = undefined;
                 share_post_scope.captions = undefined;
                 uploadTryCount = 0;
                 uploadSuccessCount = 0;
-                lookIdArray = [];
+                photoIdArray = [];
                 $timeout(function(){
                     CameraPictues.reset();
                     $state.go('tab.account-account', {refresh : new Date().getTime()});
@@ -1320,7 +1320,7 @@ angular.module('starter.controllers', [])
     $scope.sharePost = function(captions, goal_id, other) {
         var fileURLs = CameraPictues.get();
         var share_post_scope = this;
-        var lookIdArray = [];
+        var photoIdArray = [];
         var uploadTryCount = 0;
         var uploadSuccessCount = 0;
         var param_caption = '';
@@ -1334,7 +1334,7 @@ angular.module('starter.controllers', [])
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
-            $rootScope.popupMessage('', 'You Need at Least 2 Outfits for Voting');
+            $rootScope.popupMessage('', 'Show off Your Outfit Ideas with 2 or More Outfits!');
             $scope.submitted = false;
             return;
         }
@@ -1347,7 +1347,7 @@ angular.module('starter.controllers', [])
             visibility: $scope.visibility,
         };
         for(var i=0; i<fileURLs.length; i++){
-            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/look/create/' + i), success, fail);
+            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/photo/create/' + i), success, fail);
         }
 
         // Transfer succeeded
@@ -1365,7 +1365,7 @@ angular.module('starter.controllers', [])
             uploadTryCount++;
             uploadSuccessCount++;
             if(typeof result.id !== 'undefined'){
-                lookIdArray.push(result.id);
+                photoIdArray.push(result.id);
             }
             if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
                 $ionicScrollDelegate.scrollTop();
@@ -1373,8 +1373,8 @@ angular.module('starter.controllers', [])
                     template: 'Upload Success ( ' + uploadSuccessCount + ' / ' + uploadTryCount + ' )',
                     duration:500
                 });
-                var lookIds = lookIdArray.join(',');
-                $http.post($rootScope.baseURL+'/api/post/create/with_looks/'+lookIds, post_data).success(function(){
+                var photoIds = photoIdArray.join(',');
+                $http.post($rootScope.baseURL+'/api/post/create/with_photos/'+photoIds, post_data).success(function(){
                     $scope.resetAllSteps();
                 })
                 .error(function(data, status){
@@ -1387,7 +1387,7 @@ angular.module('starter.controllers', [])
         function fail(error) {
             uploadTryCount++;
             if(uploadTryCount == fileURLs.length && uploadSuccessCount == 0){
-                $ionicLoading.show({template: 'Upload Fail', duration:500});
+                $ionicLoading.show({template: 'Upload Failed', duration:500});
                 $scope.submitted = false;
                 uploadTryCount = 0;
                 uploadSuccessCount = 0;
@@ -1972,15 +1972,15 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('LookDetailCtrl', function($scope, $stateParams, UxAnalytics, SlideHeader){
-    $scope.look = $stateParams.look;
+.controller('PhotoDetailCtrl', function($scope, $stateParams, UxAnalytics, SlideHeader){
+    $scope.photo = $stateParams.photo;
 
     $scope.imageLoaded = function(object) {
         object.loaded = true;
     }
 
     $scope.$on('$ionicView.enter', function() {
-        UxAnalytics.startScreen('look-detail');
+        UxAnalytics.startScreen('photo-detail');
         SlideHeader.viewEntered($scope);
     });
 })
@@ -2390,8 +2390,8 @@ angular.module('starter.controllers', [])
     $scope.voteResult = VoteResult;
     $scope.gender_active = 'all';
     $scope.age_active = 'all';
-    $scope.look_array;
-    $scope.top_look_id;
+    $scope.photo_array;
+    $scope.top_photo_id;
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('vote-result');
@@ -2399,32 +2399,32 @@ angular.module('starter.controllers', [])
     });
 
     $ionicLoading.show();
-    VoteResult.fetch($stateParams.postId).then(function(look_array) {
-        $scope.look_array = look_array;
+    VoteResult.fetch($stateParams.postId).then(function(photo_array) {
+        $scope.photo_array = photo_array;
         $ionicLoading.hide();
-        $scope.markLook($scope.gender_active, $scope.age_active);
+        $scope.markPhoto($scope.gender_active, $scope.age_active);
     });
 
-    $scope.markLook = function(gender, age) {
-        $scope.top_look_id = VoteResult.getTopLookId(gender, age, $scope.look_array);
+    $scope.markPhoto = function(gender, age) {
+        $scope.top_photo_id = VoteResult.getTopPhotoId(gender, age, $scope.photo_array);
     }
 
     $scope.doRefresh = function(){
-        VoteResult.fetch($stateParams.postId).then(function(look_array) {
-            $scope.look_array = look_array;
+        VoteResult.fetch($stateParams.postId).then(function(photo_array) {
+            $scope.photo_array = photo_array;
             $scope.$broadcast('scroll.refreshComplete');
-            $scope.markLook($scope.gender_active, $scope.age_active);
+            $scope.markPhoto($scope.gender_active, $scope.age_active);
         });
     }
 
     $scope.setGender = function(gender) {
         $scope.gender_active = gender;
-        $scope.markLook($scope.gender_active, $scope.age_active);
+        $scope.markPhoto($scope.gender_active, $scope.age_active);
     }
 
     $scope.setAge = function(age) {
         $scope.age_active = age;
-        $scope.markLook($scope.gender_active , $scope.age_active);
+        $scope.markPhoto($scope.gender_active , $scope.age_active);
     }
 })
 

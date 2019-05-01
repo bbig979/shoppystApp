@@ -743,7 +743,7 @@
   font-size: 4.5vw;
   line-height: 9vw;
   text-align: center;
-  padding-top: 13vw;
+  padding-top: 17vw;
 }
 /* line 160, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-button .ion-plus-circled {
@@ -1002,11 +1002,11 @@
   border-width: 0px;
 }
 /* line 7, ../../scss/tw/_post-edit.scss */
-#edit-post .look-list .scroll-bar-h {
+#edit-post .photo-list .scroll-bar-h {
   display: none;
 }
 /* line 10, ../../scss/tw/_post-edit.scss */
-#edit-post .look-list .post {
+#edit-post .photo-list .post {
   width: 40vw;
   margin-right: 2vw;
   margin-top: 10px;
@@ -1017,20 +1017,20 @@
   background-color: #fff;
 }
 /* line 20, ../../scss/tw/_post-edit.scss */
-#edit-post .look-list .post .post-img-wrapper {
+#edit-post .photo-list .post .post-img-wrapper {
   background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 1vw;
 }
 /* line 26, ../../scss/tw/_post-edit.scss */
-#edit-post .look-list .post .post-img-wrapper .post-img {
+#edit-post .photo-list .post .post-img-wrapper .post-img {
   display: block;
   width: 100%;
   padding-top: 120%;
 }
 /* line 33, ../../scss/tw/_post-edit.scss */
-#edit-post .look-list .post:first-child {
+#edit-post .photo-list .post:first-child {
   margin-left: 10px;
 }
 /* line 38, ../../scss/tw/_post-edit.scss */
