@@ -1279,7 +1279,7 @@ angular.module('starter.controllers', [])
         localStorage.removeItem('post_create_visibility');
         localStorage.removeItem('post_create_captions');
         this.captions = '';
-        $scope.visibility = 'public';
+        $scope.visibility = 'permanent';
     }
 
     $scope.resetAllSteps = function(){
@@ -1303,7 +1303,7 @@ angular.module('starter.controllers', [])
 
 
     $scope.getCaption();
-    $scope.visibility = 'public';
+    $scope.visibility = 'permanent';
     if(localStorage.getItem('post_create_visibility')){
         $scope.visibility = localStorage.getItem('post_create_visibility');
     }
