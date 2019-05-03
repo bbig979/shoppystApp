@@ -67,13 +67,13 @@
                         </div>
                         <hr>
                         <div class="post-card-footer clearfix">
-                            <div class="option comment" ng-class="{'expired-post': isMyAccount && !post.display_share}">
+                            <div class="option comment" ng-class="{'expired-post': !isMyAccount || (isMyAccount && !post.display_share)}">
                                 <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="goPostComment(post)">&nbsp;&nbsp;Comment</button>
                             </div>
-                            <div class="option result" ng-class="{'expired-post': isMyAccount && !post.display_share}">
+                            <div class="option result" ng-class="{'expired-post': !isMyAccount || (isMyAccount && !post.display_share)}">
                                 <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post.id)">&nbsp;&nbsp;Result</button>
                             </div>
-                            <div class="option share"  ng-class="{'expired-post': isMyAccount && !post.display_share}" ng-hide="isMyAccount && !post.display_share">
+                            <div class="option share"  ng-class="{'expired-post': !isMyAccount || (isMyAccount && !post.display_share)}" ng-hide="!isMyAccount || (isMyAccount && !post.display_share)">
                                 <button class="button button-clear button-dark icon ion-ios-redo-outline" ng-click="postCard.share(post)">&nbsp;&nbsp;Share</button>
                             </div>
                         </div>
