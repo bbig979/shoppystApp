@@ -2,17 +2,18 @@
   display: none;
 }
 .bar.bar-stable{
-  background-color: $primary-color;
-  background: -webkit-linear-gradient(left, #FF1D5C , #FFC772); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(right, #FF1D5C, #FFC772); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(right, #FF1D5C, #FFC772); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(to right, #FF1D5C , #FFC772);
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
 }
 .bar.bar-stable .title {
-  color: #fff;
+  color: #525252;
+  font-weight: unset;
+  text-decoration: underline;
+  text-decoration-color: #5CC196;
+  text-underline-position: under;
 }
 .bar-stable .button.button-clear{
-  color: #fff;
+  color: #525252;
 }
 .title-image{
   height: 44px;

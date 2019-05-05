@@ -19,7 +19,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
-      StatusBar.styleLightContent();
     }
   });
 })
@@ -142,52 +141,52 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
-    .state('tab.look-detail-home', {
-       url: '/look/home',
+    .state('tab.photo-detail-home', {
+       url: '/photo/home',
        views: {
            'tab-home': {
-               templateUrl: 'templates/look-detail.html',
-               controller: 'LookDetailCtrl'
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
            }
        },
        params: {
-          look: null
+          photo: null
        }
     })
-    .state('tab.look-detail-explore', {
-       url: '/look/explore',
+    .state('tab.photo-detail-explore', {
+       url: '/photo/explore',
        views: {
            'tab-explore': {
-               templateUrl: 'templates/look-detail.html',
-               controller: 'LookDetailCtrl'
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
            }
        },
        params: {
-          look: null
+          photo: null
        }
     })
-    .state('tab.look-detail-notification', {
-       url: '/look/notification',
+    .state('tab.photo-detail-notification', {
+       url: '/photo/notification',
        views: {
            'tab-notification': {
-               templateUrl: 'templates/look-detail.html',
-               controller: 'LookDetailCtrl'
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
            }
        },
        params: {
-          look: null
+          photo: null
        }
     })
-    .state('tab.look-detail-account', {
-       url: '/look/account',
+    .state('tab.photo-detail-account', {
+       url: '/photo/account',
        views: {
            'tab-account': {
-               templateUrl: 'templates/look-detail.html',
-               controller: 'LookDetailCtrl'
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
            }
        },
        params: {
-          look: null
+          photo: null
        }
     })
     .state('tab.post-comments-home', {
@@ -362,6 +361,30 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           templateUrl: 'templates/post-create.html',
           controller: 'PostCreateCtrl'
         }
+      }
+    })
+    .state('tab.post-create-step-1', {
+      url: '/post/create/step/1',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/post-create-step-1.html',
+          controller: 'PostCreateStep1Ctrl'
+        }
+      },
+      params: {
+        refresh: null
+      }
+    })
+    .state('tab.post-create-step-2', {
+      url: '/post/create/step/2',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/post-create-step-2.html',
+          controller: 'PostCreateStep2Ctrl'
+        }
+      },
+      params: {
+        refresh: null
       }
     })
     .state('tab.post-edit', {

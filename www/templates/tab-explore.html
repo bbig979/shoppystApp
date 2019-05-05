@@ -25,22 +25,22 @@
                                 <span class="icon ion-ios-more" ng-click="postCard.moreOption(list, $index)"></span>
                             </div>
                         </div>
-                        <div class="caption" ng-bind-html="linkHashTagAndOccasion(post) | unsafe"></div>
-                        <div class="look-list">
+                        <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
+                        <div class="photo-list">
                             <ion-scroll direction="x" delegate-handle="handle-horizontal">
-                                <div ng-repeat="look in post.photos" class="look">
-                                    <div class="look-img-wrapper entity-id-{{look.id}}" style="background-image: url({{ photoPath( look.img_path, 'm' ) }})" ng-click="goLookDetail(look)">
-                                        <a class="look-img"></a>
+                                <div ng-repeat="photo in post.photos" class="photo">
+                                    <div class="photo-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'm' ) }})" ng-click="goPhotoDetail(photo)">
+                                        <a class="photo-img"></a>
                                     </div>
                                     <div class="vote-toggle">
-                                        <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(look)" ng-class="look.user_liked ? 'checked' : 'not-checked'"></div>
+                                        <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
                                     </div>
                                 </div>
                             </ion-scroll>
                         </div>
                         <div class="post-summary clearfix">
                             <div class="totals">
-                                {{ post.photos.length }} Looks{{ postCard.commentCount(post) }}{{ postCard.voteCount(post) }}
+                                {{ post.photos.length }} Outfits{{ postCard.commentCount(post) }}{{ postCard.voteCount(post) }}
                             </div>
                         </div>
                         <hr>
@@ -51,6 +51,9 @@
                             <div class="option result">
                                 <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post.id)">&nbsp;&nbsp;Result</button>
                             </div>
+                            <div class="option share">
+                                <button class="button button-clear button-dark icon ion-ios-redo-outline" ng-click="postCard.share(post)">&nbsp;&nbsp;Share</button>
+                            </div>
                         </div>
                     </div>
                     <div class="divider"></div>
@@ -58,7 +61,7 @@
             </div>
         </ion-list>
         <div class="load-more-snaplooks" ng-show="list.length > 0 && ! is_pagination_done">
-            <button class="button button-block button-positive" ng-click="load()">Load More SnapLooks</button>
+            <button class="button button-block button-positive" ng-click="load()">Load More Outfit Ideas</button>
         </div>
     </ion-content>
     <div class="bar bar-header item-input-inset search-bar" ng-click="goPostSearch()">

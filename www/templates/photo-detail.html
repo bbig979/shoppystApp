@@ -1,4 +1,4 @@
-<ion-view class="single-look" id="look-detail" view-title="LOOK">
+<ion-view class="single-photo" id="photo-detail" view-title="OUTFIT">
     <ion-content ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
@@ -10,8 +10,8 @@
                 min-zoom="1"
                 max-zoom="15"
                 overflow-scroll="false">
-            <img ng-src="{{ photoPath( look.img_path, 'l' )}}" imageonload="imageLoaded(look)" ng-show="look.loaded">
-            <ion-spinner ng-show="!look.loaded"></ion-spinner>
+            <img ng-src="{{ photoPath( photo.img_path, 'l' )}}" imageonload="imageLoaded(photo)" ng-show="photo.loaded">
+            <ion-spinner ng-show="!photo.loaded"></ion-spinner>
         </ion-scroll>
     </ion-content>
 </ion-view>
