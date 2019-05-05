@@ -1,15 +1,16 @@
 #compare {
     .compare-toggle{
         a{
-            padding: 10px;
+            padding: 10px 2.5%;
             float: right;
+            color: #aaa;
         }
         .label{
             padding: 10px;
             float: left;
         }
         .active{
-            background-color: #FF4C62;
+            background-color: $primary-color;
             color: white;
             border-radius: 16px;
             font-weight: 500;
@@ -20,12 +21,12 @@
         padding: 2px;
     }
     .compare-toggle.gender a{
-        padding: 10px 5%;
+        padding: 10px 2%;
     }
     .compare-toggle.gender .active{
-        padding: 4px 5%;
+        padding: 4px 4%;
     }
-    .compare-toggle.occasion{
+    .compare-toggle.goal{
         margin-right: 5px;
     }
     .compare-toggle:after{
@@ -47,7 +48,7 @@
             border: 1px solid #fff;
             width: 10vw;
             height: 10vw;
-            background: #ff245d;
+            background: $primary-color;
             padding-left: 3vw;
         }
         .desc_row{

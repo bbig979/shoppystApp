@@ -39,12 +39,22 @@
         .caption{
             padding: 0 4vw 4vw 4vw;
             font-size: 14px;
+            white-space: pre-line;
+
+            .goal-tag{
+                display: inline-block;
+                color: $primary-color;
+                border: 1px solid $primary-color-light;
+                padding: 5px 10px;
+                border-radius: 5px;
+                margin-bottom: 5px;
+            }
         }
-        .look-list{
+        .photo-list{
             .scroll-bar-h{
                 display: none;
             }
-            .look{
+            .photo{
                 width: 69vw;
                 margin-right: 4vw;
                 margin-top: 1vw;
@@ -54,20 +64,20 @@
                 border-radius: 1vw;
                 background-color: #fff;
 
-                .look-img-wrapper{
+                .photo-img-wrapper{
                     background-position: 50% 50%;
                     background-repeat: no-repeat;
                     background-size: cover;
                     border-top-left-radius: 1vw;
                     border-top-right-radius: 1vw;
 
-                    .look-img {
+                    .photo-img {
                         display: block;
                         width: 100%;
                         padding-top: 120%;
                     }
                 }
-                .look-img-wrapper.my-look{
+                .photo-img-wrapper.my-photo{
                     border-radius: 1vw;
                 }
                 .vote-toggle{
@@ -89,11 +99,11 @@
                     .check-mark.checked{
                         color: #fff;
                         border: 1px solid #fff;
-                        background: #ff245d;
+                        background: $primary-color;
                     }
                 }
             }
-            .look:first-child{
+            .photo:first-child{
                 margin-left: 4vw;
             }
         }
@@ -147,7 +157,7 @@
             padding: 0 4vw;
 
             .option{
-                width: 50%;
+                width: 33%;
                 float: left;
                 text-align: center;
 
@@ -157,8 +167,8 @@
                     color: #777;
                 }
             }
-            .option.my-post{
-                width: 33%;
+            .option.expired-post{
+                width: 50%;
             }
         }
         .divider{
@@ -172,7 +182,7 @@
     }
 }
 .vote-result {
-  .look {
+  .photo {
     width: 44vw !important;
     float: left;
     margin-left: 4vw;
@@ -186,7 +196,7 @@
       width: 100%;
       padding-top: 115%;
     }
-    .look_wrapper {
+    .photo_wrapper {
       border: 0;
       background-position: 50% 50%;
       background-repeat: no-repeat;

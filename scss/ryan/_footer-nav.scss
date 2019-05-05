@@ -15,19 +15,19 @@ ion-tabs .tab-item {
   }
 }
 .tab-item[icon-on=ion-search].tab-item-active{
-  color: #FFBD71;
+  color: $footer-nav-active-color;
 }
 .tab-item[icon-on=ion-person-stalker].tab-item-active{
-  color: #FF986C;
+  color: $footer-nav-active-color;
 }
 .tab-item[icon-on=ion-camera].tab-item-active{
-  color: #FF7167;
+  color: $footer-nav-active-color;
 }
 .tab-item[icon-on=ion-ios-bell].tab-item-active{
-  color: #FF4B62;
+  color: $footer-nav-active-color;
 }
 .tab-item[icon-on=ion-android-person].tab-item-active{
-  color: #FF285D;
+  color: $footer-nav-active-color;
 }
 .tab-item.dummy-tab-for-temp-compare{
   display: none;

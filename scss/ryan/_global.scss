@@ -48,10 +48,10 @@ a{
   padding-right: 10px;
 }
 .button.button-positive {
-  background-color: #FF4C62;
+  background-color: $primary-color;
 }
 .button.button-positive.activated {
-  background-color: #E24256;
+  background-color: $primary-color;
 }
 .button.button-stable{
   border: 1px solid #ddd;
