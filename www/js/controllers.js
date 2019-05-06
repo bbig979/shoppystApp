@@ -2286,7 +2286,10 @@ angular.module('starter.controllers', [])
         });
     };
     $scope.loadMore = function() {
-        $scope.fetchSearchResult("more", 0, $scope.search_type_active);
+    	if ($scope.searchResult.length > 0)
+    	{
+	        $scope.fetchSearchResult("more", 0, $scope.search_type_active);
+    	}
     };
     $scope.doRefresh = function() {
         $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -2300,6 +2303,13 @@ angular.module('starter.controllers', [])
         return $scope.searchHolder;
     };
     $scope.setType = function(_searchTerm, type, isRefresh) {
+    	if ($scope.search_type_active == type)
+    	{
+    		return;
+    	}
+        $scope.search_type_active = type;
+        $scope.page = 1;
+        $scope.mostRecentPostID = 0;
         if (type == "people")
         {
             $scope.searchHolder = "Search users";
@@ -2320,9 +2330,7 @@ angular.module('starter.controllers', [])
             $scope.searchHolder = "Search";
             $scope.searchNoResultText = "No Results Found";
         }
-        $scope.page = 1;
-        $scope.mostRecentPostID = 0;
-        $scope.search_type_active = type;
+        $scope.searchTermTyped(_searchTerm, null, 0);
     };
     $scope.submitSearch = function(search_term, type) {
         $state.go('tab.search-result-explore',{searchTerm: search_term, type: type});
