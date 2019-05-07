@@ -625,6 +625,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   $urlRouterProvider.otherwise('/root');
 
 });
+// ref: https://stackoverflow.com/questions/11448340/how-to-get-duration-in-weeks-with-moment-js
 moment.updateLocale('en', {
     relativeTime : {
         future: "in %s",
@@ -635,10 +636,20 @@ moment.updateLocale('en', {
         h:  "1h",
         hh: "%dh",
         d:  "1d",
-        dd: "%dd",
+        dd: function (number) {
+          var weeks = Math.round(number / 7);
+          if (number < 7) {
+            // if less than a week, use days
+            return number + "d";
+          } else {
+            // pluralize weeks
+            return weeks + "w";
+          }
+        },
         M:  "1m",
         MM: "%dm",
         y:  "1y",
         yy: "%dy"
     }
 });
+moment.relativeTimeThreshold('d', 340); // if you want weeks instead of months, otherwise put a 28 or so.
