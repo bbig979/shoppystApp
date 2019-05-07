@@ -2170,7 +2170,7 @@ angular.module('starter.controllers', [])
 .controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config, SlideHeader) {
     $scope.search_type_active = "tag";
     $scope.searchHolder = "Search hashtags";
-    $scope.searchNoResultText = "No Results Found";
+    $scope.searchNoResultText = "No hashtags found";
     $scope.searchResult = [];
     $scope.page = 1;
     $scope.mostRecentPostID = 0;
@@ -2240,7 +2240,7 @@ angular.module('starter.controllers', [])
 
             if (type == "new" || type == "refresh")
             {
-                if (response == "fail" || response === undefined || response.length == 0)
+                if (response == "fail" || response === undefined || response.length == 0 || response.data.length == 0)
                 {
                     $scope.noResult = true;
                     $scope.noMoreItemsAvailable = true;
@@ -2257,7 +2257,7 @@ angular.module('starter.controllers', [])
             }
             else if (type == "more")
             {
-                if (response == "fail" || response === undefined || response.length == 0)
+                if (response == "fail" || response === undefined || response.length == 0 || response.data.length == 0)
                 {
                     $scope.noMoreItemsAvailable = true;
                 }
