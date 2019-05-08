@@ -823,7 +823,7 @@
   margin-left: -10px;
 }
 /* line 232, ../../scss/tw/_post-create.scss */
-#create-post .selected-visibility.friend:after {
+#create-post .selected-visibility.private:after {
   bottom: 100%;
   left: 18%;
 }
