@@ -36,6 +36,7 @@
                                         <a class="photo-img"></a>
                                     </div>
                                     <div class="vote-toggle">
+                                        <div class="source-link icon ion-link" onclick="cordova.InAppBrowser.open(photo.source_url, '_blank')" ng-show="photo.source_url"></div>
                                         <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
                                     </div>
                                 </div>

@@ -85,6 +85,7 @@
                     border-radius: 1vw;
                 }
                 .vote-toggle{
+                    position: relative;
                     text-align: center;
                     padding: 10px;
                     height: 15vw;
@@ -104,6 +105,14 @@
                         color: #fff;
                         border: 1px solid #fff;
                         background: $primary-color;
+                    }
+                    .source-link{
+                        position: absolute;
+                        top: 0;
+                        left: 5vw;
+                        font-size: 7vw;
+                        padding-top: 4.5vw;
+                        color: #ddd;
                     }
                 }
             }
