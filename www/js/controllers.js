@@ -97,7 +97,7 @@ angular.module('starter.controllers', [])
             content = content.replace(/(\/#)/g, "/");
         }
         if(post.goal != null){
-            content = '<div class="goal-tag"><a href="#/tab/search/' + post.goal.name + '/goal/' + tab + '">' +
+            content = '<div class="goal-tag"><a href="#/tab/search/' + post.goal.name + '/goal/' + tab + '"><i class="fa fa-bolt" aria-hidden="true"></i> ' +
                 post.goal.name + '</a></div><br/>' + content;
         }
 
