@@ -1020,6 +1020,9 @@ angular.module('starter.controllers', [])
         }
         return false;
     }
+    $rootScope.openInAppBrowser = function(url) {
+        cordova.InAppBrowser.open(url, '_blank');
+    }
 
     $timeout(
         function(){
