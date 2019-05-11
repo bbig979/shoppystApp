@@ -2385,7 +2385,7 @@ angular.module('starter.controllers', [])
         var termSign = "#";
         if ($scope.search_type == "goal")
         {
-            termSign = '<i class="fa fa-map-marker" aria-hidden="true"></i> ';
+            termSign = '<i class="fa fa-bolt" aria-hidden="true"></i> ';
         }
         if($stateParams.searchTerm){
             return termSign+$stateParams.searchTerm.trim();
