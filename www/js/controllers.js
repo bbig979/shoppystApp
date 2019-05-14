@@ -1037,7 +1037,9 @@ angular.module('starter.controllers', [])
     }, $rootScope.notificationPullInterval + 500);
 
     setInterval(function() {
-        FCMHandler.registerNewToken();
+        if($rootScope.currentUser){
+            FCMHandler.registerNewToken();
+        }
     }, 1000);
 })
 .controller('PostCreateCtrl', function($scope, FetchGoals, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
