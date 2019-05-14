@@ -2393,8 +2393,35 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('TabCtrl', function($scope) {
-    //
+.controller('TabCtrl', function($scope, $rootScope, $state, $ionicTabsDelegate, $ionicScrollDelegate) {
+    $scope.tabClicked = function(clicked_tab_id){
+        var current_tab_id = $ionicTabsDelegate.selectedIndex();
+        if(current_tab_id == clicked_tab_id){
+            $ionicScrollDelegate.scrollTo(0, 0, true);
+            return;
+        }
+
+        var clicked_tab_key = $rootScope.routeTab(clicked_tab_id);
+        switch(clicked_tab_key){
+            case 'explore':
+                $state.go('tab.explore-explore');
+                break;
+            case 'home':
+                $state.go('tab.home');
+                break;
+            case 'camera':
+                $state.go('tab.post-create-step-1');
+                break;
+            case 'notification':
+                $state.go('tab.notification');
+                break;
+            case 'account':
+                $state.go('tab.account-account');
+                break;
+            default:
+                console.log('Error in tab key');
+        }
+    }
 })
 
 .controller('VoteResultCtrl', function($scope, $rootScope, VoteResult, $ionicLoading, $stateParams, UxAnalytics, SlideHeader) {
