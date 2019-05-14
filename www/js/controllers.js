@@ -2458,7 +2458,7 @@ angular.module('starter.controllers', [])
     var fetchAccount = function(){
         FetchUsers.get($scope.profile_user_slug).then(function(account_info){
             $scope.account_info = account_info;
-            $scope.accountImage = $rootScope.photoPath( account_info.profile_img_path, 's' );
+            $scope.accountImage = $rootScope.photoPath( account_info.profile_img_path, 'l' );
 
             if (user.id == $scope.account_info.id)
             {
@@ -2577,7 +2577,7 @@ angular.module('starter.controllers', [])
 
         function success(result) {
             $ionicLoading.show({template: 'Upload Successful', duration:500});
-            $scope.accountImage = $rootScope.photoPath( result.profile_img_path, 's' );
+            $scope.accountImage = $rootScope.photoPath( result.profile_img_path, 'l' );
         }
 
         // Transfer failed

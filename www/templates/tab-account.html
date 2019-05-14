@@ -9,12 +9,12 @@
         <div class="account-top entity-id-{{account_info.id}}">
             <button class="button button-clear icon ion-gear-b account-option-btn" ng-click="goAccountOption()" ng-if="!notMe(account_info)"></button>
             <button class="button button-small follow-toggle" ng-class="{'following' : account_info.following_check}" ng-click="toggleFollow(account_info)" ng-if="account_info && notMe(account_info)"></button>
-            <div class="account-image" style="background: url({{accountImage}})" ng-click="changeProfilePicture()"></div>
+            <div class="account-image" style="background-image: url({{accountImage}})" ng-click="changeProfilePicture()"></div>
             <div class="user-name">
                 <ion-spinner icon="ios-small" ng-if="!account_info"></ion-spinner>
                 {{ account_info.username }}
             </div>
-            <div class="user-joined">Joined at <span class="time-ago" am-time-ago="account_info.created_at | amUtc" ng-if="account_info"></span></div>
+            <div class="user-joined">Joined <span class="time-ago" am-time-ago="account_info.created_at | amUtc" ng-if="account_info"></span> ago</div>
             <div class="account-achievement row">
                 <div class="account-post-btn col" ng-click="goAccountPost()">{{account_info.posts_count}}<br>Posts</div>
                 <div class="account-followers-btn col" ng-click="goAccountFollower(account_info.slug)"><span class="dynamic-follower-count">{{account_info.follower_count}}</span><br>Followers</div>
