@@ -3995,7 +3995,7 @@ a {
   color: red;
   font-size: 13px;
   font-family: FontAwesome, sans-serif;
-  content: "\f05e  Only letter, number, underscore, or dot is valid";
+  content: "\f05e  Only alphabet, number, underscore, or dot is valid";
   float: right;
   padding-right: 15px;
 }
