@@ -685,7 +685,12 @@
   color: #999;
 }
 
-/* line 106, ../../scss/tw/_post-create.scss */
+/* line 105, ../../scss/tw/_post-create.scss */
+.platform-ios #create-post-step-1 .search-toggle {
+  margin-top: 5px;
+}
+
+/* line 111, ../../scss/tw/_post-create.scss */
 #create-post .post-images li {
   width: 50%;
   height: 60vw;
@@ -695,19 +700,19 @@
   overflow: hidden;
   position: relative;
 }
-/* line 116, ../../scss/tw/_post-create.scss */
+/* line 121, ../../scss/tw/_post-create.scss */
 #create-post .post-images li:nth-child(odd) {
   padding-right: 6px;
 }
-/* line 120, ../../scss/tw/_post-create.scss */
+/* line 125, ../../scss/tw/_post-create.scss */
 #create-post .post-images li:nth-child(even) {
   padding-left: 6px;
 }
-/* line 124, ../../scss/tw/_post-create.scss */
+/* line 129, ../../scss/tw/_post-create.scss */
 #create-post .post-images li:last-child {
   margin-bottom: 10px;
 }
-/* line 130, ../../scss/tw/_post-create.scss */
+/* line 135, ../../scss/tw/_post-create.scss */
 #create-post .post-image img {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -715,7 +720,7 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 135, ../../scss/tw/_post-create.scss */
+/* line 140, ../../scss/tw/_post-create.scss */
 #create-post .remove-image {
   position: absolute;
   top: 15px;
@@ -724,16 +729,16 @@
   font-size: 6vw;
   color: #fff;
 }
-/* line 144, ../../scss/tw/_post-create.scss */
+/* line 149, ../../scss/tw/_post-create.scss */
 #create-post li:nth-child(even) .remove-image {
   right: 19px;
 }
-/* line 148, ../../scss/tw/_post-create.scss */
+/* line 153, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-wrapper {
   width: 100%;
   height: 100%;
 }
-/* line 153, ../../scss/tw/_post-create.scss */
+/* line 158, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-button {
   border: dashed 0.8vw #aaa;
   -webkit-border-radius: 2vw;
@@ -749,11 +754,11 @@
   text-align: center;
   padding-top: 17vw;
 }
-/* line 164, ../../scss/tw/_post-create.scss */
+/* line 169, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-button .ion-plus-circled {
   font-size: 10vw;
 }
-/* line 170, ../../scss/tw/_post-create.scss */
+/* line 175, ../../scss/tw/_post-create.scss */
 #create-post .post-caption textarea {
   width: 100%;
   border: 1px solid #ddd;
@@ -764,38 +769,38 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 178, ../../scss/tw/_post-create.scss */
+/* line 183, ../../scss/tw/_post-create.scss */
 #create-post img {
   max-width: 100%;
 }
-/* line 182, ../../scss/tw/_post-create.scss */
+/* line 187, ../../scss/tw/_post-create.scss */
 #create-post .item-image img:first-child,
 #create-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-/* line 188, ../../scss/tw/_post-create.scss */
+/* line 193, ../../scss/tw/_post-create.scss */
 #create-post .post-image .item {
   padding: 0px;
 }
-/* line 193, ../../scss/tw/_post-create.scss */
+/* line 198, ../../scss/tw/_post-create.scss */
 #create-post .visibility .title {
   text-align: center;
   padding-bottom: 20px;
   color: #444;
   font-size: 16px;
 }
-/* line 199, ../../scss/tw/_post-create.scss */
+/* line 204, ../../scss/tw/_post-create.scss */
 #create-post .visibility .button {
   border-color: #ddd;
   background-color: #fff;
 }
-/* line 203, ../../scss/tw/_post-create.scss */
+/* line 208, ../../scss/tw/_post-create.scss */
 #create-post .visibility .button.button-positive {
   border-color: #5CC196;
   background-color: #5CC196;
 }
-/* line 209, ../../scss/tw/_post-create.scss */
+/* line 214, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility {
   font-size: 12px;
   padding: 15px;
@@ -809,7 +814,7 @@
   background-clip: padding-box;
   position: relative;
 }
-/* line 219, ../../scss/tw/_post-create.scss */
+/* line 224, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility:after {
   border: solid transparent;
   content: " ";
@@ -822,76 +827,76 @@
   border-width: 10px;
   margin-left: -10px;
 }
-/* line 232, ../../scss/tw/_post-create.scss */
+/* line 237, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility.private:after {
   bottom: 100%;
   left: 18%;
 }
-/* line 237, ../../scss/tw/_post-create.scss */
+/* line 242, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility.public:after {
   bottom: 100%;
   left: 50%;
 }
-/* line 242, ../../scss/tw/_post-create.scss */
+/* line 247, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility.permanent:after {
   bottom: 100%;
   left: 82%;
 }
-/* line 247, ../../scss/tw/_post-create.scss */
+/* line 252, ../../scss/tw/_post-create.scss */
 #create-post .button-small {
   font-size: 15px;
   line-height: 30px;
   color: #777;
 }
-/* line 253, ../../scss/tw/_post-create.scss */
+/* line 258, ../../scss/tw/_post-create.scss */
 #create-post .button-small.button-positive {
   color: #fff;
 }
-/* line 257, ../../scss/tw/_post-create.scss */
+/* line 262, ../../scss/tw/_post-create.scss */
 #create-post .recommendation {
   text-align: center;
 }
-/* line 261, ../../scss/tw/_post-create.scss */
+/* line 266, ../../scss/tw/_post-create.scss */
 #create-post hr {
   border: 0;
   border-top: 1px solid #777;
   margin: 10px 0;
   width: 100%;
 }
-/* line 268, ../../scss/tw/_post-create.scss */
+/* line 273, ../../scss/tw/_post-create.scss */
 #create-post .compare-table {
   font-weight: bold;
 }
-/* line 271, ../../scss/tw/_post-create.scss */
+/* line 276, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row {
   clear: both;
 }
-/* line 274, ../../scss/tw/_post-create.scss */
+/* line 279, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .ion-close-round {
   color: #FF4C62;
 }
-/* line 277, ../../scss/tw/_post-create.scss */
+/* line 282, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .ion-checkmark-round {
   color: #00dba2;
 }
-/* line 280, ../../scss/tw/_post-create.scss */
+/* line 285, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .label, #create-post .compare-table .compare-row .mark {
   width: 50%;
   float: left;
 }
-/* line 284, ../../scss/tw/_post-create.scss */
+/* line 289, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .label {
   text-align: right;
 }
-/* line 287, ../../scss/tw/_post-create.scss */
+/* line 292, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .mark {
   text-align: center;
 }
-/* line 293, ../../scss/tw/_post-create.scss */
+/* line 298, ../../scss/tw/_post-create.scss */
 #create-post .button-padding {
   padding: 5px 10px;
 }
-/* line 296, ../../scss/tw/_post-create.scss */
+/* line 301, ../../scss/tw/_post-create.scss */
 #create-post .padding-top {
   padding-top: 20px;
 }
