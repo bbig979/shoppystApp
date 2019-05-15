@@ -1103,7 +1103,7 @@ angular.module('starter.services', [])
             })
             .error(function(data, status){
                 if(this_factory.isFailed(data)){
-                    deferred.resolve('fail');
+                    deferred.resolve(data.username[0]);
                 }
             });
             return deferred.promise;
@@ -1125,7 +1125,7 @@ angular.module('starter.services', [])
             return deferred.promise;
         },
         isFailed: function(data){
-            return data.username != undefined && data.username[0] == 'The username is not available';
+            return data.username != undefined;
         }
     }
 })

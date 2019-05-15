@@ -75,11 +75,27 @@ a{
   }
   border-radius: 3px;
 }
-.username.fail::after {
+.username.unique::after {
     color: red;
     font-size: 13px;
     font-family: FontAwesome, sans-serif;
     content: "\f05e  The username is not available";
+    float: right;
+    padding-right:15px;
+}
+.username.required::after {
+    color: red;
+    font-size: 13px;
+    font-family: FontAwesome, sans-serif;
+    content: "\f05e  The username is required";
+    float: right;
+    padding-right:15px;
+}
+.username.regex::after {
+    color: red;
+    font-size: 13px;
+    font-family: FontAwesome, sans-serif;
+    content: "\f05e  Only letter, number, underscore, or dot is valid";
     float: right;
     padding-right:15px;
 }
