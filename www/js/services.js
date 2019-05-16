@@ -200,7 +200,7 @@ angular.module('starter.services', [])
         },
     };
 })
-.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts, GoalBO){
+.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts, GoalBO, $q){
     return {
         reset: function($scope){
             var config = $scope.business_object_list_config;
@@ -257,13 +257,16 @@ angular.module('starter.services', [])
         load: function($scope){
             var this_factory = this;
             var config = $scope.business_object_list_config;
+            var deferred = $q.defer();
 
             this_factory._fetch($scope).then(function(response){
                 this_factory.render($scope, response);
+                deferred.resolve();
                 if(config.preload){
                     this_factory.preload($scope, response);
                 }
             });
+            return deferred.promise;
         },
         render: function($scope, response){
             if($scope.page == 1){
@@ -1191,6 +1194,21 @@ angular.module('starter.services', [])
         setUserId: function(user_id){
             if(typeof Appsee !== 'undefined'){
                 Appsee.setUserId(user_id);
+            }
+        }
+    }
+})
+.factory('DirtyHack', function($ionicScrollDelegate){
+    return {
+        // problem : in android, "horizontal scroll" of first content rarely works
+        // cause : ionic recognize "horizontal scroll" as "pull to refresh"
+        // solution : move 1 pixel down so that ionic recognize it as "horizontal scroll"
+        preventZeroTop: function(time = 500) {
+            var position = $ionicScrollDelegate.getScrollPosition();
+            if(position.top == 0){
+                setTimeout(function(){
+                    $ionicScrollDelegate.scrollTo(0, 1, false);
+                }, time);
             }
         }
     }

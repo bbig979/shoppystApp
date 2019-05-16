@@ -1886,7 +1886,7 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics) {
+.controller('HomeCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, DirtyHack) {
     $scope.postCard = PostCard;
     $scope.business_object_list_config = {
         type : 'post',
@@ -1895,12 +1895,16 @@ angular.module('starter.controllers', [])
     };
 
     BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope);
+    BusinessObjectList.load($scope).then(function(){
+        DirtyHack.preventZeroTop();
+    });
 
     $scope.refresh = function(){
         BusinessObjectList.reset($scope);
         $scope.is_list_loading = false;
-        BusinessObjectList.load($scope);
+        BusinessObjectList.load($scope).then(function(){
+            DirtyHack.preventZeroTop(900);
+        });
         $scope.$broadcast('scroll.refreshComplete');
     }
 
@@ -1911,6 +1915,7 @@ angular.module('starter.controllers', [])
 
         BusinessObjectList.render($scope, $scope.preloaded_response);
         BusinessObjectList.preload($scope);
+        DirtyHack.preventZeroTop();
     }
 
     $scope.$on('$ionicView.enter', function() {
@@ -2125,9 +2130,9 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state, $timeout) {
+.controller('PostExploreCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state, $timeout, DirtyHack) {
     var user = $rootScope.getCurrentUser();
-    if(user.username == user.email){
+    if(user.username == user.email || user.username == ''){
         $state.go('register2').then(function(){
             $timeout(function(){
                 window.location.reload();
@@ -2144,12 +2149,16 @@ angular.module('starter.controllers', [])
     };
 
     BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope);
+    BusinessObjectList.load($scope).then(function(){
+        DirtyHack.preventZeroTop();
+    });
 
     $scope.refresh = function(){
         BusinessObjectList.reset($scope);
         $scope.is_list_loading = false;
-        BusinessObjectList.load($scope);
+        BusinessObjectList.load($scope).then(function(){
+            DirtyHack.preventZeroTop(900);
+        });
         $scope.$broadcast('scroll.refreshComplete');
     }
 
@@ -2160,6 +2169,7 @@ angular.module('starter.controllers', [])
 
         BusinessObjectList.render($scope, $scope.preloaded_response);
         BusinessObjectList.preload($scope);
+        DirtyHack.preventZeroTop();
     }
 
     $scope.$on('$ionicView.enter', function() {
@@ -2345,7 +2355,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams) {
+.controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, DirtyHack) {
     $scope.search_type = "tag";
     $scope.search_term = $stateParams.searchTerm;
     if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'goal')
@@ -2360,12 +2370,16 @@ angular.module('starter.controllers', [])
     };
 
     BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope);
+    BusinessObjectList.load($scope).then(function(){
+        DirtyHack.preventZeroTop();
+    });
 
     $scope.refresh = function(){
         BusinessObjectList.reset($scope);
         $scope.is_list_loading = false;
-        BusinessObjectList.load($scope);
+        BusinessObjectList.load($scope).then(function(){
+            DirtyHack.preventZeroTop(900);
+        });
         $scope.$broadcast('scroll.refreshComplete');
     }
 
@@ -2376,6 +2390,7 @@ angular.module('starter.controllers', [])
 
         BusinessObjectList.render($scope, $scope.preloaded_response);
         BusinessObjectList.preload($scope);
+        DirtyHack.preventZeroTop();
     }
 
     $scope.$on('$ionicView.enter', function() {
@@ -2399,7 +2414,10 @@ angular.module('starter.controllers', [])
     $scope.tabClicked = function(clicked_tab_id){
         var current_tab_id = $ionicTabsDelegate.selectedIndex();
         if(current_tab_id == clicked_tab_id){
-            $ionicScrollDelegate.scrollTo(0, 0, true);
+            // problem : in android, "horizontal scroll" of first content rarely works
+            // cause : ionic recognize "horizontal scroll" as "pull to refresh"
+            // solution : set vertical position to 1
+            $ionicScrollDelegate.scrollTo(0, 1, true);
             return;
         }
 
@@ -2468,7 +2486,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, UxAnalytics, ImageUpload, PostCard, BusinessObjectList, SlideHeader, $ionicScrollDelegate) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, UxAnalytics, ImageUpload, PostCard, BusinessObjectList, SlideHeader, $ionicScrollDelegate, DirtyHack) {
     var user = $rootScope.getCurrentUser();
 
     var method = 'my_profile';
@@ -2499,7 +2517,9 @@ angular.module('starter.controllers', [])
 
     fetchAccount();
     BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope);
+    BusinessObjectList.load($scope).then(function(){
+        DirtyHack.preventZeroTop();
+    });
 
     if($stateParams.refresh){
         var repeatUntillScrolled = setInterval(function(){
@@ -2514,7 +2534,9 @@ angular.module('starter.controllers', [])
         fetchAccount();
         BusinessObjectList.reset($scope);
         $scope.is_list_loading = false;
-        BusinessObjectList.load($scope);
+        BusinessObjectList.load($scope).then(function(){
+            DirtyHack.preventZeroTop(900);
+        });
         $scope.$broadcast('scroll.refreshComplete');
     }
 
@@ -2525,6 +2547,7 @@ angular.module('starter.controllers', [])
 
         BusinessObjectList.render($scope, $scope.preloaded_response);
         BusinessObjectList.preload($scope);
+        DirtyHack.preventZeroTop();
     }
 
     $scope.$on('$ionicView.enter', function() {
