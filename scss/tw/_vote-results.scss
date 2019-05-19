@@ -1,0 +1,36 @@
+#vote-results {
+    .post.item{
+        width: 50%;
+    }
+    .item{
+        .winner{
+            position: absolute;
+            left: 2vw;
+            top: 2vw;
+            font-size: 10vw;
+            color: #ffffff;
+            border-radius: 50%;
+            border: 1px solid #fff;
+            width: 10vw;
+            height: 10vw;
+            background: $primary-color;
+            padding-left: 3vw;
+        }
+        .desc_row{
+            width: 100%;
+            text-align: center;
+            padding-bottom: 5px;
+        }
+        width: 100%;
+        padding: 0;
+    }
+    .sort{
+        margin-bottom: 0;
+    }
+    .expired-message{
+        background-color: #fff;
+        padding: 70px 0 70px 0;
+        text-align: center;
+        color: #333;
+    }
+}

@@ -373,60 +373,17 @@
   font-size: 1.4em;
 }
 
-/* line 2, ../../scss/tw/_compare.scss */
-#compare .compare-toggle {
-  border-bottom: 1px solid #eee;
-  padding: 2px;
-}
-/* line 3, ../../scss/tw/_compare.scss */
-#compare .compare-toggle a {
-  padding: 10px 2.5%;
-  float: right;
-  color: #aaa;
-}
-/* line 8, ../../scss/tw/_compare.scss */
-#compare .compare-toggle .label {
-  padding: 10px;
-  float: left;
-}
-/* line 12, ../../scss/tw/_compare.scss */
-#compare .compare-toggle .active {
-  background-color: #5CC196;
-  color: white;
-  border-radius: 16px;
-  font-weight: 500;
-  padding: 4px 10px;
-  margin-top: 6px;
-}
-/* line 23, ../../scss/tw/_compare.scss */
-#compare .compare-toggle.gender a {
-  padding: 10px 2%;
-}
-/* line 26, ../../scss/tw/_compare.scss */
-#compare .compare-toggle.gender .active {
-  padding: 4px 4%;
-}
-/* line 29, ../../scss/tw/_compare.scss */
-#compare .compare-toggle.goal {
-  margin-right: 5px;
-}
-/* line 32, ../../scss/tw/_compare.scss */
-#compare .compare-toggle:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-/* line 37, ../../scss/tw/_compare.scss */
-#compare .post.item {
+/* line 2, ../../scss/tw/_vote-results.scss */
+#vote-results .post.item {
   width: 50%;
 }
-/* line 40, ../../scss/tw/_compare.scss */
-#compare .item {
+/* line 5, ../../scss/tw/_vote-results.scss */
+#vote-results .item {
   width: 100%;
   padding: 0;
 }
-/* line 41, ../../scss/tw/_compare.scss */
-#compare .item .winner {
+/* line 6, ../../scss/tw/_vote-results.scss */
+#vote-results .item .winner {
   position: absolute;
   left: 2vw;
   top: 2vw;
@@ -439,18 +396,18 @@
   background: #5CC196;
   padding-left: 3vw;
 }
-/* line 54, ../../scss/tw/_compare.scss */
-#compare .item .desc_row {
+/* line 19, ../../scss/tw/_vote-results.scss */
+#vote-results .item .desc_row {
   width: 100%;
   text-align: center;
   padding-bottom: 5px;
 }
-/* line 62, ../../scss/tw/_compare.scss */
-#compare .sort {
+/* line 27, ../../scss/tw/_vote-results.scss */
+#vote-results .sort {
   margin-bottom: 0;
 }
-/* line 65, ../../scss/tw/_compare.scss */
-#compare .expired-message {
+/* line 30, ../../scss/tw/_vote-results.scss */
+#vote-results .expired-message {
   background-color: #fff;
   padding: 70px 0 70px 0;
   text-align: center;

@@ -4430,11 +4430,21 @@ body.header-slide-away #blocker-message {
 }
 
 /* line 24, ../../scss/ryan/_top-bar.scss */
-.bar .button.button-clear.fa-bell::before {
-  font-size: 23px;
+.bar .button.fa-filter {
+  background-color: #fff;
 }
 
 /* line 27, ../../scss/ryan/_top-bar.scss */
+.bar .button.fa-filter.filter-on {
+  color: #5CC196;
+}
+
+/* line 30, ../../scss/ryan/_top-bar.scss */
+.bar .fa-filter .fa-chevron-down, .bar .fa-filter .fa-chevron-up {
+  font-size: 10px;
+}
+
+/* line 33, ../../scss/ryan/_top-bar.scss */
 .platform-android .nav-bar-has-subheader .bar.bar-stable {
   background-color: #5CC196;
   background: -webkit-linear-gradient(left, #FF1D5C, #FFC772);
@@ -4895,4 +4905,48 @@ body.header-slide-away #tab-explore .search-bar {
 /* line 25, ../../scss/ryan/_loyalty-points.scss */
 #account-loyalty-points .item .points-entity-quantity {
   float: right;
+}
+
+/* line 1, ../../scss/ryan/_filter.scss */
+.filter {
+  border-bottom: 1px solid #eee;
+  padding: 2px;
+}
+/* line 5, ../../scss/ryan/_filter.scss */
+.filter a {
+  padding: 10px 2.5%;
+  float: right;
+  color: #aaa;
+}
+/* line 10, ../../scss/ryan/_filter.scss */
+.filter .label {
+  padding: 10px;
+  float: left;
+}
+/* line 14, ../../scss/ryan/_filter.scss */
+.filter .active {
+  background-color: #5CC196;
+  color: white;
+  border-radius: 16px;
+  font-weight: 500;
+  padding: 4px 10px;
+  margin-top: 6px;
+}
+/* line 22, ../../scss/ryan/_filter.scss */
+.filter.gender a {
+  padding: 10px 2%;
+}
+/* line 25, ../../scss/ryan/_filter.scss */
+.filter.gender .active {
+  padding: 4px 4%;
+}
+/* line 28, ../../scss/ryan/_filter.scss */
+.filter.goal {
+  margin-right: 5px;
+}
+/* line 31, ../../scss/ryan/_filter.scss */
+.filter:after {
+  content: "";
+  display: table;
+  clear: both;
 }

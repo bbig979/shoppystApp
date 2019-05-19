@@ -200,7 +200,7 @@ angular.module('starter.services', [])
         },
     };
 })
-.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts, GoalBO, $q){
+.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts, GoalBO, $q, Util){
     return {
         reset: function($scope){
             var config = $scope.business_object_list_config;
@@ -241,6 +241,7 @@ angular.module('starter.services', [])
                 profile_user_slug : $scope.profile_user_slug,
                 search_type : $scope.search_type,
                 search_term : $scope.search_term,
+                search_filter_serialized : Util.serialize($scope.search_filter),
             };
         },
         preload: function($scope){
@@ -1370,6 +1371,50 @@ angular.module('starter.services', [])
             return gender + '_' + age_group;
         }
     }
+})
+.factory('SearchFilter', function($stateParams, $ionicScrollDelegate) {
+    var _filter_info = {};
+
+    return {
+        init: function(){
+            _filter_info[ this._getSearchId() ] = {
+                visible: false,
+                age: 'all',
+                gender: 'all',
+            };
+        },
+        set: function(key, val){
+            _filter_info[ this._getSearchId() ][key] = val;
+        },
+        get: function(key) {
+            return _filter_info[ this._getSearchId() ][key];
+        },
+        getAllInfo: function(){
+            return _filter_info[ this._getSearchId() ];
+        },
+        isDefault: function() {
+            if(_filter_info[ this._getSearchId() ]){
+                return _filter_info[ this._getSearchId() ].age == 'all' &&
+                    _filter_info[ this._getSearchId() ].gender == 'all';
+            }
+            return true;
+        },
+        toggleVisibility: function() {
+            _filter_info[ this._getSearchId() ].visible = ! _filter_info[ this._getSearchId() ].visible;
+            if(_filter_info[ this._getSearchId() ].visible){
+                $ionicScrollDelegate.scrollTo(0, 1 ,true);
+            }
+        },
+        isVisible: function() {
+            if(_filter_info[ this._getSearchId() ]){
+                return _filter_info[ this._getSearchId() ].visible;
+            }
+            return false;
+        },
+        _getSearchId(){
+            return $stateParams.type + '_' + $stateParams.searchTerm;
+        },
+    };
 })
 .factory('LoyaltyPoints', function($http, $rootScope) {
     return {

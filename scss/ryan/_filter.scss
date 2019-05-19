@@ -1,0 +1,36 @@
+.filter{
+    border-bottom: 1px solid #eee;
+    padding: 2px;
+
+    a{
+        padding: 10px 2.5%;
+        float: right;
+        color: #aaa;
+    }
+    .label{
+        padding: 10px;
+        float: left;
+    }
+    .active{
+        background-color: $primary-color;
+        color: white;
+        border-radius: 16px;
+        font-weight: 500;
+        padding: 4px 10px;
+        margin-top: 6px;
+    }
+    &.gender a{
+        padding: 10px 2%;
+    }
+    &.gender .active{
+        padding: 4px 4%;
+    }
+    &.goal{
+        margin-right: 5px;
+    }
+    &:after{
+        content: "";
+        display: table;
+        clear: both;
+    }
+}

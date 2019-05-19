@@ -1,11 +1,11 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, SearchFilter) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
-    //$rootScope.baseURL = 'http://app.snaplook.today';
+    $rootScope.baseURL = 'https://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    $rootScope.baseURL = 'http://localhost:8888';
+    //$rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -17,6 +17,7 @@ angular.module('starter.controllers', [])
     $rootScope.notificationCount = "0";
     $rootScope.blockerMessage = BlockerMessage;
     $rootScope.slideHeader = SlideHeader;
+    $rootScope.searchFilter = SearchFilter;
     $rootScope.notificationPullInterval = 60000;
     Config.init().then(function(){
         $rootScope.config = Config;
@@ -300,7 +301,10 @@ angular.module('starter.controllers', [])
     };
     $rootScope.ifShowSend = function(){
         return $stateParams.shouldShowSend == 'true';
-    }
+    };
+    $rootScope.ifSearchResult = function(){
+        return $stateParams.searchTerm !== undefined;
+    };
     $rootScope.getMaxStat = function(stat, index) {
         if (stat === undefined || stat.length == 0)
         {
@@ -2355,7 +2359,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, DirtyHack) {
+.controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, DirtyHack, SearchFilter) {
     $scope.search_type = "tag";
     $scope.search_term = $stateParams.searchTerm;
     if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'goal')
@@ -2369,21 +2373,33 @@ angular.module('starter.controllers', [])
         preload : true
     };
 
+    SearchFilter.init();
     BusinessObjectList.reset($scope);
     BusinessObjectList.load($scope).then(function(){
         DirtyHack.preventZeroTop();
     });
 
-    $scope.refresh = function(){
+    $scope.filter = function(key, val){
+        SearchFilter.set(key, val);
+        $scope.search_filter = SearchFilter.getAllInfo();
+        $scope.refresh(false);
+    }
+
+    $scope.refresh = function(is_pull_to_refresh = true){
         BusinessObjectList.reset($scope);
-        $scope.is_list_loading = false;
+        if(is_pull_to_refresh){
+            $scope.is_list_loading = false;
+        }
         BusinessObjectList.load($scope).then(function(){
-            DirtyHack.preventZeroTop(900);
+            if(is_pull_to_refresh){
+                DirtyHack.preventZeroTop(900);
+            }
         });
         $scope.$broadcast('scroll.refreshComplete');
     }
 
     $scope.load = function(){
+        SearchFilter.set('visible', false);
         $ionicScrollDelegate.scrollTop();
         $scope.list = [];
         $scope.is_list_loading = true;

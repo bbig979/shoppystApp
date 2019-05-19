@@ -6,6 +6,26 @@
                 pulling-text="Pull to refresh..."
                 on-refresh="refresh()">
         </ion-refresher>
+        <div class="filters" ng-if="searchFilter.isVisible()">
+            <div class="filter gender">
+                <div class="label">Gender</div>
+                <a ng-class="{ active: searchFilter.get('gender') === '' }" ng-click="filter('gender', '')">PND</a>
+                <a ng-class="{ active: searchFilter.get('gender') === 'non_binary' }" ng-click="filter('gender', 'non_binary')">Non-binary</a>
+                <a ng-class="{ active: searchFilter.get('gender') === 'female' }" ng-click="filter('gender', 'female')">Female</a>
+                <a ng-class="{ active: searchFilter.get('gender') === 'male' }" ng-click="filter('gender', 'male')">Male</a>
+                <a ng-class="{ active: searchFilter.get('gender') === 'all' }" ng-click="filter('gender', 'all')">All</a>
+            </div>
+            <div class="filter age">
+                <div class="label">Age</div>
+                <a ng-class="{ active: searchFilter.get('age') === 0 }" ng-click="filter('age', 0)">PND</a>
+                <a ng-class="{ active: searchFilter.get('age') === 50 }" ng-click="filter('age', 50)">50 <</a>
+                <a ng-class="{ active: searchFilter.get('age') === 40 }" ng-click="filter('age', 40)">40s</a>
+                <a ng-class="{ active: searchFilter.get('age') === 30 }" ng-click="filter('age', 30)">30s</a>
+                <a ng-class="{ active: searchFilter.get('age') === 20 }" ng-click="filter('age', 20)">20s</a>
+                <a ng-class="{ active: searchFilter.get('age') === 10 }" ng-click="filter('age', 10)">10s</a>
+                <a ng-class="{ active: searchFilter.get('age') === 'all' }" ng-click="filter('age', 'all')">All</a>
+            </div>
+        </div>
         <div class="loading-spinner" data-loading ng-if="is_list_loading">
             <ion-spinner></ion-spinner>
         </div>

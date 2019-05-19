@@ -21,8 +21,14 @@
 .bar .button.button-clear.ion-refresh::before{
     font-size:23px;
 }
-.bar .button.button-clear.fa-bell::before{
-    font-size:23px;
+.bar .button.fa-filter{
+    background-color: #fff;
+}
+.bar .button.fa-filter.filter-on{
+    color: $primary-color;
+}
+.bar .fa-filter .fa-chevron-down, .bar .fa-filter .fa-chevron-up{
+    font-size: 10px;
 }
 .platform-android .nav-bar-has-subheader .bar.bar-stable{
   background-color: $primary-color;

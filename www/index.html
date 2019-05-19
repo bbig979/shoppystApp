@@ -134,7 +134,10 @@
             <span class="test-scroll" ng-show="ifTestAccount()" ng-click="scroll()">s</span>
             <span class="test-picture" ng-show="ifTestAccount()" ng-click="picture()">p</span>
             <i class="button button-clear icon ion-ios-more" ng-show="ifOthersProfile()" ng-click="openOthersProfileMenu()"></i>
-            <i class="button button-clear icon ion-ios-paperplane" ng-show="ifShowSend()" ng-click="shareCompare()"></i>
+            <i class="button icon fa fa-filter" ng-class="{'filter-on': ! searchFilter.isDefault()}" ng-show="ifSearchResult()" ng-click="searchFilter.toggleVisibility()">
+                <i class="fa fa-chevron-down" ng-show="ifSearchResult() && ! searchFilter.isVisible()" aria-hidden="true"></i>
+                <i class="fa fa-chevron-up" ng-show="ifSearchResult() && searchFilter.isVisible()" aria-hidden="true"></i>
+            </i>
         </ion-nav-buttons>
     </ion-nav-bar>
     <!--
