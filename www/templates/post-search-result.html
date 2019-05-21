@@ -50,7 +50,7 @@
                         </div>
                         <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
                         <div class="photo-list">
-                            <ion-scroll direction="x" delegate-handle="handle-horizontal">
+                            <ion-scroll direction="x" delegate-handle="handle-horizontal" has-bouncing="false">
                                 <div ng-repeat="photo in post.photos" class="photo">
                                     <div class="photo-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'm' ) }})" ng-click="goPhotoDetail(photo)">
                                         <a class="photo-img"></a>
