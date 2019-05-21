@@ -4396,25 +4396,25 @@ body.header-slide-away #blocker-message {
 
 /* line 400, ../../scss/ryan/_global.scss */
 .platform-ios .slide-header {
-  margin-top: calc(constant(safe-area-inset-bottom) * 0.5);
+  margin-top: calc(constant(safe-area-inset-bottom) * 0.7);
   /* iOS 11.0 */
-  margin-top: calc(env(safe-area-inset-bottom) * 0.5);
+  margin-top: calc(env(safe-area-inset-bottom) * 0.7);
   /* iOS 11.2 */
 }
 
 /* line 404, ../../scss/ryan/_global.scss */
 body.platform-ios {
-  margin-top: calc(constant(safe-area-inset-bottom) * 0.5);
+  margin-top: calc(constant(safe-area-inset-bottom) * 0.7);
   /* iOS 11.0 */
-  margin-top: calc(env(safe-area-inset-bottom) * 0.5);
+  margin-top: calc(env(safe-area-inset-bottom) * 0.7);
   /* iOS 11.2 */
 }
 
 /* line 408, ../../scss/ryan/_global.scss */
 .tab-nav.tabs {
-  bottom: constant(safe-area-inset-bottom);
+  bottom: calc(constant(safe-area-inset-bottom) * 1.3);
   /* iOS 11.0 */
-  bottom: env(safe-area-inset-bottom);
+  bottom: calc(env(safe-area-inset-bottom) * 1.3);
   /* iOS 11.2 */
 }
 
