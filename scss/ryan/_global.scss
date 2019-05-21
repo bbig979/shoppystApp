@@ -393,21 +393,21 @@ body.header-slide-away {
     }
 }
 
-// @start iphone x correcttion
+// @start iphone x style correction
 // ref : https://blog.phonegap.com/displaying-a-phonegap-app-correctly-on-the-iphone-x-c4a85664c493
 // @todo use safe-area-inset-top to fix ios status bar issue universally ( currently, we added 20px everywhere )
 
 .platform-ios .slide-header {
-    margin-top: calc(constant(safe-area-inset-bottom) * 0.5); /* iOS 11.0 */
-    margin-top: calc(env(safe-area-inset-bottom) * 0.5); /* iOS 11.2 */
+    margin-top: calc(constant(safe-area-inset-bottom) * 0.7); /* iOS 11.0 */
+    margin-top: calc(env(safe-area-inset-bottom) * 0.7); /* iOS 11.2 */
 }
 body.platform-ios {
-    margin-top: calc(constant(safe-area-inset-bottom) * 0.5); /* iOS 11.0 */
-    margin-top: calc(env(safe-area-inset-bottom) * 0.5); /* iOS 11.2 */
+    margin-top: calc(constant(safe-area-inset-bottom) * 0.7); /* iOS 11.0 */
+    margin-top: calc(env(safe-area-inset-bottom) * 0.7); /* iOS 11.2 */
 }
 .tab-nav.tabs {
-    bottom: constant(safe-area-inset-bottom); /* iOS 11.0 */
-    bottom: env(safe-area-inset-bottom); /* iOS 11.2 */
+    bottom: calc(constant(safe-area-inset-bottom) * 1.3); /* iOS 11.0 */
+    bottom: calc(env(safe-area-inset-bottom) * 1.3); /* iOS 11.2 */
 }
 
-// @end iphone x correcttion
+// @end iphone x style correction
