@@ -2426,15 +2426,23 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('TabCtrl', function($scope, $rootScope, $state, $ionicTabsDelegate, $ionicScrollDelegate) {
+.controller('TabCtrl', function($scope, $rootScope, $state, $ionicTabsDelegate, $ionicScrollDelegate, $ionicHistory) {
     $scope.tabClicked = function(clicked_tab_id){
         var current_tab_id = $ionicTabsDelegate.selectedIndex();
         if(current_tab_id == clicked_tab_id){
-            // problem : in android, "horizontal scroll" of first content rarely works
-            // cause : ionic recognize "horizontal scroll" as "pull to refresh"
-            // solution : set vertical position to 1
-            $ionicScrollDelegate.scrollTo(0, 1, true);
-            return;
+            var history_info = $ionicHistory.viewHistory();
+            if(history_info.currentView.index == 0){
+                // problem : in android, "horizontal scroll" of first content rarely works
+                // cause : ionic recognize "horizontal scroll" as "pull to refresh"
+                // solution : set vertical position to 1
+                $ionicScrollDelegate.scrollTo(0, 1, true);
+                return;
+            }
+            $ionicHistory.nextViewOptions({
+                disableAnimate: true,
+                disableBack: true,
+                historyRoot: true
+            });
         }
 
         var clicked_tab_key = $rootScope.routeTab(clicked_tab_id);
