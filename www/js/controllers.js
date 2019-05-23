@@ -2683,8 +2683,8 @@ angular.module('starter.controllers', [])
     };
     $scope.goInviteFriends = function(id){
         var options = {
-            message: 'Browse outfits to inspire your next look!',
-            subject: 'Browse Outfits to Inspire Your Next Look!',
+            //message: 'Browse outfits to inspire your next look!',
+            //subject: 'Browse Outfits to Inspire Your Next Look!',
             url: $rootScope.baseURL + '/s/intro'
         }
         var onSuccess = function(result) {

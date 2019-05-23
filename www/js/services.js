@@ -443,8 +443,8 @@ angular.module('starter.services', [])
             PostShare.getHash(post.id).then(function(hash){
                 if(hash){
                     var options = {
-                        message: 'Choose your favorite outfit!',
-                        subject: 'Choose Your Favorite Outfit!',
+                        //message: 'Choose your favorite outfit!',
+                        //subject: 'Choose Your Favorite Outfit!',
                         url: $rootScope.baseURL + '/s/' + hash
                     }
                     var onSuccess = function(result) {
