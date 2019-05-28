@@ -6,14 +6,11 @@
   border-bottom: 1px solid #eee;
 }
 .bar.bar-stable .title {
-  color: $primary-color;
+  color: #525252;
   font-weight: unset;
   text-decoration: underline;
-  text-decoration-color: $primary-color;
+  text-decoration-color: #5CC196;
   text-underline-position: under;
-}
-.bar.bar-stable .title snap-title{
-  color: #525252;
 }
 .bar-stable .button.button-clear{
   color: #525252;
