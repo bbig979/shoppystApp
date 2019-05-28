@@ -1,15 +1,15 @@
-<ion-view class="post-card-list" id="tab-explore" view-title="EXPLORE">
+<ion-view class="post-card-list" id="tab-explore" view-title="<snap-title>EXPLORE</snap-title>">
     <ion-content scroll-watch ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
-        <div class="loading-spinner" data-loading ng-if="is_list_loading">
-            <ion-spinner></ion-spinner>
-        </div>
         <ion-refresher
                 pulling-text="Pull to refresh..."
                 on-refresh="refresh()">
         </ion-refresher>
         <ion-list>
+            <div class="loading-spinner" data-loading ng-if="is_list_loading">
+                <ion-spinner></ion-spinner>
+            </div>
             <div>
                 <ion-item ng-repeat="post in list track by $index" class="post-card">
                     <div class="entity-id-{{post.id}}">

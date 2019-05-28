@@ -1,0 +1,52 @@
+<ion-view class="post-list" id="compare" view-title="LOOKS BETTER">
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="compare-toggle">
+            <div class="label">To</div>
+            <a ng-class="{ active: gender_active === 'friends' }" ng-click="setGender('friends')" class="friends">Friends</a>
+            <a ng-class="{ active: gender_active === 'female' }" ng-click="setGender('female')" class="female">Female</a>
+            <a ng-class="{ active: gender_active === 'male' }" ng-click="setGender('male')" class="male">Male</a>
+            <a ng-class="{ active: gender_active === 'all' }" ng-click="setGender('all')" class="everyone">Everyone</a>
+        </div>
+        <div class="compare-toggle age" ng-hide="gender_active == 'friends'">
+            <div class="label">In Age</div>
+            <a ng-class="{ active: age_active === 'fifties' }" ng-click="setAge('fifties')" class="fifties">50 <</a>
+            <a ng-class="{ active: age_active === 'forties' }" ng-click="setAge('forties')" class="forties">40s</a>
+            <a ng-class="{ active: age_active === 'thirties' }" ng-click="setAge('thirties')" class="thirties">30s</a>
+            <a ng-class="{ active: age_active === 'twenties' }" ng-click="setAge('twenties')" class="twenties">20s</a>
+            <a ng-class="{ active: age_active === 'teens' }" ng-click="setAge('teens')" class="teens">10s</a>
+            <a ng-class="{ active: age_active === 'all' }" ng-click="setAge('all')" class="all">All</a>
+        </div>
+        <div class="compare-toggle occasion" ng-show="::post_array[0].occasion">
+            <div class="label">Occasion</div>
+            <a class="active">{{::post_array[0].occasion.name}}</a>
+            <div class="clearfix"></div>
+        </div>
+        <div id="not-shared" ng-show="isThisNotSharedYet()">
+            You have not sent these looks to friends yet.
+        </div>
+        <div class="expired-message" ng-show="::post_array && post_array.length == 0">
+            Snaplooks have disappeared.
+        </div>
+        <ion-list>
+            <div>
+                <ion-item ng-repeat="post in post_array" class="post item post_{{::post.id}}">
+                    <div class="entity-id-{{::post.id}}">
+                        <ion-item style="background-image: url({{ ::photoPath( post.photos[0].img_path, 'm' ) }})">
+                            <a class="post_img"></a>
+                            <div class="desc_row">
+                                <span class="partial_likes">{{comparePostSet.partialLikes(gender_active, age_active, post.id, post_array)}} likes</span>
+                            </div>
+                            <div class="winner icon ion-ios-checkmark-empty" ng-show="post.id == top_post_id"></div>
+                        </ion-item>
+                    </div>
+                </ion-item>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-view>

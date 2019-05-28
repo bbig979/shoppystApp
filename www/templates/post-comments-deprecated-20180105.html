@@ -1,0 +1,34 @@
+<ion-view class="comment-list" id="post-detail" view-title="COMMENTS">
+    <ion-content ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
+        <div class="loading-spinner" data-loading ng-if="post == 0">
+            <ion-spinner></ion-spinner>
+        </div>
+        <p class="load-more grey-small-font" ng-click="loadMoreComments()" ng-if="commentsHiddenCount">load previous comments ({{ commentsHiddenCount }})</p>
+        <ion-list>
+            <ion-item class="item item-avatar item-text-wrap" ng-repeat="comment in post.latest_ten_comments">
+              <div class="profile-image" style="background-image: url( {{ photoPath( comment.user.profile_img_path, 's' ) }} )" ng-click="goAccount(comment.user.slug)"></div>
+              <div class="user-name" ng-click="goAccount(comment.user.slug)">{{ comment.user.username }}</div>
+                <p>{{ comment.content }}</p>
+                <span class="time-ago grey-small-font" am-time-ago="comment.created_at | amUtc"></span>
+                <ion-option-button class="button-assertive" ng-click="remComment($index)" ng-if="ownComment($index)">Delete</ion-option-button>
+            </ion-item>
+        </ion-list>
+        <form name="commentForm" ng-submit="submitComment()">
+            <div class="list">
+                <div class="item item-input-inset">
+                    <label class="item-input-wrapper">
+                        <input name="comment" type="text" id="comment" placeholder="Write a comment..." ng-model="comment.content">
+                    </label>
+                    <button class="button button-small" ng-hide="commentSubmitting">
+                        Submit
+                    </button>
+                    <button class="button button-small" ng-show="commentSubmitting">
+                        <ion-spinner icon="ios-small"></ion-spinner>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>

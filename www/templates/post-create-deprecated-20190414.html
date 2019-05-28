@@ -1,18 +1,8 @@
-<ion-view id="create-post" view-title="<snap-title>CREATE</snap-title>">
+<ion-view id="create-post" view-title="WHICH LOOKS BETTER?">
     <ion-content class="has-header" ng-class="{
         'has-blocker-message': blockerMessage.isNeeded()
     }">
-        <div class="steps">
-            <div class="line completed"></div>
-            <a class="step step-1 completed" ng-click="goStep1()"><span class="label"></span></a>
-            <a class="step step-2 active"><span class="label"></span></a>
-        </div>
-        <div class="step-message">
-            <div class="goal-tag" ng-click="resetPreviousStep();goStep1()" ng-show="{{ goal != null }}"><i class="fa fa-bolt" aria-hidden="true"></i> {{ goal.name }} <i class="icon ion-close-circled"></i></div>
-            <div class="goal-tag" ng-click="goStep1()" ng-show="{{ goal == null}}"><i class="fa fa-bolt" aria-hidden="true"></i> No looks chosen <i class="icon ion-close-circled"></i></div>
-        </div>
-
-        <form ng-submit="sharePost(captions, goal.id, other)" name="shareForm">
+        <form ng-submit="sharePost(captions, occasion.value, other)" name="shareForm">
             <ul class="post-images">
                 <li ng-repeat="cameraPicture in cameraPictues.get()">
                     <div class="post-image">
@@ -26,7 +16,8 @@
                     <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu()">
                         <div class="add-more-to-compare-button">
                             <i class="icon ion-plus-circled"></i><br>
-                            Add an Outfit
+                            Add a Look<br>
+                            to Compare
                         </div>
                     </div>
                 </li>
@@ -37,70 +28,96 @@
                     Visibility
                 </div>
                 <div class="button-bar">
-                    <a class="button button-small" ng-class="{'button-positive': isActive('private')}" ng-click="setActive('private')">Private</a>
+                    <a class="button button-small" ng-class="{'button-positive': isActive('friend')}" ng-click="setActive('friend')">Friends</a>
                     <a class="button button-small" ng-class="{'button-positive': isActive('public')}" ng-click="setActive('public')">Public</a>
                     <a class="button button-small" ng-class="{'button-positive': isActive('permanent')}" ng-click="setActive('permanent')">Permanent</a>
                 </div>
-                <div class="selected-visibility private" ng-class="visibility == 'private' ? 'ng-show' : 'ng-hide'">
+                <div class="selected-visibility ng-hide friend" ng-class="visibility == 'friend' ? 'ng-show' : 'ng-hide'">
                     <div class="compare-table">
                         <div class="compare-row">
-                            <span class="label">Share With Public</span>
+                            <span class="label">Visible to Other Users</span>
                             <span class="mark"><i class="icon ion-close-round"></i></span>
                         </div>
                         <div class="compare-row">
-                            <span class="label">24 Hours Only</span>
+                            <span class="label">Shareable to Friends</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Invisible After a Day</span>
                             <span class="mark"><i class="icon ion-checkmark-round"></i></span>
                         </div>
                         <div class="clearfix"></div>
                     </div>
                     <hr>
                     <div class="recommendation">
-                        Keep it Private and Send to Friends!
+                        Recommended When You Want to Ask Friends Only
                     </div>
                 </div>
                 <div class="selected-visibility public" ng-class="visibility == 'public' ? 'ng-show' : 'ng-hide'">
                     <div class="compare-table">
                         <div class="compare-row">
-                            <span class="label">Share With Public</span>
+                            <span class="label">Visible to Other Users</span>
                             <span class="mark"><i class="icon ion-checkmark-round"></i></span>
                         </div>
                         <div class="compare-row">
-                            <span class="label">24 Hours Only</span>
+                            <span class="label">Shareable to Friends</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Invisible After a Day</span>
                             <span class="mark"><i class="icon ion-checkmark-round"></i></span>
                         </div>
                         <div class="clearfix"></div>
                     </div>
                     <hr>
                     <div class="recommendation">
-                        Share with Everyone for 24 Hours!
+                        Recommended When You Want More Accurate Result
                     </div>
                 </div>
-                <div class="selected-visibility permanent" ng-class="visibility == 'permanent' ? 'ng-show' : 'ng-hide'">
+                <div class="selected-visibility ng-hide permanent" ng-class="visibility == 'permanent' ? 'ng-show' : 'ng-hide'">
                     <div class="compare-table">
                         <div class="compare-row">
-                            <span class="label">Share With Public</span>
+                            <span class="label">Visible to Other Users</span>
                             <span class="mark"><i class="icon ion-checkmark-round"></i></span>
                         </div>
                         <div class="compare-row">
-                            <span class="label">24 Hours Only</span>
+                            <span class="label">Shareable to Friends</span>
+                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
+                        </div>
+                        <div class="compare-row">
+                            <span class="label">Invisible After a Day</span>
                             <span class="mark"><i class="icon ion-close-round"></i></span>
                         </div>
                         <div class="clearfix"></div>
                     </div>
                     <hr>
                     <div class="recommendation">
-                        Inspire Others! This One’s for Keeps!
+                        Recommended When You Want to Inspire Others
                     </div>
                 </div>
             </div>
             <div class="post-caption padding" ng-show="hasContent()">
-                <textarea placeholder="Write a Caption" class="form-control" ng-model="captions" ng-change="setCaption()"></textarea>
+                <textarea placeholder="Write a Caption" class="form-control" ng-model="captions"></textarea>
+            </div>
+            <label class="item item-input item-select" ng-show="hasContent()">
+                <div class="input-label">
+                    Occasion
+                </div>
+                <select ng-model="occasion" ng-change="checkOccasion(occasion)" ng-options="opt.label for opt in occasionList">
+                    <option value="">(optional)</option>
+                </select>
+            </label>
+            <div class="padding occasion_optional" ng-show="shopOptionalOccasion">
+                <label class="item item-input item-floating-label">
+                    <span class="input-label">Please fill out occasion</span>
+                    <input type="text" placeholder="Please fill out occasion" class="form-control" ng-model="other">
+                </label>
             </div>
             <div class="button-padding padding-top">
-                <button type="submit" class="button button-block button-positive" ng-disabled="submitted" ng-show="hasContent()">Post</button>
+                <button type="submit" class="button button-block button-positive" ng-disabled="submitted" ng-show="hasContent()">Create</button>
             </div>
             <div class="button-padding">
-                <button type="button" class="button button-block button-stable" ng-click="resetThisStep()" ng-disabled="submitted" ng-show="hasContent()">Reset</button>
+                <button type="button" class="button button-block button-stable" ng-click="reset()" ng-disabled="submitted" ng-show="hasContent()">Reset</button>
             </div>
         </form>
     </ion-content>
