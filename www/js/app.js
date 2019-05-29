@@ -123,6 +123,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
+    .state('tab.vote-result-camera', {
+       url: '/vote/result/:postId/camera',
+       views: {
+           'tab-camera': {
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
+           }
+       }
+    })
     .state('tab.vote-result-notification', {
        url: '/vote/result/:postId/notification',
        views: {
@@ -157,6 +166,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/photo/explore',
        views: {
            'tab-explore': {
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
+           }
+       },
+       params: {
+          photo: null
+       }
+    })
+    .state('tab.photo-detail-camera', {
+       url: '/photo/camera',
+       views: {
+           'tab-camera': {
                templateUrl: 'templates/photo-detail.html',
                controller: 'PhotoDetailCtrl'
            }
@@ -205,6 +226,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/post/comments/explore',
        views: {
            'tab-explore': {
+               templateUrl: 'templates/post-comments.html',
+               controller: 'PostCommentCtrl'
+           }
+       },
+       params: {
+         post: null
+       }
+    })
+    .state('tab.post-comments-camera', {
+       url: '/post/comments/camera',
+       views: {
+           'tab-camera': {
                templateUrl: 'templates/post-comments.html',
                controller: 'PostCommentCtrl'
            }
@@ -336,6 +369,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
+    .state('tab.search-result-camera', {
+       url: '/search/:searchTerm/:type/camera',
+       views: {
+           'tab-camera': {
+               templateUrl: 'templates/post-search-result.html',
+               controller: 'PostSearchResultCtrl'
+           }
+       }
+    })
     .state('tab.search-result-notification', {
        url: '/search/:searchTerm/:type/notification',
        views: {
@@ -412,6 +454,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	   url: '/account/:accountSlug/explore',
 	   views: {
 	       'tab-explore': {
+	           templateUrl: 'templates/tab-account.html',
+	           controller: 'AccountCtrl'
+	       }
+	   }
+	})
+    .state('tab.account-camera', {
+	   url: '/account/:accountSlug/camera',
+	   views: {
+	       'tab-camera': {
 	           templateUrl: 'templates/tab-account.html',
 	           controller: 'AccountCtrl'
 	       }
@@ -514,6 +565,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
+    .state('tab.account-following-camera', {
+       url: '/account/:userSlug/following/camera',
+       views: {
+           'tab-camera': {
+               templateUrl: 'templates/account-following.html',
+               controller: 'FollowingCtrl'
+           }
+       }
+    })
     .state('tab.account-following-notification', {
        url: '/account/:userSlug/following/notification',
        views: {
@@ -548,6 +608,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/account/:userSlug/follower/explore',
        views: {
            'tab-explore': {
+               templateUrl: 'templates/account-follower.html',
+               controller: 'FollowerCtrl'
+           }
+       }
+    })
+    .state('tab.account-follower-camera', {
+       url: '/account/:userSlug/follower/camera',
+       views: {
+           'tab-camera': {
                templateUrl: 'templates/account-follower.html',
                controller: 'FollowerCtrl'
            }
