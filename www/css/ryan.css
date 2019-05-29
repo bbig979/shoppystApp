@@ -4431,7 +4431,7 @@ body.platform-ios {
 
 /* line 8, ../../scss/ryan/_top-bar.scss */
 .bar.bar-stable .title {
-  color: #525252;
+  color: #5CC196;
   font-weight: unset;
   text-decoration: underline;
   text-decoration-color: #5CC196;
@@ -4439,41 +4439,46 @@ body.platform-ios {
 }
 
 /* line 15, ../../scss/ryan/_top-bar.scss */
-.bar-stable .button.button-clear {
+.bar.bar-stable .title snap-title {
   color: #525252;
 }
 
 /* line 18, ../../scss/ryan/_top-bar.scss */
+.bar-stable .button.button-clear {
+  color: #525252;
+}
+
+/* line 21, ../../scss/ryan/_top-bar.scss */
 .title-image {
   height: 44px;
 }
 
-/* line 21, ../../scss/ryan/_top-bar.scss */
+/* line 24, ../../scss/ryan/_top-bar.scss */
 .bar .button.button-clear.ion-refresh::before {
   font-size: 23px;
 }
 
-/* line 24, ../../scss/ryan/_top-bar.scss */
+/* line 27, ../../scss/ryan/_top-bar.scss */
 .bar .button.fa-filter {
   background-color: #fff;
 }
 
-/* line 27, ../../scss/ryan/_top-bar.scss */
+/* line 30, ../../scss/ryan/_top-bar.scss */
 .bar .button.fa-filter.filter-on {
   color: #5CC196;
 }
 
-/* line 30, ../../scss/ryan/_top-bar.scss */
+/* line 33, ../../scss/ryan/_top-bar.scss */
 .bar .fa-filter .fa-chevron-down, .bar .fa-filter .fa-chevron-up {
   font-size: 10px;
 }
 
-/* line 33, ../../scss/ryan/_top-bar.scss */
+/* line 36, ../../scss/ryan/_top-bar.scss */
 .header-slide-away .bar .button.fa-filter {
   display: none;
 }
 
-/* line 36, ../../scss/ryan/_top-bar.scss */
+/* line 39, ../../scss/ryan/_top-bar.scss */
 .platform-android .nav-bar-has-subheader .bar.bar-stable {
   background-color: #5CC196;
   background: -webkit-linear-gradient(left, #FF1D5C, #FFC772);
