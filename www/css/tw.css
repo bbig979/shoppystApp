@@ -635,7 +635,7 @@
 /* line 96, ../../scss/tw/_post-create.scss */
 #create-post-step-1 .goal-item {
   float: left;
-  width: 50%;
+  width: 80%;
 }
 /* line 100, ../../scss/tw/_post-create.scss */
 #create-post-step-1 .goal-item .goal-name {
@@ -649,9 +649,9 @@
 /* line 108, ../../scss/tw/_post-create.scss */
 #create-post-step-1 .goal-example {
   float: left;
-  width: 50%;
+  width: 20%;
   text-align: right;
-  font-size: 13px;
+  font-size: 22px;
   padding-top: 10px;
 }
 

@@ -29,7 +29,7 @@ ion-tabs .tab-item {
 .tab-item[icon-on=ion-android-person].tab-item-active{
   color: $footer-nav-active-color;
 }
-.tab-item.dummy-tab-for-temp-compare{
+.tab-item.tab-hidden{
   display: none;
 }
 div.tab-nav.tabs{

@@ -241,6 +241,7 @@ angular.module('starter.services', [])
                 profile_user_slug : $scope.profile_user_slug,
                 search_type : $scope.search_type,
                 search_term : $scope.search_term,
+                hash : $scope.hash,
                 search_filter_serialized : Util.serialize($scope.search_filter),
             };
         },
@@ -364,7 +365,7 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state, UxAnalytics, PostShare){
+.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state, UxAnalytics, PostShare, DeepLink){
     return {
         commentCount: function(post){
             var comment_count = 0;
@@ -442,6 +443,8 @@ angular.module('starter.services', [])
             $ionicLoading.show();
             PostShare.getHash(post.id).then(function(hash){
                 if(hash){
+                    DeepLink.share($rootScope.baseURL + '/s/' + hash);
+/*
                     var options = {
                         //message: 'Choose your favorite outfit!',
                         //subject: 'Choose Your Favorite Outfit!',
@@ -456,6 +459,7 @@ angular.module('starter.services', [])
                         console.log("Sharing failed with message: " + msg);
                     }
                     window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+*/
                 }
                 else{
                     $rootScope.popupMessage('Oops', 'You cannot send other\'s outfit');
@@ -1211,6 +1215,67 @@ angular.module('starter.services', [])
                     $ionicScrollDelegate.scrollTo(0, 1, false);
                 }, time);
             }
+        }
+    }
+})
+.factory('DeepLink', function($state, $ionicHistory){
+    return {
+        share: function(url) {
+            var hash = this._getHashFromUrl(url);
+            var properties = {
+                canonicalIdentifier: hash,
+                canonicalUrl: url,
+            }
+
+            var branchUniversalObj = null
+
+            Branch.createBranchUniversalObject(properties).then(function (res) {
+                branchUniversalObj = res;
+                // optional fields
+                var analytics = {}
+
+                // optional fields
+                var properties = {
+                    $fallback_url: url,
+                }
+
+                var message = 'Check out these outfit ideas';
+
+                // optional listeners (must be called before showShareSheet)
+                branchUniversalObj.onShareSheetLaunched(function (res) {
+                  // android only
+                  console.log(res)
+                })
+                branchUniversalObj.onShareSheetDismissed(function (res) {
+                  console.log(res)
+                })
+                branchUniversalObj.onLinkShareResponse(function (res) {
+                  console.log(res)
+                })
+                branchUniversalObj.onChannelSelected(function (res) {
+                  // android only
+                  console.log(res)
+                })
+
+                // share sheet
+                branchUniversalObj.showShareSheet(analytics, properties, message);
+            }).catch(function (err) {
+                alert('Error: ' + JSON.stringify(err));
+            })
+        },
+        open: function(data) {
+            $ionicHistory.nextViewOptions({
+                disableAnimate: true,
+                historyRoot: true
+            });
+
+            var hash = this._getHashFromUrl(data.$fallback_url);
+            $state.go('tab.post-detail', {hash: hash});
+        },
+        _getHashFromUrl: function(url) {
+            var url_piece_array = url.split("/");
+            var last_index = url_piece_array.length - 1;
+            return url_piece_array[last_index];
         }
     }
 })

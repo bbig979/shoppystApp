@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'satellizer', 'angularMoment', 'ngCordova'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, DeepLink) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,6 +19,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
+    }
+
+    // Branch
+    $ionicPlatform.on('deviceready', function() {
+      handleBranch();
+    });
+
+    $ionicPlatform.on('resume', function() {
+      handleBranch();
+    });
+
+    function handleBranch() {
+      // Branch initialization
+      Branch.initSession().then(function(data) {
+        if (data['+clicked_branch_link']) {
+          DeepLink.open(data);
+        }
+      });
     }
   });
 })
@@ -150,6 +168,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
+    .state('tab.vote-result-hidden', {
+       url: '/vote/result/:postId/hidden',
+       views: {
+           'tab-hidden': {
+               templateUrl: 'templates/vote-result.html',
+               controller: 'VoteResultCtrl'
+           }
+       }
+    })
     .state('tab.photo-detail-home', {
        url: '/photo/home',
        views: {
@@ -210,6 +237,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
           photo: null
        }
     })
+    .state('tab.photo-detail-hidden', {
+       url: '/photo/hidden',
+       views: {
+           'tab-hidden': {
+               templateUrl: 'templates/photo-detail.html',
+               controller: 'PhotoDetailCtrl'
+           }
+       },
+       params: {
+          photo: null
+       }
+    })
     .state('tab.post-comments-home', {
        url: '/post/comments/home',
        views: {
@@ -262,6 +301,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/post/comments/account',
        views: {
            'tab-account': {
+               templateUrl: 'templates/post-comments.html',
+               controller: 'PostCommentCtrl'
+           }
+       },
+       params: {
+         post: null
+       }
+    })
+    .state('tab.post-comments-hidden', {
+       url: '/post/comments/hidden',
+       views: {
+           'tab-hidden': {
                templateUrl: 'templates/post-comments.html',
                controller: 'PostCommentCtrl'
            }
@@ -396,6 +447,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
     })
+    .state('tab.search-result-hidden', {
+       url: '/search/:searchTerm/:type/hidden',
+       views: {
+           'tab-hidden': {
+               templateUrl: 'templates/post-search-result.html',
+               controller: 'PostSearchResultCtrl'
+           }
+       }
+    })
     .state('tab.post-create', {
       url: '/post/create',
       views: {
@@ -489,6 +549,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	       refresh: null,
 	       activateTab: null,
 	       isThisAfterShare: false
+	   }
+	})
+    .state('tab.account-hidden', {
+	   url: '/account/:accountSlug/hidden',
+	   views: {
+	       'tab-hidden': {
+	           templateUrl: 'templates/tab-account.html',
+	           controller: 'AccountCtrl'
+	       }
 	   }
 	})
 
@@ -595,6 +664,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            user: null
        }
     })
+    .state('tab.account-following-hidden', {
+       url: '/account/:userSlug/following/hidden',
+       views: {
+           'tab-hidden': {
+               templateUrl: 'templates/account-following.html',
+               controller: 'FollowingCtrl'
+           }
+       }
+    })
     .state('tab.account-follower-home', {
         url: '/account/:userSlug/follower/home',
         views: {
@@ -643,6 +721,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            user: null
        }
     })
+    .state('tab.account-follower-hidden', {
+       url: '/account/:userSlug/follower/hidden',
+       views: {
+           'tab-hidden': {
+               templateUrl: 'templates/account-follower.html',
+               controller: 'FollowerCtrl'
+           }
+       }
+    })
 
     .state('tab.account-liked-home', {
        url: '/account/:userSlug/liked/home',
@@ -687,6 +774,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/tab-notification.html',
                controller: 'NotificationCtrl'
            }
+       }
+   })
+   .state('tab.post-detail', {
+       url: '/post/detail',
+       views:{
+           'tab-hidden': {
+               templateUrl: 'templates/tab-home.html',
+               controller: 'PostDetailCtrl'
+           }
+       },
+       params: {
+           hash: null
        }
    })
 

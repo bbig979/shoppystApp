@@ -76,6 +76,9 @@ angular.module('starter.controllers', [])
             case 4:
                 tab = 'account';
                 break;
+            case 5:
+                tab = 'hidden';
+                break;
             default:
                 tab = 'newTab';
         }
@@ -1924,6 +1927,34 @@ angular.module('starter.controllers', [])
 
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen('tab-home');
+        SlideHeader.viewEntered($scope);
+    });
+})
+
+.controller('PostDetailCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, DirtyHack, $stateParams) {
+    $scope.hash = $stateParams.hash;
+    $scope.postCard = PostCard;
+    $scope.business_object_list_config = {
+        type : 'post',
+        method : 'deep_link',
+    };
+
+    BusinessObjectList.reset($scope);
+    BusinessObjectList.load($scope).then(function(){
+        DirtyHack.preventZeroTop();
+    });
+
+    $scope.refresh = function(){
+        BusinessObjectList.reset($scope);
+        $scope.is_list_loading = false;
+        BusinessObjectList.load($scope).then(function(){
+            DirtyHack.preventZeroTop(900);
+        });
+        $scope.$broadcast('scroll.refreshComplete');
+    }
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('tab-post-detail');
         SlideHeader.viewEntered($scope);
     });
 })
