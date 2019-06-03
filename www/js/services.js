@@ -1218,7 +1218,8 @@ angular.module('starter.services', [])
         }
     }
 })
-.factory('DeepLink', function($state, $ionicHistory){
+.factory('DeepLink', function($state, $ionicHistory, $rootScope){
+    var stash = null;
     return {
         share: function(url) {
             var hash = this._getHashFromUrl(url);
@@ -1264,18 +1265,44 @@ angular.module('starter.services', [])
             })
         },
         open: function(data) {
-            $ionicHistory.nextViewOptions({
-                disableAnimate: true,
-                historyRoot: true
-            });
-
             var hash = this._getHashFromUrl(data.$fallback_url);
-            $state.go('tab.post-detail', {hash: hash});
+            if($rootScope.currentUser){
+                this._openPostFromHash(hash);
+            }
+            else{
+                this._storeHashInStash(hash);
+            }
+        },
+        openIfStashed: function() {
+            var hash = this._fetchHashFromStash();
+            if(hash){
+                this._openPostFromHash(hash);
+                return true;
+            }
+            return false;
+        },
+        _storeHashInStash: function(hash) {
+            stash = hash
+        },
+        _fetchHashFromStash: function() {
+            // empty stash
+            var hash = stash;
+            stash = null;
+
+            return hash;
         },
         _getHashFromUrl: function(url) {
             var url_piece_array = url.split("/");
             var last_index = url_piece_array.length - 1;
             return url_piece_array[last_index];
+        },
+        _openPostFromHash: function(hash){
+            $ionicHistory.nextViewOptions({
+                disableAnimate: true,
+                historyRoot: true
+            });
+
+            $state.go('tab.post-detail', {hash: hash});
         }
     }
 })

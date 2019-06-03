@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, SearchFilter) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, SearchFilter, DeepLink) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     $rootScope.baseURL = 'https://app.snaplook.today';
@@ -1030,6 +1030,11 @@ angular.module('starter.controllers', [])
     $rootScope.openInAppBrowser = function(url) {
         cordova.InAppBrowser.open(url, '_blank');
     }
+    $rootScope.renderFirstView = function() {
+        if(! DeepLink.openIfStashed()){
+            $state.go('tab.explore-explore');
+        }
+    }
 
     $timeout(
         function(){
@@ -1476,7 +1481,7 @@ angular.module('starter.controllers', [])
         disableBack: true
     });
     if(localStorage.getItem('user') && localStorage.getItem('satellizer_token')){
-        $state.go('tab.explore-explore');
+        $rootScope.renderFirstView();
     }
     else{
         $state.go('auth');
@@ -1533,7 +1538,7 @@ angular.module('starter.controllers', [])
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-                    $state.go('tab.explore-explore');
+                    $rootScope.renderFirstView();
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
@@ -1598,7 +1603,7 @@ angular.module('starter.controllers', [])
                                 disableBack: true
                             });
                             $ionicLoading.hide();
-                            $state.go('tab.explore-explore');
+                            $rootScope.renderFirstView();
                         })
                         .error(function(data, status){
                             $ionicLoading.hide();
@@ -1684,7 +1689,7 @@ angular.module('starter.controllers', [])
                     disableBack: true
                 });
                 BlockerMessage.init();
-                $state.go('tab.explore-explore');
+                $rootScope.renderFirstView();
             })
             .error(function(data, status){
                 $rootScope.handleHttpError(data, status);
@@ -1757,7 +1762,7 @@ angular.module('starter.controllers', [])
                     disableBack: true
                 });
                 $ionicLoading.hide();
-                $state.go('tab.explore-explore');
+                $rootScope.renderFirstView();
             })
             .error(function(data, status){
                 $ionicLoading.hide();
@@ -1796,7 +1801,7 @@ angular.module('starter.controllers', [])
                     $ionicHistory.nextViewOptions({
                         disableBack: true
                     });
-                    $state.go('tab.explore-explore');
+                    $rootScope.renderFirstView();
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
@@ -1861,7 +1866,7 @@ angular.module('starter.controllers', [])
                                 disableBack: true
                             });
                             $ionicLoading.hide();
-                            $state.go('tab.explore-explore');
+                            $rootScope.renderFirstView();
                         })
                         .error(function(data, status){
                             $ionicLoading.hide();
