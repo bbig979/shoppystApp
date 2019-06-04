@@ -238,17 +238,14 @@ angular.module('starter.controllers', [])
                             targetWidth: 2400,
                             targetHeight: 2400,
                             correctOrientation: true,
-                            allowEdit: true,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.CAMERA
                         };
                         $cordovaCamera.getPicture(options).then(
                             function(imageData) {
-                                localStorage.setItem('photo', imageData);
+                                CameraPictues.set(imageData);
                                 $ionicLoading.show({template: 'Loading Photo', duration:500});
                                 $ionicLoading.hide();
-                                CameraPictues.set(imageData);
-                                $state.go('tab.post-create');
                             },
                             function(err){
                                 $ionicLoading.hide();
@@ -261,7 +258,6 @@ angular.module('starter.controllers', [])
                             targetWidth: 2400,
                             targetHeight: 2400,
                             correctOrientation: true,
-                            allowEdit: true,
                             destinationType: Camera.DestinationType.FILE_URI,
                             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
                         };
@@ -269,11 +265,16 @@ angular.module('starter.controllers', [])
                         $cordovaCamera.getPicture(options).then(
                             function(imageURI) {
                                 window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
-                                    localStorage.setItem('photo', fileEntry.nativeURL);
-                                    $ionicLoading.show({template: 'Loading Photo', duration:500});
-                                    $ionicLoading.hide();
-                                    CameraPictues.set(fileEntry.nativeURL);
-                                    $state.go('tab.post-create');
+                                    fileEntry.moveTo(fileEntry.filesystem.root, Date.now() + ".jpg", function (entry) {
+                                        CameraPictues.set(entry.nativeURL);
+                                        $ionicLoading.show({template: 'Loading Photo', duration:500});
+                                        $ionicLoading.hide();
+                                    }, function fail(error) {
+                                        alert(error.code);
+                                    },
+                                    function(err){
+                                        $ionicLoading.hide();
+                                    });
                                 });
                             },
                             function(err){
@@ -2633,9 +2634,9 @@ angular.module('starter.controllers', [])
                 switch (index){
                     case 0 :
                         var options = {
-                            quality: 100,
-                            targetWidth: 600,
-                            targetHeight: 600,
+                            quality: 50,
+                            targetWidth: 2400,
+                            targetHeight: 2400,
                             correctOrientation: true,
                             allowEdit: true,
                             destinationType: Camera.DestinationType.FILE_URL,
@@ -2653,9 +2654,9 @@ angular.module('starter.controllers', [])
                         return true;
                     case 1 :
                         var options = {
-                            quality: 100,
-                            targetWidth: 600,
-                            targetHeight: 600,
+                            quality: 50,
+                            targetWidth: 2400,
+                            targetHeight: 2400,
                             correctOrientation: true,
                             allowEdit: true,
                             destinationType: Camera.DestinationType.FILE_URI,
