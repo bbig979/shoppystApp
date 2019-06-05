@@ -178,7 +178,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.photo-detail-home', {
-       url: '/photo/home',
+       url: '/photo/:photoId/home',
        views: {
            'tab-home': {
                templateUrl: 'templates/photo-detail.html',
@@ -190,7 +190,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.photo-detail-explore', {
-       url: '/photo/explore',
+       url: '/photo/:photoId/explore',
        views: {
            'tab-explore': {
                templateUrl: 'templates/photo-detail.html',
@@ -202,7 +202,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.photo-detail-camera', {
-       url: '/photo/camera',
+       url: '/photo/:photoId/camera',
        views: {
            'tab-camera': {
                templateUrl: 'templates/photo-detail.html',
@@ -214,7 +214,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.photo-detail-notification', {
-       url: '/photo/notification',
+       url: '/photo/:photoId/notification',
        views: {
            'tab-notification': {
                templateUrl: 'templates/photo-detail.html',
@@ -226,7 +226,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.photo-detail-account', {
-       url: '/photo/account',
+       url: '/photo/:photoId/account',
        views: {
            'tab-account': {
                templateUrl: 'templates/photo-detail.html',
@@ -238,7 +238,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.photo-detail-hidden', {
-       url: '/photo/hidden',
+       url: '/photo/:photoId/hidden',
        views: {
            'tab-hidden': {
                templateUrl: 'templates/photo-detail.html',
@@ -250,7 +250,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-comments-home', {
-       url: '/post/comments/home',
+       url: '/post/comments/:postId/home',
        views: {
            'tab-home': {
                templateUrl: 'templates/post-comments.html',
@@ -262,7 +262,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-comments-explore', {
-       url: '/post/comments/explore',
+       url: '/post/comments/:postId/explore',
        views: {
            'tab-explore': {
                templateUrl: 'templates/post-comments.html',
@@ -274,7 +274,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-comments-camera', {
-       url: '/post/comments/camera',
+       url: '/post/comments/:postId/camera',
        views: {
            'tab-camera': {
                templateUrl: 'templates/post-comments.html',
@@ -286,7 +286,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-comments-notification', {
-       url: '/post/comments/notification',
+       url: '/post/comments/:postId/notification',
        views: {
            'tab-notification': {
                templateUrl: 'templates/post-comments.html',
@@ -298,7 +298,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-comments-account', {
-       url: '/post/comments/account',
+       url: '/post/comments/:postId/account',
        views: {
            'tab-account': {
                templateUrl: 'templates/post-comments.html',
@@ -310,7 +310,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-comments-hidden', {
-       url: '/post/comments/hidden',
+       url: '/post/comments/:postId/hidden',
        views: {
            'tab-hidden': {
                templateUrl: 'templates/post-comments.html',

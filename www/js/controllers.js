@@ -112,11 +112,11 @@ angular.module('starter.controllers', [])
             return;
         }
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.photo-detail-'+tab,{photo: photo});
+        $state.go('tab.photo-detail-'+tab,{photo: photo, photoId: photo.id});
     };
     $rootScope.goPostComment = function(post){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.post-comments-'+tab,{post: post});
+        $state.go('tab.post-comments-'+tab,{post: post, postId: post.id});
     };
     $rootScope.goVoteResult = function(post_id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
