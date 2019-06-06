@@ -44,10 +44,13 @@
                             </div>
                         </div>
                         <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
-                        <div class="photo-list">
-                            <ion-scroll direction="x" delegate-handle="handle-horizontal" has-bouncing="false">
-                                <div ng-repeat="photo in post.photos" class="photo">
-                                    <div class="photo-img-wrapper entity-id-{{photo.id}}" ng-class="{'my-photo': isMyAccount}" style="background-image: url({{ photoPath( photo.img_path, 'm' ) }})" ng-click="goPhotoDetail(photo)">
+                        <ion-slide-box class="photo-list" show-pager="false">
+                            <ion-slide ng-repeat="photo in post.photos">
+                                <div class="photo">
+                                    <div class="photo-counter">
+                                        {{ $index + 1 }}/{{ post.photos.length }}
+                                    </div>
+                                    <div class="photo-img-wrapper entity-id-{{photo.id}}" ng-class="{'my-photo': isMyAccount}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})" ng-click="goPhotoDetail(photo)">
                                         <a class="photo-img"></a>
                                     </div>
                                     <div class="vote-toggle" ng-hide="isMyAccount">
@@ -55,8 +58,8 @@
                                         <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
                                     </div>
                                 </div>
-                            </ion-scroll>
-                        </div>
+                            </ion-slide>
+                        </ion-slide-box>
                         <div class="post-summary clearfix">
                             <div class="totals" ng-hide="post.visibility == 'private' && post.post_shares.length == 0  && post.display_share">
                                 {{ post.photos.length }} Outfits{{ postCard.commentCount(post) }}{{ postCard.voteCount(post) }}

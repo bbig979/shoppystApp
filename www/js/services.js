@@ -294,7 +294,7 @@ angular.module('starter.services', [])
             for(var i=0; i<data.length; i++){
                 image_array.push( $rootScope.photoPath( data[i].user.profile_img_path, 's' ));
                 for(var j=0; j<data[i].photos.length; j++){
-                    image_array.push( $rootScope.photoPath( data[i].photos[j].img_path, 'm' ));
+                    image_array.push( $rootScope.photoPath( data[i].photos[j].img_path, 'l' ));
                 }
             }
             return image_array;

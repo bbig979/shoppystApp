@@ -1922,13 +1922,14 @@ angular.module('starter.controllers', [])
     }
 
     $scope.load = function(){
-        $ionicScrollDelegate.scrollTop();
+        $ionicScrollDelegate.scrollTo(0, 1, false);
         $scope.list = [];
         $scope.is_list_loading = true;
 
-        BusinessObjectList.render($scope, $scope.preloaded_response);
-        BusinessObjectList.preload($scope);
-        DirtyHack.preventZeroTop();
+        $timeout(function(){
+            BusinessObjectList.render($scope, $scope.preloaded_response);
+            BusinessObjectList.preload($scope);
+        }, 10);
     }
 
     $scope.$on('$ionicView.enter', function() {
@@ -2204,13 +2205,14 @@ angular.module('starter.controllers', [])
     }
 
     $scope.load = function(){
-        $ionicScrollDelegate.scrollTop();
+        $ionicScrollDelegate.scrollTo(0, 1, false);
         $scope.list = [];
         $scope.is_list_loading = true;
 
-        BusinessObjectList.render($scope, $scope.preloaded_response);
-        BusinessObjectList.preload($scope);
-        DirtyHack.preventZeroTop();
+        $timeout(function(){
+            BusinessObjectList.render($scope, $scope.preloaded_response);
+            BusinessObjectList.preload($scope);
+        }, 10);
     }
 
     $scope.$on('$ionicView.enter', function() {
@@ -2437,13 +2439,14 @@ angular.module('starter.controllers', [])
 
     $scope.load = function(){
         SearchFilter.set('visible', false);
-        $ionicScrollDelegate.scrollTop();
+        $ionicScrollDelegate.scrollTo(0, 1, false);
         $scope.list = [];
         $scope.is_list_loading = true;
 
-        BusinessObjectList.render($scope, $scope.preloaded_response);
-        BusinessObjectList.preload($scope);
-        DirtyHack.preventZeroTop();
+        $timeout(function(){
+            BusinessObjectList.render($scope, $scope.preloaded_response);
+            BusinessObjectList.preload($scope);
+        }, 10);
     }
 
     $scope.$on('$ionicView.enter', function() {
@@ -2602,13 +2605,14 @@ angular.module('starter.controllers', [])
     }
 
     $scope.load = function(){
-        $ionicScrollDelegate.scrollTop();
+        $ionicScrollDelegate.scrollTo(0, 1, false);
         $scope.list = [];
         $scope.is_list_loading = true;
 
-        BusinessObjectList.render($scope, $scope.preloaded_response);
-        BusinessObjectList.preload($scope);
-        DirtyHack.preventZeroTop();
+        $timeout(function(){
+            BusinessObjectList.render($scope, $scope.preloaded_response);
+            BusinessObjectList.preload($scope);
+        }, 10);
     }
 
     $scope.$on('$ionicView.enter', function() {
