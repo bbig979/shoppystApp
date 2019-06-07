@@ -1637,7 +1637,7 @@ angular.module('starter.controllers', [])
 })
 .controller('Register2Ctrl', function($scope, $stateParams, $auth, $rootScope, $http, $ionicLoading, $ionicHistory, $state, $timeout, UsernameAvailability, UxAnalytics, BlockerMessage) {
     $scope.registerData = {
-        age: '10',
+        age: '18',
         gender: 'female',
     };
     $scope.usernameClass = '';
