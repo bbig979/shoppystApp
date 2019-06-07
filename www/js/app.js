@@ -115,11 +115,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         url: '/home',
         views: {
           'tab-home': {
-            templateUrl: 'templates/tab-home.html',
-            controller: 'HomeCtrl'
+            templateUrl: 'templates/post-card-list.html',
+            controller: 'PostCardListCtrl'
           }
         },
         params: {
+           method: 'following',
            refresh: null
         }
     })
@@ -776,16 +777,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        }
    })
-   .state('tab.post-detail', {
-       url: '/post/detail',
+   .state('tab.post-deep-link', {
+       url: '/post/deep-link/:hash',
        views:{
            'tab-hidden': {
-               templateUrl: 'templates/tab-home.html',
-               controller: 'PostDetailCtrl'
+               templateUrl: 'templates/post-card-list.html',
+               controller: 'PostCardListCtrl'
            }
        },
        params: {
-           hash: null
+           method: 'deep_link'
+       }
+   })
+   .state('tab.single-post-notification', {
+       url: '/post/:post_id/notification',
+       views:{
+           'tab-notification': {
+               templateUrl: 'templates/post-card-list.html',
+               controller: 'PostCardListCtrl'
+           }
+       },
+       params: {
+           method: 'single_post'
        }
    })
 

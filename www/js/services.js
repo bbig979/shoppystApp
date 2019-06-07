@@ -242,6 +242,7 @@ angular.module('starter.services', [])
                 search_type : $scope.search_type,
                 search_term : $scope.search_term,
                 hash : $scope.hash,
+                state_param_serialized: Util.serialize($scope.state_params),
                 search_filter_serialized : Util.serialize($scope.search_filter),
             };
         },
@@ -1302,7 +1303,7 @@ angular.module('starter.services', [])
                 historyRoot: true
             });
 
-            $state.go('tab.post-detail', {hash: hash});
+            $state.go('tab.post-deep-link', {hash: hash});
         }
     }
 })

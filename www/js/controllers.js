@@ -1899,13 +1899,40 @@ angular.module('starter.controllers', [])
     };
 
 })
-.controller('HomeCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, DirtyHack) {
+
+.controller('PostCardListCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, DirtyHack, $stateParams, $timeout) {
+    var method = $stateParams.method;
+    var config_map = {
+        'single_post' : {
+            'title' : 'OUTFITS',
+            'no_result_message' : 'Your friend \'s outfits disappeared in a snap!' ,
+            'view' : 'single_post',
+            'preload' : false,
+        },
+        'deep_link' : {
+            'title' : 'OUTFITS',
+            'no_result_message' : 'Your friend \'s outfits disappeared in a snap!' ,
+            'view' : 'deep_link',
+            'preload' : false,
+        },
+        'following' : {
+            'title' : 'FOLLOWING',
+            'no_result_message' : 'Tap the <i class="icon ion-search"></i> and find other Snaplookers to follow' ,
+            'view' : 'home',
+            'preload' : true,
+        },
+    }
+    $scope.state_params = $stateParams;
+    $scope.config = config_map[method];
     $scope.postCard = PostCard;
     $scope.business_object_list_config = {
         type : 'post',
-        method : 'following',
-        preload : true
+        method : method,
     };
+
+    if($scope.config.preload){
+        $scope.business_object_list_config.preload = true;
+    }
 
     BusinessObjectList.reset($scope);
     BusinessObjectList.load($scope).then(function(){
@@ -1926,42 +1953,21 @@ angular.module('starter.controllers', [])
         $scope.list = [];
         $scope.is_list_loading = true;
 
-        $timeout(function(){
-            BusinessObjectList.render($scope, $scope.preloaded_response);
-            BusinessObjectList.preload($scope);
-        }, 10);
+        if($scope.config.preload){
+            $timeout(function(){
+                BusinessObjectList.render($scope, $scope.preloaded_response);
+                BusinessObjectList.preload($scope);
+            }, 10);
+        }
+        else{
+            BusinessObjectList.load($scope).then(function(){
+                DirtyHack.preventZeroTop();
+            });
+        }
     }
 
     $scope.$on('$ionicView.enter', function() {
-        UxAnalytics.startScreen('tab-home');
-        SlideHeader.viewEntered($scope);
-    });
-})
-
-.controller('PostDetailCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, DirtyHack, $stateParams) {
-    $scope.hash = $stateParams.hash;
-    $scope.postCard = PostCard;
-    $scope.business_object_list_config = {
-        type : 'post',
-        method : 'deep_link',
-    };
-
-    BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope).then(function(){
-        DirtyHack.preventZeroTop();
-    });
-
-    $scope.refresh = function(){
-        BusinessObjectList.reset($scope);
-        $scope.is_list_loading = false;
-        BusinessObjectList.load($scope).then(function(){
-            DirtyHack.preventZeroTop(900);
-        });
-        $scope.$broadcast('scroll.refreshComplete');
-    }
-
-    $scope.$on('$ionicView.enter', function() {
-        UxAnalytics.startScreen('tab-post-detail');
+        UxAnalytics.startScreen($scope.config.view);
         SlideHeader.viewEntered($scope);
     });
 })
@@ -2398,7 +2404,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, DirtyHack, SearchFilter) {
+.controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, DirtyHack, SearchFilter, $timeout) {
     $scope.search_type = "tag";
     $scope.search_term = $stateParams.searchTerm;
     if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'goal')

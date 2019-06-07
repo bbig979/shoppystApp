@@ -1,0 +1,73 @@
+<ion-view class="post-card-list" id="{{config.view}}" view-title="<snap-title>{{config.title}}</snap-title>">
+    <ion-content scroll-watch ng-class="{
+        'has-blocker-message': blockerMessage.isNeeded()
+    }">
+        <div class="loading-spinner" data-loading ng-if="is_list_loading">
+            <ion-spinner></ion-spinner>
+        </div>
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="refresh()">
+        </ion-refresher>
+        <div class="no-result" ng-if="list.length == 0 && is_result_empty" ng-bind-html="config.no_result_message">
+        </div>
+        <ion-list>
+            <div>
+                <ion-item ng-repeat="post in list track by $index" class="post-card">
+                    <div class="entity-id-{{post.id}}">
+                        <div class="post-card-header clearfix">
+                            <div class="profile">
+                                <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
+                                <div class="profile-text">
+                                    <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}}</div>
+                                    <div class="time-ago" ng-click="goAccount(post.user.slug)">{{post.display_time}}</div>
+                                </div>
+                            </div>
+                            <div class="more-option">
+                                <span class="icon ion-ios-more" ng-click="postCard.moreOption(list, $index)"></span>
+                            </div>
+                        </div>
+                        <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
+                        <ion-slide-box class="photo-list" show-pager="false">
+                            <ion-slide ng-repeat="photo in post.photos">
+                                <div class="photo">
+                                    <div class="photo-counter">
+                                        {{ $index + 1 }}/{{ post.photos.length }}
+                                    </div>
+                                    <div class="photo-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})" ng-click="goPhotoDetail(photo)">
+                                        <a class="photo-img"></a>
+                                    </div>
+                                    <div class="vote-toggle">
+                                        <div class="source-link icon ion-link" ng-click="openInAppBrowser(photo.source_url)" ng-show="photo.source_url"></div>
+                                        <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
+                                    </div>
+                                </div>
+                            </ion-slide>
+                        </ion-slide-box>
+                        <div class="post-summary clearfix">
+                            <div class="totals">
+                                {{ post.photos.length }} Outfits{{ postCard.commentCount(post) }}{{ postCard.voteCount(post) }}
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="post-card-footer clearfix">
+                            <div class="option comment">
+                                <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="goPostComment(post)">&nbsp;&nbsp;Comment</button>
+                            </div>
+                            <div class="option result">
+                                <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post.id)">&nbsp;&nbsp;Result</button>
+                            </div>
+                            <div class="option share">
+                                <button class="button button-clear button-dark icon ion-ios-redo-outline" ng-click="postCard.share(post)">&nbsp;&nbsp;Share</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                </ion-item>
+            </div>
+        </ion-list>
+        <div class="load-more-snaplooks ng-hide" ng-show="list.length > 0 && ! is_pagination_done">
+            <button class="button button-block button-positive" ng-click="load()">Load More Outfit Ideas</button>
+        </div>
+    </ion-content>
+</ion-view>
