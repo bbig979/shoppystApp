@@ -28,6 +28,54 @@ a{
   padding: 20px 0;
   text-align: center;
 }
+.search-bar{
+  position: fixed;
+  top: 44px;
+  padding: 0 4vw !important;
+  .item-input-inset{
+      width: 85vw;
+      padding-left: 0;
+      padding-right: 0;
+      input[type="search"]{
+          width: 100%;
+      }
+  }
+  .filter-button{
+    width: 15vw;
+    padding-top: 4px;
+    font-size: 10px;
+    background-color: #fff;
+    color: #ccc;
+    &:before{
+        margin: 0;
+    }
+    &.filter-on{
+        color: $primary-color;
+    }
+    .fa-chevron-down, .fa-chevron-up{
+        font-size: 10px;
+    }
+  }
+}
+.button-bar-wrapper{
+  margin: 4vw;
+  .button-small{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: #ccc;
+    font-weight: bold;
+    &:nth-child(1){
+      border-right: 0 !important;
+    }
+    &:nth-child(2){
+      border-left-color: $primary-color;
+    }
+    &.active{
+      border: 1px solid $primary-color;
+      color: $primary-color;
+    }
+  }
+}
 .update-notification{
   text-align: center;
   padding: 10px;
@@ -318,17 +366,17 @@ a{
     text-align: center;
     padding: 10px 0 0 0;
 }
-#tab-explore .has-blocker-message + .search-bar {
+.has-blocker-message + .search-bar {
     top: 84px;
 }
 .platform-ios {
     #new-post-wrapper{
         top: 92px;
     }
-    #tab-explore .search-bar {
+    .search-bar {
         top: 64px;
     }
-    #tab-explore .has-blocker-message + .search-bar {
+    .has-blocker-message + .search-bar {
         top: 104px;
     }
     #blocker-message{
@@ -348,7 +396,7 @@ a{
         #blocker-message{
             top: 20px;
         }
-        #tab-explore .has-blocker-message + .search-bar {
+        .has-blocker-message + .search-bar {
             top: 60px;
         }
         form[name=commentForm]{
@@ -370,6 +418,12 @@ a{
         top: 60px;
     }
 }
+
+.platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader){
+    .item-input-inset, .filter-button{
+        margin-top: 0px !important;
+    }
+}
 .platform-android #tab-explore .scroll-refresher{
     margin-top: 44px;
 }
@@ -384,16 +438,17 @@ a{
 
 body.header-slide-away {
     .slide-header {
-        top: -44px;
-        .back-button{
-            top: -100px;
-        }
+        display: none;
     }
     .title{
         display: none;
     }
     #blocker-message{
         top: 0;
+    }
+    .search-bar{
+        //transition: top 0.25s ease;
+        display: none;
     }
 }
 

@@ -1474,13 +1474,19 @@ angular.module('starter.services', [])
                 visible: false,
                 age: 'all',
                 gender: 'all',
+                partner: true,
             };
         },
         set: function(key, val){
             _filter_info[ this._getSearchId() ][key] = val;
         },
         get: function(key) {
-            return _filter_info[ this._getSearchId() ][key];
+            // problem : This keep gets called and throws error
+            // cuase : We are using $stateParams in this module, so every time it changes this gets called
+            // solution : Protect logic with validating existence
+            if(_filter_info[ this._getSearchId() ]){
+                return _filter_info[ this._getSearchId() ][key];
+            }
         },
         getAllInfo: function(){
             return _filter_info[ this._getSearchId() ];

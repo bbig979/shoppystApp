@@ -1,8 +1,4 @@
 #tab-explore{
-  .search-bar{
-    position: fixed;
-    top: 44px;
-  }
   .search-header{
     h3{
       color: #555;
@@ -25,12 +21,7 @@
   .list{
       margin-top: 45px;
   }
-}
-body.header-slide-away {
-    #tab-explore{
-        .search-bar{
-            //transition: top 0.25s ease;
-            top: -44px;
-        }
-    }
+  .post-card:nth-child(1){
+      border-top: 0;
+  }
 }

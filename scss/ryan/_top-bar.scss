@@ -24,18 +24,6 @@
 .bar .button.button-clear.ion-refresh::before{
     font-size:23px;
 }
-.bar .button.fa-filter{
-    background-color: #fff;
-}
-.bar .button.fa-filter.filter-on{
-    color: $primary-color;
-}
-.bar .fa-filter .fa-chevron-down, .bar .fa-filter .fa-chevron-up{
-    font-size: 10px;
-}
-.header-slide-away .bar .button.fa-filter{
-    display: none;
-}
 .platform-android .nav-bar-has-subheader .bar.bar-stable{
   background-color: $primary-color;
   background: -webkit-linear-gradient(left, #FF1D5C , #FFC772); /* For Safari 5.1 to 6.0 */

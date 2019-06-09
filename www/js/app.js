@@ -374,6 +374,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                templateUrl: 'templates/tab-explore.html',
                controller: 'PostExploreCtrl'
            }
+       },
+       // problem : SearchFilter saves state with type and searchTerm of $stateparams
+       // cuase : Tried alternate ways to uniquely identify current view, but failed
+       // solution : Add dummy $stateparams for explore
+       params: {
+         type: 'explore',
+         searchTerm: 'explore',
        }
     })
     .state('tab.explore-notification', {
@@ -395,9 +402,54 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.search-explore', {
-       url: '/search/',
+       url: '/search/explore',
        views: {
            'tab-explore': {
+               templateUrl: 'templates/post-search.html',
+               controller: 'PostSearchCtrl'
+           }
+       }
+    })
+    .state('tab.search-home', {
+       url: '/search/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/post-search.html',
+               controller: 'PostSearchCtrl'
+           }
+       }
+    })
+    .state('tab.search-camera', {
+       url: '/search/camera',
+       views: {
+           'tab-camera': {
+               templateUrl: 'templates/post-search.html',
+               controller: 'PostSearchCtrl'
+           }
+       }
+    })
+    .state('tab.search-notification', {
+       url: '/search/notification',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/post-search.html',
+               controller: 'PostSearchCtrl'
+           }
+       }
+    })
+    .state('tab.search-account', {
+       url: '/search/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/post-search.html',
+               controller: 'PostSearchCtrl'
+           }
+       }
+    })
+    .state('tab.search-hidden', {
+       url: '/search/hidden',
+       views: {
+           'tab-hidden': {
                templateUrl: 'templates/post-search.html',
                controller: 'PostSearchCtrl'
            }

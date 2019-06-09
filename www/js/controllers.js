@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, SearchFilter, DeepLink) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     $rootScope.baseURL = 'https://app.snaplook.today';
@@ -17,7 +17,6 @@ angular.module('starter.controllers', [])
     $rootScope.notificationCount = "0";
     $rootScope.blockerMessage = BlockerMessage;
     $rootScope.slideHeader = SlideHeader;
-    $rootScope.searchFilter = SearchFilter;
     $rootScope.notificationPullInterval = 60000;
     Config.init().then(function(){
         $rootScope.config = Config;
@@ -122,6 +121,10 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.vote-result-'+tab,{postId: post_id});
     };
+    $rootScope.goPostSearch = function(){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.search-'+tab);
+    }
     $rootScope.goPostLikers = function(id){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-likers-'+tab,{postId: id});
@@ -305,9 +308,6 @@ angular.module('starter.controllers', [])
     };
     $rootScope.ifShowSend = function(){
         return $stateParams.shouldShowSend == 'true';
-    };
-    $rootScope.ifSearchResult = function(){
-        return $stateParams.searchTerm !== undefined;
     };
     $rootScope.getMaxStat = function(stat, index) {
         if (stat === undefined || stat.length == 0)
@@ -2178,7 +2178,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state, $timeout, DirtyHack) {
+.controller('PostExploreCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state, $timeout, DirtyHack, SearchFilter) {
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email || user.username == ''){
         $state.go('register2').then(function(){
@@ -2195,22 +2195,35 @@ angular.module('starter.controllers', [])
         method : 'explore',
         preload : true
     };
+    $scope.searchFilter = SearchFilter;
+    SearchFilter.init();
 
     BusinessObjectList.reset($scope);
     BusinessObjectList.load($scope).then(function(){
         DirtyHack.preventZeroTop();
     });
 
-    $scope.refresh = function(){
+    $scope.filter = function(key, val){
+        SearchFilter.set(key, val);
+        $scope.search_filter = SearchFilter.getAllInfo();
+        $scope.refresh(false);
+    }
+
+    $scope.refresh = function(is_pull_to_refresh = true){
         BusinessObjectList.reset($scope);
-        $scope.is_list_loading = false;
+        if(is_pull_to_refresh){
+            $scope.is_list_loading = false;
+        }
         BusinessObjectList.load($scope).then(function(){
-            DirtyHack.preventZeroTop(900);
+            if(is_pull_to_refresh){
+                DirtyHack.preventZeroTop(900);
+            }
         });
         $scope.$broadcast('scroll.refreshComplete');
     }
 
     $scope.load = function(){
+        SearchFilter.set('visible', false);
         $ionicScrollDelegate.scrollTo(0, 1, false);
         $scope.list = [];
         $scope.is_list_loading = true;
@@ -2225,10 +2238,6 @@ angular.module('starter.controllers', [])
         UxAnalytics.startScreen('tab-explore');
         SlideHeader.viewEntered($scope);
     });
-
-    $scope.goPostSearch = function(){
-        $state.go('tab.search-explore');
-    }
 })
 
 .controller('PostSearchCtrl', function($scope, $stateParams, $state, Focus, $rootScope, $timeout, $http, $ionicScrollDelegate, ScrollingDetector, UxAnalytics, FetchSearchResult, Config, SlideHeader) {
@@ -2417,8 +2426,9 @@ angular.module('starter.controllers', [])
         method : 'search',
         preload : true
     };
-
+    $scope.searchFilter = SearchFilter;
     SearchFilter.init();
+
     BusinessObjectList.reset($scope);
     BusinessObjectList.load($scope).then(function(){
         DirtyHack.preventZeroTop();
@@ -2475,6 +2485,7 @@ angular.module('starter.controllers', [])
 .controller('TabCtrl', function($scope, $rootScope, $state, $ionicTabsDelegate, $ionicScrollDelegate, $ionicHistory) {
     $scope.tabClicked = function(clicked_tab_id){
         var current_tab_id = $ionicTabsDelegate.selectedIndex();
+
         if(current_tab_id == clicked_tab_id){
             var history_info = $ionicHistory.viewHistory();
             if(history_info.currentView.index == 0){
