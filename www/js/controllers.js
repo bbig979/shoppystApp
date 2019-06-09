@@ -1900,7 +1900,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PostCardListCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, DirtyHack, $stateParams, $timeout) {
+.controller('PostCardListCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, $timeout) {
     var method = $stateParams.method;
     var config_map = {
         'single_post' : {
@@ -1935,16 +1935,12 @@ angular.module('starter.controllers', [])
     }
 
     BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope).then(function(){
-        DirtyHack.preventZeroTop();
-    });
+    BusinessObjectList.load($scope);
 
     $scope.refresh = function(){
         BusinessObjectList.reset($scope);
         $scope.is_list_loading = false;
-        BusinessObjectList.load($scope).then(function(){
-            DirtyHack.preventZeroTop(900);
-        });
+        BusinessObjectList.load($scope);
         $scope.$broadcast('scroll.refreshComplete');
     }
 
@@ -1960,9 +1956,7 @@ angular.module('starter.controllers', [])
             }, 10);
         }
         else{
-            BusinessObjectList.load($scope).then(function(){
-                DirtyHack.preventZeroTop();
-            });
+            BusinessObjectList.load($scope);
         }
     }
 
@@ -2178,7 +2172,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostExploreCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state, $timeout, DirtyHack, SearchFilter) {
+.controller('PostExploreCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $state, $timeout, SearchFilter) {
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email || user.username == ''){
         $state.go('register2').then(function(){
@@ -2199,9 +2193,7 @@ angular.module('starter.controllers', [])
     SearchFilter.init();
 
     BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope).then(function(){
-        DirtyHack.preventZeroTop();
-    });
+    BusinessObjectList.load($scope);
 
     $scope.filter = function(key, val){
         SearchFilter.set(key, val);
@@ -2214,11 +2206,7 @@ angular.module('starter.controllers', [])
         if(is_pull_to_refresh){
             $scope.is_list_loading = false;
         }
-        BusinessObjectList.load($scope).then(function(){
-            if(is_pull_to_refresh){
-                DirtyHack.preventZeroTop(900);
-            }
-        });
+        BusinessObjectList.load($scope);
         $scope.$broadcast('scroll.refreshComplete');
     }
 
@@ -2413,7 +2401,7 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, DirtyHack, SearchFilter, $timeout) {
+.controller('PostSearchResultCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, SearchFilter, $timeout) {
     $scope.search_type = "tag";
     $scope.search_term = $stateParams.searchTerm;
     if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'goal')
@@ -2430,9 +2418,7 @@ angular.module('starter.controllers', [])
     SearchFilter.init();
 
     BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope).then(function(){
-        DirtyHack.preventZeroTop();
-    });
+    BusinessObjectList.load($scope);
 
     $scope.filter = function(key, val){
         SearchFilter.set(key, val);
@@ -2445,11 +2431,7 @@ angular.module('starter.controllers', [])
         if(is_pull_to_refresh){
             $scope.is_list_loading = false;
         }
-        BusinessObjectList.load($scope).then(function(){
-            if(is_pull_to_refresh){
-                DirtyHack.preventZeroTop(900);
-            }
-        });
+        BusinessObjectList.load($scope);
         $scope.$broadcast('scroll.refreshComplete');
     }
 
@@ -2567,7 +2549,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, UxAnalytics, ImageUpload, PostCard, BusinessObjectList, SlideHeader, $ionicScrollDelegate, DirtyHack) {
+.controller('AccountCtrl', function($scope, $stateParams, FetchUsers, FetchPosts, $http, $state, $rootScope, $ionicActionSheet, $cordovaCamera, $cordovaFile, $ionicLoading, $timeout, UxAnalytics, ImageUpload, PostCard, BusinessObjectList, SlideHeader, $ionicScrollDelegate) {
     var user = $rootScope.getCurrentUser();
 
     var method = 'my_profile';
@@ -2598,9 +2580,7 @@ angular.module('starter.controllers', [])
 
     fetchAccount();
     BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope).then(function(){
-        DirtyHack.preventZeroTop();
-    });
+    BusinessObjectList.load($scope);
 
     if($stateParams.refresh){
         var repeatUntillScrolled = setInterval(function(){
@@ -2615,9 +2595,7 @@ angular.module('starter.controllers', [])
         fetchAccount();
         BusinessObjectList.reset($scope);
         $scope.is_list_loading = false;
-        BusinessObjectList.load($scope).then(function(){
-            DirtyHack.preventZeroTop(900);
-        });
+        BusinessObjectList.load($scope);
         $scope.$broadcast('scroll.refreshComplete');
     }
 

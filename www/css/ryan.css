@@ -3961,29 +3961,32 @@ a {
 /* line 60, ../../scss/ryan/_global.scss */
 .button-bar-wrapper {
   margin: 4vw;
+  margin-bottom: 5px;
+  margin-top: 14px;
 }
-/* line 62, ../../scss/ryan/_global.scss */
+/* line 64, ../../scss/ryan/_global.scss */
 .button-bar-wrapper .button-small {
   background-color: #fff;
   border: 1px solid #ccc;
   color: #ccc;
   font-weight: bold;
+  padding-top: 1px;
 }
-/* line 67, ../../scss/ryan/_global.scss */
+/* line 70, ../../scss/ryan/_global.scss */
 .button-bar-wrapper .button-small:nth-child(1) {
   border-right: 0 !important;
 }
-/* line 70, ../../scss/ryan/_global.scss */
+/* line 73, ../../scss/ryan/_global.scss */
 .button-bar-wrapper .button-small:nth-child(2) {
   border-left-color: #5CC196;
 }
-/* line 73, ../../scss/ryan/_global.scss */
+/* line 76, ../../scss/ryan/_global.scss */
 .button-bar-wrapper .button-small.active {
   border: 1px solid #5CC196;
   color: #5CC196;
 }
 
-/* line 79, ../../scss/ryan/_global.scss */
+/* line 82, ../../scss/ryan/_global.scss */
 .update-notification {
   text-align: center;
   padding: 10px;
@@ -3993,21 +3996,21 @@ a {
   border: 1px solid #FFBF00;
 }
 
-/* line 87, ../../scss/ryan/_global.scss */
+/* line 90, ../../scss/ryan/_global.scss */
 #notification-icon:before {
   font-size: 28px;
 }
 
-/* line 90, ../../scss/ryan/_global.scss */
+/* line 93, ../../scss/ryan/_global.scss */
 .bar-header {
   border-bottom-width: 0px;
 }
-/* line 91, ../../scss/ryan/_global.scss */
+/* line 94, ../../scss/ryan/_global.scss */
 .bar-header i {
   font-size: 17px;
 }
 
-/* line 96, ../../scss/ryan/_global.scss */
+/* line 99, ../../scss/ryan/_global.scss */
 .bar {
   border-top: 0px solid transparent;
   border-bottom: 0px solid #ddd;
@@ -4015,48 +4018,48 @@ a {
   padding-right: 10px;
 }
 
-/* line 102, ../../scss/ryan/_global.scss */
+/* line 105, ../../scss/ryan/_global.scss */
 .button.button-positive {
   background-color: #5CC196;
 }
 
-/* line 105, ../../scss/ryan/_global.scss */
+/* line 108, ../../scss/ryan/_global.scss */
 .button.button-positive.activated {
   background-color: #5CC196;
 }
 
-/* line 108, ../../scss/ryan/_global.scss */
+/* line 111, ../../scss/ryan/_global.scss */
 .button.button-stable {
   border: 1px solid #ddd;
 }
 
 @media (min--moz-device-pixel-ratio: 1.5), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
-  /* line 112, ../../scss/ryan/_global.scss */
+  /* line 115, ../../scss/ryan/_global.scss */
   .bar, .tabs {
     background-size: 100% 0px;
   }
 }
-/* line 116, ../../scss/ryan/_global.scss */
+/* line 119, ../../scss/ryan/_global.scss */
 .no-result {
   padding: 60px;
   text-align: center;
   color: #555;
 }
 
-/* line 121, ../../scss/ryan/_global.scss */
+/* line 124, ../../scss/ryan/_global.scss */
 .popup-container .popup {
   border-radius: 3px;
 }
-/* line 122, ../../scss/ryan/_global.scss */
+/* line 125, ../../scss/ryan/_global.scss */
 .popup-container .popup .popup-head {
   border-bottom: 0;
 }
-/* line 125, ../../scss/ryan/_global.scss */
+/* line 128, ../../scss/ryan/_global.scss */
 .popup-container .popup .popup-body {
   text-align: center;
 }
 
-/* line 130, ../../scss/ryan/_global.scss */
+/* line 133, ../../scss/ryan/_global.scss */
 .username.unique::after {
   color: red;
   font-size: 13px;
@@ -4066,7 +4069,7 @@ a {
   padding-right: 15px;
 }
 
-/* line 138, ../../scss/ryan/_global.scss */
+/* line 141, ../../scss/ryan/_global.scss */
 .username.required::after {
   color: red;
   font-size: 13px;
@@ -4076,7 +4079,7 @@ a {
   padding-right: 15px;
 }
 
-/* line 146, ../../scss/ryan/_global.scss */
+/* line 149, ../../scss/ryan/_global.scss */
 .username.regex::after {
   color: red;
   font-size: 13px;
@@ -4086,7 +4089,7 @@ a {
   padding-right: 15px;
 }
 
-/* line 154, ../../scss/ryan/_global.scss */
+/* line 157, ../../scss/ryan/_global.scss */
 .username.success::after {
   color: green;
   font-size: 13px;
@@ -4096,7 +4099,7 @@ a {
   padding-right: 15px;
 }
 
-/* line 162, ../../scss/ryan/_global.scss */
+/* line 165, ../../scss/ryan/_global.scss */
 #blocker-message {
   position: fixed;
   top: 44px;
@@ -4111,7 +4114,7 @@ a {
   text-align: center;
 }
 
-/* line 175, ../../scss/ryan/_global.scss */
+/* line 178, ../../scss/ryan/_global.scss */
 #not-shared {
   width: 100%;
   background-color: #FFF9C7;
@@ -4123,12 +4126,12 @@ a {
   text-align: center;
 }
 
-/* line 185, ../../scss/ryan/_global.scss */
+/* line 188, ../../scss/ryan/_global.scss */
 .has-blocker-message.has-header {
   top: 40px;
 }
 
-/* line 189, ../../scss/ryan/_global.scss */
+/* line 192, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-modal {
   z-index: 12;
   position: fixed;
@@ -4136,19 +4139,19 @@ a {
   width: 90vw;
   top: 60vw;
 }
-/* line 190, ../../scss/ryan/_global.scss */
+/* line 193, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-modal #tutorial-title {
   color: #7adc64;
   font-size: 8vw;
   padding-bottom: 5vw;
 }
-/* line 195, ../../scss/ryan/_global.scss */
+/* line 198, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-modal #tutorial-message {
   color: white;
   font-size: 5vw;
   line-height: 8vw;
 }
-/* line 200, ../../scss/ryan/_global.scss */
+/* line 203, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-modal #tutorial-ok {
   float: right;
   color: white;
@@ -4159,7 +4162,7 @@ a {
   margin-top: 10vw;
   font-weight: bold;
 }
-/* line 216, ../../scss/ryan/_global.scss */
+/* line 219, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain {
   position: fixed;
   top: 0;
@@ -4169,11 +4172,11 @@ a {
   height: 100%;
   opacity: 0.7;
 }
-/* line 225, ../../scss/ryan/_global.scss */
+/* line 228, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.non-highlight {
   background-color: #000;
 }
-/* line 228, ../../scss/ryan/_global.scss */
+/* line 231, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight:after {
   content: '';
   position: absolute;
@@ -4182,43 +4185,43 @@ a {
   height: 40px;
   box-shadow: 0px 0px 100px 5000px #000;
 }
-/* line 236, ../../scss/ryan/_global.scss */
+/* line 239, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.bottom:after {
   bottom: 4px;
 }
-/* line 239, ../../scss/ryan/_global.scss */
+/* line 242, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.top:after {
   top: 2px;
 }
-/* line 242, ../../scss/ryan/_global.scss */
+/* line 245, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.left-most.bottom:after {
   left: 4vw;
 }
-/* line 245, ../../scss/ryan/_global.scss */
+/* line 248, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.left-center.bottom:after {
   left: 24vw;
 }
-/* line 248, ../../scss/ryan/_global.scss */
+/* line 251, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.center.bottom:after {
   left: 44vw;
 }
-/* line 251, ../../scss/ryan/_global.scss */
+/* line 254, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.right-center.bottom:after {
   right: 24vw;
 }
-/* line 254, ../../scss/ryan/_global.scss */
+/* line 257, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.right-most.bottom:after {
   right: 4vw;
 }
-/* line 257, ../../scss/ryan/_global.scss */
+/* line 260, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.left-most.top:after {
   left: 0;
 }
-/* line 260, ../../scss/ryan/_global.scss */
+/* line 263, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.right-most.top:after {
   right: 0;
 }
-/* line 263, ../../scss/ryan/_global.scss */
+/* line 266, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.compare-look-sort:after {
   right: -10vw;
   top: 30px;
@@ -4229,27 +4232,27 @@ a {
   height: 115px;
   box-shadow: 0px 0px 100px 5000px #000;
 }
-/* line 273, ../../scss/ryan/_global.scss */
+/* line 276, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-curtain.highlight.first-share-compare:after {
   top: calc(375px + 50vw);
   right: 10px;
 }
-/* line 277, ../../scss/ryan/_global.scss */
+/* line 280, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker {
   color: white;
   z-index: 11;
   position: fixed;
   font-size: 20vw;
 }
-/* line 283, ../../scss/ryan/_global.scss */
+/* line 286, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.bottom {
   bottom: 65px;
 }
-/* line 286, ../../scss/ryan/_global.scss */
+/* line 289, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.top {
   top: 55px;
 }
-/* line 289, ../../scss/ryan/_global.scss */
+/* line 292, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.left-most.bottom {
   -webkit-transform: rotate(-23deg);
   -moz-transform: rotate(-23deg);
@@ -4258,7 +4261,7 @@ a {
   transform: rotate(-23deg);
   left: 4vw;
 }
-/* line 293, ../../scss/ryan/_global.scss */
+/* line 296, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.left-center.bottom {
   -webkit-transform: rotate(-25deg);
   -moz-transform: rotate(-25deg);
@@ -4267,7 +4270,7 @@ a {
   transform: rotate(-25deg);
   left: 23vw;
 }
-/* line 297, ../../scss/ryan/_global.scss */
+/* line 300, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.center.bottom {
   -webkit-transform: rotate(-32deg);
   -moz-transform: rotate(-32deg);
@@ -4276,11 +4279,11 @@ a {
   transform: rotate(-32deg);
   left: 41vw;
 }
-/* line 301, ../../scss/ryan/_global.scss */
+/* line 304, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.center.top {
   left: 41vw;
 }
-/* line 304, ../../scss/ryan/_global.scss */
+/* line 307, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.right-center.bottom {
   -webkit-transform: rotate(276deg);
   -moz-transform: rotate(276deg);
@@ -4289,7 +4292,7 @@ a {
   transform: rotate(276deg);
   right: 28vw;
 }
-/* line 308, ../../scss/ryan/_global.scss */
+/* line 311, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.right-most.bottom {
   -webkit-transform: rotate(276deg);
   -moz-transform: rotate(276deg);
@@ -4298,7 +4301,7 @@ a {
   transform: rotate(276deg);
   right: 10vw;
 }
-/* line 312, ../../scss/ryan/_global.scss */
+/* line 315, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.left-most.top {
   -webkit-transform: rotate(96deg);
   -moz-transform: rotate(96deg);
@@ -4307,7 +4310,7 @@ a {
   transform: rotate(96deg);
   left: 6vw;
 }
-/* line 316, ../../scss/ryan/_global.scss */
+/* line 319, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.right-most.top {
   -webkit-transform: rotate(171deg);
   -moz-transform: rotate(171deg);
@@ -4316,7 +4319,7 @@ a {
   transform: rotate(171deg);
   right: 6vw;
 }
-/* line 320, ../../scss/ryan/_global.scss */
+/* line 323, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-marker.first-share-compare {
   -webkit-transform: rotate(270deg);
   -moz-transform: rotate(270deg);
@@ -4326,7 +4329,7 @@ a {
   top: calc(280px + 50vw);
   right: 35px;
 }
-/* line 325, ../../scss/ryan/_global.scss */
+/* line 328, ../../scss/ryan/_global.scss */
 #tutorial-wrapper #tutorial-go-back {
   position: fixed;
   top: 10px;
@@ -4336,24 +4339,24 @@ a {
   font-size: 25px;
 }
 
-/* line 336, ../../scss/ryan/_global.scss */
+/* line 339, ../../scss/ryan/_global.scss */
 .platform-ios #tutorial-wrapper #tutorial-go-back {
   top: 30px;
 }
-/* line 339, ../../scss/ryan/_global.scss */
+/* line 342, ../../scss/ryan/_global.scss */
 .platform-ios #tutorial-wrapper #tutorial-marker.top {
   top: 75px;
 }
-/* line 342, ../../scss/ryan/_global.scss */
+/* line 345, ../../scss/ryan/_global.scss */
 .platform-ios #tutorial-wrapper #tutorial-curtain.highlight.top:after {
   top: 22px;
 }
-/* line 345, ../../scss/ryan/_global.scss */
+/* line 348, ../../scss/ryan/_global.scss */
 .platform-ios #tutorial-wrapper #tutorial-curtain.highlight.compare-look-sort:after {
   top: 50px;
 }
 
-/* line 350, ../../scss/ryan/_global.scss */
+/* line 353, ../../scss/ryan/_global.scss */
 #new-post-wrapper {
   position: fixed;
   top: 72px;
@@ -4361,7 +4364,7 @@ a {
   text-align: center;
   width: 100%;
 }
-/* line 351, ../../scss/ryan/_global.scss */
+/* line 354, ../../scss/ryan/_global.scss */
 #new-post-wrapper #new-post-button {
   display: inline-block;
   padding: 5px 10px;
@@ -4377,115 +4380,115 @@ a {
   box-shadow: 1px 1px 5px #333;
 }
 
-/* line 365, ../../scss/ryan/_global.scss */
+/* line 368, ../../scss/ryan/_global.scss */
 #new-post-loading-spinner {
   text-align: center;
   padding: 10px 0 0 0;
 }
 
-/* line 369, ../../scss/ryan/_global.scss */
+/* line 372, ../../scss/ryan/_global.scss */
 .has-blocker-message + .search-bar {
   top: 84px;
 }
 
-/* line 373, ../../scss/ryan/_global.scss */
+/* line 376, ../../scss/ryan/_global.scss */
 .platform-ios #new-post-wrapper {
   top: 92px;
 }
-/* line 376, ../../scss/ryan/_global.scss */
+/* line 379, ../../scss/ryan/_global.scss */
 .platform-ios .search-bar {
   top: 64px;
 }
-/* line 379, ../../scss/ryan/_global.scss */
+/* line 382, ../../scss/ryan/_global.scss */
 .platform-ios .has-blocker-message + .search-bar {
   top: 104px;
 }
-/* line 382, ../../scss/ryan/_global.scss */
+/* line 385, ../../scss/ryan/_global.scss */
 .platform-ios #blocker-message {
   top: 64px;
 }
-/* line 386, ../../scss/ryan/_global.scss */
+/* line 389, ../../scss/ryan/_global.scss */
 .platform-ios.keyboard-open form[name=commentForm] {
   bottom: unset;
   top: 64px;
 }
-/* line 390, ../../scss/ryan/_global.scss */
+/* line 393, ../../scss/ryan/_global.scss */
 .platform-ios.keyboard-open .has-blocker-message + form[name=commentForm] {
   bottom: unset;
   top: 104px;
 }
-/* line 396, ../../scss/ryan/_global.scss */
+/* line 399, ../../scss/ryan/_global.scss */
 .platform-ios.header-slide-away #blocker-message {
   top: 20px;
 }
-/* line 399, ../../scss/ryan/_global.scss */
+/* line 402, ../../scss/ryan/_global.scss */
 .platform-ios.header-slide-away .has-blocker-message + .search-bar {
   top: 60px;
 }
-/* line 402, ../../scss/ryan/_global.scss */
+/* line 405, ../../scss/ryan/_global.scss */
 .platform-ios.header-slide-away form[name=commentForm] {
   bottom: unset;
   top: 20px;
 }
-/* line 406, ../../scss/ryan/_global.scss */
+/* line 409, ../../scss/ryan/_global.scss */
 .platform-ios.header-slide-away .has-blocker-message + form[name=commentForm] {
   bottom: unset;
   top: 60px;
 }
 
-/* line 412, ../../scss/ryan/_global.scss */
+/* line 415, ../../scss/ryan/_global.scss */
 .platform-ios.platform-cordova:not(.fullscreen) .bar-header.search-bar {
   height: 44px;
 }
 
-/* line 415, ../../scss/ryan/_global.scss */
+/* line 418, ../../scss/ryan/_global.scss */
 .platform-ios.platform-cordova:not(.fullscreen) .has-header {
   top: 20px;
 }
-/* line 417, ../../scss/ryan/_global.scss */
+/* line 420, ../../scss/ryan/_global.scss */
 .platform-ios.platform-cordova:not(.fullscreen) .has-header.has-blocker-message {
   top: 60px;
 }
 
-/* line 423, ../../scss/ryan/_global.scss */
+/* line 426, ../../scss/ryan/_global.scss */
 .platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) .item-input-inset, .platform-ios.platform-cordova:not(.fullscreen) .bar-header:not(.bar-subheader) .filter-button {
   margin-top: 0px !important;
 }
 
-/* line 427, ../../scss/ryan/_global.scss */
+/* line 430, ../../scss/ryan/_global.scss */
 .platform-android #tab-explore .scroll-refresher {
   margin-top: 44px;
 }
 
-/* line 430, ../../scss/ryan/_global.scss */
+/* line 433, ../../scss/ryan/_global.scss */
 .slide-header {
   top: 0;
 }
 
-/* line 434, ../../scss/ryan/_global.scss */
+/* line 437, ../../scss/ryan/_global.scss */
 .has-header {
   top: 0;
   padding-top: 44px;
 }
 
-/* line 440, ../../scss/ryan/_global.scss */
+/* line 443, ../../scss/ryan/_global.scss */
 body.header-slide-away .slide-header {
   display: none;
 }
-/* line 443, ../../scss/ryan/_global.scss */
+/* line 446, ../../scss/ryan/_global.scss */
 body.header-slide-away .title {
   display: none;
 }
-/* line 446, ../../scss/ryan/_global.scss */
+/* line 449, ../../scss/ryan/_global.scss */
 body.header-slide-away #blocker-message {
   top: 0;
 }
-/* line 449, ../../scss/ryan/_global.scss */
+/* line 452, ../../scss/ryan/_global.scss */
 body.header-slide-away .search-bar {
   display: none;
 }
 
-/* line 459, ../../scss/ryan/_global.scss */
+/* line 462, ../../scss/ryan/_global.scss */
 .platform-ios .slide-header {
   margin-top: calc(constant(safe-area-inset-bottom) * 0.7);
   /* iOS 11.0 */
@@ -4493,7 +4496,7 @@ body.header-slide-away .search-bar {
   /* iOS 11.2 */
 }
 
-/* line 463, ../../scss/ryan/_global.scss */
+/* line 466, ../../scss/ryan/_global.scss */
 body.platform-ios {
   margin-top: calc(constant(safe-area-inset-bottom) * 0.7);
   /* iOS 11.0 */
@@ -4501,7 +4504,7 @@ body.platform-ios {
   /* iOS 11.2 */
 }
 
-/* line 467, ../../scss/ryan/_global.scss */
+/* line 470, ../../scss/ryan/_global.scss */
 .platform-ios .tab-nav.tabs {
   bottom: calc(constant(safe-area-inset-bottom) * 1.3);
   /* iOS 11.0 */

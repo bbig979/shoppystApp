@@ -59,11 +59,14 @@ a{
 }
 .button-bar-wrapper{
   margin: 4vw;
+  margin-bottom: 5px;
+  margin-top: 14px;
   .button-small{
     background-color: #fff;
     border: 1px solid #ccc;
     color: #ccc;
     font-weight: bold;
+    padding-top: 1px;
     &:nth-child(1){
       border-right: 0 !important;
     }
