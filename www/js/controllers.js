@@ -2464,45 +2464,65 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('TabCtrl', function($scope, $rootScope, $state, $ionicTabsDelegate, $ionicScrollDelegate, $ionicHistory) {
+.controller('TabCtrl', function($timeout, $scope, $rootScope, $state, $ionicTabsDelegate, $ionicScrollDelegate, $ionicHistory) {
+    var history_id_map = {};
+    function navigateToHistoryStack(history_id, position){
+       // get the right history stack based on the current view
+       var history = $ionicHistory.viewHistory().histories[history_id];
+       var target_view = null;
+       if(position == 'first'){
+           target_view = history.stack[0];
+           history.stack.splice(1,history.stack.length)
+       }
+       else if(position == 'last'){
+           target_view = history.stack[history.stack.length - 1];
+       }
+
+       $ionicHistory.backView(target_view);
+       // navigate to it
+       $ionicHistory.goBack();
+    }
     $scope.tabClicked = function(clicked_tab_id){
         var current_tab_id = $ionicTabsDelegate.selectedIndex();
+        var current_history_id = $ionicHistory.currentHistoryId();
+        history_id_map[current_tab_id] = current_history_id;
 
         if(current_tab_id == clicked_tab_id){
             var history_info = $ionicHistory.viewHistory();
             if(history_info.currentView.index == 0){
-                // problem : in android, "horizontal scroll" of first content rarely works
-                // cause : ionic recognize "horizontal scroll" as "pull to refresh"
-                // solution : set vertical position to 1
-                $ionicScrollDelegate.scrollTo(0, 1, true);
+                $ionicScrollDelegate.scrollTo(0, 0, true);
                 return;
             }
-            $ionicHistory.nextViewOptions({
-                disableAnimate: true,
-                disableBack: true,
-                historyRoot: true
-            });
+            navigateToHistoryStack(current_history_id, 'first');
+            return;
         }
 
         var clicked_tab_key = $rootScope.routeTab(clicked_tab_id);
-        switch(clicked_tab_key){
-            case 'explore':
-                $state.go('tab.explore-explore');
-                break;
-            case 'home':
-                $state.go('tab.home');
-                break;
-            case 'camera':
-                $state.go('tab.post-create-step-1');
-                break;
-            case 'notification':
-                $state.go('tab.notification');
-                break;
-            case 'account':
-                $state.go('tab.account-account');
-                break;
-            default:
-                console.log('Error in tab key');
+        var clicked_history_id = history_id_map[clicked_tab_id];
+
+        if(clicked_history_id){
+            navigateToHistoryStack(clicked_history_id, 'last');
+        }
+        else{
+            switch(clicked_tab_key){
+                case 'explore':
+                    $state.go('tab.explore-explore');
+                    break;
+                case 'home':
+                    $state.go('tab.home');
+                    break;
+                case 'camera':
+                    $state.go('tab.post-create-step-1');
+                    break;
+                case 'notification':
+                    $state.go('tab.notification');
+                    break;
+                case 'account':
+                    $state.go('tab.account-account');
+                    break;
+                default:
+                    console.log('Error in tab key');
+            }
         }
     }
 })
