@@ -36,8 +36,11 @@ a{
       width: 85vw;
       padding-left: 0;
       padding-right: 0;
-      input[type="search"]{
-          width: 100%;
+      .item-input-wrapper{
+          background-color: #f7f7f7;
+          input[type="search"]{
+              width: 100%;
+          }
       }
   }
   .filter-button{

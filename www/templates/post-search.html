@@ -7,7 +7,7 @@
                 on-refresh="doRefresh()">
         </ion-refresher>
         <form name="searchForm" ng-submit="submitSearch(searchTerm)">
-            <div class="bar bar-header item-input-inset search-bar">
+            <div class="bar item-input-inset">
                 <label class="item-input-wrapper">
                     <i class="icon ion-ios-search placeholder-icon"></i>
                     <input type="search" id="search" placeholder="{{ showPlaceHolder() }}" ng-model="searchTerm" autocomplete="off" ng-keyup="searchTermTyped(searchTerm, $event)">
