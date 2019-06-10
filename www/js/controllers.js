@@ -2464,7 +2464,7 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('TabCtrl', function($timeout, $scope, $rootScope, $state, $ionicTabsDelegate, $ionicScrollDelegate, $ionicHistory) {
+.controller('TabCtrl', function($scope, $rootScope, $state, $ionicTabsDelegate, $ionicScrollDelegate, $ionicHistory) {
     var history_id_map = {};
     function navigateToHistoryStack(history_id, position){
        // get the right history stack based on the current view
