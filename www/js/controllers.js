@@ -2475,7 +2475,7 @@ angular.module('starter.controllers', [])
            history.stack.splice(1,history.stack.length)
        }
        else if(position == 'last'){
-           target_view = history.stack[history.stack.length - 1];
+           target_view = history.stack[history.cursor];
        }
 
        $ionicHistory.backView(target_view);
@@ -3096,7 +3096,7 @@ angular.module('starter.controllers', [])
         var data = src.split("/");
         if (data[1] == "post")
         {
-            $state.go('tab.post-detail-notification',{postId: data[2]});
+            $state.go('tab.single-post-notification',{post_id: data[2]});
         }
         else if (data[1] == "account")
         {

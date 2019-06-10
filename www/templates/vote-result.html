@@ -30,7 +30,7 @@
         <ion-list>
             <div>
                 <ion-item ng-repeat="photo in photo_array" class="photo item">
-                    <div class="photo_wrapper entity-id-{{::photo.id}}" style="background-image: url({{ ::photoPath( photo.img_path, 'm' ) }})">
+                    <div class="photo_wrapper entity-id-{{::photo.id}}" style="background-image: url({{ ::photoPath( photo.img_path, 'l' ) }})">
                         <a class="post_img"></a>
 
                         <div class="winner icon ion-ios-checkmark-empty" ng-show="photo.id == top_photo_id"></div>

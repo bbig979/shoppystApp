@@ -7,7 +7,7 @@
                 <div class="photo-list">
                     <ion-scroll direction="x" delegate-handle="handle-horizontal">
                         <div ng-repeat="photo in post.photos" class="post">
-                            <div class="post-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'm' ) }})">
+                            <div class="post-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})">
                                 <a class="post-img"></a>
                             </div>
                         </div>
