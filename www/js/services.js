@@ -643,7 +643,6 @@ angular.module('starter.services', [])
             for(var i=0; i<posts.length; i++){
                 var post = posts[i];
                 post.display_time = PostTimer.timeLeft(post.created_at, post.visibility);
-                post.display_time += ' · ' + post.visibility.charAt(0).toUpperCase() + post.visibility.slice(1);
                 post.display_icon = PostTimer.icon(post.created_at);
                 post.display_share = true;
                 if(post.visibility != 'permanent' && post.display_time.indexOf('Left') == -1){
@@ -854,7 +853,7 @@ angular.module('starter.services', [])
 
         if(sec_remains < 0 || visibility == 'permanent'){
             if(sec_remains >= -1 * sec_in_one_week){
-                return moment(created_at + "-00:00").fromNow();
+                return moment(created_at + "-00:00").fromNow() + ' ago';
             }
             return moment(created_at + "-00:00").format('LL');
         }

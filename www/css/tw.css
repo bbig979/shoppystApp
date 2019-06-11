@@ -794,7 +794,7 @@
 /* line 249, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility.private:after {
   bottom: 100%;
-  left: 18%;
+  left: 25%;
 }
 /* line 254, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility.public:after {
@@ -804,7 +804,7 @@
 /* line 259, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility.permanent:after {
   bottom: 100%;
-  left: 82%;
+  left: 75%;
 }
 /* line 264, ../../scss/tw/_post-create.scss */
 #create-post .button-small {

@@ -38,8 +38,7 @@
                 </div>
                 <div class="button-bar">
                     <a class="button button-small" ng-class="{'button-positive': isActive('private')}" ng-click="setActive('private')">Private</a>
-                    <a class="button button-small" ng-class="{'button-positive': isActive('public')}" ng-click="setActive('public')">Public</a>
-                    <a class="button button-small" ng-class="{'button-positive': isActive('permanent')}" ng-click="setActive('permanent')">Permanent</a>
+                    <a class="button button-small" ng-class="{'button-positive': isActive('permanent')}" ng-click="setActive('permanent')">Public</a>
                 </div>
                 <div class="selected-visibility private" ng-class="visibility == 'private' ? 'ng-show' : 'ng-hide'">
                     <div class="compare-table">
@@ -56,23 +55,6 @@
                     <hr>
                     <div class="recommendation">
                         Keep it Private and Send to Friends!
-                    </div>
-                </div>
-                <div class="selected-visibility public" ng-class="visibility == 'public' ? 'ng-show' : 'ng-hide'">
-                    <div class="compare-table">
-                        <div class="compare-row">
-                            <span class="label">Share With Public</span>
-                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
-                        </div>
-                        <div class="compare-row">
-                            <span class="label">24 Hours Only</span>
-                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <hr>
-                    <div class="recommendation">
-                        Share with Everyone for 24 Hours!
                     </div>
                 </div>
                 <div class="selected-visibility permanent" ng-class="visibility == 'permanent' ? 'ng-show' : 'ng-hide'">

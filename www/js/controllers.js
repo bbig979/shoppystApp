@@ -2472,7 +2472,6 @@ angular.module('starter.controllers', [])
        var target_view = null;
        if(position == 'first'){
            target_view = history.stack[0];
-           history.stack.splice(1,history.stack.length)
        }
        else if(position == 'last'){
            target_view = history.stack[history.cursor];
