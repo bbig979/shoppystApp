@@ -385,8 +385,8 @@ angular.module('starter.services', [])
             }
             return this._countSummaryText(vote_count, 'Vote');
         },
-        voteToggle: function(photo){
-            Vote.toggle(photo);
+        voteToggle: function(post, photo){
+            Vote.toggle(post, photo);
         },
         moreOption: function(list, index, is_mine = false, account_info = null){
             var action = 'report';
@@ -534,9 +534,75 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchPosts', function($http, $rootScope, PostTimer, Util) {
+.factory('BusinessObjectSyncManager', function() {
+    var _business_object_array_map = {
+        'post': [],
+        'user': [],
+    };
+    return {
+        toggleFollow: function(user) {
+            for(i = 0; i < _business_object_array_map['user'].length; i++){
+                thisUser = _business_object_array_map['user'][i];
+                if(thisUser.id == user.id){
+                    if(thisUser.following_check){
+                        if(thisUser.follower_count){
+                            thisUser.follower_count--;
+                        }
+                    }
+                    else{
+                        if(thisUser.follower_count){
+                            thisUser.follower_count++;
+                        }
+                        else{
+                            thisUser.follower_count = 1;
+                        }
+                    }
+                    thisUser.following_check = ! thisUser.following_check;
+                }
+            }
+            for(i = 0; i < _business_object_array_map['post'].length; i++){
+                thisUser = _business_object_array_map['post'][i].user;
+                if(thisUser.id == user.id){
+                    thisUser.following_check = ! thisUser.following_check;
+                }
+            }
+        },
+        toggleVote: function(post, photo) {
+            for(i = 0; i < _business_object_array_map['post'].length; i++){
+                thisPost = _business_object_array_map['post'][i];
+                if(thisPost.id == post.id){
+                    for(j = 0; j < thisPost.photos.length; j++){
+                        thisPhoto = thisPost.photos[j];
+                        if(thisPhoto.id == photo.id){
+                            if(thisPhoto.user_liked){
+                                thisPhoto.vote_info.count--;
+                                if(thisPhoto.vote_info.count == 0){
+                                    thisPhoto.vote_info = null;
+                                }
+                            }
+                            else{
+                                if(thisPhoto.vote_info){
+                                    thisPhoto.vote_info.count++;
+                                }
+                                else{
+                                    thisPhoto.vote_info = {count: 1};
+                                }
+                            }
+                            thisPhoto.user_liked = ! thisPhoto.user_liked;
+                        }
+                    }
+                }
+            }
+        },
+        addToPostArray: function(business_object_key, new_fetch) {
+            _business_object_array_map[ business_object_key ] =
+                _business_object_array_map[ business_object_key ].concat(new_fetch);
+        },
+    };
+})
+.factory('FetchPosts', function($http, $rootScope, PostTimer, Util, BusinessObjectSyncManager) {
     var _addToPostTrackArray = function(pagingInfo) {
-        $rootScope.postTrackArray = $rootScope.postTrackArray.concat(pagingInfo.data);
+        BusinessObjectSyncManager.addToPostArray('post', pagingInfo.data);
     };
     return {
         index: function(arg_info) {
@@ -741,9 +807,9 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchUsers', function($http, $rootScope) {
+.factory('FetchUsers', function($http, $rootScope, BusinessObjectSyncManager) {
     var _addToUserTrackArray = function(pagingInfo) {
-        $rootScope.userTrackArray = $rootScope.userTrackArray.concat(pagingInfo.data);
+        BusinessObjectSyncManager.addToPostArray('user', pagingInfo.data);
     };
     return {
         following: function(slug, pg) {
@@ -1555,20 +1621,15 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('Vote', function($http, $rootScope){
+.factory('Vote', function($http, $rootScope, BusinessObjectSyncManager){
     return {
-        toggle: function(photo){
+        toggle: function(post, photo){
             if(photo.user_liked){
                 $http.get($rootScope.baseURL+'/api/photo/'+photo.id+'/unvote').success(function(){
                 })
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
                 });
-
-                photo.vote_info.count--;
-                if(photo.vote_info.count == 0){
-                    photo.vote_info = null;
-                }
             }
             else{
                 $http.get($rootScope.baseURL+'/api/photo/'+photo.id+'/vote').success(function(){
@@ -1576,39 +1637,9 @@ angular.module('starter.services', [])
                 .error(function(data, status){
                     $rootScope.handleHttpError(data, status);
                 });
-                if(photo.vote_info){
-                    photo.vote_info.count++;
-                }
-                else{
-                    photo.vote_info = {count: 1};
-                }
             }
-            photo.user_liked = ! photo.user_liked;
+            BusinessObjectSyncManager.toggleVote(post, photo);
         },
-        /*
-        trackAndUpdateVote: function(photo){
-            for(i = 0; i < $rootScope.postTrackArray.length; i++){
-                thisPost = $rootScope.postTrackArray[i];
-                if(post.id == thisPost.id){
-                    if(thisPost.user_liked){
-                        thisPost.likes_count.aggregate--;
-                        if(thisPost.likes_count.aggregate == 0){
-                            thisPost.likes_count = null;
-                        }
-                    }
-                    else{
-                        if(thisPost.likes_count){
-                            thisPost.likes_count.aggregate++;
-                        }
-                        else{
-                            thisPost.likes_count = {aggregate: 1};
-                        }
-                    }
-                    thisPost.user_liked = !thisPost.user_liked;
-                }
-            }
-        }
-        */
     }
 })
 // ref : https://github.com/dabit3/angular-easy-image-preloader

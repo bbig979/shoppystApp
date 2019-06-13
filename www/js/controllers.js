@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink, BusinessObjectSyncManager) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     $rootScope.baseURL = 'https://app.snaplook.today';
@@ -11,8 +11,6 @@ angular.module('starter.controllers', [])
     $rootScope.nameLengthOnCard = 12;
     $rootScope.stat_height = 0;
     $rootScope.stat_label_height = 0;
-    $rootScope.postTrackArray = [];
-    $rootScope.userTrackArray = [];
     $rootScope.currentUser = null;
     $rootScope.notificationCount = "0";
     $rootScope.blockerMessage = BlockerMessage;
@@ -970,28 +968,7 @@ angular.module('starter.controllers', [])
                 $rootScope.handleHttpError(data, status);
             });
         }
-        $rootScope.trackAndUpdateFollow(user);
-    };
-    $rootScope.trackAndUpdateFollow = function(user) {
-        for(i = 0; i < $rootScope.userTrackArray.length; i++){
-            thisUser = $rootScope.userTrackArray[i];
-            if(thisUser.id == user.id){
-                if(thisUser.following_check){
-                    if(thisUser.follower_count){
-                        thisUser.follower_count--;
-                    }
-                }
-                else{
-                    if(thisUser.follower_count){
-                        thisUser.follower_count++;
-                    }
-                    else{
-                        thisUser.follower_count = 1;
-                    }
-                }
-                thisUser.following_check = !thisUser.following_check;
-            }
-        }
+        BusinessObjectSyncManager.toggleFollow(user);
     };
 
     $rootScope.getNotification = function(_notificationPullInterval = null) {

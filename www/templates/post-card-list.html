@@ -39,7 +39,7 @@
                                     </div>
                                     <div class="vote-toggle">
                                         <div class="source-link icon ion-link" ng-click="openInAppBrowser(photo.source_url)" ng-show="photo.source_url"></div>
-                                        <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
+                                        <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(post, photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
                                     </div>
                                 </div>
                             </ion-slide>
