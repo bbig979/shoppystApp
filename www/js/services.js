@@ -534,7 +534,7 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('BusinessObjectSyncManager', function() {
+.factory('BusinessObjectStateSync', function() {
     var _business_object_array_map = {
         'post': [],
         'user': [],
@@ -600,9 +600,9 @@ angular.module('starter.services', [])
         },
     };
 })
-.factory('FetchPosts', function($http, $rootScope, PostTimer, Util, BusinessObjectSyncManager) {
+.factory('FetchPosts', function($http, $rootScope, PostTimer, Util, BusinessObjectStateSync) {
     var _addToPostTrackArray = function(pagingInfo) {
-        BusinessObjectSyncManager.addToPostArray('post', pagingInfo.data);
+        BusinessObjectStateSync.addToPostArray('post', pagingInfo.data);
     };
     return {
         index: function(arg_info) {
@@ -807,9 +807,9 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('FetchUsers', function($http, $rootScope, BusinessObjectSyncManager) {
+.factory('FetchUsers', function($http, $rootScope, BusinessObjectStateSync) {
     var _addToUserTrackArray = function(pagingInfo) {
-        BusinessObjectSyncManager.addToPostArray('user', pagingInfo.data);
+        BusinessObjectStateSync.addToPostArray('user', pagingInfo.data);
     };
     return {
         following: function(slug, pg) {
@@ -1621,7 +1621,7 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('Vote', function($http, $rootScope, BusinessObjectSyncManager){
+.factory('Vote', function($http, $rootScope, BusinessObjectStateSync){
     return {
         toggle: function(post, photo){
             if(photo.user_liked){
@@ -1638,7 +1638,7 @@ angular.module('starter.services', [])
                     $rootScope.handleHttpError(data, status);
                 });
             }
-            BusinessObjectSyncManager.toggleVote(post, photo);
+            BusinessObjectStateSync.toggleVote(post, photo);
         },
     }
 })

@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink, BusinessObjectSyncManager) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink, BusinessObjectStateSync) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     $rootScope.baseURL = 'https://app.snaplook.today';
@@ -968,7 +968,7 @@ angular.module('starter.controllers', [])
                 $rootScope.handleHttpError(data, status);
             });
         }
-        BusinessObjectSyncManager.toggleFollow(user);
+        BusinessObjectStateSync.toggleFollow(user);
     };
 
     $rootScope.getNotification = function(_notificationPullInterval = null) {
