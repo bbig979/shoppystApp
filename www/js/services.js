@@ -538,6 +538,7 @@ angular.module('starter.services', [])
     var _business_object_array_map = {
         'post': [],
         'user': [],
+        'notification': [],
     };
     return {
         toggleFollow: function(user) {
@@ -562,6 +563,12 @@ angular.module('starter.services', [])
             }
             for(i = 0; i < _business_object_array_map['post'].length; i++){
                 thisUser = _business_object_array_map['post'][i].user;
+                if(thisUser.id == user.id){
+                    thisUser.following_check = ! thisUser.following_check;
+                }
+            }
+            for(i = 0; i < _business_object_array_map['notification'].length; i++){
+                thisUser = _business_object_array_map['notification'][i].initiator;
                 if(thisUser.id == user.id){
                     thisUser.following_check = ! thisUser.following_check;
                 }
@@ -1070,12 +1077,16 @@ angular.module('starter.services', [])
         )
     }
 })
-.factory('FetchNotifications', function($http, $timeout, $rootScope, $q){
+.factory('FetchNotifications', function($http, $timeout, $rootScope, $q, BusinessObjectStateSync){
     var last_moved_timestmap_milisec = 0;
+    var _addToNotificationTrackArray = function(pagingInfo) {
+        BusinessObjectStateSync.addToPostArray('notification', pagingInfo.data);
+    };
 
     return {
         new: function(slug, pg) {
             return $http.get($rootScope.baseURL+'/api/user/'+slug+'/notification?page='+pg).then(function(response){
+                _addToNotificationTrackArray(response.data);
                 return response.data;
             }
             ,function(response){

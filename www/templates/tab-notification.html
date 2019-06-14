@@ -13,13 +13,16 @@
             <ion-spinner></ion-spinner>
         </div>
         <ion-list>
-            <ion-item class="item" ng-repeat="notification in notifications" ng-click="goNotificationDetail(notification.target_src)">
-                <div class="entity-id-{{ ::notification.id }}">
-                    <div data_id="{{ ::notification.initiator.slug }}" ng-click="goAccount(notification.initiator.slug); $event.stopPropagation();">
+            <ion-item class="item" ng-repeat="notification in notifications">
+                <div class="entity entity-id-{{ ::notification.id }}" ng-class="!notification.initiator.following_check ? 'show-toggle-follow' : ''" ng-click="goNotificationDetail(notification.target_src)">
+                    <div class="profile-pic" data_id="{{ ::notification.initiator.slug }}" ng-click="goAccount(notification.initiator.slug); $event.stopPropagation();">
                         <div class="notification-image" style="background: url({{::photoPath( notification.initiator.profile_img_path, 's' )}})"></div>
                     </div>
                     <div ng-bind-html="::notification.contents | unsafe" class="notification-content"></div>
                     <div class="time-ago grey-small-font">{{::getTimeAgo(notification.created_at)}}</div>
+                </div>
+                <div class="toggle-follow-wrapper" ng-show="! notification.initiator.following_check">
+                    <span class="toggle-follow" ng-click="toggleFollow(notification.initiator)">FOLLOW</span>
                 </div>
             </ion-item>
             <a href="#/tab{{ ::notification.target_src }}/notification">
