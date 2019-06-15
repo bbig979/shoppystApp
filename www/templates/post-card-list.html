@@ -34,7 +34,7 @@
                                     <div class="photo-counter">
                                         {{ $index + 1 }}/{{ post.photos.length }}
                                     </div>
-                                    <div class="photo-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})" ng-click="goPhotoDetail(photo)">
+                                    <div class="photo-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})">
                                         <a class="photo-img"></a>
                                     </div>
                                     <div class="vote-toggle">
