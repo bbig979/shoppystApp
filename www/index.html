@@ -99,6 +99,17 @@
                           noAngularVar_fcmToken = token;
                       }
                   });
+                  //FCMPlugin.onNotification( onNotificationCallback(data), successCallback(msg), errorCallback(err) )
+                  //Here you define your application behaviour based on the notification data.
+                  FCMPlugin.onNotification(function(data){
+                      if(data.wasTapped){
+                          var timestamp = Date.now();
+                          window.location.href = "#/tab/notification/" + timestamp;
+                      }else{
+                          //Notification was received in foreground. Maybe the user needs to be notified.
+                          //alert( JSON.stringify(data) );
+                      }
+                  });
                   clearInterval(snaplookFcmCheck);
               }
           }, 1000);

@@ -821,7 +821,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
    })
    .state('tab.notification', {
-       url: '/notification',
+       url: '/notification/:timestamp',
        views: {
            'tab-notification': {
                templateUrl: 'templates/tab-notification.html',
