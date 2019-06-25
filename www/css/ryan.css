@@ -4593,38 +4593,43 @@ ion-tabs .tab-item {
 .tab-item .icon.ion-camera {
   font-size: 35px;
 }
+/* line 16, ../../scss/ryan/_footer-nav.scss */
+.tab-item .badge.badge-calm {
+  background-color: #5CC196 !important;
+  color: #fff;
+}
 
-/* line 17, ../../scss/ryan/_footer-nav.scss */
+/* line 21, ../../scss/ryan/_footer-nav.scss */
 .tab-item[icon-on=ion-search].tab-item-active {
   color: #454a54;
 }
 
-/* line 20, ../../scss/ryan/_footer-nav.scss */
+/* line 24, ../../scss/ryan/_footer-nav.scss */
 .tab-item[icon-on=ion-person-stalker].tab-item-active {
   color: #454a54;
 }
 
-/* line 23, ../../scss/ryan/_footer-nav.scss */
+/* line 27, ../../scss/ryan/_footer-nav.scss */
 .tab-item[icon-on=ion-camera].tab-item-active {
   color: #454a54;
 }
 
-/* line 26, ../../scss/ryan/_footer-nav.scss */
+/* line 30, ../../scss/ryan/_footer-nav.scss */
 .tab-item[icon-on=ion-ios-bell].tab-item-active {
   color: #454a54;
 }
 
-/* line 29, ../../scss/ryan/_footer-nav.scss */
+/* line 33, ../../scss/ryan/_footer-nav.scss */
 .tab-item[icon-on=ion-android-person].tab-item-active {
   color: #454a54;
 }
 
-/* line 32, ../../scss/ryan/_footer-nav.scss */
+/* line 36, ../../scss/ryan/_footer-nav.scss */
 .tab-item.tab-hidden {
   display: none;
 }
 
-/* line 35, ../../scss/ryan/_footer-nav.scss */
+/* line 39, ../../scss/ryan/_footer-nav.scss */
 div.tab-nav.tabs {
   border-top-width: 0px;
 }

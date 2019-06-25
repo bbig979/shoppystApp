@@ -170,7 +170,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.vote-result-hidden', {
-       url: '/vote/result/:postId/hidden',
+       url: '/vote/result/:postId/hidden/:timestamp',
        views: {
            'tab-hidden': {
                templateUrl: 'templates/vote-result.html',
@@ -311,7 +311,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        }
     })
     .state('tab.post-comments-hidden', {
-       url: '/post/comments/:postId/hidden',
+       url: '/post/comments/:postId/hidden/:timestamp',
        views: {
            'tab-hidden': {
                templateUrl: 'templates/post-comments.html',
@@ -845,6 +845,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/post/:post_id/notification',
        views:{
            'tab-notification': {
+               templateUrl: 'templates/post-card-list.html',
+               controller: 'PostCardListCtrl'
+           }
+       },
+       params: {
+           method: 'single_post'
+       }
+   })
+   .state('tab.single-post-hidden', {
+       url: '/post/:post_id/hidden',
+       views:{
+           'tab-hidden': {
                templateUrl: 'templates/post-card-list.html',
                controller: 'PostCardListCtrl'
            }

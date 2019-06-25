@@ -17,7 +17,8 @@ navigation history that also transitions its views in and out.
         <ion-nav-view name="tab-camera"></ion-nav-view>
     </ion-tab>
 
-    <ion-tab icon-off="ion-ios-bell" icon-on="ion-ios-bell" ng-click="tabClicked(3)">
+    <ion-tab icon-off="ion-ios-bell" icon-on="ion-ios-bell" ng-click="tabClicked(3)" badge="badge()" 
+  badge-style="{{badge() ? 'badge-calm' : 'badge-assertive'}}">
         <ion-nav-view name="tab-notification"></ion-nav-view>
     </ion-tab>
 

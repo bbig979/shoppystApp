@@ -1014,18 +1014,6 @@ angular.module('starter.controllers', [])
         }
     }
 
-    $timeout(
-        function(){
-            $rootScope.getNotification(0);
-        }, 500
-    )
-
-    setInterval(function() {
-        if($rootScope.currentUser){
-            $rootScope.getNotification($rootScope.notificationPullInterval);
-        }
-    }, $rootScope.notificationPullInterval + 500);
-
     setInterval(function() {
         if($rootScope.currentUser){
             FCMHandler.registerNewToken();
@@ -2477,7 +2465,17 @@ angular.module('starter.controllers', [])
         var clicked_history_id = history_id_map[clicked_tab_id];
 
         if(clicked_history_id){
-            navigateToHistoryStack(clicked_history_id, 'last');
+            // if user click notification tab when badge is on
+            if(
+                clicked_tab_key == "notification" &&
+                noAngularVar_notificationCount > 0
+            ){
+                // reload notification view and reset badge
+                $state.go('tab.notification', {timestamp : Date.now()});
+                noAngularVar_notificationCount = 0;
+            }else{
+                navigateToHistoryStack(clicked_history_id, 'last');
+            }
         }
         else{
             switch(clicked_tab_key){
@@ -2500,6 +2498,9 @@ angular.module('starter.controllers', [])
                     console.log('Error in tab key');
             }
         }
+    }
+    $scope.badge = function(){
+        return noAngularVar_notificationCount;
     }
 })
 

@@ -13,6 +13,10 @@ ion-tabs .tab-item {
   .icon.ion-camera{
     font-size: 35px;
   }
+  .badge.badge-calm{
+    background-color: $primary-color !important;
+    color: #fff;
+  }
 }
 .tab-item[icon-on=ion-search].tab-item-active{
   color: $footer-nav-active-color;

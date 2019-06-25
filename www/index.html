@@ -64,6 +64,7 @@
       var noAngularVar_device = 'ignore';
       var noAngularVar_deviceID = '';
       var noAngularVar_fcmToken = null;
+      var noAngularVar_notificationCount = 0;
 
       if(isMobile.Android()){
           noAngularVar_device = 'android';
@@ -103,11 +104,41 @@
                   //Here you define your application behaviour based on the notification data.
                   FCMPlugin.onNotification(function(data){
                       if(data.wasTapped){
-                          var timestamp = Date.now();
-                          window.location.href = "#/tab/notification/" + timestamp;
+                          var url_key = data.snaplook_action;
+                          var url_info_map = {
+                              store_vote : {
+                                  obj : "vote/result",
+                                  refresh : true,
+                              },
+                              leave_comment_mention : {
+                                  obj : "post/comments",
+                                  refresh : true,
+                              },
+                              store_post : {
+                                  obj : "post",
+                                  refresh : false,
+                              },
+                              follow_user : {
+                                  obj : "account",
+                                  refresh : false,
+                              },
+                          }
+
+                          if(url_info_map[url_key]){
+                              var target_obj = url_info_map[url_key].obj;
+                              var target_id = data.snaplook_obj_id;
+                              var target_refresh = '';
+                              if(url_info_map[url_key].refresh){
+                                  target_refresh = "/" + Date.now();
+                              }
+                              window.location.href = "#/tab/" + target_obj + "/" + target_id + "/hidden" + target_refresh;
+                          }
+                          else{
+                              window.location.href = "#/tab/notification/" + Date.now();
+                          }
                       }else{
                           //Notification was received in foreground. Maybe the user needs to be notified.
-                          //alert( JSON.stringify(data) );
+                          noAngularVar_notificationCount++;
                       }
                   });
                   clearInterval(snaplookFcmCheck);
