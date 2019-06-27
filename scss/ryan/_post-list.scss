@@ -32,7 +32,10 @@ $repeat: 20 ; // How often you want the pattern to repeat.
     .post-card{
         border-top: 1px solid #e6e6e6;
         padding : 0;
-
+        
+        &.hide-slide-counter .photo-counter{
+            display: none;
+        }
         .post-card-header{
             padding : 4vw;
             font-size: 14px;

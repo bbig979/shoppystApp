@@ -13,7 +13,7 @@
         </div>
         <ion-list>
             <div>
-                <ion-item ng-repeat="post in list track by $index" class="post-card">
+                <ion-item ng-repeat="post in list track by $index" class="post-card" ng-class="hide_slide_counter == 4 && list.length == 1 ? 'hide-slide-counter' : ''">
                     <div class="entity-id-{{post.id}}">
                         <div class="post-card-header clearfix">
                             <div class="profile">
@@ -30,7 +30,7 @@
                         <ion-slide-box class="photo-list" show-pager="false">
                             <ion-slide ng-repeat="photo in post.photos">
                                 <div class="photo">
-                                    <div class="photo-counter">
+                                    <div class="photo-counter" ng-click="hideSlideCounter()">
                                         {{ $index + 1 }}/{{ post.photos.length }}
                                     </div>
                                     <div class="photo-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})">

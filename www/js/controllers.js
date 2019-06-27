@@ -1973,6 +1973,15 @@ angular.module('starter.controllers', [])
         }
     }
 
+    $scope.hideSlideCounter = function(){
+        if(typeof $scope.hide_slide_counter === 'undefined'){
+            $scope.hide_slide_counter = 0;
+        }
+        else{
+            $scope.hide_slide_counter++;
+        }
+    }
+
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen($scope.config.view);
         SlideHeader.viewEntered($scope);
