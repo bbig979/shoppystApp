@@ -1263,19 +1263,19 @@
 }
 
 /* line 2, ../../scss/tw/_search-result.scss */
-#post-search-result .search-header {
+#post-search-result .search-header, #post_search_result .search-header {
   text-align: center;
   padding: 30px 0;
 }
 /* line 3, ../../scss/tw/_search-result.scss */
-#post-search-result .search-header h3 {
+#post-search-result .search-header h3, #post_search_result .search-header h3 {
   color: #555;
 }
 /* line 10, ../../scss/tw/_search-result.scss */
-#post-search-result .list {
+#post-search-result .list, #post_search_result .list {
   margin-top: 45px;
 }
 /* line 13, ../../scss/tw/_search-result.scss */
-#post-search-result .post-card:nth-child(1) {
+#post-search-result .post-card:nth-child(1), #post_search_result .post-card:nth-child(1) {
   border-top: 0;
 }

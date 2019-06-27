@@ -43,7 +43,6 @@
                                 <span class="icon ion-ios-more" ng-click="postCard.moreOption(list, $index, isMyAccount, account_info)"></span>
                             </div>
                         </div>
-                        <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
                         <ion-slide-box class="photo-list" show-pager="false">
                             <ion-slide ng-repeat="photo in post.photos">
                                 <div class="photo">
@@ -60,6 +59,7 @@
                                 </div>
                             </ion-slide>
                         </ion-slide-box>
+                        <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
                         <div class="post-summary clearfix">
                             <div class="totals" ng-hide="post.visibility == 'private' && post.post_shares.length == 0  && post.display_share">
                                 {{ post.photos.length }} Outfits<span ng-click="goPostComment(post)">{{ postCard.commentCount(post) }}</span><span ng-click="goVoteResult(post.id)">{{ postCard.voteCount(post) }}</span>

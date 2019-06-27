@@ -212,6 +212,7 @@ angular.module('starter.services', [])
             $scope.preloaded_response = [];
             $scope.is_list_loading = true;
             $scope.is_result_empty = false;
+            $scope.is_infinite_loading_unlocked = false;
 
             if(config.callback && typeof config.callback === "function") {
                 config.callback();
@@ -1550,7 +1551,7 @@ angular.module('starter.services', [])
                 visible: false,
                 age: 'all',
                 gender: 'all',
-                partner: true,
+                //partner: true,
             };
         },
         set: function(key, val){
@@ -1583,6 +1584,12 @@ angular.module('starter.services', [])
         isVisible: function() {
             if(_filter_info[ this._getSearchId() ]){
                 return _filter_info[ this._getSearchId() ].visible;
+            }
+            return false;
+        },
+        isInitiated: function() {
+            if(_filter_info[ this._getSearchId() ]){
+                return true;
             }
             return false;
         },

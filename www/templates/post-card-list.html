@@ -19,7 +19,7 @@
                             <div class="profile">
                                 <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
                                 <div class="profile-text">
-                                    <div class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}}</div>
+                                    <span class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}} · </span><span class="profile-follow" ng-show="! post.user.following_check" ng-click="toggleFollow(post.user)">Follow</span><span ng-show="post.user.following_check" ng-click="toggleFollow(post.user)">Following</span>
                                     <div class="time-ago" ng-click="goAccount(post.user.slug)">{{post.display_time}}</div>
                                 </div>
                             </div>
@@ -27,7 +27,6 @@
                                 <span class="icon ion-ios-more" ng-click="postCard.moreOption(list, $index)"></span>
                             </div>
                         </div>
-                        <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
                         <ion-slide-box class="photo-list" show-pager="false">
                             <ion-slide ng-repeat="photo in post.photos">
                                 <div class="photo">
@@ -44,6 +43,7 @@
                                 </div>
                             </ion-slide>
                         </ion-slide-box>
+                        <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
                         <div class="post-summary clearfix">
                             <div class="totals">
                                 {{ post.photos.length }} Outfits<span ng-click="goPostComment(post)">{{ postCard.commentCount(post) }}</span><span ng-click="goVoteResult(post.id)">{{ postCard.voteCount(post) }}</span>
@@ -67,7 +67,7 @@
             </div>
         </ion-list>
         <div class="load-more-snaplooks ng-hide" ng-show="list.length > 0 && ! is_pagination_done">
-            <button class="button button-block button-positive" ng-click="load()">Load More Outfit Ideas</button>
+            <button class="button button-block button-positive" ng-click="loadMore()">Load More Outfit Ideas</button>
         </div>
     </ion-content>
 </ion-view>

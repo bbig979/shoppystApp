@@ -371,8 +371,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/explore/explore',
        views: {
            'tab-explore': {
-               templateUrl: 'templates/tab-explore.html',
-               controller: 'PostExploreCtrl'
+               templateUrl: 'templates/post-card-list-two-columns.html',
+               controller: 'PostCardListCtrl'
            }
        },
        // problem : SearchFilter saves state with type and searchTerm of $stateparams
@@ -381,6 +381,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        params: {
          type: 'explore',
          searchTerm: 'explore',
+         method: 'explore',
+         multi_columns: true,
        }
     })
     .state('tab.explore-notification', {
@@ -459,54 +461,78 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        url: '/search/:searchTerm/:type/home',
        views: {
            'tab-home': {
-               templateUrl: 'templates/post-search-result.html',
-               controller: 'PostSearchResultCtrl'
+               templateUrl: 'templates/post-card-list-two-columns.html',
+               controller: 'PostCardListCtrl'
            }
+       },
+       params: {
+           method: 'search',
+           multi_columns: true,
        }
     })
     .state('tab.search-result-explore', {
        url: '/search/:searchTerm/:type/explore',
        views: {
            'tab-explore': {
-               templateUrl: 'templates/post-search-result.html',
-               controller: 'PostSearchResultCtrl'
+               templateUrl: 'templates/post-card-list-two-columns.html',
+               controller: 'PostCardListCtrl'
            }
+       },
+       params: {
+           method: 'search',
+           multi_columns: true,
        }
     })
     .state('tab.search-result-camera', {
        url: '/search/:searchTerm/:type/camera',
        views: {
            'tab-camera': {
-               templateUrl: 'templates/post-search-result.html',
-               controller: 'PostSearchResultCtrl'
+               templateUrl: 'templates/post-card-list-two-columns.html',
+               controller: 'PostCardListCtrl'
            }
+       },
+       params: {
+           method: 'search',
+           multi_columns: true,
        }
     })
     .state('tab.search-result-notification', {
        url: '/search/:searchTerm/:type/notification',
        views: {
            'tab-notification': {
-               templateUrl: 'templates/post-search-result.html',
-               controller: 'PostSearchResultCtrl'
+               templateUrl: 'templates/post-card-list-two-columns.html',
+               controller: 'PostCardListCtrl'
            }
+       },
+       params: {
+           method: 'search',
+           multi_columns: true,
        }
     })
     .state('tab.search-result-account', {
        url: '/search/:searchTerm/:type/account',
        views: {
            'tab-account': {
-               templateUrl: 'templates/post-search-result.html',
-               controller: 'PostSearchResultCtrl'
+               templateUrl: 'templates/post-card-list-two-columns.html',
+               controller: 'PostCardListCtrl'
            }
+       },
+       params: {
+           method: 'search',
+           multi_columns: true,
        }
     })
     .state('tab.search-result-hidden', {
        url: '/search/:searchTerm/:type/hidden',
        views: {
            'tab-hidden': {
-               templateUrl: 'templates/post-search-result.html',
-               controller: 'PostSearchResultCtrl'
+               templateUrl: 'templates/post-card-list-two-columns.html',
+               controller: 'PostCardListCtrl'
            }
+       },
+       params: {
+           method: 'search',
+           multi_columns: true,
        }
     })
     .state('tab.post-create', {
@@ -839,6 +865,54 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
        },
        params: {
            method: 'deep_link'
+       }
+   })
+   .state('tab.single-post-home', {
+       url: '/post/:post_id/home',
+       views:{
+           'tab-home': {
+               templateUrl: 'templates/post-card-list.html',
+               controller: 'PostCardListCtrl'
+           }
+       },
+       params: {
+           method: 'single_post'
+       }
+   })
+   .state('tab.single-post-explore', {
+       url: '/post/:post_id/explore',
+       views:{
+           'tab-explore': {
+               templateUrl: 'templates/post-card-list.html',
+               controller: 'PostCardListCtrl'
+           }
+       },
+       params: {
+           method: 'single_post'
+       }
+   })
+   .state('tab.single-post-camera', {
+       url: '/post/:post_id/camera',
+       views:{
+           'tab-camera': {
+               templateUrl: 'templates/post-card-list.html',
+               controller: 'PostCardListCtrl'
+           }
+       },
+       params: {
+           method: 'single_post'
+       }
+   })
+   .state('tab.single-post-account', {
+       url: '/post/:post_id/account',
+       views:{
+           'tab-account': {
+               templateUrl: 'templates/post-card-list.html',
+               controller: 'PostCardListCtrl'
+           }
+       },
+       params: {
+           method: 'single_post'
        }
    })
    .state('tab.single-post-notification', {

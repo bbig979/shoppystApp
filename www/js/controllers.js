@@ -98,8 +98,7 @@ angular.module('starter.controllers', [])
             content = content.replace(/(\/#)/g, "/");
         }
         if(post.goal != null){
-            content = '<div class="goal-tag"><a href="#/tab/search/' + post.goal.name + '/goal/' + tab + '"><i class="fa fa-bolt" aria-hidden="true"></i> ' +
-                post.goal.name + '</a></div><br/>' + content;
+            content += ' <a href="#/tab/search/' + post.goal.name + '/goal/' + tab + '"><i class="fa fa-bolt" aria-hidden="true"></i> ' + post.goal.name + '</a>';
         }
 
         return content;
@@ -110,6 +109,10 @@ angular.module('starter.controllers', [])
         }
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.photo-detail-'+tab,{photo: photo, photoId: photo.id});
+    };
+    $rootScope.goPostDetail = function(post){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.single-post-'+tab,{post_id: post.id});
     };
     $rootScope.goPostComment = function(post){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -1865,18 +1868,37 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PostCardListCtrl', function($scope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, $timeout) {
+.controller('PostCardListCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, $timeout, SearchFilter) {
+    var user = $rootScope.getCurrentUser();
+    if(user.username == user.email || user.username == ''){
+        $state.go('register2').then(function(){
+            $timeout(function(){
+                window.location.reload();
+            },100);
+        });
+        return;
+    }
     var method = $stateParams.method;
+    var showSearchTerm = function(){
+        var termSign = "#";
+        if ($stateParams.type == "goal")
+        {
+            termSign = '<i class="fa fa-bolt" aria-hidden="true"></i> ';
+        }
+        if($stateParams.searchTerm){
+            return termSign+$stateParams.searchTerm.trim();
+        }
+    }
     var config_map = {
         'single_post' : {
             'title' : 'OUTFITS',
-            'no_result_message' : 'Your friend \'s outfits disappeared in a snap!' ,
+            'no_result_message' : 'Outfit ideas disappeared in a snap!' ,
             'view' : 'single_post',
             'preload' : false,
         },
         'deep_link' : {
             'title' : 'OUTFITS',
-            'no_result_message' : 'Your friend \'s outfits disappeared in a snap!' ,
+            'no_result_message' : 'Outfit ideas disappeared in a snap!' ,
             'view' : 'deep_link',
             'preload' : false,
         },
@@ -1886,6 +1908,18 @@ angular.module('starter.controllers', [])
             'view' : 'home',
             'preload' : true,
         },
+        'search' : {
+            'title' : showSearchTerm(),
+            'no_result_message' : 'No outfit ideas found' ,
+            'view' : 'post_search_result',
+            'infinite_scroll' : true,
+        },
+        'explore' : {
+            'title' : "<img class='logo' src='img/snaplook_revised_logo.png'/>",
+            'no_result_message' : 'No outfit ideas found' ,
+            'view' : 'explore',
+            'infinite_scroll' : true,
+        },
     }
     $scope.state_params = $stateParams;
     $scope.config = config_map[method];
@@ -1894,25 +1928,39 @@ angular.module('starter.controllers', [])
         type : 'post',
         method : method,
     };
+    $scope.searchFilter = SearchFilter;
+    SearchFilter.init();
 
     if($scope.config.preload){
         $scope.business_object_list_config.preload = true;
     }
 
     BusinessObjectList.reset($scope);
-    BusinessObjectList.load($scope);
+    BusinessObjectList.load($scope).then(function(){
+        $scope.is_infinite_loading_unlocked = true;
+    });
+
+    $scope.filter = function(key, val){
+        SearchFilter.set(key, val);
+        $scope.search_filter = SearchFilter.getAllInfo();
+        $scope.refresh(false);
+    }
 
     $scope.refresh = function(){
         BusinessObjectList.reset($scope);
         $scope.is_list_loading = false;
-        BusinessObjectList.load($scope);
+        BusinessObjectList.load($scope).then(function(){
+            $scope.is_infinite_loading_unlocked = true;
+        });
         $scope.$broadcast('scroll.refreshComplete');
     }
 
-    $scope.load = function(){
-        $ionicScrollDelegate.scrollTo(0, 1, false);
-        $scope.list = [];
-        $scope.is_list_loading = true;
+    $scope.loadMore = function(){
+        if(! $scope.config.infinite_scroll){
+            $ionicScrollDelegate.scrollTo(0, 1, false);
+            $scope.list = [];
+            $scope.is_list_loading = true;
+        }
 
         if($scope.config.preload){
             $timeout(function(){

@@ -1,3 +1,27 @@
+// ref: https://stackoverflow.com/questions/26922336/random-color-from-array-in-sass
+$colors: rgb(156, 124, 114),
+    rgb(70, 80, 77),
+    rgb(144, 131, 118),
+    rgb(69, 45, 38),
+    rgb(54, 47, 39),
+    rgb(127, 95, 58),
+    rgb(160, 148, 138),
+    rgb(121, 104, 98),
+    rgb(142, 126, 104),
+    rgb(124, 125, 127),
+    rgb(185, 177, 163),
+    rgb(166, 168, 142),
+    rgb(47, 68, 78),
+    rgb(188, 181, 167),
+    rgb(144, 147, 150),
+    rgb(154, 126, 124),
+    rgb(211, 203, 212),
+    rgb(184, 158, 152),
+    rgb(203, 202, 202),
+    rgb(187, 180, 189);
+$repeat: 20 ; // How often you want the pattern to repeat.
+// Warning: a higher number outputs more CSS.
+
 .hide-post{
     visibility:hidden;
 }
@@ -40,7 +64,7 @@
             }
         }
         .caption{
-            padding: 0 4vw 4vw 4vw;
+            padding: 4.5vw;
             font-size: 14px;
             white-space: pre-line;
 
@@ -132,6 +156,11 @@
                     }
                 }
             }
+            @for $i from 1 through $repeat {
+                ion-slide:nth-child(#{length($colors)}n+#{$i}) .photo-img-wrapper{
+                    background-color: nth($colors, random(length($colors)));
+                }
+            }
         }
         .post-summary{
             .totals{
@@ -206,6 +235,57 @@
     .load-more-snaplooks{
         padding: 0 4vw;
         padding-bottom: 30px;
+    }
+}
+.post-card-list-two-columns{
+    .button-bar-wrapper{
+        margin-bottom: 14px;
+    }
+    .post-card{
+        width: 50%;
+        float: left;
+        padding: 2.5vw;
+        border: 0;
+        .photo-img-wrapper{
+            background-color: #eee;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 2vw;
+
+            .photo-img {
+                display: block;
+                width: 100%;
+                padding-top: 133%;
+            }
+        }
+
+        @for $i from 1 through $repeat {
+            &:nth-child(#{length($colors)}n+#{$i}) .photo-img-wrapper{
+                background-color: nth($colors, random(length($colors)));
+            }
+        }
+        .ion-ios-browsers{
+            position: absolute;
+            top: 3vw;
+            right: 7vw;
+            opacity: 0.8;
+            color: #fff;
+            font-size: 8vw;
+            -moz-transform: scaleY(-1);
+            -o-transform: scaleY(-1);
+            -webkit-transform: scaleY(-1);
+            transform: scaleY(-1);
+        }
+    }
+    .even{
+        padding-left: 5vw;
+        .ion-ios-browsers{
+            right: 4.5vw;
+        }
+    }
+    .odd{
+        padding-right: 5vw;
     }
 }
 .vote-result {
