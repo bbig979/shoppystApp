@@ -90,6 +90,8 @@
               console.log('FCMPlugin checking..');
               if (typeof FCMPlugin !== 'undefined') {
                   console.log('FCMPlugin found!');
+                  localStorage.removeItem('fcm_token');
+
                   FCMPlugin.getToken(function(token){
                       if(token){
                           noAngularVar_fcmToken = token;
