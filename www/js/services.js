@@ -564,7 +564,7 @@ angular.module('starter.services', [])
             }
             for(i = 0; i < _business_object_array_map['post'].length; i++){
                 thisUser = _business_object_array_map['post'][i].user;
-                if(thisUser.id == user.id){
+                if(thisUser && thisUser.id == user.id){
                     thisUser.following_check = ! thisUser.following_check;
                 }
             }
