@@ -32,7 +32,7 @@ $repeat: 20 ; // How often you want the pattern to repeat.
     .post-card{
         border-top: 1px solid #e6e6e6;
         padding : 0;
-        
+
         &.hide-slide-counter .photo-counter{
             display: none;
         }
@@ -243,6 +243,11 @@ $repeat: 20 ; // How often you want the pattern to repeat.
 .post-card-list-two-columns{
     .button-bar-wrapper{
         margin-bottom: 14px;
+    }
+    .load-more-snaplooks{
+        padding: 5vw;
+        float: left;
+        width: 100vw;
     }
     .post-card{
         width: 50%;

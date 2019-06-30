@@ -50,6 +50,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     if(ionic.Platform.isAndroid()){
         $ionicConfigProvider.views.transition('none');
     }
+    $ionicConfigProvider.scrolling.jsScrolling(false);
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
     var baseURL = 'https://app.snaplook.today';

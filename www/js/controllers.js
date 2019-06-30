@@ -153,6 +153,10 @@ angular.module('starter.controllers', [])
             $state.go('tab.account-follower-'+tab,{userSlug: slug});
         }
     };
+    $rootScope.goSearchPost = function(search_term, type){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.search-result-'+tab,{searchTerm: search_term, type: type});
+    };
     $rootScope.goAccountLiked = function(slug){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-liked-'+tab,{userSlug: slug});
@@ -1912,13 +1916,13 @@ angular.module('starter.controllers', [])
             'title' : showSearchTerm(),
             'no_result_message' : 'No outfit ideas found' ,
             'view' : 'post_search_result',
-            'infinite_scroll' : true,
+            'preload' : true,
         },
         'explore' : {
             'title' : "<img class='logo' src='img/snaplook_revised_logo.png'/>",
             'no_result_message' : 'No outfit ideas found' ,
             'view' : 'explore',
-            'infinite_scroll' : true,
+            'preload' : true,
         },
     }
     $scope.state_params = $stateParams;
@@ -1957,8 +1961,8 @@ angular.module('starter.controllers', [])
 
     $scope.loadMore = function(){
         if(! $scope.config.infinite_scroll){
-            $ionicScrollDelegate.scrollTo(0, 1, false);
             $scope.list = [];
+            $ionicScrollDelegate.scrollTo(0, 1, false);
             $scope.is_list_loading = true;
         }
 
@@ -2414,12 +2418,6 @@ angular.module('starter.controllers', [])
             $scope.searchNoResultText = "No Results Found";
         }
         $scope.searchTermTyped(_searchTerm, null, 0);
-    };
-    $scope.submitSearch = function(search_term, type) {
-        $state.go('tab.search-result-explore',{searchTerm: search_term, type: type});
-    };
-    $scope.goSearchPost = function(search_term, type) {
-        $scope.submitSearch(search_term, type);
     };
 })
 

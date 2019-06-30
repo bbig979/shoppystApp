@@ -5,6 +5,8 @@ navigation history that also transitions its views in and out.
 -->
 <ion-tabs class="tabs-icon-middle" ng-controller="TabCtrl" keyboard-handler>
 
+    <div class="cover-iphone-x-bottom"></div>
+
     <ion-tab icon-off="ion-search" icon-on="ion-search" ng-click="tabClicked(0)">
         <ion-nav-view name="tab-explore"></ion-nav-view>
     </ion-tab>
@@ -17,7 +19,7 @@ navigation history that also transitions its views in and out.
         <ion-nav-view name="tab-camera"></ion-nav-view>
     </ion-tab>
 
-    <ion-tab icon-off="ion-ios-bell" icon-on="ion-ios-bell" ng-click="tabClicked(3)" badge="badge()" 
+    <ion-tab icon-off="ion-ios-bell" icon-on="ion-ios-bell" ng-click="tabClicked(3)" badge="badge()"
   badge-style="{{badge() ? 'badge-calm' : 'badge-assertive'}}">
         <ion-nav-view name="tab-notification"></ion-nav-view>
     </ion-tab>

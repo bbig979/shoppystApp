@@ -40,11 +40,9 @@
                         <div class="goal-name">{{goal.name}}</div>
                         <div class="goal-count">{{goal.display_count}} posts</div>
                     </div>
-                    <a href="#/tab/search/{{goal.name}}/goal/camera">
-                        <div class="goal-example">
-                            <i class="ion-ios-information-outline"></i>
-                        </div>
-                    </a>
+                    <div class="goal-example" ng-click="goSearchPost(goal.name, 'goal')">
+                        <i class="ion-ios-information-outline"></i>
+                    </div>
                 </ion-item>
             </div>
         </ion-list>

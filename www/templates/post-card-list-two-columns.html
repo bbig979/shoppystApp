@@ -41,7 +41,7 @@
             <div class="no-result" ng-if="list.length == 0 && is_result_empty" ng-bind-html="config.no_result_message">
             </div>
             <div>
-                <ion-item collection-repeat="post in list track by $index" class="post-card" ng-class="$even ? 'even' : 'odd'">
+                <ion-item ng-repeat="post in list track by $index" class="post-card" ng-class="$even ? 'even' : 'odd'">
                     <div class="entity-id-{{post.id}}" ng-click="goPostDetail(post)">
                         <div class="photo-img-wrapper entity-id-{{post.photos[0].id}}" style="background-image: url({{ photoPath( post.photos[0].img_path, 'l' ) }})">
                             <a class="photo-img"></a>
@@ -51,7 +51,9 @@
                 </ion-item>
             </div>
         </ion-list>
-        <ion-infinite-scroll ng-if="is_infinite_loading_unlocked && !is_pagination_done" on-infinite="loadMore()" distance="30%" immediate-check="false"></ion-infinite-scroll>
+        <div class="load-more-snaplooks ng-hide" ng-show="list.length > 0 && ! is_pagination_done && ! is_list_loading">
+            <button class="button button-block button-positive" ng-click="loadMore()">Load More Outfit Ideas</button>
+        </div>
     </ion-content>
     <div class="bar bar-header search-bar">
         <div class="item-input-inset" ng-click="goPostSearch()">

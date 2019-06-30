@@ -474,5 +474,15 @@ body.platform-ios {
     bottom: calc(constant(safe-area-inset-bottom) * 1.3); /* iOS 11.0 */
     bottom: calc(env(safe-area-inset-bottom) * 1.3); /* iOS 11.2 */
 }
-
+.platform-ios .has-tabs, .bar-footer.has-tabs {
+    bottom: calc(49px + constant(safe-area-inset-bottom) * 1.3); /* iOS 11.0 */
+    bottom: calc(49px + env(safe-area-inset-bottom) * 1.3); /* iOS 11.0 */
+}
+.cover-iphone-x-bottom{
+    width: 100%;
+    height: 49px;
+    position: fixed;
+    bottom: -49px;
+    background-color: #fff;
+}
 // @end iphone x style correction

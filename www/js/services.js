@@ -48,13 +48,13 @@ angular.module('starter.services', [])
         SlideHeader.setPreviousScrollPosition(this_scroll_scope_id, 0);
 
         elem.bind('scroll', function(e) {
-            if(e.originalEvent.detail === undefined){
+            if(e.currentTarget === undefined){
                 return;
             }
-            if(e.originalEvent.detail.scrollTop === undefined){
+            if(e.currentTarget.scrollTop === undefined){
                 return;
             }
-            var current_scroll_position = e.originalEvent.detail.scrollTop;
+            var current_scroll_position = e.currentTarget.scrollTop;
             var previous_scroll_position = SlideHeader.getPreviousScrollPosition(this_scroll_scope_id);
 
             if (previous_scroll_position == current_scroll_position) {
@@ -294,7 +294,9 @@ angular.module('starter.services', [])
         _getImageArray: function(data){
             var image_array = [];
             for(var i=0; i<data.length; i++){
-                image_array.push( $rootScope.photoPath( data[i].user.profile_img_path, 's' ));
+                if(data[i].user){
+                    image_array.push( $rootScope.photoPath( data[i].user.profile_img_path, 's' ));
+                }
                 for(var j=0; j<data[i].photos.length; j++){
                     image_array.push( $rootScope.photoPath( data[i].photos[j].img_path, 'l' ));
                 }
