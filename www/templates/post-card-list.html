@@ -19,12 +19,12 @@
                             <div class="profile">
                                 <div class="profile-image" style="background-image: url( {{ photoPath( post.user.profile_img_path, 's' ) }} )" ng-click="goAccount(post.user.slug)"></div>
                                 <div class="profile-text">
-                                    <span class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}} · </span><span class="profile-follow" ng-show="! post.user.following_check" ng-click="toggleFollow(post.user)">Follow</span><span ng-show="post.user.following_check" ng-click="toggleFollow(post.user)">Following</span>
+                                    <span class="user-name" ng-click="goAccount(post.user.slug)">{{post.user.username}}</span><div class="follow-toggle" ng-show="! isOwner(post)">&nbsp;·&nbsp;<span class="profile-follow" ng-show="! post.user.following_check" ng-click="toggleFollow(post.user)">Follow</span><span ng-show="post.user.following_check" ng-click="toggleFollow(post.user)">Following</span></div>
                                     <div class="time-ago" ng-click="goAccount(post.user.slug)">{{post.display_time}}</div>
                                 </div>
                             </div>
                             <div class="more-option">
-                                <span class="icon ion-ios-more" ng-click="postCard.moreOption(list, $index)"></span>
+                                <span class="icon ion-ios-more" ng-click="postCard.moreOption(list, $index, isOwner(post))"></span>
                             </div>
                         </div>
                         <ion-slide-box class="photo-list" show-pager="false">

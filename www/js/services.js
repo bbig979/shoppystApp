@@ -369,7 +369,7 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state, UxAnalytics, PostShare, DeepLink){
+.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state, UxAnalytics, PostShare, DeepLink, BusinessObjectStateSync, $ionicHistory){
     return {
         commentCount: function(post){
             var comment_count = 0;
@@ -427,10 +427,8 @@ angular.module('starter.services', [])
                             $ionicLoading.show();
                             $http.post($rootScope.baseURL+'/api/post/'+list[index].id+'/'+action).success(function(){
                                 $ionicLoading.hide();
-                                list.splice(index,1);
-                                if(is_mine){
-                                    account_info.posts_count--;
-                                }
+                                BusinessObjectStateSync.deletePost(list[index]);
+                                $ionicHistory.goBack();
                                 return true;
                             })
                             .error(function(data, status){
@@ -543,6 +541,8 @@ angular.module('starter.services', [])
         'user': [],
         'notification': [],
     };
+    var _post_list = [];
+
     return {
         toggleFollow: function(user) {
             for(i = 0; i < _business_object_array_map['user'].length; i++){
@@ -604,15 +604,37 @@ angular.module('starter.services', [])
                 }
             }
         },
-        addToPostArray: function(business_object_key, new_fetch) {
+        deletePost: function(post) {
+            var user = post.user;
+            for(i = 0; i < _business_object_array_map['user'].length; i++){
+                thisUser = _business_object_array_map['user'][i];
+                if(thisUser.id == user.id){
+                    if(thisUser.posts_count){
+                        thisUser.posts_count--;
+                    }
+                }
+            }
+
+            for(i = 0; i < _post_list.length; i++){
+                thisPost = _post_list[i];
+                if(thisPost.id == post.id){
+                    _post_list.splice(i, 1);
+                    return;
+                }
+            }
+        },
+        mergeObjArray: function(business_object_key, new_fetch) {
             _business_object_array_map[ business_object_key ] =
                 _business_object_array_map[ business_object_key ].concat(new_fetch);
         },
+        setPostList: function(post_list) {
+            _post_list = post_list;
+        }
     };
 })
 .factory('FetchPosts', function($http, $rootScope, PostTimer, Util, BusinessObjectStateSync) {
     var _addToPostTrackArray = function(pagingInfo) {
-        BusinessObjectStateSync.addToPostArray('post', pagingInfo.data);
+        BusinessObjectStateSync.mergeObjArray('post', pagingInfo.data);
     };
     return {
         index: function(arg_info) {
@@ -819,7 +841,7 @@ angular.module('starter.services', [])
 })
 .factory('FetchUsers', function($http, $rootScope, BusinessObjectStateSync) {
     var _addToUserTrackArray = function(pagingInfo) {
-        BusinessObjectStateSync.addToPostArray('user', pagingInfo.data);
+        BusinessObjectStateSync.mergeObjArray('user', pagingInfo.data);
     };
     return {
         following: function(slug, pg) {
@@ -1083,7 +1105,7 @@ angular.module('starter.services', [])
 .factory('FetchNotifications', function($http, $timeout, $rootScope, $q, BusinessObjectStateSync){
     var last_moved_timestmap_milisec = 0;
     var _addToNotificationTrackArray = function(pagingInfo) {
-        BusinessObjectStateSync.addToPostArray('notification', pagingInfo.data);
+        BusinessObjectStateSync.mergeObjArray('notification', pagingInfo.data);
     };
 
     return {

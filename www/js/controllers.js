@@ -110,7 +110,8 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.photo-detail-'+tab,{photo: photo, photoId: photo.id});
     };
-    $rootScope.goPostDetail = function(post){
+    $rootScope.goPostDetail = function(post, list){
+        BusinessObjectStateSync.setPostList(list);
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.single-post-'+tab,{post_id: post.id});
     };
@@ -1986,6 +1987,13 @@ angular.module('starter.controllers', [])
         }
     }
 
+    $scope.isOwner = function(post){
+        if(post && post.user.id == user.id){
+            return true;
+        }
+        return false;
+    }
+
     $scope.$on('$ionicView.enter', function() {
         UxAnalytics.startScreen($scope.config.view);
         SlideHeader.viewEntered($scope);
@@ -2611,6 +2619,7 @@ angular.module('starter.controllers', [])
         $scope.profile_user_slug = $stateParams.accountSlug;
     }
 
+    $scope.state_params = $stateParams;
     $scope.postCard = PostCard;
     $scope.business_object_list_config = {
         type : 'post',
@@ -2636,8 +2645,8 @@ angular.module('starter.controllers', [])
 
     if($stateParams.refresh){
         var repeatUntillScrolled = setInterval(function(){
-            $ionicScrollDelegate.scrollTo(0, 270, true);
-            if($ionicScrollDelegate.getScrollPosition().top == 270){
+            $ionicScrollDelegate.scrollTo(0, 0, true);
+            if($ionicScrollDelegate.getScrollPosition().top == 0){
                 clearInterval(repeatUntillScrolled);
             }
         }, 500);

@@ -65,6 +65,9 @@ $repeat: 20 ; // How often you want the pattern to repeat.
                 float: right;
                 font-size: 6vw;
             }
+            .follow-toggle{
+                display: inline-block;
+            }
         }
         .caption{
             padding: 4.5vw;

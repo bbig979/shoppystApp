@@ -588,6 +588,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 templateUrl: 'templates/tab-account.html',
                 controller: 'AccountCtrl'
             }
+        },
+        params: {
+            multi_columns: true,
         }
     })
 	.state('tab.account-explore', {
@@ -597,7 +600,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	           templateUrl: 'templates/tab-account.html',
 	           controller: 'AccountCtrl'
 	       }
-	   }
+	   },
+       params: {
+           multi_columns: true,
+       }
 	})
     .state('tab.account-camera', {
 	   url: '/account/:accountSlug/camera',
@@ -606,7 +612,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	           templateUrl: 'templates/tab-account.html',
 	           controller: 'AccountCtrl'
 	       }
-	   }
+	   },
+       params: {
+           multi_columns: true,
+       }
 	})
 	.state('tab.account-notification', {
 	   url: '/account/:accountSlug/notification',
@@ -615,7 +624,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	           templateUrl: 'templates/tab-account.html',
 	           controller: 'AccountCtrl'
 	       }
-	   }
+	   },
+       params: {
+           multi_columns: true,
+       }
 	})
 	.state('tab.account-account', {
 	   url: '/account/:accountSlug/account',
@@ -628,7 +640,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	   params: {
 	       refresh: null,
 	       activateTab: null,
-	       isThisAfterShare: false
+	       isThisAfterShare: false,
+           multi_columns: true,
 	   }
 	})
     .state('tab.account-hidden', {
@@ -638,7 +651,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 	           templateUrl: 'templates/tab-account.html',
 	           controller: 'AccountCtrl'
 	       }
-	   }
+	   },
+       params: {
+           multi_columns: true,
+       }
 	})
 
 	.state('tab.option-account', {
