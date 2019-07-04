@@ -244,6 +244,12 @@ $repeat: 20 ; // How often you want the pattern to repeat.
     }
 }
 .post-card-list-two-columns{
+    .scroll-refresher{
+        top: -20px;
+    }
+    &#tab-account .scroll-refresher{
+        top: -60px;
+    }
     .button-bar-wrapper{
         margin-bottom: 14px;
     }

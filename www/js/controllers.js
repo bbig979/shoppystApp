@@ -40,8 +40,8 @@ angular.module('starter.controllers', [])
         $ionicScrollDelegate.scrollBy(0, 100);
     }
     $rootScope.picture = function() {
-        CameraPictues.set('http://localhost:8100/img/_test_1.jpg');
-        CameraPictues.set('http://localhost:8100/img/_test_2.jpg');
+        CameraPictues.set('http://localhost:8100/img/_test_1.jpg', false);
+        CameraPictues.set('http://localhost:8100/img/_test_2.jpg', false);
     }
     $rootScope.ifTestAccount = function() {
         if($rootScope.currentUser){
@@ -255,6 +255,9 @@ angular.module('starter.controllers', [])
                                 CameraPictues.set(imageData);
                                 $ionicLoading.show({template: 'Loading Photo', duration:500});
                                 $ionicLoading.hide();
+                                setTimeout(function () {
+                                    $('.post-image .item').each(function(){ $(this).attr('src', $(this).attr('src').replace('unsafe:', '')); });
+                                }, 100);
                             },
                             function(err){
                                 $ionicLoading.hide();
@@ -278,6 +281,9 @@ angular.module('starter.controllers', [])
                                         CameraPictues.set(entry.nativeURL);
                                         $ionicLoading.show({template: 'Loading Photo', duration:500});
                                         $ionicLoading.hide();
+                                        setTimeout(function () {
+                                            $('.post-image .item').each(function(){ $(this).attr('src', $(this).attr('src').replace('unsafe:', '')); });
+                                        }, 100);
                                     }, function fail(error) {
                                         alert(error.code);
                                     },
@@ -1873,7 +1879,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PostCardListCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, $timeout, SearchFilter) {
+.controller('PostCardListCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, $timeout, SearchFilter, $ionicGesture) {
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email || user.username == ''){
         $state.go('register2').then(function(){
@@ -1951,9 +1957,11 @@ angular.module('starter.controllers', [])
         $scope.refresh(false);
     }
 
-    $scope.refresh = function(){
+    $scope.refresh = function(is_pull_to_refresh = true){
         BusinessObjectList.reset($scope);
-        $scope.is_list_loading = false;
+        if(is_pull_to_refresh){
+            $scope.is_list_loading = false;
+        }
         BusinessObjectList.load($scope).then(function(){
             $scope.is_infinite_loading_unlocked = true;
         });

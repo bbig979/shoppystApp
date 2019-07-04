@@ -1245,7 +1245,10 @@ angular.module('starter.services', [])
         get: function(){
             return _picture_array;
         },
-        set: function(pic){
+        set: function(pic, is_this_from_real_device = true){
+            if(is_this_from_real_device){
+                pic = window.Ionic.WebView.convertFileSrc(pic);
+            }
             for(var i = 0; i < _picture_array.length; i++){
                 if(_picture_array[i] == pic){
                     return;
