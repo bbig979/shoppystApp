@@ -4,6 +4,51 @@ angular.module('starter.services', [])
        return $sce.trustAsHtml(val);
    }
 })
+.directive('zoomable', function($timeout, $ionicGesture) {
+  return {
+    restrict: 'A',
+    scope: true,
+    link: function($scope, $element, $attrs) {
+      // pinch to scale
+      var distance_from_screen_top = 0;
+      var handlePinch = function(e) {
+        e.gesture.srcEvent.preventDefault();
+        var scale = 1;
+        var transformOrigin = "";
+        if(e.gesture.scale > 3){
+          scale = 3;
+        }
+        else if(e.gesture.scale < 1){
+          scale = 1;
+        }
+        else{
+          scale = e.gesture.scale;
+        }
+
+        if(! distance_from_screen_top){
+            distance_from_screen_top = $element.siblings('.photo-counter')[0].getBoundingClientRect().top;
+        }
+        transformOrigin = e.gesture.center.pageX+"px " + String(e.gesture.center.pageY - distance_from_screen_top)+"px";
+        TweenMax.set($element, { scale: scale, transformOrigin:transformOrigin });
+      };
+      handlePinch = ionic.animationFrameThrottle(handlePinch);
+      var pinchGesture = $ionicGesture.on('pinch', handlePinch, $element);
+
+      // resize after done
+      var handleTransformEnd = function() {
+          TweenMax.set($element, { clearProps: 'scale' });
+          distance_from_screen_top = 0;
+      };
+      var resizeGesture = $ionicGesture.on('release', handleTransformEnd, $element);
+
+      // cleanup
+      $scope.$on('$destroy', function() {
+        $ionicGesture.off(pinchGesture, 'pinch', $element);
+        $ionicGesture.off(resizeGesture, 'release', $element);
+      });
+    }
+  };
+})
 // ref: https://medium.com/one-tap-software/show-an-ionic-1-spinner-while-online-images-load-8dd65fa51efc
 .directive('imageonload', function() {
     return {

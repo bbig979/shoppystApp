@@ -1879,7 +1879,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PostCardListCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, $timeout, SearchFilter, $ionicGesture) {
+.controller('PostCardListCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, $timeout, SearchFilter) {
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email || user.username == ''){
         $state.go('register2').then(function(){
