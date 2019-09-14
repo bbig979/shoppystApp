@@ -1095,7 +1095,7 @@ angular.module('starter.controllers', [])
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
-            $rootScope.popupMessage('', 'Show off Your Outfit Ideas with 2 or More Outfits!');
+            $rootScope.popupMessage('', 'Upload 2 or More Outfits!');
             $scope.submitted = false;
             return;
         }
@@ -1252,7 +1252,7 @@ angular.module('starter.controllers', [])
         return method == $scope.business_object_list_config.method;
     }
 })
-.controller('PostCreateStep2Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
+.controller('PostCreateStep2Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, PostShare, DeepLink, $ionicPopup) {
     $scope.goal = JSON.parse(localStorage.getItem('post_create_goal'));
 
     $scope.goStep1 = function(call_back_func = null){
@@ -1279,11 +1279,28 @@ angular.module('starter.controllers', [])
         $scope.visibility = 'permanent';
     }
 
-    $scope.resetAllSteps = function(){
+    $scope.completePosting = function(share_link){
         localStorage.removeItem('post_create_goal');
         $scope.resetThisStep();
         $scope.goStep1(function(){
             $state.go('tab.account-account', {refresh : new Date().getTime()});
+            $ionicPopup.show({
+                title: '',
+                template: 'Uploaded',
+                buttons: [{
+                    text: 'Send to Friends & Family',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        DeepLink.share(share_link);
+                    }
+                }, {
+                    text: '<i class="icon ion-close-circled"></i>',
+                    type: 'sl-popup-close-button',
+                    onTap: function (e) {
+
+                    }
+                }]
+            });
         });
     }
 
@@ -1331,7 +1348,7 @@ angular.module('starter.controllers', [])
 
         if(fileURLs.length < 2){
             $ionicLoading.hide();
-            $rootScope.popupMessage('', 'Show off Your Outfit Ideas with 2 or More Outfits!');
+            $rootScope.popupMessage('', 'Upload 2 or More Outfits!');
             $scope.submitted = false;
             return;
         }
@@ -1365,16 +1382,23 @@ angular.module('starter.controllers', [])
                 photoIdArray.push(result.id);
             }
             if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
-                $ionicScrollDelegate.scrollTop();
-                $ionicLoading.show({
-                    template: 'Upload Success ( ' + uploadSuccessCount + ' / ' + uploadTryCount + ' )',
-                    duration:500
-                });
                 var photoIds = photoIdArray.join(',');
-                $http.post($rootScope.baseURL+'/api/post/create/with_photos/'+photoIds, post_data).success(function(){
-                    $scope.resetAllSteps();
+                var share_link = '';
+                $http.post($rootScope.baseURL+'/api/post/create/with_photos/'+photoIds, post_data).success(function(post){
+                    PostShare.getHash(post.id).then(function(hash){
+                        if(hash){
+                            share_link = $rootScope.baseURL + '/s/' + hash;
+                        }
+                        else{
+                            // some error handling when hash creating failed
+                        }
+                        $ionicScrollDelegate.scrollTop();
+                        $ionicLoading.hide();
+                        $scope.completePosting(share_link);
+                    });
                 })
                 .error(function(data, status){
+                    $ionicLoading.hide();
                     $rootScope.handleHttpError(data, status);
                 });
             }
