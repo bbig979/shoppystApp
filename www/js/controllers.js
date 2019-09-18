@@ -2775,7 +2775,10 @@ angular.module('starter.controllers', [])
 
     $scope.updateProfilePicture = function(picData) {
         $ionicLoading.show({template: 'Uploading Photo...', duration:500});
-        var fileURL = picData;
+        // problem: CORS error when accessing file://
+        // cause: native problem of new webView
+        // solution: convert file src using webView function
+        var fileURL = window.Ionic.WebView.convertFileSrc(picData);
         var params = {'user_id': user.id };
 
         ImageUpload.send(fileURL, encodeURI($rootScope.baseURL + '/api/user/'+user.slug+'/editProfilePicture'), success, fail, params);
