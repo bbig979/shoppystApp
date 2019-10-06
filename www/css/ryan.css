@@ -3328,12 +3328,25 @@
   display: inline-block;
 }
 /* line 72, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .post-title {
+  padding: 4vw;
+  padding-top: 0;
+}
+/* line 75, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .post-title p {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  white-space: normal;
+  line-height: 1.3;
+}
+/* line 83, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .caption {
   padding: 4.5vw;
   font-size: 14px;
   white-space: pre-line;
 }
-/* line 77, ../../scss/ryan/_post-list.scss */
+/* line 88, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .caption .goal-tag {
   display: inline-block;
   color: #5CC196;
@@ -3342,15 +3355,15 @@
   border-radius: 5px;
   margin-bottom: 5px;
 }
-/* line 85, ../../scss/ryan/_post-list.scss */
+/* line 96, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .caption .goal-tag i {
   color: #9fdac1;
 }
-/* line 91, ../../scss/ryan/_post-list.scss */
+/* line 102, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .scroll-bar-h {
   display: none;
 }
-/* line 94, ../../scss/ryan/_post-list.scss */
+/* line 105, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .photo {
   width: 92vw;
   margin-left: 4vw;
@@ -3362,7 +3375,7 @@
   border-radius: 1vw;
   background-color: #fff;
 }
-/* line 105, ../../scss/ryan/_post-list.scss */
+/* line 116, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .photo .photo-counter {
   position: absolute;
   top: 4vw;
@@ -3374,7 +3387,7 @@
   opacity: 0.75;
   font-size: 4vw;
 }
-/* line 117, ../../scss/ryan/_post-list.scss */
+/* line 128, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .photo .photo-img-wrapper {
   background-position: 50% 50%;
   background-repeat: no-repeat;
@@ -3382,24 +3395,24 @@
   border-top-left-radius: 1vw;
   border-top-right-radius: 1vw;
 }
-/* line 124, ../../scss/ryan/_post-list.scss */
+/* line 135, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .photo .photo-img-wrapper .photo-img {
   display: block;
   width: 100%;
   padding-top: 120%;
 }
-/* line 130, ../../scss/ryan/_post-list.scss */
+/* line 141, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .photo .photo-img-wrapper.my-photo {
   border-radius: 1vw;
 }
-/* line 133, ../../scss/ryan/_post-list.scss */
+/* line 144, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .photo .vote-toggle {
   position: relative;
   text-align: center;
   padding: 10px;
   height: 15vw;
 }
-/* line 139, ../../scss/ryan/_post-list.scss */
+/* line 150, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .photo .vote-toggle .check-mark {
   display: inline-block;
   color: #ddd;
@@ -3411,13 +3424,13 @@
   font-size: 10vw;
   padding-left: 1vw;
 }
-/* line 150, ../../scss/ryan/_post-list.scss */
+/* line 161, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .photo .vote-toggle .check-mark.checked {
   color: #fff;
   border: 1px solid #fff;
   background: #5CC196;
 }
-/* line 155, ../../scss/ryan/_post-list.scss */
+/* line 166, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list .photo .vote-toggle .source-link {
   position: absolute;
   top: 0;
@@ -3426,99 +3439,99 @@
   padding-top: 4.5vw;
   color: #ddd;
 }
-/* line 166, ../../scss/ryan/_post-list.scss */
+/* line 177, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list ion-slide:nth-child(20n+1) .photo-img-wrapper {
-  background-color: #8e7e68;
+  background-color: #9c7c72;
 }
-/* line 166, ../../scss/ryan/_post-list.scss */
+/* line 177, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list ion-slide:nth-child(20n+2) .photo-img-wrapper {
-  background-color: #d3cbd4;
+  background-color: #bcb5a7;
 }
-/* line 166, ../../scss/ryan/_post-list.scss */
+/* line 177, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list ion-slide:nth-child(20n+3) .photo-img-wrapper {
   background-color: #b9b1a3;
 }
-/* line 166, ../../scss/ryan/_post-list.scss */
+/* line 177, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .photo-list ion-slide:nth-child(20n+4) .photo-img-wrapper {
-  background-color: #d3cbd4;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+5) .photo-img-wrapper {
-  background-color: #2f444e;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+6) .photo-img-wrapper {
-  background-color: #796862;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+7) .photo-img-wrapper {
-  background-color: #8e7e68;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+8) .photo-img-wrapper {
-  background-color: #2f444e;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+9) .photo-img-wrapper {
-  background-color: #9c7c72;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+10) .photo-img-wrapper {
-  background-color: #b9b1a3;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+11) .photo-img-wrapper {
-  background-color: #8e7e68;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+12) .photo-img-wrapper {
-  background-color: #7f5f3a;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+13) .photo-img-wrapper {
-  background-color: #909396;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+14) .photo-img-wrapper {
-  background-color: #b89e98;
-}
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+15) .photo-img-wrapper {
   background-color: #bcb5a7;
 }
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+16) .photo-img-wrapper {
-  background-color: #b9b1a3;
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+5) .photo-img-wrapper {
+  background-color: #a0948a;
 }
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+17) .photo-img-wrapper {
-  background-color: #7f5f3a;
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+6) .photo-img-wrapper {
+  background-color: #a6a88e;
 }
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+18) .photo-img-wrapper {
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+7) .photo-img-wrapper {
   background-color: #908376;
 }
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+19) .photo-img-wrapper {
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+8) .photo-img-wrapper {
+  background-color: #796862;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+9) .photo-img-wrapper {
+  background-color: #7f5f3a;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+10) .photo-img-wrapper {
+  background-color: #d3cbd4;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+11) .photo-img-wrapper {
   background-color: #bbb4bd;
 }
-/* line 166, ../../scss/ryan/_post-list.scss */
-.post-card-list .post-card .photo-list ion-slide:nth-child(20n+20) .photo-img-wrapper {
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+12) .photo-img-wrapper {
+  background-color: #909396;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+13) .photo-img-wrapper {
+  background-color: #9a7e7c;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+14) .photo-img-wrapper {
+  background-color: #9c7c72;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+15) .photo-img-wrapper {
   background-color: #cbcaca;
 }
-/* line 172, ../../scss/ryan/_post-list.scss */
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+16) .photo-img-wrapper {
+  background-color: #bbb4bd;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+17) .photo-img-wrapper {
+  background-color: #46504d;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+18) .photo-img-wrapper {
+  background-color: #a0948a;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+19) .photo-img-wrapper {
+  background-color: #796862;
+}
+/* line 177, ../../scss/ryan/_post-list.scss */
+.post-card-list .post-card .photo-list ion-slide:nth-child(20n+20) .photo-img-wrapper {
+  background-color: #908376;
+}
+/* line 183, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .post-summary .totals {
   float: right;
   font-size: 13px;
   padding: 4vw;
 }
-/* line 177, ../../scss/ryan/_post-list.scss */
+/* line 188, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .post-summary .time-ago {
   float: left;
   font-size: 13px;
   padding: 4vw;
 }
-/* line 183, ../../scss/ryan/_post-list.scss */
+/* line 194, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .share-warning {
   margin: 2vw 4vw 4vw 4vw;
   padding: 4vw;
@@ -3529,12 +3542,12 @@
   position: relative;
   text-align: center;
 }
-/* line 193, ../../scss/ryan/_post-list.scss */
+/* line 204, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .share-warning i {
   vertical-align: sub;
   font-size: 20px;
 }
-/* line 198, ../../scss/ryan/_post-list.scss */
+/* line 209, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .share-warning:after {
   top: 100%;
   right: 15%;
@@ -3549,70 +3562,70 @@
   border-width: 10px;
   margin-left: -10px;
 }
-/* line 212, ../../scss/ryan/_post-list.scss */
+/* line 223, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card hr {
   border: 0;
   border-top: 1px solid #f1f1f1;
 }
-/* line 216, ../../scss/ryan/_post-list.scss */
+/* line 227, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .post-card-footer {
   background-color: #fff;
   padding: 0 4vw;
 }
-/* line 220, ../../scss/ryan/_post-list.scss */
+/* line 231, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .post-card-footer .option {
   width: 33%;
   float: left;
   text-align: center;
 }
-/* line 225, ../../scss/ryan/_post-list.scss */
+/* line 236, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .post-card-footer .option button {
   font-size: 12px;
   font-weight: bold;
   color: #777;
 }
-/* line 231, ../../scss/ryan/_post-list.scss */
+/* line 242, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .post-card-footer .option.expired-post {
   width: 50%;
 }
-/* line 235, ../../scss/ryan/_post-list.scss */
+/* line 246, ../../scss/ryan/_post-list.scss */
 .post-card-list .post-card .divider {
   height: 20px;
   background-color: #f7f7f7;
   border-top: 1px solid #e6e6e6;
 }
-/* line 241, ../../scss/ryan/_post-list.scss */
+/* line 252, ../../scss/ryan/_post-list.scss */
 .post-card-list .load-more-snaplooks {
   padding: 0 4vw;
   padding-bottom: 30px;
 }
 
-/* line 247, ../../scss/ryan/_post-list.scss */
+/* line 258, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .scroll-refresher {
   top: -20px;
 }
-/* line 250, ../../scss/ryan/_post-list.scss */
+/* line 261, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns#tab-account .scroll-refresher {
   top: -60px;
 }
-/* line 253, ../../scss/ryan/_post-list.scss */
+/* line 264, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .button-bar-wrapper {
   margin-bottom: 14px;
 }
-/* line 256, ../../scss/ryan/_post-list.scss */
+/* line 267, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .load-more-snaplooks {
   padding: 5vw;
   float: left;
   width: 100vw;
 }
-/* line 261, ../../scss/ryan/_post-list.scss */
+/* line 272, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card {
   width: 50%;
   float: left;
   padding: 2.5vw;
   border: 0;
 }
-/* line 266, ../../scss/ryan/_post-list.scss */
+/* line 277, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card .photo-img-wrapper {
   background-color: #eee;
   background-position: 50% 50%;
@@ -3620,93 +3633,107 @@
   background-size: cover;
   border-radius: 2vw;
 }
-/* line 273, ../../scss/ryan/_post-list.scss */
+/* line 284, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card .photo-img-wrapper .photo-img {
   display: block;
   width: 100%;
   padding-top: 133%;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 290, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card .post-title {
+  padding: 1vw 2vw;
+  padding-bottom: 0;
+}
+/* line 293, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card .post-title p {
+  font-size: 12px;
+  font-weight: bold;
+  color: #333;
+  white-space: normal;
+  height: 30px;
+  line-height: 1.3;
+}
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+1) .photo-img-wrapper {
-  background-color: #8e7e68;
-}
-/* line 281, ../../scss/ryan/_post-list.scss */
-.post-card-list-two-columns .post-card:nth-child(20n+2) .photo-img-wrapper {
-  background-color: #9c7c72;
-}
-/* line 281, ../../scss/ryan/_post-list.scss */
-.post-card-list-two-columns .post-card:nth-child(20n+3) .photo-img-wrapper {
-  background-color: #7c7d7f;
-}
-/* line 281, ../../scss/ryan/_post-list.scss */
-.post-card-list-two-columns .post-card:nth-child(20n+4) .photo-img-wrapper {
-  background-color: #b9b1a3;
-}
-/* line 281, ../../scss/ryan/_post-list.scss */
-.post-card-list-two-columns .post-card:nth-child(20n+5) .photo-img-wrapper {
   background-color: #a0948a;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card:nth-child(20n+2) .photo-img-wrapper {
+  background-color: #7f5f3a;
+}
+/* line 304, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card:nth-child(20n+3) .photo-img-wrapper {
+  background-color: #d3cbd4;
+}
+/* line 304, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card:nth-child(20n+4) .photo-img-wrapper {
+  background-color: #d3cbd4;
+}
+/* line 304, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card:nth-child(20n+5) .photo-img-wrapper {
+  background-color: #8e7e68;
+}
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+6) .photo-img-wrapper {
-  background-color: #7c7d7f;
+  background-color: #7f5f3a;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+7) .photo-img-wrapper {
-  background-color: #2f444e;
+  background-color: #452d26;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+8) .photo-img-wrapper {
-  background-color: #b89e98;
+  background-color: #46504d;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+9) .photo-img-wrapper {
   background-color: #bbb4bd;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+10) .photo-img-wrapper {
-  background-color: #9a7e7c;
+  background-color: #7f5f3a;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+11) .photo-img-wrapper {
-  background-color: #9c7c72;
+  background-color: #bcb5a7;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+12) .photo-img-wrapper {
-  background-color: #b9b1a3;
-}
-/* line 281, ../../scss/ryan/_post-list.scss */
-.post-card-list-two-columns .post-card:nth-child(20n+13) .photo-img-wrapper {
-  background-color: #d3cbd4;
-}
-/* line 281, ../../scss/ryan/_post-list.scss */
-.post-card-list-two-columns .post-card:nth-child(20n+14) .photo-img-wrapper {
-  background-color: #796862;
-}
-/* line 281, ../../scss/ryan/_post-list.scss */
-.post-card-list-two-columns .post-card:nth-child(20n+15) .photo-img-wrapper {
-  background-color: #8e7e68;
-}
-/* line 281, ../../scss/ryan/_post-list.scss */
-.post-card-list-two-columns .post-card:nth-child(20n+16) .photo-img-wrapper {
   background-color: #908376;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card:nth-child(20n+13) .photo-img-wrapper {
+  background-color: #46504d;
+}
+/* line 304, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card:nth-child(20n+14) .photo-img-wrapper {
+  background-color: #909396;
+}
+/* line 304, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card:nth-child(20n+15) .photo-img-wrapper {
+  background-color: #7f5f3a;
+}
+/* line 304, ../../scss/ryan/_post-list.scss */
+.post-card-list-two-columns .post-card:nth-child(20n+16) .photo-img-wrapper {
+  background-color: #46504d;
+}
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+17) .photo-img-wrapper {
-  background-color: #909396;
+  background-color: #7f5f3a;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+18) .photo-img-wrapper {
-  background-color: #9a7e7c;
+  background-color: #d3cbd4;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+19) .photo-img-wrapper {
-  background-color: #909396;
+  background-color: #7f5f3a;
 }
-/* line 281, ../../scss/ryan/_post-list.scss */
+/* line 304, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card:nth-child(20n+20) .photo-img-wrapper {
-  background-color: #a6a88e;
+  background-color: #362f27;
 }
-/* line 285, ../../scss/ryan/_post-list.scss */
+/* line 308, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .post-card .ion-ios-browsers {
   position: absolute;
   top: 3vw;
@@ -3719,20 +3746,20 @@
   -webkit-transform: scaleY(-1);
   transform: scaleY(-1);
 }
-/* line 298, ../../scss/ryan/_post-list.scss */
+/* line 321, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .even {
   padding-left: 5vw;
 }
-/* line 300, ../../scss/ryan/_post-list.scss */
+/* line 323, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .even .ion-ios-browsers {
   right: 4.5vw;
 }
-/* line 304, ../../scss/ryan/_post-list.scss */
+/* line 327, ../../scss/ryan/_post-list.scss */
 .post-card-list-two-columns .odd {
   padding-right: 5vw;
 }
 
-/* line 309, ../../scss/ryan/_post-list.scss */
+/* line 332, ../../scss/ryan/_post-list.scss */
 .vote-result .photo {
   width: 44vw !important;
   float: left;
@@ -3742,13 +3769,13 @@
   border: 0px solid #ddd;
   box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
 }
-/* line 318, ../../scss/ryan/_post-list.scss */
+/* line 341, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .post_img {
   display: block;
   width: 100%;
   padding-top: 115%;
 }
-/* line 323, ../../scss/ryan/_post-list.scss */
+/* line 346, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .photo_wrapper {
   border: 0;
   background-position: 50% 50%;
@@ -3758,7 +3785,7 @@
   float: left;
   background-color: #f0f0f0;
 }
-/* line 332, ../../scss/ryan/_post-list.scss */
+/* line 355, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .desc_row {
   float: left;
   width: 50%;
@@ -3766,17 +3793,17 @@
   color: #aaa;
   padding: 5px 5px 0px 10px;
 }
-/* line 339, ../../scss/ryan/_post-list.scss */
+/* line 362, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .desc_row.profile {
   padding: 5px 0 5px 5px;
 }
-/* line 342, ../../scss/ryan/_post-list.scss */
+/* line 365, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .add_to_compare {
   position: absolute;
   bottom: 10px;
   right: 2%;
 }
-/* line 347, ../../scss/ryan/_post-list.scss */
+/* line 370, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .like-button {
   min-width: 20px;
   min-height: 21px;
@@ -3784,12 +3811,12 @@
   padding-right: 5px;
   margin-right: 10px;
 }
-/* line 354, ../../scss/ryan/_post-list.scss */
+/* line 377, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .like-button:before {
   line-height: 20px;
   font-size: 25px;
 }
-/* line 358, ../../scss/ryan/_post-list.scss */
+/* line 381, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .profile-image {
   width: 25px;
   height: 25px;
@@ -3801,11 +3828,11 @@
   float: left;
   margin-right: 5px;
 }
-/* line 366, ../../scss/ryan/_post-list.scss */
+/* line 389, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .user-name {
   padding: 2px;
 }
-/* line 369, ../../scss/ryan/_post-list.scss */
+/* line 392, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .add-compare-button {
   float: right;
   min-width: 20px;
@@ -3814,31 +3841,31 @@
   padding-right: 6px;
   margin-right: 6px;
 }
-/* line 377, ../../scss/ryan/_post-list.scss */
+/* line 400, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .add-compare-button:before {
   line-height: 20px;
 }
-/* line 380, ../../scss/ryan/_post-list.scss */
+/* line 403, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .button.button-dark.button-clear.ion-ios-heart {
   color: #FF4C62;
 }
-/* line 383, ../../scss/ryan/_post-list.scss */
+/* line 406, ../../scss/ryan/_post-list.scss */
 .vote-result .photo i {
   width: 15px;
   text-align: center;
 }
-/* line 388, ../../scss/ryan/_post-list.scss */
+/* line 411, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .right-align ion-item {
   float: right;
 }
-/* line 391, ../../scss/ryan/_post-list.scss */
+/* line 414, ../../scss/ryan/_post-list.scss */
 .vote-result .photo .right-align .add_to_compare {
   position: absolute;
   bottom: 10px;
   right: 52%;
 }
 
-/* line 400, ../../scss/ryan/_post-list.scss */
+/* line 423, ../../scss/ryan/_post-list.scss */
 .post-list .post {
   width: 100%;
   float: left;
@@ -3846,13 +3873,13 @@
   position: relative;
   border-right-color: #fff;
 }
-/* line 401, ../../scss/ryan/_post-list.scss */
+/* line 424, ../../scss/ryan/_post-list.scss */
 .post-list .post .post_img {
   display: block;
   width: 100%;
   padding-top: 120%;
 }
-/* line 411, ../../scss/ryan/_post-list.scss */
+/* line 434, ../../scss/ryan/_post-list.scss */
 .post-list .post ion-item {
   border: 0;
   background-position: 50% 50%;
@@ -3862,7 +3889,7 @@
   float: left;
   background-color: #f0f0f0;
 }
-/* line 420, ../../scss/ryan/_post-list.scss */
+/* line 443, ../../scss/ryan/_post-list.scss */
 .post-list .post .desc_row {
   float: left;
   width: 50%;
@@ -3870,17 +3897,17 @@
   color: #aaa;
   padding: 5px 5px 0px 10px;
 }
-/* line 427, ../../scss/ryan/_post-list.scss */
+/* line 450, ../../scss/ryan/_post-list.scss */
 .post-list .post .desc_row.profile {
   padding: 5px 0 5px 5px;
 }
-/* line 430, ../../scss/ryan/_post-list.scss */
+/* line 453, ../../scss/ryan/_post-list.scss */
 .post-list .post .add_to_compare {
   position: absolute;
   bottom: 10px;
   right: 2%;
 }
-/* line 435, ../../scss/ryan/_post-list.scss */
+/* line 458, ../../scss/ryan/_post-list.scss */
 .post-list .post .like-button {
   min-width: 20px;
   min-height: 21px;
@@ -3888,12 +3915,12 @@
   padding-right: 5px;
   margin-right: 10px;
 }
-/* line 442, ../../scss/ryan/_post-list.scss */
+/* line 465, ../../scss/ryan/_post-list.scss */
 .post-list .post .like-button:before {
   line-height: 20px;
   font-size: 25px;
 }
-/* line 446, ../../scss/ryan/_post-list.scss */
+/* line 469, ../../scss/ryan/_post-list.scss */
 .post-list .post .profile-image {
   width: 25px;
   height: 25px;
@@ -3905,11 +3932,11 @@
   float: left;
   margin-right: 5px;
 }
-/* line 454, ../../scss/ryan/_post-list.scss */
+/* line 477, ../../scss/ryan/_post-list.scss */
 .post-list .post .user-name {
   padding: 2px;
 }
-/* line 457, ../../scss/ryan/_post-list.scss */
+/* line 480, ../../scss/ryan/_post-list.scss */
 .post-list .post .add-compare-button {
   float: right;
   min-width: 20px;
@@ -3918,24 +3945,24 @@
   padding-right: 6px;
   margin-right: 6px;
 }
-/* line 465, ../../scss/ryan/_post-list.scss */
+/* line 488, ../../scss/ryan/_post-list.scss */
 .post-list .post .add-compare-button:before {
   line-height: 20px;
 }
-/* line 468, ../../scss/ryan/_post-list.scss */
+/* line 491, ../../scss/ryan/_post-list.scss */
 .post-list .post .button.button-dark.button-clear.ion-ios-heart {
   color: #FF4C62;
 }
-/* line 471, ../../scss/ryan/_post-list.scss */
+/* line 494, ../../scss/ryan/_post-list.scss */
 .post-list .post i {
   width: 15px;
   text-align: center;
 }
-/* line 476, ../../scss/ryan/_post-list.scss */
+/* line 499, ../../scss/ryan/_post-list.scss */
 .post-list .post .right-align ion-item {
   float: right;
 }
-/* line 479, ../../scss/ryan/_post-list.scss */
+/* line 502, ../../scss/ryan/_post-list.scss */
 .post-list .post .right-align .add_to_compare {
   position: absolute;
   bottom: 10px;
