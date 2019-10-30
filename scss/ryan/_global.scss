@@ -8,8 +8,8 @@ a{
   text-decoration: none;
 }
 .logo{
-  width: 130px;
-  padding-top: 7px;
+  width: 150px;
+  padding-top: 5px;
 }
 .user-name{
   color: #444;
@@ -108,6 +108,9 @@ a{
 .button.button-positive {
   background-color: $primary-color;
 }
+.popup-buttons .button.button-positive {
+  padding: 10px;
+}
 .button.button-positive.activated {
   background-color: $primary-color;
 }
@@ -162,6 +165,14 @@ a{
     font-size: 13px;
     font-family: FontAwesome, sans-serif;
     content: "\f05d  The username is available";
+    float: right;
+    padding-right:15px;
+}
+.title-wrapper.invalid::after {
+    color: red;
+    font-size: 13px;
+    font-family: FontAwesome, sans-serif;
+    content: "\f05e  The title is required";
     float: right;
     padding-right:15px;
 }

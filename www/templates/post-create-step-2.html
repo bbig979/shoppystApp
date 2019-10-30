@@ -7,10 +7,6 @@
             <a class="step step-1 completed" ng-click="goStep1()"><span class="label"></span></a>
             <a class="step step-2 active"><span class="label"></span></a>
         </div>
-        <div class="step-message">
-            <div class="goal-tag" ng-click="resetPreviousStep();goStep1()" ng-show="{{ goal != null }}"><i class="fa fa-bolt" aria-hidden="true"></i> {{ goal.name }} <i class="icon ion-close-circled"></i></div>
-            <div class="goal-tag" ng-click="goStep1()" ng-show="{{ goal == null}}"><i class="fa fa-bolt" aria-hidden="true"></i> No looks chosen <i class="icon ion-close-circled"></i></div>
-        </div>
 
         <form ng-submit="sharePost(captions, goal.id, other)" name="shareForm">
             <ul class="post-images">

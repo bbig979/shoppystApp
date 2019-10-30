@@ -1381,7 +1381,7 @@ angular.module('starter.services', [])
                     $fallback_url: url,
                 }
 
-                var message = 'Which looks better?';
+                var message = 'Pick the best outfit!';
 
                 // optional listeners (must be called before showShareSheet)
                 branchUniversalObj.onShareSheetLaunched(function (res) {

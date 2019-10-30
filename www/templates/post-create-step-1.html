@@ -5,47 +5,20 @@
         <div class="steps">
             <div class="line"></div>
             <a class="step step-1 active"><span class="label"></span></a>
-            <a class="step step-2" ng-click="goStep2()"><span class="label"></span></a>
+            <a class="step step-2"><span class="label"></span></a>
         </div>
-        <div class="step-message">How do you want to look?</div>
+        <div class="step-message">What's your style challenge?</div>
 
-        <form name="searchForm" ng-submit="submitSearchTerm()">
-            <div class="bar item-input-inset">
-                <label class="item-input-wrapper">
-                    <i class="icon ion-ios-search placeholder-icon"></i>
-                    <input type="search" id="search" placeholder="Search looks" ng-model="search_term" autocomplete="off" ng-keyup="searchTermSuggestion()">
-                </label>
-                <div ng-click="search_term = '';searchTermSuggestion();" class="button button-clear search-clear" ng-show="search_term != ''">X</div>
+        <form name="searchForm" ng-submit="setTitle(title)">
+            <label class="item item-input item-floating-label title-wrapper" ng-class="titleState">
+                <input type="text" ng-model="title" placeholder="Type title of style challenge" autocomplete="off">
+            </label>
+            <div class="monthly-style-challenge">
+                Out of ideas? Follow our style challenges <a ng-click="openInAppBrowser('https://www.instagram.com/snaplookapp/')">https://www.instagram.com/snaplookapp/</a>
+            </div>
+            <div class="button-padding">
+                <button class="button button-block button-positive" type="submit">Next</button>
             </div>
         </form>
-        <div class="search-toggle clearfix">
-            <a ng-class="{ active: isMethod('trending') }" ng-click="setMethod('trending');">Trending</a>
-            <a ng-class="{ active: isMethod('random') }" ng-click="setMethod('random');">Random</a>
-            <a ng-class="{ active: isMethod('favorites') }" ng-click="setMethod('favorites');">Favorites</a>
-        </div>
-        <div class="loading-spinner" data-loading ng-if="is_list_loading">
-            <ion-spinner></ion-spinner>
-        </div>
-        <div class="no-result" ng-if="list.length == 0 && is_result_empty && !isMethod('favorites')">
-            <span class="goal-tag">{{ getProspectSearchTerm() }}</span>
-            <button class="button button-block button-positive" ng-click="storeGoal()">Create a New Look</button>
-        </div>
-        <div class="no-result" ng-if="list.length == 0 && is_result_empty && isMethod('favorites')">
-            You have not set a look yet
-        </div>
-        <ion-list>
-            <div>
-                <ion-item ng-repeat="goal in list" class="goal-card">
-                    <div ng-click="setGoal(goal)" class="goal-item">
-                        <div class="goal-name">{{goal.name}}</div>
-                        <div class="goal-count">{{goal.display_count}} posts</div>
-                    </div>
-                    <div class="goal-example" ng-click="goSearchPost(goal.name, 'goal')">
-                        <i class="ion-ios-information-outline"></i>
-                    </div>
-                </ion-item>
-            </div>
-        </ion-list>
-        <ion-infinite-scroll ng-if="!is_pagination_done && !isMethod('random')" on-infinite="load()" distance="10%" immediate-check="false"></ion-infinite-scroll>
     </ion-content>
 </ion-view>

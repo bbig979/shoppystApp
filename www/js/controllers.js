@@ -97,9 +97,6 @@ angular.module('starter.controllers', [])
             content = content.replace(/(#[a-z\d-_]+)/ig, "<a href='#/tab/search/$1/tag/"+tab+"'>$1</a>");
             content = content.replace(/(\/#)/g, "/");
         }
-        if(post.goal != null){
-            content += ' <a href="#/tab/search/' + post.goal.name + '/goal/' + tab + '"><i class="fa fa-bolt" aria-hidden="true"></i> ' + post.goal.name + '</a>';
-        }
 
         return content;
     };
@@ -1189,7 +1186,7 @@ angular.module('starter.controllers', [])
       return visibility === $scope.visibility;
     }
 })
-.controller('PostCreateStep1Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, BusinessObjectList, GoalBO) {
+.controller('PostCreateStep1Ctrl_deprecated_20191005', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, BusinessObjectList, GoalBO) {
     $scope.search_term = '';
     $scope.business_object_list_config = {
         type : 'goal',
@@ -1252,7 +1249,7 @@ angular.module('starter.controllers', [])
         return method == $scope.business_object_list_config.method;
     }
 })
-.controller('PostCreateStep2Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, PostShare, DeepLink, $ionicPopup) {
+.controller('PostCreateStep2Ctrl_deprecated_20191005', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, PostShare, DeepLink, $ionicPopup) {
     $scope.goal = JSON.parse(localStorage.getItem('post_create_goal'));
 
     $scope.goStep1 = function(call_back_func = null){
@@ -1358,6 +1355,208 @@ angular.module('starter.controllers', [])
             user_id: user.id,
             goal: goal_id,
             other: other,
+            visibility: $scope.visibility,
+        };
+        for(var i=0; i<fileURLs.length; i++){
+            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/photo/create/' + i), success, fail);
+        }
+
+        // Transfer succeeded
+        function success(r) {
+            // problem: r from test call and real call is different format
+            // cause: test is getting data from $http and real is getting data from ft.upload
+            // solution: parse differently by checking attribute
+            var result;
+            if (typeof r.response != 'undefined'){
+                result = JSON.parse(r.response);
+            }
+            else{
+                result = r;
+            }
+            uploadTryCount++;
+            uploadSuccessCount++;
+            if(typeof result.id !== 'undefined'){
+                photoIdArray.push(result.id);
+            }
+            if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
+                var photoIds = photoIdArray.join(',');
+                var share_link = '';
+                $http.post($rootScope.baseURL+'/api/post/create/with_photos/'+photoIds, post_data).success(function(post){
+                    PostShare.getHash(post.id).then(function(hash){
+                        if(hash){
+                            share_link = $rootScope.baseURL + '/s/' + hash;
+                        }
+                        else{
+                            // some error handling when hash creating failed
+                        }
+                        $ionicScrollDelegate.scrollTop();
+                        $ionicLoading.hide();
+                        $scope.completePosting(share_link);
+                    });
+                })
+                .error(function(data, status){
+                    $ionicLoading.hide();
+                    $rootScope.handleHttpError(data, status);
+                });
+            }
+        }
+
+        // Transfer failed
+        function fail(error) {
+            uploadTryCount++;
+            if(uploadTryCount == fileURLs.length && uploadSuccessCount == 0){
+                $ionicLoading.show({template: 'Upload Failed', duration:500});
+                $scope.submitted = false;
+                uploadTryCount = 0;
+                uploadSuccessCount = 0;
+            }
+        }
+    }
+    $scope.hasContent = function(){
+        return CameraPictues.get().length > 0 ||
+            (typeof(this.captions) !== 'undefined' && this.captions !== '')
+    }
+    $scope.setActive = function(visibility){
+        $scope.visibility = visibility;
+        localStorage.setItem('post_create_visibility', visibility);
+    }
+    $scope.isActive = function(visibility){
+        return visibility === $scope.visibility;
+    }
+})
+.controller('PostCreateStep1Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, BusinessObjectList, GoalBO) {
+    $scope.title = localStorage.getItem('post_create_title');
+    $scope.titleState = "valid";
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-create-step-1');
+        SlideHeader.viewEntered($scope);
+    });
+
+    $scope.goStep2 = function(){
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+        $state.go('tab.post-create-step-2', {refresh : new Date().getTime()});
+    }
+
+    $scope.setTitle = function(title){
+        if(title){
+            localStorage.setItem('post_create_title', title);
+            $scope.goStep2();
+        }
+        else{
+            $scope.titleState = "invalid";
+        }
+    }
+
+    $scope.getTitle = function(){
+        return localStorage.getItem('post_create_title');
+    }
+})
+.controller('PostCreateStep2Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, PostShare, DeepLink, $ionicPopup) {
+
+    $scope.goStep1 = function(call_back_func = null){
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+        $state.go('tab.post-create-step-1', {refresh : new Date().getTime()}).then(function(){
+            if(call_back_func){
+                call_back_func();
+            }
+        });
+    }
+
+    $scope.resetPreviousStep = function(){
+        localStorage.removeItem('post_create_title');
+    }
+
+    $scope.resetThisStep = function(){
+        CameraPictues.reset();
+        localStorage.removeItem('post_create_visibility');
+        localStorage.removeItem('post_create_captions');
+        this.captions = '';
+        $scope.visibility = 'permanent';
+    }
+
+    $scope.completePosting = function(share_link){
+        localStorage.removeItem('post_create_title');
+        $scope.resetThisStep();
+        $scope.goStep1(function(){
+            $state.go('tab.account-account', {refresh : new Date().getTime()});
+            $ionicPopup.show({
+                title: '',
+                template: 'Uploaded',
+                buttons: [{
+                    text: 'Send to friends to have them pick the best outfit',
+                    type: 'button-positive',
+                    onTap: function (e) {
+                        DeepLink.share(share_link);
+                    }
+                }, {
+                    text: '<i class="icon ion-close-circled"></i>',
+                    type: 'sl-popup-close-button',
+                    onTap: function (e) {
+
+                    }
+                }]
+            });
+        });
+    }
+
+    $scope.setCaption = function(){
+        localStorage.setItem('post_create_captions', this.captions);
+    }
+
+    $scope.getCaption = function(){
+        if(localStorage.getItem('post_create_captions')){
+            this.captions = localStorage.getItem('post_create_captions');
+        }
+    }
+
+
+
+    $scope.getCaption();
+    $scope.visibility = 'permanent';
+    if(localStorage.getItem('post_create_visibility')){
+        $scope.visibility = localStorage.getItem('post_create_visibility');
+    }
+    $scope.submitted = false;
+    $scope.cameraPictues = CameraPictues;
+
+    var user = $rootScope.getCurrentUser();
+
+    $scope.$on('$ionicView.enter', function() {
+        UxAnalytics.startScreen('post-create-step-2');
+        SlideHeader.viewEntered($scope);
+    });
+
+    $scope.sharePost = function(captions) {
+        var fileURLs = CameraPictues.get();
+        var share_post_scope = this;
+        var photoIdArray = [];
+        var uploadTryCount = 0;
+        var uploadSuccessCount = 0;
+        var param_caption = '';
+        if (typeof captions != 'undefined')
+        {
+            param_caption = captions;
+        }
+
+        $scope.submitted = true;
+        $ionicLoading.show({template: 'Uploading Photo...<br/><br/><ion-spinner></ion-spinner>'});
+
+        if(fileURLs.length < 2){
+            $ionicLoading.hide();
+            $rootScope.popupMessage('', 'Upload 2 or More Different Outfits!');
+            $scope.submitted = false;
+            return;
+        }
+
+        var post_data = {
+            captions: param_caption,
+            user_id: user.id,
+            title : localStorage.getItem('post_create_title'),
             visibility: $scope.visibility,
         };
         for(var i=0; i<fileURLs.length; i++){
@@ -1927,13 +2126,13 @@ angular.module('starter.controllers', [])
     var config_map = {
         'single_post' : {
             'title' : 'OUTFITS',
-            'no_result_message' : 'Outfit ideas disappeared in a snap!' ,
+            'no_result_message' : 'Post disappeared in a snap!' ,
             'view' : 'single_post',
             'preload' : false,
         },
         'deep_link' : {
             'title' : 'OUTFITS',
-            'no_result_message' : 'Outfit ideas disappeared in a snap!' ,
+            'no_result_message' : 'Post disappeared in a snap!' ,
             'view' : 'deep_link',
             'preload' : false,
         },
@@ -1945,13 +2144,13 @@ angular.module('starter.controllers', [])
         },
         'search' : {
             'title' : showSearchTerm(),
-            'no_result_message' : 'No outfit ideas found' ,
+            'no_result_message' : 'No posts found' ,
             'view' : 'post_search_result',
             'preload' : true,
         },
         'explore' : {
-            'title' : "<img class='logo' src='img/snaplook_revised_logo.png'/>",
-            'no_result_message' : 'No outfit ideas found' ,
+            'title' : "<img class='logo' src='img/logo_20191030.png'/>",
+            'no_result_message' : 'No posts found' ,
             'view' : 'explore',
             'preload' : true,
         },
@@ -2581,7 +2780,7 @@ angular.module('starter.controllers', [])
                     $state.go('tab.home');
                     break;
                 case 'camera':
-                    $state.go('tab.post-create-step-1');
+                    $state.go('tab.post-create-step-1', {refresh : new Date().getTime()});
                     break;
                 case 'notification':
                     $state.go('tab.notification');

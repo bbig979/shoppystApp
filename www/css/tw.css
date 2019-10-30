@@ -892,13 +892,21 @@
 #create-post .compare-table .compare-row .mark {
   text-align: center;
 }
+
 /* line 314, ../../scss/tw/_post-create.scss */
-#create-post .button-padding {
+.button-padding {
   padding: 5px 10px;
 }
+
 /* line 317, ../../scss/tw/_post-create.scss */
-#create-post .padding-top {
+.padding-top {
   padding-top: 20px;
+}
+
+/* line 320, ../../scss/tw/_post-create.scss */
+.monthly-style-challenge {
+  text-align: center;
+  padding-top: 50px;
 }
 
 /* line 2, ../../scss/tw/_post-detail.scss */
@@ -1214,7 +1222,7 @@
   padding: 10px;
   float: left;
   text-transform: uppercase;
-  width: 33.33%;
+  width: 50%;
   text-align: center;
   border-bottom: 1px solid #eee;
 }

@@ -19,7 +19,6 @@
             <div class="search-toggle">
                 <a ng-class="{ active: search_type_active === 'tag' }" ng-click="setType(searchTerm, 'tag');">Tag</a>
                 <a ng-class="{ active: search_type_active === 'people' }" ng-click="setType(searchTerm, 'people');">User</a>
-                <a ng-class="{ active: search_type_active === 'goal' }" ng-click="setType(searchTerm, 'goal');">Look</a>
             </div>
             <div class="search-running" ng-if="isSearchRunning">
                 <i class="fa fa-search" aria-hidden="true"></i> Searching...
