@@ -28,57 +28,6 @@
                 </li>
             </ul>
             <div class="clearfix"></div>
-            <div class="padding visibility">
-                <div class="title">
-                    Visibility
-                </div>
-                <div class="button-bar">
-                    <a class="button button-small" ng-class="{'button-positive': isActive('private')}" ng-click="setActive('private')">Private</a>
-                    <a class="button button-small" ng-class="{'button-positive': isActive('permanent')}" ng-click="setActive('permanent')">Public</a>
-                </div>
-                <div class="selected-visibility private" ng-class="visibility == 'private' ? 'ng-show' : 'ng-hide'">
-                    <div class="compare-table">
-                        <div class="compare-row">
-                            <span class="label">Visible to Other Users</span>
-                            <span class="mark"><i class="icon ion-close-round"></i></span>
-                        </div>
-                        <div class="compare-row">
-                            <span class="label">Send to Friends & Family</span>
-                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
-                        </div>
-                        <div class="compare-row">
-                            <span class="label">24 Hours Only</span>
-                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <hr>
-                    <div class="recommendation">
-                        Keep it Private and Send to Friends and Family!
-                    </div>
-                </div>
-                <div class="selected-visibility permanent" ng-class="visibility == 'permanent' ? 'ng-show' : 'ng-hide'">
-                    <div class="compare-table">
-                        <div class="compare-row">
-                            <span class="label">Visible to Other Users</span>
-                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
-                        </div>
-                        <div class="compare-row">
-                            <span class="label">Send to Friends & Family</span>
-                            <span class="mark"><i class="icon ion-checkmark-round"></i></span>
-                        </div>
-                        <div class="compare-row">
-                            <span class="label">24 Hours Only</span>
-                            <span class="mark"><i class="icon ion-close-round"></i></span>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <hr>
-                    <div class="recommendation">
-                        Get Feedback from Other Users!
-                    </div>
-                </div>
-            </div>
             <div class="post-caption padding" ng-show="hasContent()">
                 <textarea placeholder="Write a Caption" class="form-control" ng-model="captions" ng-change="setCaption()"></textarea>
             </div>
