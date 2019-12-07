@@ -123,6 +123,22 @@
 	}
 }
 #create-post {
+	.duel-title{
+		position: relative;
+		input{
+			width: 100%;
+		    padding: 10px;
+		    border: 1px solid #eee;
+		    font-weight: bold;
+		    border-radius: 5px;
+			background-color: #fff;
+		}
+		.remove-image{
+			color: #777;
+			top: 20px;
+    		right: 18px;
+		}
+	}
 	.post-images{
 		li{
 			width: 50%;
@@ -193,6 +209,13 @@
 			border: 1px solid #ddd;
 			padding: 10px;
 			@include border-radius(3px);
+		}
+	}
+
+	.post-duel-allow{
+		padding: 0 10px;
+		.item-toggle{
+			border: 0;
 		}
 	}
 

@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, CameraPictues, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink, BusinessObjectStateSync) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, DuelService, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink, BusinessObjectStateSync) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
     $rootScope.baseURL = 'https://app.snaplook.today';
@@ -40,8 +40,8 @@ angular.module('starter.controllers', [])
         $ionicScrollDelegate.scrollBy(0, 100);
     }
     $rootScope.picture = function() {
-        CameraPictues.set('http://localhost:8100/img/_test_1.jpg', false);
-        CameraPictues.set('http://localhost:8100/img/_test_2.jpg', false);
+        DuelService.setPicture(0, 'http://localhost:8100/img/_test_1.jpg', false);
+        //DuelService.setPicture(1, 'http://localhost:8100/img/_test_2.jpg', false);
     }
     $rootScope.ifTestAccount = function() {
         if($rootScope.currentUser){
@@ -116,9 +116,9 @@ angular.module('starter.controllers', [])
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.post-comments-'+tab,{post: post, postId: post.id});
     };
-    $rootScope.goVoteResult = function(post_id){
+    $rootScope.goVoteResult = function(post){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
-        $state.go('tab.vote-result-'+tab,{postId: post_id});
+        $state.go('tab.vote-result-'+tab,{postId: post.id});
     };
     $rootScope.goPostSearch = function(){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
@@ -223,7 +223,7 @@ angular.module('starter.controllers', [])
             return _username;
         }
     };
-    $rootScope.openCameraMenu = function(){
+    $rootScope.openCameraMenu = function(index){
         UxAnalytics.startScreen('tab-camera');
         // Show the action sheet
         var navCameraSheet = $ionicActionSheet.show({
@@ -249,7 +249,7 @@ angular.module('starter.controllers', [])
                         };
                         $cordovaCamera.getPicture(options).then(
                             function(imageData) {
-                                CameraPictues.set(imageData);
+                                DuelService.setPicture(index, imageData);
                                 $ionicLoading.show({template: 'Loading Photo', duration:500});
                                 $ionicLoading.hide();
                                 setTimeout(function () {
@@ -275,7 +275,7 @@ angular.module('starter.controllers', [])
                             function(imageURI) {
                                 window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
                                     fileEntry.moveTo(fileEntry.filesystem.root, Date.now() + ".jpg", function (entry) {
-                                        CameraPictues.set(entry.nativeURL);
+                                        DuelService.setPicture(index, entry.nativeURL);
                                         $ionicLoading.show({template: 'Loading Photo', duration:500});
                                         $ionicLoading.hide();
                                         setTimeout(function () {
@@ -1031,7 +1031,7 @@ angular.module('starter.controllers', [])
         }
     }, 1000);
 })
-.controller('PostCreateCtrl', function($scope, FetchGoals, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
+.controller('PostCreateCtrl_deprecated_20191001', function($scope, FetchGoals, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'public';
     $scope.submitted = false;
     $location.replace('tab.camera');
@@ -1424,8 +1424,9 @@ angular.module('starter.controllers', [])
         return visibility === $scope.visibility;
     }
 })
-.controller('PostCreateStep1Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, BusinessObjectList, GoalBO) {
-    $scope.title = localStorage.getItem('post_create_title');
+.controller('PostCreateStep1Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, DuelService, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, BusinessObjectList, GoalBO) {
+
+    $scope.title = DuelService.getTitle();
     $scope.titleState = "valid";
 
     $scope.$on('$ionicView.enter', function() {
@@ -1442,8 +1443,21 @@ angular.module('starter.controllers', [])
 
     $scope.setTitle = function(title){
         if(title){
-            localStorage.setItem('post_create_title', title);
-            $scope.goStep2();
+            if(title != DuelService.getTitle()){
+                $ionicLoading.show();
+                $http.post($rootScope.baseURL+'/api/duel/create', {title: title}).success(function(duel){
+                    $ionicLoading.hide();
+                    DuelService.setDuel(duel);
+                    $scope.goStep2();
+                })
+                .error(function(data, status){
+                    $ionicLoading.hide();
+                    $rootScope.handleHttpError(data, status);
+                });
+            }
+            else{
+                $scope.goStep2();
+            }
         }
         else{
             $scope.titleState = "invalid";
@@ -1454,7 +1468,7 @@ angular.module('starter.controllers', [])
         return localStorage.getItem('post_create_title');
     }
 })
-.controller('PostCreateStep2Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, PostShare, DeepLink, $ionicPopup) {
+.controller('PostCreateStep2Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, DuelService, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, PostShare, DeepLink, $ionicPopup) {
 
     $scope.goStep1 = function(call_back_func = null){
         $ionicHistory.nextViewOptions({
@@ -1472,7 +1486,7 @@ angular.module('starter.controllers', [])
     }
 
     $scope.resetThisStep = function(){
-        CameraPictues.reset();
+        DuelService.reset();
         localStorage.removeItem('post_create_visibility');
         localStorage.removeItem('post_create_captions');
         this.captions = '';
@@ -1488,7 +1502,7 @@ angular.module('starter.controllers', [])
                 title: '',
                 template: 'Uploaded',
                 buttons: [{
-                    text: 'Send to friends to have them pick the best outfit',
+                    text: 'Send to friends to have them pick a winner',
                     type: 'button-positive',
                     onTap: function (e) {
                         DeepLink.share(share_link);
@@ -1514,7 +1528,12 @@ angular.module('starter.controllers', [])
         }
     }
 
+    $scope.duel_allow = true;
 
+    $scope.toggleDuelAllow = function(){
+        $scope.duel_allow = !$scope.duel_allow;
+        console.log($scope.duel_allow);
+    }
 
     $scope.getCaption();
     $scope.visibility = 'permanent';
@@ -1522,7 +1541,7 @@ angular.module('starter.controllers', [])
         $scope.visibility = localStorage.getItem('post_create_visibility');
     }
     $scope.submitted = false;
-    $scope.cameraPictues = CameraPictues;
+    $scope.duelService = DuelService;
 
     var user = $rootScope.getCurrentUser();
 
@@ -1532,7 +1551,7 @@ angular.module('starter.controllers', [])
     });
 
     $scope.sharePost = function(captions) {
-        var fileURLs = CameraPictues.get();
+        var fileURLs = DuelService.getPictures();
         var share_post_scope = this;
         var photoIdArray = [];
         var uploadTryCount = 0;
@@ -1546,9 +1565,9 @@ angular.module('starter.controllers', [])
         $scope.submitted = true;
         $ionicLoading.show({template: 'Uploading Photo...<br/><br/><ion-spinner></ion-spinner>'});
 
-        if(fileURLs.length < 2){
+        if(!fileURLs[0] || !fileURLs[1]){
             $ionicLoading.hide();
-            $rootScope.popupMessage('', 'Upload 2 or More Different Outfits!');
+            $rootScope.popupMessage('', 'Other Outfit is Required!');
             $scope.submitted = false;
             return;
         }
@@ -1556,11 +1575,27 @@ angular.module('starter.controllers', [])
         var post_data = {
             captions: param_caption,
             user_id: user.id,
-            title : localStorage.getItem('post_create_title'),
+            title : '',
             visibility: $scope.visibility,
+            duel_id : DuelService.getDuelId()
         };
+
         for(var i=0; i<fileURLs.length; i++){
-            ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/photo/create/' + i), success, fail);
+            if(fileURLs[i].includes($rootScope.baseURL)){
+                $http.post($rootScope.baseURL+'/api/photo/duplicate/'+DuelService.getChallengeeImgPath()+'/'+DuelService.getChallengeeId()).success(function(r){
+                    success(r);
+                })
+                .error(function(data, status){
+                    fail(data);
+                });
+            }
+            else{
+                var duel_allow = 1;
+                if(!DuelService.getDuelAllow() && i == 0){
+                    duel_allow = 0;
+                }
+                ImageUpload.send(fileURLs[i], encodeURI($rootScope.baseURL + '/api/photo/create/' + i + '/' + duel_allow), success, fail);
+            }
         }
 
         // Transfer succeeded
@@ -1615,7 +1650,7 @@ angular.module('starter.controllers', [])
         }
     }
     $scope.hasContent = function(){
-        return CameraPictues.get().length > 0 ||
+        return DuelService.getPictures().length > 0 ||
             (typeof(this.captions) !== 'undefined' && this.captions !== '')
     }
     $scope.setActive = function(visibility){

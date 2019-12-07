@@ -28,7 +28,36 @@
                             </div>
                         </div>
                         <div class="post-title">
-                            <p>{{post.title}}</p>
+                            <p>{{post.duel.title}}</p>
+                        </div>
+                        <div class="duel-pannel">
+                            <div class="duel-vs">
+                                VS
+                            </div>
+                            <div class="duel-profile duel-challenger" ng-click="goAccount(post.photos[0].owner.slug)">
+                                <div class="profile">
+                                    <div class="profile-image" style="background-image: url( {{ photoPath( post.photos[0].owner.profile_img_path, 's' ) }} )""></div>
+                                    <div class="profile-text">
+                                        <span class="user-name">{{post.photos[0].owner.username}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="duel-profile duel-challengee" ng-click="goAccount(post.photos[1].owner.slug)" ng-if="post.photos[1].owner_id">
+                                <div class="profile">
+                                    <div class="profile-image" style="background-image: url( {{ photoPath( post.photos[1].owner.profile_img_path, 's' ) }} )"></div>
+                                    <div class="profile-text">
+                                        <span class="user-name">{{post.photos[1].owner.username}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="duel-profile duel-challengee" ng-if="!post.photos[1].owner_id">
+                                <div class="profile">
+                                    <div class="profile-image" style="background-image: url( img/light_bulb.png )"></div>
+                                    <div class="profile-text">
+                                        <span class="user-name">Inspiration</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <ion-slide-box class="photo-list" show-pager="false">
                             <ion-slide ng-repeat="photo in post.photos">
@@ -36,12 +65,17 @@
                                     <div class="photo-counter" ng-click="hideSlideCounter()">
                                         {{ $index + 1 }}/{{ post.photos.length }}
                                     </div>
-                                    <div class="photo-img-wrapper entity-id-{{photo.id}}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})" zoomable>
+                                    <div class="photo-img-wrapper entity-id-{{photo.id}} index-{{ $index + 1 }}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})" zoomable>
+                                        <div class="masker"></div>
                                         <a class="photo-img"></a>
                                     </div>
                                     <div class="vote-toggle">
-                                        <div class="source-link icon ion-link" ng-click="openInAppBrowser(photo.source_url)" ng-show="photo.source_url"></div>
+                                        <!--<div class="source-link icon ion-link" ng-click="openInAppBrowser(photo.source_url)" ng-show="photo.source_url"></div>-->
                                         <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(post, photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
+                                    </div>
+                                    <div>
+                                        <button ng-show="photo.duel_allow" class="duel-button button button-block button-positive" ng-click="postCard.startDuel(post, photo)">Start a duel with this look</button>
+                                        <button ng-hide="photo.duel_allow" class="duel-button button button-block button-positive" disabled=true>Duel is disabled with this look</button>
                                     </div>
                                 </div>
                             </ion-slide>
@@ -49,7 +83,7 @@
                         <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
                         <div class="post-summary clearfix">
                             <div class="totals">
-                                {{ post.photos.length }} Outfits<span ng-click="goPostComment(post)">{{ postCard.commentCount(post) }}</span><span ng-click="goVoteResult(post.id)">{{ postCard.voteCount(post) }}</span>
+                                {{ post.photos.length }} Outfits<span ng-click="goPostComment(post)">{{ postCard.commentCount(post) }}</span><span ng-click="goVoteResult(post)">{{ postCard.voteCount(post) }}</span>
                             </div>
                         </div>
                         <hr>
@@ -58,7 +92,7 @@
                                 <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="goPostComment(post)">&nbsp;&nbsp;Comment</button>
                             </div>
                             <div class="option result">
-                                <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post.id)">&nbsp;&nbsp;Result</button>
+                                <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post)">&nbsp;&nbsp;Result</button>
                             </div>
                             <div class="option share">
                                 <button class="button button-clear button-dark icon ion-ios-redo-outline" ng-click="postCard.share(post)">&nbsp;&nbsp;Share</button>

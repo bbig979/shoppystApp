@@ -7,22 +7,43 @@
             <a class="step step-1 completed" ng-click="goStep1()"><span class="label"></span></a>
             <a class="step step-2 active"><span class="label"></span></a>
         </div>
-
+        <div class="duel-title padding">
+            <input class="form-control" value="{{duelService.getTitle()}}" disabled/>
+            <div class="remove-image" ng-click="goStep1()">
+                <i class="icon ion-compose"></i>
+            </div>
+        </div>
         <form ng-submit="sharePost(captions, goal.id, other)" name="shareForm">
             <ul class="post-images">
-                <li ng-repeat="cameraPicture in cameraPictues.get()">
+                <li ng-if="duelService.getPicture(0)">
                     <div class="post-image">
-                        <img class="item" ng-src="{{cameraPicture}}" />
+                        <img class="item" ng-src="{{duelService.getPicture(0)}}" />
                     </div>
-                    <div class="remove-image" ng-click="cameraPictues.remove(cameraPicture)">
+                    <div class="remove-image" ng-click="duelService.removePicture(0)">
                         <i class="icon ion-close-circled"></i>
                     </div>
                 </li>
-                <li>
-                    <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu()">
+                <li ng-if="!duelService.getPicture(0)">
+                    <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu(0)">
                         <div class="add-more-to-compare-button">
                             <i class="icon ion-plus-circled"></i><br>
-                            Add an Outfit
+                            Add My Outfit
+                        </div>
+                    </div>
+                </li>
+                <li ng-if="duelService.getPicture(1)">
+                    <div class="post-image">
+                        <img class="item" ng-src="{{duelService.getPicture(1)}}" />
+                    </div>
+                    <div class="remove-image" ng-click="duelService.removePicture(1)">
+                        <i class="icon ion-close-circled"></i>
+                    </div>
+                </li>
+                <li ng-if="!duelService.getPicture(1)">
+                    <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu(1)">
+                        <div class="add-more-to-compare-button">
+                            <i class="icon ion-plus-circled"></i><br>
+                            Add Vs. Outfit
                         </div>
                     </div>
                 </li>
@@ -31,11 +52,17 @@
             <div class="post-caption padding" ng-show="hasContent()">
                 <textarea placeholder="Write a Caption" class="form-control" ng-model="captions" ng-change="setCaption()"></textarea>
             </div>
+            <div class="post-duel-allow padding" ng-show="hasContent()">
+                <ion-toggle ng-model="duel_allow" ng-checked="duelService.getDuelAllow()" ng-change="duelService.toggleDuelAllow()">
+                    Allow Duel on My Outfit
+                </ion-toggle>
+            </div>
+
             <div class="button-padding padding-top">
                 <button type="submit" class="button button-block button-positive" ng-disabled="submitted" ng-show="hasContent()">Post</button>
             </div>
             <div class="button-padding">
-                <button type="button" class="button button-block button-stable" ng-click="resetThisStep()" ng-disabled="submitted" ng-show="hasContent()">Reset</button>
+                <button type="button" class="button button-block button-stable" ng-click="resetThisStep();goStep1();" ng-disabled="submitted" ng-show="hasContent()">Reset</button>
             </div>
         </form>
     </ion-content>

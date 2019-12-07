@@ -414,8 +414,12 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state, UxAnalytics, PostShare, DeepLink, BusinessObjectStateSync, $ionicHistory){
+.factory('PostCard', function(Vote, $rootScope, $ionicActionSheet, $ionicPopup, $ionicLoading, $http, $state, UxAnalytics, PostShare, DeepLink, BusinessObjectStateSync, $ionicHistory, DuelService){
     return {
+        startDuel: function(post, photo){
+            DuelService.setChallengee(post, photo);
+            $state.go('tab.post-create-step-2', {refresh : new Date().getTime()});
+        },
         commentCount: function(post){
             var comment_count = 0;
             if(post.comment_info && post.comment_info.count){
@@ -1284,6 +1288,92 @@ angular.module('starter.services', [])
         }
     }
 })
+.factory('DuelService', function($rootScope){
+    var _title = '';
+    var _duel_id = 0;
+    var _duel_allow = true;
+    var _challengee_id = 0;
+    var _challengee_img_path = '';
+    var _picture_array = [];
+    return {
+        getTitle: function(){
+            return _title;
+        },
+        setTitle: function(title){
+            _title = title;
+        },
+        getDuelId: function(){
+            return _duel_id;
+        },
+        setDuelId: function(duel_id){
+            _duel_id = duel_id;
+        },
+        getDuelAllow: function(){
+            return _duel_allow;
+        },
+        toggleDuelAllow: function(){
+            _duel_allow = !_duel_allow;
+        },
+        getChallengeeId: function(){
+            return _challengee_id;
+        },
+        setChallengeeId: function(challengee_id){
+            _challengee_id = challengee_id;
+        },
+        getChallengeeImgPath: function(){
+            return _challengee_img_path;
+        },
+        setChallengeeImgPath: function(challengee_img_path){
+            _challengee_img_path = challengee_img_path;
+        },
+        setDuel: function(duel){
+            _title = duel.title;
+            _duel_id = duel.id;
+        },
+        setChallengee: function(post, photo){
+            this.reset();
+            this.setPicture(1, $rootScope.photoPath( photo.img_path, 'm' ), false);
+            _challengee_img_path = photo.img_path;
+            _challengee_id = photo.owner_id;
+            _title = post.duel.title;
+            _duel_id = post.duel.id;
+        },
+        getPictures: function(){
+            return _picture_array;
+        },
+        getPicture: function(index){
+            return _picture_array[index];
+        },
+        setPicture: function(index, pic, is_this_from_real_device = true){
+            if(is_this_from_real_device){
+                pic = window.Ionic.WebView.convertFileSrc(pic);
+            }
+            _picture_array[index] = pic;
+        },
+        removePicture: function(index){
+            _picture_array[index] = null;
+        },
+        reset: function(){
+            _title = '';
+            _duel_id = 0;
+            _challengee_id = 0;
+            _challengee_img_path = '';
+            _picture_array = [];
+            _duel_allow = true;
+        },
+        debug: function(){
+            return {
+                _title : _title,
+                _duel_id : _duel_id,
+                _challengee_id : _challengee_id,
+                _challengee_img_path : _challengee_img_path,
+                _duel_allow : _duel_allow,
+                _picture_array : _picture_array
+            }
+        }
+    }
+})
+/*
 .factory('CameraPictues', function(){
     var _picture_array = [];
     return {
@@ -1314,6 +1404,7 @@ angular.module('starter.services', [])
         }
     }
 })
+*/
 .factory('ScrollingDetector', function($ionicScrollDelegate){
     var _current_position;
     var _last_position;

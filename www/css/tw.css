@@ -690,7 +690,26 @@
   margin-top: 10px;
 }
 
-/* line 127, ../../scss/tw/_post-create.scss */
+/* line 126, ../../scss/tw/_post-create.scss */
+#create-post .duel-title {
+  position: relative;
+}
+/* line 128, ../../scss/tw/_post-create.scss */
+#create-post .duel-title input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #eee;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: #fff;
+}
+/* line 136, ../../scss/tw/_post-create.scss */
+#create-post .duel-title .remove-image {
+  color: #777;
+  top: 20px;
+  right: 18px;
+}
+/* line 143, ../../scss/tw/_post-create.scss */
 #create-post .post-images li {
   width: 50%;
   height: 60vw;
@@ -700,19 +719,19 @@
   overflow: hidden;
   position: relative;
 }
-/* line 137, ../../scss/tw/_post-create.scss */
+/* line 153, ../../scss/tw/_post-create.scss */
 #create-post .post-images li:nth-child(odd) {
   padding-right: 6px;
 }
-/* line 141, ../../scss/tw/_post-create.scss */
+/* line 157, ../../scss/tw/_post-create.scss */
 #create-post .post-images li:nth-child(even) {
   padding-left: 6px;
 }
-/* line 145, ../../scss/tw/_post-create.scss */
+/* line 161, ../../scss/tw/_post-create.scss */
 #create-post .post-images li:last-child {
   margin-bottom: 10px;
 }
-/* line 151, ../../scss/tw/_post-create.scss */
+/* line 167, ../../scss/tw/_post-create.scss */
 #create-post .post-image img {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -720,7 +739,7 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 156, ../../scss/tw/_post-create.scss */
+/* line 172, ../../scss/tw/_post-create.scss */
 #create-post .remove-image {
   position: absolute;
   top: 15px;
@@ -729,16 +748,16 @@
   font-size: 6vw;
   color: #fff;
 }
-/* line 165, ../../scss/tw/_post-create.scss */
+/* line 181, ../../scss/tw/_post-create.scss */
 #create-post li:nth-child(even) .remove-image {
   right: 19px;
 }
-/* line 169, ../../scss/tw/_post-create.scss */
+/* line 185, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-wrapper {
   width: 100%;
   height: 100%;
 }
-/* line 174, ../../scss/tw/_post-create.scss */
+/* line 190, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-button {
   border: dashed 0.8vw #aaa;
   -webkit-border-radius: 2vw;
@@ -754,11 +773,11 @@
   text-align: center;
   padding-top: 17vw;
 }
-/* line 185, ../../scss/tw/_post-create.scss */
+/* line 201, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-button .ion-plus-circled {
   font-size: 10vw;
 }
-/* line 191, ../../scss/tw/_post-create.scss */
+/* line 207, ../../scss/tw/_post-create.scss */
 #create-post .post-caption textarea {
   width: 100%;
   border: 1px solid #ddd;
@@ -769,38 +788,46 @@
   border-radius: 3px;
   background-clip: padding-box;
 }
-/* line 199, ../../scss/tw/_post-create.scss */
+/* line 215, ../../scss/tw/_post-create.scss */
+#create-post .post-duel-allow {
+  padding: 0 10px;
+}
+/* line 217, ../../scss/tw/_post-create.scss */
+#create-post .post-duel-allow .item-toggle {
+  border: 0;
+}
+/* line 222, ../../scss/tw/_post-create.scss */
 #create-post img {
   max-width: 100%;
 }
-/* line 203, ../../scss/tw/_post-create.scss */
+/* line 226, ../../scss/tw/_post-create.scss */
 #create-post .item-image img:first-child,
 #create-post .item-image .list-img {
   width: auto;
   margin: auto;
 }
-/* line 209, ../../scss/tw/_post-create.scss */
+/* line 232, ../../scss/tw/_post-create.scss */
 #create-post .post-image .item {
   padding: 0px;
 }
-/* line 214, ../../scss/tw/_post-create.scss */
+/* line 237, ../../scss/tw/_post-create.scss */
 #create-post .visibility .title {
   text-align: center;
   padding-bottom: 20px;
   color: #444;
   font-size: 16px;
 }
-/* line 220, ../../scss/tw/_post-create.scss */
+/* line 243, ../../scss/tw/_post-create.scss */
 #create-post .visibility .button {
   border-color: #ddd;
   background-color: #fff;
 }
-/* line 224, ../../scss/tw/_post-create.scss */
+/* line 247, ../../scss/tw/_post-create.scss */
 #create-post .visibility .button.button-positive {
   border-color: #5CC196;
   background-color: #5CC196;
 }
-/* line 230, ../../scss/tw/_post-create.scss */
+/* line 253, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility {
   font-size: 12px;
   padding: 15px;
@@ -814,7 +841,7 @@
   background-clip: padding-box;
   position: relative;
 }
-/* line 240, ../../scss/tw/_post-create.scss */
+/* line 263, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility:after {
   border: solid transparent;
   content: " ";
@@ -827,83 +854,83 @@
   border-width: 10px;
   margin-left: -10px;
 }
-/* line 253, ../../scss/tw/_post-create.scss */
+/* line 276, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility.private:after {
   bottom: 100%;
   left: 25%;
 }
-/* line 258, ../../scss/tw/_post-create.scss */
+/* line 281, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility.public:after {
   bottom: 100%;
   left: 50%;
 }
-/* line 263, ../../scss/tw/_post-create.scss */
+/* line 286, ../../scss/tw/_post-create.scss */
 #create-post .selected-visibility.permanent:after {
   bottom: 100%;
   left: 75%;
 }
-/* line 268, ../../scss/tw/_post-create.scss */
+/* line 291, ../../scss/tw/_post-create.scss */
 #create-post .button-small {
   font-size: 15px;
   line-height: 30px;
   color: #777;
 }
-/* line 274, ../../scss/tw/_post-create.scss */
+/* line 297, ../../scss/tw/_post-create.scss */
 #create-post .button-small.button-positive {
   color: #fff;
 }
-/* line 278, ../../scss/tw/_post-create.scss */
+/* line 301, ../../scss/tw/_post-create.scss */
 #create-post .recommendation {
   text-align: center;
 }
-/* line 282, ../../scss/tw/_post-create.scss */
+/* line 305, ../../scss/tw/_post-create.scss */
 #create-post hr {
   border: 0;
   border-top: 1px solid #777;
   margin: 10px 0;
   width: 100%;
 }
-/* line 289, ../../scss/tw/_post-create.scss */
+/* line 312, ../../scss/tw/_post-create.scss */
 #create-post .compare-table {
   font-weight: bold;
 }
-/* line 292, ../../scss/tw/_post-create.scss */
+/* line 315, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row {
   clear: both;
 }
-/* line 295, ../../scss/tw/_post-create.scss */
+/* line 318, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .ion-close-round {
   color: #FF4C62;
 }
-/* line 298, ../../scss/tw/_post-create.scss */
+/* line 321, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .ion-checkmark-round {
   color: #00dba2;
 }
-/* line 301, ../../scss/tw/_post-create.scss */
+/* line 324, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .label, #create-post .compare-table .compare-row .mark {
   width: 50%;
   float: left;
 }
-/* line 305, ../../scss/tw/_post-create.scss */
+/* line 328, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .label {
   text-align: right;
 }
-/* line 308, ../../scss/tw/_post-create.scss */
+/* line 331, ../../scss/tw/_post-create.scss */
 #create-post .compare-table .compare-row .mark {
   text-align: center;
 }
 
-/* line 314, ../../scss/tw/_post-create.scss */
+/* line 337, ../../scss/tw/_post-create.scss */
 .button-padding {
   padding: 5px 10px;
 }
 
-/* line 317, ../../scss/tw/_post-create.scss */
+/* line 340, ../../scss/tw/_post-create.scss */
 .padding-top {
   padding-top: 20px;
 }
 
-/* line 320, ../../scss/tw/_post-create.scss */
+/* line 343, ../../scss/tw/_post-create.scss */
 .monthly-style-challenge {
   text-align: center;
   padding-top: 50px;
