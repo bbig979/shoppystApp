@@ -223,7 +223,7 @@ angular.module('starter.controllers', [])
             return _username;
         }
     };
-    $rootScope.openCameraMenu = function(index){
+    $rootScope.openCameraMenu = function(picture_index){
         UxAnalytics.startScreen('tab-camera');
         // Show the action sheet
         var navCameraSheet = $ionicActionSheet.show({
@@ -249,7 +249,7 @@ angular.module('starter.controllers', [])
                         };
                         $cordovaCamera.getPicture(options).then(
                             function(imageData) {
-                                DuelService.setPicture(index, imageData);
+                                DuelService.setPicture(picture_index, imageData);
                                 $ionicLoading.show({template: 'Loading Photo', duration:500});
                                 $ionicLoading.hide();
                                 setTimeout(function () {
@@ -275,7 +275,7 @@ angular.module('starter.controllers', [])
                             function(imageURI) {
                                 window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
                                     fileEntry.moveTo(fileEntry.filesystem.root, Date.now() + ".jpg", function (entry) {
-                                        DuelService.setPicture(index, entry.nativeURL);
+                                        DuelService.setPicture(picture_index, entry.nativeURL);
                                         $ionicLoading.show({template: 'Loading Photo', duration:500});
                                         $ionicLoading.hide();
                                         setTimeout(function () {
