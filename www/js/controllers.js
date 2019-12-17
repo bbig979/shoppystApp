@@ -1,11 +1,11 @@
 angular.module('starter.controllers', [])
-.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, DuelService, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink, BusinessObjectStateSync) {
+.run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, DuelService, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink, BusinessObjectStateSync, CanvasService) {
     $rootScope.clientVersion = '1.0';
     $rootScope.minimumForceUpdateVersion = "";
-    $rootScope.baseURL = 'https://app.snaplook.today';
+    //$rootScope.baseURL = 'https://app.snaplook.today';
     //$rootScope.baseURL = 'http://localhost:8000';
     //$rootScope.baseURL = 'http://192.168.56.1:8000';
-    //$rootScope.baseURL = 'http://localhost:8888';
+    $rootScope.baseURL = 'http://localhost:8888';
     $rootScope.sampleCount = 4;
     $rootScope.minimumCountToShowSample = 4;
     $rootScope.nameLengthOnCard = 12;
@@ -225,12 +225,20 @@ angular.module('starter.controllers', [])
     };
     $rootScope.openCameraMenu = function(picture_index){
         UxAnalytics.startScreen('tab-camera');
+        var buttons = [
+            { text: 'Take a Picture' },
+            { text: 'Choose from Gallery' },
+            { text: 'Create an Outfit Collage' }
+        ];
+        if(picture_index == 1 && DuelService.getPicture(0)){
+            buttons.push({ text: 'Import from My Outfit' });
+        }
+        if(picture_index == 0 && DuelService.getPicture(1)){
+            buttons.push({ text: 'Import from VS Outfit' });
+        }
         // Show the action sheet
         var navCameraSheet = $ionicActionSheet.show({
-            buttons: [
-                { text: 'Take a Picture' },
-                { text: 'Choose from Gallery' }
-            ],
+            buttons: buttons,
             cancelText: 'Cancel',
             cancel: function() {
                 // code for cancel if necessary.
@@ -294,6 +302,17 @@ angular.module('starter.controllers', [])
                             }
                         )
                         //Handle Move Button
+                        return true;
+                    case 2 :
+                        DuelService.setCurrentPictureIndex(picture_index);
+                        $ionicLoading.hide();
+                        $state.go('tab.canvas');
+                        return true;
+                    case 3 :
+                        DuelService.setCurrentPictureIndex(picture_index);
+                        CanvasService.importState(DuelService.getPictureState(1 - picture_index));
+                        $ionicLoading.hide();
+                        $state.go('tab.canvas');
                         return true;
                 }
             }
@@ -1031,6 +1050,71 @@ angular.module('starter.controllers', [])
         }
     }, 1000);
 })
+.controller('CanvasCtrl', function($scope, $rootScope, $http, $ionicLoading, DuelService, $ionicHistory, $state, CanvasService){
+    $scope.canvasService = CanvasService;
+
+    CanvasService.render();
+
+    $scope.save = function() {
+        CanvasService.clearSelection();
+        var canvas = document.getElementById( 'c' );
+        $ionicLoading.show();
+
+        $http.post($rootScope.baseURL+'/api/photo/temp', {
+            imgBase64: canvas.toDataURL()
+        }).success(function(result){
+            $ionicLoading.hide();
+            DuelService.setPicture(DuelService.getCurrentPictureIndex(), $rootScope.baseURL+result, false);
+            DuelService.setPictureState(DuelService.getCurrentPictureIndex(), CanvasService.toJSON());
+            CanvasService.reset();
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+            $state.go('tab.post-create-step-2', {refresh : new Date().getTime()});
+        })
+        .error(function(data, status){
+            $ionicLoading.hide();
+            $rootScope.handleHttpError(data, status);
+        });
+    }
+
+    $scope.wardrobe = function() {
+        $state.go('tab.wardrobe');
+    }
+
+    $scope.clear = function() {
+        CanvasService.clear();
+    }
+})
+.controller('WardrobeCtrl', function($scope, $state, CanvasService){
+    $scope.data = {
+        top_item_array: [{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/SCRATCH_PERRY_1024x1024.jpg?v=1575244190"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/SUNSHINE_BACK_20588a96-0a66-463c-a0c7-c9144353cf5c_1024x1024.jpg?v=1575433852"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/UTOPIA_BLUE_1024x1024.jpg?v=1575244439"}],
+        bottom_item_array: [{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/JAMBOREE_1024x1024.jpg?v=1572482551"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/SLACKERS_PANT_PHANTOM_1_-_BE_KIND_1024x1024.jpg?v=1571265360"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/SLACKERS_PANT_AMAZON_1_-_BE_KIND_1024x1024.jpg?v=1571265360"}],
+        foot_item_array: [{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/BE_KIND_-_INSTITUTE_SOCK_BLACK_1_1024x1024.jpg?v=1571265354"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/BE_KIND_-_INSTITUTE_SOCK_YELLOW_1_1024x1024.jpg?v=1571265354"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/BIG_SUN_SOCK_1_-_BE_KIND_1024x1024.jpg?v=1571265361"}],
+    }
+
+    $scope.selected_item_array = [];
+
+    $scope.toggleSelect = function(item) {
+        if(item.selected == true){
+            item.selected = false;
+            var arr = $scope.selected_item_array;
+            for( var i = 0; i < arr.length; i++){
+               if ( arr[i].image === item.image) {
+                 arr.splice(i, 1);
+               }
+            }
+        }
+        else{
+            item.selected = true;
+            $scope.selected_item_array.push(item);
+        }
+    }
+
+    $scope.load = function() {
+        CanvasService.loadItems($scope.selected_item_array);
+    }
+})
 .controller('PostCreateCtrl_deprecated_20191001', function($scope, FetchGoals, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'public';
     $scope.submitted = false;
@@ -1581,7 +1665,7 @@ angular.module('starter.controllers', [])
         };
 
         for(var i=0; i<fileURLs.length; i++){
-            if(fileURLs[i].includes($rootScope.baseURL)){
+            if(fileURLs[i].includes($rootScope.baseURL) && !fileURLs[i].includes('temp')){
                 $http.post($rootScope.baseURL+'/api/photo/duplicate/'+DuelService.getChallengeeImgPath()+'/'+DuelService.getChallengeeId()).success(function(r){
                     success(r);
                 })
@@ -1614,6 +1698,13 @@ angular.module('starter.controllers', [])
             uploadSuccessCount++;
             if(typeof result.id !== 'undefined'){
                 photoIdArray.push(result.id);
+                $http({
+                    method : 'POST',
+                    url : $rootScope.baseURL+"/api/photo/update/"+result.id,
+                    data : {
+                        state_str: JSON.stringify(DuelService.getPictureState(result.sequence))
+                    }
+                });
             }
             if(uploadTryCount == fileURLs.length && uploadSuccessCount > 0){
                 var photoIds = photoIdArray.join(',');

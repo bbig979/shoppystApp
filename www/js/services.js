@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
 .filter('unsafe', function($sce){
    return function(val){
        return $sce.trustAsHtml(val);
@@ -1288,13 +1288,166 @@ angular.module('starter.services', [])
         }
     }
 })
+.factory('AsyncStorageService', function($cordovaNativeStorage){
+    return {
+        setItem: function(key, value){
+            return $cordovaNativeStorage.setItem(key, value);
+        },
+        getItem: function(key){
+            return $cordovaNativeStorage.getItem(key);
+        },
+        removeItem: function(key){
+            return $cordovaNativeStorage.remove(key);
+        }
+    }
+})
+.factory('CanvasService', function($state, $rootScope, $ionicActionSheet, AsyncStorageService, $timeout, $ionicLoading, $http){
+    var _canvas = null;
+    var _items = [];
+
+    return {
+        init: function(){
+            _canvas = new fabric.Canvas('c');
+            _canvas.backgroundColor = '#f7f7f7';
+            _canvas.setHeight(window.innerWidth * 1.33);
+            _canvas.setWidth(window.innerWidth);
+            _canvas.renderAll();
+        },
+        toJSON: function(){
+            return {
+                canvas: _canvas.toJSON(['lockRotation','hasRotatingPoint']),
+                items: _items
+            }
+        },
+        saveState: function(){
+            AsyncStorageService.setItem('canvas_state', JSON.stringify(this.toJSON()));
+        },
+        importState: function(state){
+            AsyncStorageService.setItem('canvas_state', JSON.stringify(state));
+        },
+        clearSelection: function(){
+            _canvas.discardActiveObject();
+            _canvas.renderAll();
+        },
+        reset: function(){
+            _canvas = null;
+            _items = [];
+            AsyncStorageService.removeItem('canvas_state');
+        },
+        clear: function(){
+            _canvas.clear();
+            _items = [];
+            AsyncStorageService.removeItem('canvas_state');
+        },
+        render: function(){
+            var this_service = this;
+            var canvas_json = null;
+
+            if(_canvas){
+                // release idle memory
+                // ref : https://stackoverflow.com/questions/19030174/how-to-manage-memory-in-case-of-multiple-fabric-js-canvas
+                _canvas.dispose();
+                $(_canvas.wrapperEl).remove();
+            }
+
+            this.init();
+
+            AsyncStorageService.getItem('canvas_state').then(function(str){
+                _canvas.loadFromJSON(JSON.parse(str).canvas, _canvas.renderAll.bind(_canvas));
+                _items = JSON.parse(str).items;
+console.log({'1358':JSON.parse(str)});
+            });
+
+            _canvas.on({
+                'object:added': function(){
+                    this_service.saveState();
+                },
+                'object:modified': function(){
+                    this_service.saveState();
+                },
+                'object:removed': function(){
+                    this_service.saveState();
+                },
+                'touch:longpress': function(options) {
+                    if (options.e.type == 'touchstart'){
+                        var active_object = _canvas.getActiveObject();
+                        $ionicActionSheet.show({
+                            titleText: 'Item Arrangement',
+                            destructiveText: 'Delete',
+                        	destructiveButtonClicked: function() {
+                                for( var i = 0; i < _items.length; i++){
+                                    var item = _items[i];
+                                    if(active_object.src.includes(item.image)){
+                                        _items.splice(i, 1);
+                                        _canvas.remove(active_object);
+                                    }
+                                }
+                                return true;
+                            },
+                            buttons: [
+                                { text: 'Bring Foward' },
+                                { text: 'Bring to Front' },
+                                { text: 'Send Backwards' },
+                                { text: 'Send to Back' }
+                            ],
+                            cancelText: 'Cancel',
+                            cancel: function() {
+                                // code for cancel if necessary.
+                            },
+                            buttonClicked: function(index) {
+                                switch (index){
+                                    case 0 :
+                                        active_object.bringForward();
+                                        return true;
+                                    case 1 :
+                                        active_object.bringToFront()
+                                        return true;
+                                    case 2 :
+                                        active_object.sendBackwards();
+                                        return true;
+                                    case 3 :
+                                        active_object.sendToBack();
+                                        return true;
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        },
+        loadItems: function(items){
+            var added_image_count = 0;
+            $ionicLoading.show();
+            for( var i = 0; i < items.length; i++){
+                var item = items[i];
+                _items.push(item);
+                fabric.Image.fromURL('https://res.cloudinary.com/ds33o4ozo/image/fetch/w_600/f_png,e_make_transparent/' + item.image, function(img) {
+                  img.scale(0.33).set({
+                    left: 0,
+                    top: 0,
+                    lockRotation: true,
+                    hasRotatingPoint: false
+                  });
+                  _canvas.add(img);
+                  added_image_count++;
+                  if(added_image_count == items.length){
+                      $ionicLoading.hide();
+                      $state.go('tab.canvas');
+                  }
+                }, {crossOrigin: 'Anonymous'});
+            }
+        }
+    }
+})
 .factory('DuelService', function($rootScope){
     var _title = '';
     var _duel_id = 0;
     var _duel_allow = true;
     var _challengee_id = 0;
     var _challengee_img_path = '';
+    var _current_picture_index = 0;
     var _picture_array = [];
+    var _picture_state_array = [];
     return {
         getTitle: function(){
             return _title;
@@ -1320,6 +1473,12 @@ angular.module('starter.services', [])
         setChallengeeId: function(challengee_id){
             _challengee_id = challengee_id;
         },
+        setCurrentPictureIndex: function(picture_index){
+            _current_picture_index = picture_index;
+        },
+        getCurrentPictureIndex: function(){
+            return _current_picture_index;
+        },
         getChallengeeImgPath: function(){
             return _challengee_img_path;
         },
@@ -1333,6 +1492,7 @@ angular.module('starter.services', [])
         setChallengee: function(post, photo){
             this.reset();
             this.setPicture(1, $rootScope.photoPath( photo.img_path, 'm' ), false);
+            this.setPictureState(1, JSON.parse(photo.state));
             _challengee_img_path = photo.img_path;
             _challengee_id = photo.owner_id;
             _title = post.duel.title;
@@ -1350,15 +1510,24 @@ angular.module('starter.services', [])
             }
             _picture_array[index] = pic;
         },
+        getPictureState: function(index){
+            return _picture_state_array[index];
+        },
+        setPictureState: function(index, picture_state){
+            _picture_state_array[index] = picture_state;
+        },
         removePicture: function(index){
             _picture_array[index] = null;
+            _picture_state_array[index] = null;
         },
         reset: function(){
             _title = '';
             _duel_id = 0;
             _challengee_id = 0;
             _challengee_img_path = '';
+            _current_picture_index = 0;
             _picture_array = [];
+            _picture_state_array = [];
             _duel_allow = true;
         },
         debug: function(){
@@ -1368,7 +1537,8 @@ angular.module('starter.services', [])
                 _challengee_id : _challengee_id,
                 _challengee_img_path : _challengee_img_path,
                 _duel_allow : _duel_allow,
-                _picture_array : _picture_array
+                _picture_array : _picture_array,
+                _picture_state_array: _picture_state_array
             }
         }
     }

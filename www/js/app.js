@@ -53,10 +53,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.scrolling.jsScrolling(false);
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
-    var baseURL = 'https://app.snaplook.today';
+    //var baseURL = 'https://app.snaplook.today';
     //var baseURL = 'http://localhost:8000';
     //var baseURL = 'http://192.168.56.1:8000';
-    //var baseURL = 'http://localhost:8888';
+    var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -112,6 +112,24 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   // Each tab has its own nav history stack:
 
+    .state('tab.canvas', {
+      url: '/canvas',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/canvas.html',
+          controller: 'CanvasCtrl'
+        }
+      }
+    })
+    .state('tab.wardrobe', {
+      url: '/wardrobe',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/wardrobe.html',
+          controller: 'WardrobeCtrl'
+        }
+      }
+    })
     .state('tab.home', {
         url: '/home',
         views: {
