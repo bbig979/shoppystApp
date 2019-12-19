@@ -499,3 +499,6 @@ body.platform-ios {
 // @end iphone x style correction
 
 .sl-popup-close-button{text-align: right;position: absolute;top: 3px;right: 10px;z-index:1000;color: #ddd !important;padding: 0px !important;background-color: transparent !important; }
+
+// ref : https://github.com/ionic-team/ionic-v3/issues/984
+.platform-ios12 ion-content { pointer-events: auto; /*fix scroll lock on ios12.2*/ }
