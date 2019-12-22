@@ -1301,6 +1301,52 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
         }
     }
 })
+.factory('WardrobeService', function(AsyncStorageService, $http, $q, $rootScope){
+    var keepRequestProduct = null;
+    return {
+        getEmptyState: function(){
+            return {
+                item_array: [],
+                processing_item_array: []
+            };
+        },
+        loadStateStr: function(){
+            return AsyncStorageService.getItem('wardrobe_state');
+        },
+        saveState: function(scope){
+            return AsyncStorageService.setItem('wardrobe_state', JSON.stringify(scope.data));
+        },
+        clear: function(){
+            return AsyncStorageService.removeItem('wardrobe_state');
+        },
+        _addItemByUrl_reusable: function(state, url, deferred){
+            var processing_key = 'product_' + Date.now();
+            state.processing_item_array.unshift({
+                key: processing_key,
+                image: 'https://www.questuav.com/wp-content/uploads/2016/11/processing-icon.png'
+            });
+            $http.post($rootScope.baseURL+'/api/product/create', {
+                url: url,
+                key: processing_key
+            });
+            AsyncStorageService.setItem('wardrobe_state', JSON.stringify(state)).then(function(){
+                deferred.resolve();
+            });
+        },
+        addItemByUrl: function(url){
+            var this_service = this;
+            var deferred = $q.defer();
+            this.loadStateStr().then(function(state_str){
+                var state = JSON.parse(state_str);
+                this_service._addItemByUrl_reusable(state, url, deferred);
+            },function(){
+                var state = this_service.getEmptyState();
+                this_service._addItemByUrl_reusable(state, url, deferred);
+            });
+            return deferred.promise;
+        }
+    }
+})
 .factory('CanvasService', function($state, $rootScope, $ionicActionSheet, AsyncStorageService, $timeout, $ionicLoading, $http){
     var _canvas = null;
     var _items = [];
@@ -1335,7 +1381,7 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
             AsyncStorageService.removeItem('canvas_state');
         },
         clear: function(){
-            _canvas.clear();
+            _canvas.remove.apply(_canvas, _canvas.getObjects().concat());
             _items = [];
             AsyncStorageService.removeItem('canvas_state');
         },
@@ -1377,7 +1423,8 @@ console.log({'1358':JSON.parse(str)});
                         	destructiveButtonClicked: function() {
                                 for( var i = 0; i < _items.length; i++){
                                     var item = _items[i];
-                                    if(active_object.src.includes(item.image)){
+                                    if(active_object.src.includes(item.temp_image_url)){
+                                        // when dealing with _canvas CRUD take care of _items first because _canvas auto save
                                         _items.splice(i, 1);
                                         _canvas.remove(active_object);
                                     }
@@ -1417,24 +1464,42 @@ console.log({'1358':JSON.parse(str)});
         },
         loadItems: function(items){
             var added_image_count = 0;
-            $ionicLoading.show();
+            $ionicLoading.show({template: 'Cutting Product Photos...<br/><br/><ion-spinner></ion-spinner>'});
             for( var i = 0; i < items.length; i++){
-                var item = items[i];
-                _items.push(item);
-                fabric.Image.fromURL('https://res.cloudinary.com/ds33o4ozo/image/fetch/w_600/f_png,e_make_transparent/' + item.image, function(img) {
-                  img.scale(0.33).set({
-                    left: 0,
-                    top: 0,
-                    lockRotation: true,
-                    hasRotatingPoint: false
-                  });
-                  _canvas.add(img);
-                  added_image_count++;
-                  if(added_image_count == items.length){
-                      $ionicLoading.hide();
-                      $state.go('tab.canvas');
-                  }
-                }, {crossOrigin: 'Anonymous'});
+                $http.post($rootScope.baseURL+'/api/photo/item/temp', {
+                    url: items[i].image,
+                    item_sequence: i
+                }).success(function(result){
+                    var temp_image_url = $rootScope.baseURL+result;
+                    fabric.Image.fromURL('https://res.cloudinary.com/ds33o4ozo/image/fetch/w_600/f_png,e_make_transparent/'+temp_image_url, function(img) {
+                    //fabric.Image.fromURL($rootScope.baseURL+result, function(img) {
+                      var image_name = result.split(".")[0];
+                      var image_info_array = image_name.split("_");
+                      var this_index = image_info_array[image_info_array.length - 1];
+                      items[this_index].temp_image_url = temp_image_url;
+                      _items.push(items[this_index]);
+
+                      // when dealing with _canvas CRUD take care of _items first because _canvas auto save
+
+                      img.scale(0.33).set({
+                        left: 0,
+                        top: 0,
+                        lockRotation: true,
+                        hasRotatingPoint: false
+                      });
+                      _canvas.add(img);
+
+                      added_image_count++;
+                      if(added_image_count == items.length){
+                          $ionicLoading.hide();
+                          $state.go('tab.canvas');
+                      }
+                    }, {crossOrigin: 'Anonymous'});
+                })
+                .error(function(data, status){
+                    $ionicLoading.hide();
+                    $rootScope.handleHttpError(data, status);
+                });
             }
         }
     }

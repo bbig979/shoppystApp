@@ -743,14 +743,14 @@
 #create-post .remove-image {
   position: absolute;
   top: 15px;
-  right: 13px;
+  right: 11px;
   z-index: 5;
   font-size: 6vw;
-  color: #fff;
+  color: #777;
 }
 /* line 181, ../../scss/tw/_post-create.scss */
 #create-post li:nth-child(even) .remove-image {
-  right: 19px;
+  right: 17px;
 }
 /* line 185, ../../scss/tw/_post-create.scss */
 #create-post .add-more-to-compare-wrapper {
@@ -1249,7 +1249,7 @@
   padding: 10px;
   float: left;
   text-transform: uppercase;
-  width: 50%;
+  width: 33%;
   text-align: center;
   border-bottom: 1px solid #eee;
 }
@@ -1286,18 +1286,22 @@
   padding-top: 14px;
 }
 /* line 59, ../../scss/tw/_search.scss */
+#post-search .explore-search .post .post-item .duel {
+  margin-left: 15px;
+}
+/* line 62, ../../scss/tw/_search.scss */
 #post-search .explore-search .post .post-item .profile-image {
   float: left;
   margin: 10px;
 }
-/* line 64, ../../scss/tw/_search.scss */
+/* line 67, ../../scss/tw/_search.scss */
 #post-search .explore-search .post .post-item .tag_sign {
   float: left;
   color: #cdcdcd;
   margin: 14px 10px;
   font-size: 1.0em;
 }
-/* line 71, ../../scss/tw/_search.scss */
+/* line 74, ../../scss/tw/_search.scss */
 #post-search .explore-search .post .post-item .at_sign {
   float: left;
   color: #cdcdcd;

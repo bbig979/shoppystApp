@@ -130,6 +130,39 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
+    .state('tab.wardrobe-add', {
+      url: '/wardrobe-add',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/wardrobe-add.html',
+          controller: 'WardrobeAddCtrl'
+        }
+      }
+    })
+    .state('tab.wardrobe-swap', {
+      url: '/wardrobe-swap',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/wardrobe-swap.html',
+          controller: 'WardrobeSwapCtrl'
+        }
+      },
+      params: {
+         item: null
+      }
+    })
+    .state('tab.open-with', {
+        url: '/open-with',
+        views:{
+            'tab-hidden': {
+                templateUrl: 'templates/open-with.html',
+                controller: 'OpenWithCtrl'
+            }
+        },
+        params: {
+            url: null
+        }
+    })
     .state('tab.home', {
         url: '/home',
         views: {

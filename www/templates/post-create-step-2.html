@@ -9,7 +9,7 @@
         </div>
         <div class="duel-title padding">
             <input class="form-control" value="{{duelService.getTitle()}}" disabled/>
-            <div class="remove-image" ng-click="goStep1()">
+            <div class="remove-image" ng-click="goStep1()" ng-show="duelService.getChallengeeId() === 0">
                 <i class="icon ion-compose"></i>
             </div>
         </div>
@@ -51,11 +51,6 @@
             <div class="clearfix"></div>
             <div class="post-caption padding" ng-show="hasContent()">
                 <textarea placeholder="Write a Caption" class="form-control" ng-model="captions" ng-change="setCaption()"></textarea>
-            </div>
-            <div class="post-duel-allow padding" ng-show="hasContent()">
-                <ion-toggle ng-model="duel_allow" ng-checked="duelService.getDuelAllow()" ng-change="duelService.toggleDuelAllow()">
-                    Allow Duel on My Outfit
-                </ion-toggle>
             </div>
 
             <div class="button-padding padding-top">

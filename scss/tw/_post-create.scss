@@ -172,14 +172,14 @@
 	.remove-image{
 		position: absolute;
 		top: 15px;
-		right: 13px;
+		right: 11px;
 		z-index: 5;
 		font-size: 6vw;
-		color: #fff;
+		color: #777;;
 	}
 
 	li:nth-child(even) .remove-image{
-		right: 19px;
+		right: 17px;
 	}
 
 	.add-more-to-compare-wrapper{

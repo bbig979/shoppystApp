@@ -225,98 +225,109 @@ angular.module('starter.controllers', [])
     };
     $rootScope.openCameraMenu = function(picture_index){
         UxAnalytics.startScreen('tab-camera');
-        var buttons = [
-            { text: 'Take a Picture' },
-            { text: 'Choose from Gallery' },
-            { text: 'Create an Outfit Collage' }
-        ];
+        var buttons = [];
         if(picture_index == 1 && DuelService.getPicture(0)){
-            buttons.push({ text: 'Import from My Outfit' });
+            buttons = [
+                { text: 'Create a New Outfit' },
+                { text: 'Import from My Outfit' }
+            ];
         }
         if(picture_index == 0 && DuelService.getPicture(1)){
-            buttons.push({ text: 'Import from VS Outfit' });
+            buttons = [
+                { text: 'Create a New Outfit' },
+                { text: 'Import from VS Outfit' }
+            ];
         }
-        // Show the action sheet
-        var navCameraSheet = $ionicActionSheet.show({
-            buttons: buttons,
-            cancelText: 'Cancel',
-            cancel: function() {
-                // code for cancel if necessary.
-            },
-            buttonClicked: function(index) {
-                $ionicLoading.show();
-                switch (index){
-                    case 0 :
-                        var options = {
-                            quality: 50,
-                            targetWidth: 2400,
-                            targetHeight: 2400,
-                            correctOrientation: true,
-                            destinationType: Camera.DestinationType.FILE_URI,
-                            sourceType: Camera.PictureSourceType.CAMERA
-                        };
-                        $cordovaCamera.getPicture(options).then(
-                            function(imageData) {
-                                DuelService.setPicture(picture_index, imageData);
-                                $ionicLoading.show({template: 'Loading Photo', duration:500});
-                                $ionicLoading.hide();
-                                setTimeout(function () {
-                                    $('.post-image .item').each(function(){ $(this).attr('src', $(this).attr('src').replace('unsafe:', '')); });
-                                }, 100);
-                            },
-                            function(err){
-                                $ionicLoading.hide();
-                            }
-                        )
-                        return true;
-                    case 1 :
-                        var options = {
-                            quality: 50,
-                            targetWidth: 2400,
-                            targetHeight: 2400,
-                            correctOrientation: true,
-                            destinationType: Camera.DestinationType.FILE_URI,
-                            sourceType: Camera.PictureSourceType.PHOTOLIBRARY
-                        };
 
-                        $cordovaCamera.getPicture(options).then(
-                            function(imageURI) {
-                                window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
-                                    fileEntry.moveTo(fileEntry.filesystem.root, Date.now() + ".jpg", function (entry) {
-                                        DuelService.setPicture(picture_index, entry.nativeURL);
-                                        $ionicLoading.show({template: 'Loading Photo', duration:500});
-                                        $ionicLoading.hide();
-                                        setTimeout(function () {
-                                            $('.post-image .item').each(function(){ $(this).attr('src', $(this).attr('src').replace('unsafe:', '')); });
-                                        }, 100);
-                                    }, function fail(error) {
-                                        alert(error.code);
-                                    },
-                                    function(err){
-                                        $ionicLoading.hide();
+        if(buttons.length == 0){
+            DuelService.setCurrentPictureIndex(picture_index);
+            $state.go('tab.canvas');
+        }
+        else{
+            // Show the action sheet
+            var navCameraSheet = $ionicActionSheet.show({
+                buttons: buttons,
+                cancelText: 'Cancel',
+                cancel: function() {
+                    // code for cancel if necessary.
+                },
+                buttonClicked: function(index) {
+                    $ionicLoading.show();
+                    switch (index){
+                        /*
+                        case 0 :
+                            var options = {
+                                quality: 50,
+                                targetWidth: 2400,
+                                targetHeight: 2400,
+                                correctOrientation: true,
+                                destinationType: Camera.DestinationType.FILE_URI,
+                                sourceType: Camera.PictureSourceType.CAMERA
+                            };
+                            $cordovaCamera.getPicture(options).then(
+                                function(imageData) {
+                                    DuelService.setPicture(picture_index, imageData);
+                                    $ionicLoading.show({template: 'Loading Photo', duration:500});
+                                    $ionicLoading.hide();
+                                    setTimeout(function () {
+                                        $('.post-image .item').each(function(){ $(this).attr('src', $(this).attr('src').replace('unsafe:', '')); });
+                                    }, 100);
+                                },
+                                function(err){
+                                    $ionicLoading.hide();
+                                }
+                            )
+                            return true;
+                        case 1 :
+                            var options = {
+                                quality: 50,
+                                targetWidth: 2400,
+                                targetHeight: 2400,
+                                correctOrientation: true,
+                                destinationType: Camera.DestinationType.FILE_URI,
+                                sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+                            };
+
+                            $cordovaCamera.getPicture(options).then(
+                                function(imageURI) {
+                                    window.resolveLocalFileSystemURL(imageURI, function(fileEntry) {
+                                        fileEntry.moveTo(fileEntry.filesystem.root, Date.now() + ".jpg", function (entry) {
+                                            DuelService.setPicture(picture_index, entry.nativeURL);
+                                            $ionicLoading.show({template: 'Loading Photo', duration:500});
+                                            $ionicLoading.hide();
+                                            setTimeout(function () {
+                                                $('.post-image .item').each(function(){ $(this).attr('src', $(this).attr('src').replace('unsafe:', '')); });
+                                            }, 100);
+                                        }, function fail(error) {
+                                            alert(error.code);
+                                        },
+                                        function(err){
+                                            $ionicLoading.hide();
+                                        });
                                     });
-                                });
-                            },
-                            function(err){
-                                $ionicLoading.hide();
-                            }
-                        )
-                        //Handle Move Button
-                        return true;
-                    case 2 :
-                        DuelService.setCurrentPictureIndex(picture_index);
-                        $ionicLoading.hide();
-                        $state.go('tab.canvas');
-                        return true;
-                    case 3 :
-                        DuelService.setCurrentPictureIndex(picture_index);
-                        CanvasService.importState(DuelService.getPictureState(1 - picture_index));
-                        $ionicLoading.hide();
-                        $state.go('tab.canvas');
-                        return true;
+                                },
+                                function(err){
+                                    $ionicLoading.hide();
+                                }
+                            )
+                            //Handle Move Button
+                            return true;
+                        */
+                        case 0 :
+                            DuelService.setCurrentPictureIndex(picture_index);
+                            $ionicLoading.hide();
+                            $state.go('tab.canvas');
+                            return true;
+                        case 1 :
+                            DuelService.setCurrentPictureIndex(picture_index);
+                            CanvasService.importState(DuelService.getPictureState(1 - picture_index));
+                            $ionicLoading.hide();
+                            $state.go('tab.canvas');
+                            return true;
+                    }
                 }
-            }
-        });
+            });
+        }
     };
     $rootScope.popupMessage = function(title, message){
         var alertPopup = $ionicPopup.alert({
@@ -1086,12 +1097,72 @@ angular.module('starter.controllers', [])
         CanvasService.clear();
     }
 })
-.controller('WardrobeCtrl', function($scope, $state, CanvasService){
-    $scope.data = {
-        top_item_array: [{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/SCRATCH_PERRY_1024x1024.jpg?v=1575244190"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/SUNSHINE_BACK_20588a96-0a66-463c-a0c7-c9144353cf5c_1024x1024.jpg?v=1575433852"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/UTOPIA_BLUE_1024x1024.jpg?v=1575244439"}],
-        bottom_item_array: [{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/JAMBOREE_1024x1024.jpg?v=1572482551"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/SLACKERS_PANT_PHANTOM_1_-_BE_KIND_1024x1024.jpg?v=1571265360"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/SLACKERS_PANT_AMAZON_1_-_BE_KIND_1024x1024.jpg?v=1571265360"}],
-        foot_item_array: [{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/BE_KIND_-_INSTITUTE_SOCK_BLACK_1_1024x1024.jpg?v=1571265354"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/BE_KIND_-_INSTITUTE_SOCK_YELLOW_1_1024x1024.jpg?v=1571265354"},{image:"https://cdn.shopify.com/s/files/1/0116/5092/products/BIG_SUN_SOCK_1_-_BE_KIND_1024x1024.jpg?v=1571265361"}],
+.controller('WardrobeCtrl', function($scope, $state, CanvasService, $http, $rootScope, $interval, WardrobeService, $ionicActionSheet, $ionicLoading){
+    function requestProduct(){
+        $http.post($rootScope.baseURL+'/api/product/index', {
+            processing_item_array: $scope.data.processing_item_array
+        })
+        .success(function(response){
+            WardrobeService.loadStateStr().then(function(state_str){
+                $scope.data = JSON.parse(state_str);
+                for(var i=0;i<response.length;i++){
+                    for(var j=0;j<$scope.data.processing_item_array.length;j++){
+                        if($scope.data.processing_item_array[j].key == response[i].key){
+                            if(response[i].value != 'requested'){
+                                var returned_value = JSON.parse(response[i].value)[0];
+                                $scope.data.processing_item_array.splice(j,1);
+                                if(
+                                    typeof returned_value.product === "undefined" ||
+                                    typeof returned_value.product.mainImage === "undefined"
+                                ){
+                                    $scope.data.item_array.unshift({
+                                        key: response[i].key,
+                                        image: 'https://cdna.artstation.com/p/assets/images/images/019/999/274/large/briana-banks-cute-icecreamshop-404-page.jpg',
+                                        query: returned_value.query
+                                    });
+                                }
+                                else{
+                                    $scope.data.item_array.unshift({
+                                        key: response[i].key,
+                                        product: returned_value.product,
+                                        image: returned_value.product.mainImage,
+                                        query: returned_value.query
+                                    });
+                                }
+                                WardrobeService.saveState($scope);
+                            }
+                        }
+                    }
+                }
+                if ($scope.data.processing_item_array.length == 0) {
+                    if(WardrobeService.keepRequestProduct != null){
+                        $interval.cancel(WardrobeService.keepRequestProduct);
+                        WardrobeService.keepRequestProduct = null;
+                    }
+                }
+            });
+        });
     }
+
+    function keepRequestProduct(){
+        if(WardrobeService.keepRequestProduct != null){
+            $interval.cancel(WardrobeService.keepRequestProduct);
+            WardrobeService.keepRequestProduct = null;
+        }
+        WardrobeService.keepRequestProduct = $interval(function(){
+            requestProduct();
+        }, 5000);
+    }
+
+    $scope.data = WardrobeService.getEmptyState();
+
+    WardrobeService.loadStateStr().then(function(state_str){
+        $scope.data = JSON.parse(state_str);
+        if($scope.data.processing_item_array.length > 0){
+            requestProduct();
+            keepRequestProduct();
+        }
+    });
 
     $scope.selected_item_array = [];
 
@@ -1114,6 +1185,124 @@ angular.module('starter.controllers', [])
     $scope.load = function() {
         CanvasService.loadItems($scope.selected_item_array);
     }
+
+    $scope.add = function() {
+        $state.go('tab.wardrobe-add');
+    }
+
+    $scope.clear = function() {
+        WardrobeService.clear().then(function(){
+            $scope.data = {
+                item_array: [],
+                processing_item_array: []
+            }
+        });
+    }
+
+    $scope.show = function() {
+        console.log($scope.data);
+    }
+
+    $scope.edit = function(item) {
+        var buttons = [
+            { text: 'Reimport Product Images' }
+        ];
+        if(typeof(item.product) !== "undefined"){
+            buttons.push({ text: 'Swap Product Image' });
+        }
+        $ionicActionSheet.show({
+            titleText: 'Product Control',
+            destructiveText: 'Delete',
+            destructiveButtonClicked: function() {
+                for( var i = 0; i < $scope.data.item_array.length; i++){
+                    var current_item = $scope.data.item_array[i];
+                    if(item.key == current_item.key){
+                        $scope.data.item_array.splice(i, 1);
+                        WardrobeService.saveState($scope);
+                    }
+                }
+                return true;
+            },
+            buttons: buttons,
+            cancelText: 'Cancel',
+            cancel: function() {
+                // code for cancel if necessary.
+            },
+            buttonClicked: function(index) {
+                switch (index){
+                    case 0 :
+                        $ionicLoading.show();
+                        for( var i = 0; i < $scope.data.item_array.length; i++){
+                            var current_item = $scope.data.item_array[i];
+                            if(item.key == current_item.key){
+                                $scope.data.item_array.splice(i, 1);
+                                WardrobeService.saveState($scope).then(function(){
+                                    WardrobeService.addItemByUrl(item.query.userQuery.url).then(function(){
+                                        WardrobeService.loadStateStr().then(function(state_str){
+                                            $scope.data = JSON.parse(state_str);
+                                            keepRequestProduct();
+                                            $ionicLoading.hide();
+                                        });
+                                    });
+                                });
+                            }
+                        }
+                        return true;
+                    case 1 :
+                        $state.go('tab.wardrobe-swap', {item:item});
+                        return true;
+                }
+            }
+        });
+    }
+})
+.controller('WardrobeAddCtrl', function($scope, $rootScope, $state, WardrobeService){
+    $scope.addToWardrobe = function(url){
+        if(url){
+            WardrobeService.addItemByUrl(url).then(function(){
+                $rootScope.popupMessage('Fetching Product..','It will be shown in a minute');
+                $state.go('tab.wardrobe');
+            });
+        }
+        else{
+            $rootScope.popupMessage('','Product URL is Required');
+        }
+    }
+})
+.controller('WardrobeSwapCtrl', function($scope, $stateParams, $state, WardrobeService, AsyncStorageService){
+    $scope.item = $stateParams.item;
+    $scope.selected_image = null;
+
+    $scope.select = function(image){
+        $scope.selected_image = image;
+    }
+
+    $scope.swap = function(){
+        WardrobeService.loadStateStr().then(function(state_str){
+            var state = JSON.parse(state_str);
+            for(var i=0;i<state.item_array.length;i++){
+                var item = state.item_array[i];
+                if(item.key == $scope.item.key){
+                    item.image = $scope.selected_image;
+                }
+            }
+            AsyncStorageService.setItem('wardrobe_state', JSON.stringify(state)).then(function(){
+                $state.go('tab.wardrobe');
+            });
+        });
+    }
+
+    $scope.noImageToShow = function(){
+        return (
+            typeof($scope.item.product.images) === "undefined" ||
+            $scope.item.product.images.length < 2
+        );
+    }
+})
+.controller('OpenWithCtrl', function($scope, $stateParams, WardrobeService){
+    //$scope.url = $stateParams.url;
+    $scope.url = 'https://www.ae.com/us/en/p/women/sweaters-cardigans/crew-neck-sweaters/ae-cozy-crew-neck-sweater/0348_8684_717?nvid=pdp%3A0348_8684_309?menu=cat4840004';
+    WardrobeService.addItemByUrl($scope.url);
 })
 .controller('PostCreateCtrl_deprecated_20191001', function($scope, FetchGoals, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'public';
@@ -1555,6 +1744,9 @@ angular.module('starter.controllers', [])
 .controller('PostCreateStep2Ctrl', function($scope, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, DuelService, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader, PostShare, DeepLink, $ionicPopup) {
 
     $scope.goStep1 = function(call_back_func = null){
+        if(DuelService.getChallengeeId() > 0){
+            return;
+        }
         $ionicHistory.nextViewOptions({
             disableBack: true
         });
@@ -2245,6 +2437,10 @@ angular.module('starter.controllers', [])
         {
             termSign = '<i class="fa fa-bolt" aria-hidden="true"></i> ';
         }
+        if ($stateParams.type == "duel")
+        {
+            return 'DUELS';
+        }
         if($stateParams.searchTerm){
             return termSign+$stateParams.searchTerm.trim();
         }
@@ -2777,10 +2973,15 @@ angular.module('starter.controllers', [])
             $scope.searchHolder = "Search looks";
             $scope.searchNoResultText = "No looks found.";
         }
+        else if (type == "duel")
+        {
+            $scope.searchHolder = "Search duels";
+            $scope.searchNoResultText = "No duels found.";
+        }
         else
         {
             $scope.searchHolder = "Search";
-            $scope.searchNoResultText = "No Results Found";
+            $scope.searchNoResultText = "No results found.";
         }
         $scope.searchTermTyped(_searchTerm, null, 0);
     };
@@ -2792,6 +2993,10 @@ angular.module('starter.controllers', [])
     if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'goal')
     {
         $scope.search_type = "goal";
+    }
+    if (typeof $stateParams.type !== 'undefined' && $stateParams.type == 'duel')
+    {
+        $scope.search_type = "duel";
     }
     $scope.postCard = PostCard;
     $scope.business_object_list_config = {

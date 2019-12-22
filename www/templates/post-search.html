@@ -19,6 +19,7 @@
             <div class="search-toggle">
                 <a ng-class="{ active: search_type_active === 'tag' }" ng-click="setType(searchTerm, 'tag');">Tag</a>
                 <a ng-class="{ active: search_type_active === 'people' }" ng-click="setType(searchTerm, 'people');">User</a>
+                <a ng-class="{ active: search_type_active === 'duel' }" ng-click="setType(searchTerm, 'duel');">Duel</a>
             </div>
             <div class="search-running" ng-if="isSearchRunning">
                 <i class="fa fa-search" aria-hidden="true"></i> Searching...
@@ -30,6 +31,7 @@
                 <ion-item ng-show="!noSearchResult" ng-repeat="line in searchResult" class="post">
                     <div ng-if="line.type == 'tag'" ng-click="goSearchPost(line.name, 'tag')" class="post-item"><span class="tag_sign">&nbsp;<i class="fa fa-hashtag" aria-hidden="true"></i>&nbsp;</span><span class="name">{{line.name}}</span></div>
                     <div ng-if="line.type == 'goal'" ng-click="goSearchPost(line.name, 'goal')" class="post-item"><span class="at_sign"><i class="fa fa-bolt" aria-hidden="true"></i></span><span class="name">{{line.name}}</span></div>
+                    <div ng-if="line.type == 'duel'" ng-click="goSearchPost(line.name, 'duel')" class="post-item"><span class="name duel">{{line.name}}</span></div>
                     <div ng-if="line.type == 'user'" ng-click="goAccount(line.slug)" class="entity-id-{{line.id}} post-item">
                         <div style="background-image: url( {{ photoPath( line.profile_img_path, 's' ) }} )" class="profile-image"></div>
                         <div class="name">{{ line.name }}</div>
