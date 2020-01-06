@@ -1,0 +1,31 @@
+#items{
+    .item-cards-wrapper{
+        margin: 1vw;
+        .item-card{
+            padding: 4vw;
+            border: 0;
+            margin-bottom: 1px;
+            border-bottom: 1px solid #ccc;
+            .photo-img-wrapper{
+                margin: 1vw;
+                width: 22.99vw;
+                height: 22.99vw;
+                background-position: 50% 50%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                border-radius: 1vw;
+                float: left;
+            }
+            .name{
+                font-size: 14px;
+                white-space: normal;
+                margin-left: 28vw;
+            }
+            .shop-now{
+                position: absolute;
+                bottom: 4vw;
+                right: 4vw;
+            }
+        }
+    }
+}

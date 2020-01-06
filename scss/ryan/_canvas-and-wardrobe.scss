@@ -1,0 +1,108 @@
+#wardrobe, #wardrobe-swap{
+    .item.activated{
+        background-color: #fff;
+    }
+    .image-cards-wrapper{
+        margin: 1vw;
+        .image-card{
+            float: left;
+            padding: 0;
+            border: 0;
+            .photo-img-wrapper{
+                margin: 1vw;
+                width: 22.99vw;
+                height: 22.99vw;
+                background-position: 50% 50%;
+                background-repeat: no-repeat;
+                background-size: cover;
+                border-radius: 1vw;
+            }
+            &.selected .photo-img-wrapper{
+                border: 2px solid #85ff00;
+            }
+        }
+    }
+    .control-pannel .button{
+        width: 47vw;
+    }
+    .no-image-to-swap-message{
+        padding: 4vw;
+        text-align: center;
+    }
+}
+#wardrobe-browser{
+    h1{
+        font-size: 25px;
+    }
+    i{
+        font-size: 20px;
+    }
+    .content-wrapper{
+        padding: 5vw;
+        background-color: #f7f7f7;
+    }
+    img{
+        width: 80vw;
+        display: block;
+        margin: 5vw;
+        margin-bottom: 15vw;
+        border: 1px solid #ccc;
+    }
+}
+#wardrobe-add{
+    .or{
+        text-align: center;
+    }
+    .browser-option{
+        margin: 4vw;
+        padding: 4vw;
+        text-align: center;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        color: #333;
+        .direction{
+            padding-top: 15px;
+            display: block;
+        }
+    }
+}
+#canvas{
+    .control-pannel .button{
+        width: 47vw;
+    }
+}
+.control-pannel{
+    padding: 2vw;
+    background-color: #454a54;
+    .button{
+        background-color: transparent;
+        color: #fff;
+        font-size: 15px;
+        border-radius: 0;
+        border-left: 1px solid #555;
+    }
+    .button:first-child{
+        border-left: 0;
+    }
+
+}
+#open-with{
+    .message-wrapper{
+        padding: 4vw;
+        text-align: center;
+        .pre-url-message{
+            padding: 4vw;
+        }
+        .display-url{
+            padding: 4vw;
+            background-color: #f7f7f7;
+            border: 1px solid #ccc;
+            margin: 4vw 0;
+            border-radius: 3px;
+        }
+        .post-url-message{
+
+        }
+    }
+}

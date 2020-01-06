@@ -1,5 +1,16 @@
 <ion-view cache-view="false" view-title="<snap-title>ADD TO WARDROBE</snap-title>" id="open-with">
     <ion-content>
-        {{ url }}
+        <div class="message-wrapper">
+            <div class="pre-url-message">
+                We are fetching the item from URL below.
+            </div>
+            <div class="display-url">
+                 {{ url }}
+            </div>
+            <ion-spinner></ion-spinner>
+            <div class="post-url-message">
+                It will show up in your wardrobe in a minute.
+            </div>
+        </div>
     </ion-content>
 </ion-view>

@@ -1,9 +1,9 @@
 <ion-view cache-view="false" view-title="<snap-title>CANVAS</snap-title>" id="canvas">
     <ion-content>
+        <div class="control-pannel">
+            <button class="button" ng-click="save()"><i class="fa fa-picture-o" aria-hidden="true"></i> Publish</button>
+            <button class="button" ng-click="wardrobe()"><i class="fa fa-columns" aria-hidden="true"></i> Wardrobe</button>
+        </div>
         <canvas id="c" style="border-bottom: 1px solid #ccc"></canvas>
-        <button class="button button-block button-positive" ng-click="save()">Save</button>
-        <button class="button button-block button-positive" ng-click="wardrobe()">Wardrobe</button>
-        <button class="button button-block button-positive" ng-click="help()">Help</button>
-        <button class="button button-block button-positive" ng-click="clear()">Clear</button>
     </ion-content>
 </ion-view>

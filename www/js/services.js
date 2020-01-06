@@ -226,6 +226,7 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
             return false;
         },
         _isNewVersionAvailable: function(){
+            return false;
             if(Config.get('version') == null){
                 return false;
             }
@@ -1323,7 +1324,7 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
             var processing_key = 'product_' + Date.now();
             state.processing_item_array.unshift({
                 key: processing_key,
-                image: 'https://www.questuav.com/wp-content/uploads/2016/11/processing-icon.png'
+                image: 'img/processing-icon.png'
             });
             $http.post($rootScope.baseURL+'/api/product/create', {
                 url: url,
@@ -1357,7 +1358,6 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
             _canvas.backgroundColor = '#f7f7f7';
             _canvas.setHeight(window.innerWidth * 1.33);
             _canvas.setWidth(window.innerWidth);
-            _canvas.renderAll();
         },
         toJSON: function(){
             return {
@@ -1399,9 +1399,28 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
             this.init();
 
             AsyncStorageService.getItem('canvas_state').then(function(str){
-                _canvas.loadFromJSON(JSON.parse(str).canvas, _canvas.renderAll.bind(_canvas));
-                _items = JSON.parse(str).items;
 console.log({'1358':JSON.parse(str)});
+                _items = JSON.parse(str).items;
+                _canvas.loadFromJSON(JSON.parse(str).canvas, function(){
+                    if(_items.length > 0){
+                        // problem: no way to remove background image
+                        // cause: fabric.js does not supply one
+                        // solution: add transparent 1px data as a background image
+                        _canvas.setBackgroundImage('data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=', _canvas.renderAll.bind(_canvas));
+                    }
+                    else{
+                        _canvas.renderAll.bind(_canvas)
+                    }
+                });
+            },function(){
+                _canvas.setBackgroundImage('img/load_items.png', _canvas.renderAll.bind(_canvas), {
+                    scaleX: _canvas.width / 500,
+                    scaleY: _canvas.height / 665,
+                    top: 0,
+                    left: 0,
+                    originX: 'left',
+                    originY: 'top'
+                });
             });
 
             _canvas.on({
@@ -1464,15 +1483,21 @@ console.log({'1358':JSON.parse(str)});
         },
         loadItems: function(items){
             var added_image_count = 0;
-            $ionicLoading.show({template: 'Cutting Product Photos...<br/><br/><ion-spinner></ion-spinner>'});
+            $ionicLoading.show({template: 'Auto Removing Backgrounds...<br/><br/><ion-spinner></ion-spinner>'});
             for( var i = 0; i < items.length; i++){
                 $http.post($rootScope.baseURL+'/api/photo/item/temp', {
                     url: items[i].image,
                     item_sequence: i
                 }).success(function(result){
                     var temp_image_url = $rootScope.baseURL+result;
-                    fabric.Image.fromURL('https://res.cloudinary.com/ds33o4ozo/image/fetch/w_600/f_png,e_make_transparent/'+temp_image_url, function(img) {
-                    //fabric.Image.fromURL($rootScope.baseURL+result, function(img) {
+                    var url = 'https://res.cloudinary.com/ds33o4ozo/image/fetch/w_600/f_png,e_make_transparent/'+temp_image_url;
+                    if($rootScope.baseURL.includes('localhost')){
+                        url = temp_image_url;
+                    }
+                    fabric.Image.fromURL(url, function(img) {
+
+                      // need error handling when img fail to load
+
                       var image_name = result.split(".")[0];
                       var image_info_array = image_name.split("_");
                       var this_index = image_info_array[image_info_array.length - 1];

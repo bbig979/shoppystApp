@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'satellizer', 'angularMoment', 'ngCordova'])
 
-.run(function($ionicPlatform, DeepLink) {
+.run(function($ionicPlatform, DeepLink, $state, $ionicHistory) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,9 +21,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       StatusBar.styleDefault();
     }
 
-    // Branch
     $ionicPlatform.on('deviceready', function() {
       handleBranch();
+
+      cordova.openwith.init(function(){
+          console.log('init success!');
+      }, function initError(err) {
+          console.log('init failed: ' + err); }
+      );
+
+      cordova.openwith.addHandler(function(intent) {
+        localStorage.setItem('openwith_intent', JSON.stringify(intent));
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+        $state.go('tab.open-with',{refresh:Date.now()});
+      });
     });
 
     $ionicPlatform.on('resume', function() {
@@ -121,6 +134,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
+    .state('tab.canvas-demo', {
+      url: '/canvas-demo',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/canvas.html',
+          controller: 'CanvasDemoCtrl'
+        }
+      }
+    })
     .state('tab.wardrobe', {
       url: '/wardrobe',
       views: {
@@ -130,12 +152,39 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
+    .state('tab.wardrobe-demo', {
+      url: '/wardrobe-demo',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/wardrobe.html',
+          controller: 'WardrobeDemoCtrl'
+        }
+      }
+    })
+    .state('tab.wardrobe-add-demo', {
+      url: '/wardrobe-add-demo',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/wardrobe.html',
+          controller: 'WardrobeAddDemoCtrl'
+        }
+      }
+    })
     .state('tab.wardrobe-add', {
       url: '/wardrobe-add',
       views: {
         'tab-camera': {
           templateUrl: 'templates/wardrobe-add.html',
           controller: 'WardrobeAddCtrl'
+        }
+      }
+    })
+    .state('tab.wardrobe-browser', {
+      url: '/wardrobe-browser',
+      views: {
+        'tab-camera': {
+          templateUrl: 'templates/wardrobe-browser.html',
+          controller: 'WardrobeBrowserCtrl'
         }
       }
     })
@@ -160,8 +209,68 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         },
         params: {
-            url: null
+            refresh: null
         }
+    })
+    .state('tab.items-home', {
+       url: '/items/home',
+       views: {
+           'tab-home': {
+               templateUrl: 'templates/items.html',
+               controller: 'ItemsCtrl'
+           }
+       },
+       params: {
+           photo: null
+       }
+    })
+    .state('tab.items-explore', {
+       url: '/items/explore',
+       views: {
+           'tab-explore': {
+               templateUrl: 'templates/items.html',
+               controller: 'ItemsCtrl'
+           }
+       },
+       params: {
+           photo: null
+       }
+    })
+    .state('tab.items-notification', {
+       url: '/items/notification',
+       views: {
+           'tab-notification': {
+               templateUrl: 'templates/items.html',
+               controller: 'ItemsCtrl'
+           }
+       },
+       params: {
+           photo: null
+       }
+    })
+    .state('tab.items-account', {
+       url: '/items/account',
+       views: {
+           'tab-account': {
+               templateUrl: 'templates/items.html',
+               controller: 'ItemsCtrl'
+           }
+       },
+       params: {
+           photo: null
+       }
+    })
+    .state('tab.items-hidden', {
+       url: '/items/hidden',
+       views: {
+           'tab-hidden': {
+               templateUrl: 'templates/items.html',
+               controller: 'ItemsCtrl'
+           }
+       },
+       params: {
+           photo: null
+       }
     })
     .state('tab.home', {
         url: '/home',

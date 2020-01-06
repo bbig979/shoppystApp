@@ -1,14 +1,19 @@
-<ion-view cache-view="false" view-title="<snap-title>ADD TO WARDROBE</snap-title>" id="wardrobe-add">
+<ion-view cache-view="false" view-title="<snap-title>ADD AN ITEM</snap-title>" id="wardrobe-add">
     <ion-content>
         <form ng-submit="addToWardrobe(url)" name="addToWardrobeForm">
             <div class="list">
                 <label class="item item-input item-floating-label">
-                    <span class="input-label">Product URL</span>
-                    <input type="text" placeholder="Product URL" class="form-control" ng-model="url">
+                    <span class="input-label">Item URL</span>
+                    <input type="text" placeholder="Copy and Paste Item URL Here" class="form-control" ng-model="url">
                 </label>
                 <div class="padding"></div>
                 <div class="padding">
                     <button type="submit" class="button button-block button-positive">Add</button>
+                </div>
+                <div class="or">OR</div>
+                <div class="browser-option">
+                    Add an Item directly from a browser
+                    <a class="direction" href="#/tab/wardrobe-browser">See How</div>
                 </div>
             </div>
         </form>

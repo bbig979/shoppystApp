@@ -1,19 +1,17 @@
 <ion-view cache-view="false" view-title="<snap-title>SWAP ITEM IMAGE</snap-title>" id="wardrobe-swap">
-    <style>
-        #wardrobe-swap .selected img{
-            border: 2px solid #85ff00;
-        }
-    </style>
     <ion-content>
-        <div style="display:inline-block" ng-repeat="image in item.product.images" ng-click="select(image)" ng-class="image == selected_image?'selected':'unselected'">
-            <img width=100 height=100 ng-src="{{ image }}""/>
-        </div>
-        <div ng-show="noImageToShow()">
-            No other image is available. If you think this is an error, please reimport product images.
-        </div>
-        <div class="padding"></div>
-        <div class="padding" ng-show="selected_image">
-            <button class="button button-block button-positive" ng-click="swap()">Swap</button>
+        <div class="image-cards-wrapper">
+            <ion-item ng-repeat="image in item.product.images track by $index" class="image-card" ng-click="select(image)" ng-class="image == selected_image?'selected':'unselected'">
+                <div class="photo-img-wrapper" style="background-image: url({{ image }})">
+                </div>
+            </ion-item>
+            <div ng-show="noImageToShow()" class="no-image-to-swap-message">
+                No other item image is available. If you think this is an error, please reimport item images.
+            </div>
+            <div class="padding clearfix"></div>
+            <div class="padding" ng-show="selected_image">
+                <button class="button button-block button-positive" ng-click="swap()">Swap</button>
+            </div>
         </div>
     </ion-content>
 </ion-view>

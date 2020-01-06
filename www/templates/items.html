@@ -1,0 +1,16 @@
+<ion-view view-title="<snap-title>ITEMS</snap-title>" id="items">
+    <ion-content scroll-watch>
+        <div class="item-cards-wrapper">
+            <ion-item ng-repeat="item in items" class="item-card">
+                <div class="photo-img-wrapper" style="background-image: url({{ item.image }})">
+                </div>
+                <div class="name">
+                    {{ item.product.name }}
+                </div>
+                <div class="shop-now">
+                    <button class="button button-positive button-small" ng-click="openInAppBrowser(item.product.url)"><i class="fa fa-shopping-bag" aria-hidden="true"></i> Go to Website</button>
+                </div>
+            </ion-item>
+        </div>
+    </ion-content>
+</ion-view>

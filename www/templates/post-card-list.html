@@ -65,17 +65,13 @@
                                     <div class="photo-counter" ng-click="hideSlideCounter()">
                                         {{ $index + 1 }}/{{ post.photos.length }}
                                     </div>
+                                    <div class="shop-link" ng-click="goItems(photo)"><i class=" icon ion-bag"></i></div>
                                     <div class="photo-img-wrapper entity-id-{{photo.id}} index-{{ $index + 1 }}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})" zoomable>
                                         <div class="masker"></div>
                                         <a class="photo-img"></a>
                                     </div>
                                     <div class="vote-toggle">
-                                        <!--<div class="source-link icon ion-link" ng-click="openInAppBrowser(photo.source_url)" ng-show="photo.source_url"></div>-->
                                         <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(post, photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
-                                    </div>
-                                    <div>
-                                        <button ng-show="photo.duel_allow" class="duel-button button button-block button-positive" ng-click="postCard.startDuel(post, photo)">Start a duel with this look</button>
-                                        <button ng-hide="photo.duel_allow" class="duel-button button button-block button-positive" disabled=true>Duel is disabled with this look</button>
                                     </div>
                                 </div>
                             </ion-slide>

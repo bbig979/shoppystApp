@@ -1,3 +1,5 @@
+// @note below is way to call scope function of #wardrobe view
+// angular.element("#wardrobe").scope().show();
 angular.module('starter.controllers', [])
 .run(function($rootScope, $ionicTabsDelegate, $state, $ionicPlatform, $ionicPopup, $ionicActionSheet, $timeout, $cordovaCamera, $ionicLoading, $ionicHistory, $location, $ionicBackdrop, $stateParams, $http, $ionicScrollDelegate, DuelService, $cordovaSocialSharing, Wait, RestartApp, FetchNotifications, BlockerMessage, UxAnalytics, Config, SlideHeader, FCMHandler, DeepLink, BusinessObjectStateSync, CanvasService) {
     $rootScope.clientVersion = '1.0';
@@ -40,8 +42,8 @@ angular.module('starter.controllers', [])
         $ionicScrollDelegate.scrollBy(0, 100);
     }
     $rootScope.picture = function() {
-        DuelService.setPicture(0, 'http://localhost:8100/img/_test_1.jpg', false);
-        //DuelService.setPicture(1, 'http://localhost:8100/img/_test_2.jpg', false);
+        DuelService.setPicture(0, 'img/_test_1.jpg', false);
+        //DuelService.setPicture(1, 'img/_test_2.jpg', false);
     }
     $rootScope.ifTestAccount = function() {
         if($rootScope.currentUser){
@@ -162,6 +164,10 @@ angular.module('starter.controllers', [])
     $rootScope.goAccountNotification = function(){
         var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
         $state.go('tab.account-notification-'+tab);
+    };
+    $rootScope.goItems = function(photo){
+        var tab = $rootScope.routeTab($ionicTabsDelegate.selectedIndex());
+        $state.go('tab.items-'+tab,{photo: photo});
     };
     $rootScope.handleHttpError = function(data, status){
         console.log('data:');
@@ -1097,6 +1103,469 @@ angular.module('starter.controllers', [])
         CanvasService.clear();
     }
 })
+.controller('CanvasDemoCtrl', function(CanvasService, $interval){
+    var _canvas = new fabric.Canvas('c');
+    _canvas.backgroundColor = '#f7f7f7';
+    _canvas.setHeight(window.innerWidth * 1.33);
+    _canvas.setWidth(window.innerWidth);
+    var image_array = [
+        'img/feature/demo/1.jpg',
+        'img/feature/demo/2.jpg',
+        'img/feature/demo/3.jpg',
+        'img/feature/demo/4.jpg',
+        'img/feature/demo/5.jpg',
+        'img/feature/demo/6.jpg',
+        'img/feature/demo/7.jpg',
+        'img/feature/demo/8.jpg',
+        'img/feature/demo/9.jpg',
+        'img/feature/demo/10.jpg',
+        'img/feature/demo/11.jpg',
+        'img/feature/demo/12.jpg',
+        'img/feature/demo/13.jpg',
+        'img/feature/demo/14.jpg',
+        'img/feature/demo/15.jpg',
+    ];
+    var index = 0;
+    var dummy = $interval(function(){
+        fabric.Image.fromURL(image_array[index], function(img) {
+          img.set({
+              scaleX: _canvas.width / img.width,
+              scaleY: _canvas.height / img.height,
+              top: 0,
+              left: 0,
+              originX: 'left',
+              originY: 'top'
+          });
+          _canvas.add(img);
+          _canvas.renderAll.bind(_canvas);
+          console.log(img);
+        }, {crossOrigin: 'Anonymous'});
+        index++;
+        if(index == image_array.length){
+            $interval.cancel(dummy);
+        }
+    }, 300);
+})
+.controller('WardrobeDemoCtrl', function($scope, CanvasService){
+    $scope.data =
+    {
+      "item_array": [
+        {
+          "key": "product_1577304601106",
+          "product": {
+            "name": "Old Skool Platform - Black",
+            "description": "Do we even need to tell you about these shoes? Old Skool Vans are basically a wardrobe staple at this point. They’re classic. Like blue jeans…or cool ranch Doritos…or the Lizzie McGuire movie. Their greatness is just common knowledge. This pair is a classic black with a platform sole that’ll give you just a little extra lift.\n\nthe details -\n\nClassic side stripe skate shoe with sturdy canvas and suede uppers\nRe-enforced toecaps to withstand repeated wear, padded collars for support and flexibility, and platform signature rubber waffle outsoles\n\nFree Returns +\n\nYou have 30 days to return anything you’re unhappy with. Exceptions include personalized items and items marked as final sale. You’ll receive a free prepaid shipping label once your return is authorized.\n\nGet more info here.",
+            "mainImage": "https://cdn.shopify.com/s/files/1/0787/5255/products/01_bando-3p-vans-UAoldskoolplatform-black-01_9ae53317-0d3a-4bd3-b4fb-48092dfcfd12_1024x1024.jpg?v=1575932030",
+            "images": [
+              "https://cdn.shopify.com/s/files/1/0787/5255/products/02_On-Figure-Shoes-26140_1_100x.jpg?v=1575932030",
+              "https://cdn.shopify.com/s/files/1/0787/5255/products/02_On-Figure-Shoes-26140_1_1024x1024.jpg?v=1575932030",
+              "https://cdn.shopify.com/s/files/1/0787/5255/products/01_bando-3p-vans-UAoldskoolplatform-black-01_9ae53317-0d3a-4bd3-b4fb-48092dfcfd12_1024x1024.jpg?v=1575932030",
+              "https://cdn.shopify.com/s/files/1/0787/5255/products/03_bando-3p-vans-UAoldskoolplatform-black-02_100x.jpg?v=1575932030",
+              "https://cdn.shopify.com/s/files/1/0787/5255/products/03_bando-3p-vans-UAoldskoolplatform-black-02_1024x1024.jpg?v=1575932030"
+            ],
+            "url": "https://www.bando.com/products/old-skool-platform-black?variant=12167311982666&gclid=Cj0KCQiArozwBRDOARIsAHo2s7seKsGpsMaMTeNtPUlcNs57DTGRsFjNXvxdVAj-cQESWspLnPpSUrYaAkL_EALw_wcB",
+            "additionalProperty": [
+              {
+                "name": "style",
+                "value": "black"
+              }
+            ],
+            "offers": [
+              {
+                "price": "65.0",
+                "currency": "USD",
+                "availability": "InStock"
+              }
+            ],
+            "sku": "GP-88094",
+            "brand": "vans",
+            "probability": 0.9813618,
+            "mpn": "GP-88094",
+            "aggregateRating": {
+              "ratingValue": 5,
+              "reviewCount": 5
+            }
+          },
+          "image": "https://cdn.shopify.com/s/files/1/0787/5255/products/01_bando-3p-vans-UAoldskoolplatform-black-01_9ae53317-0d3a-4bd3-b4fb-48092dfcfd12_1024x1024.jpg?v=1575932030",
+          "query": {
+            "id": "1577304602176-05372879671832b3",
+            "domain": "bando.com",
+            "userQuery": {
+              "url": "https://www.bando.com/products/old-skool-platform-black?variant=12167311982666&gclid=Cj0KCQiArozwBRDOARIsAHo2s7seKsGpsMaMTeNtPUlcNs57DTGRsFjNXvxdVAj-cQESWspLnPpSUrYaAkL_EALw_wcB",
+              "pageType": "product"
+            }
+          },
+          "$$hashKey": "object:313"
+        },
+        {
+          "key": "product_1577304003863",
+          "product": {
+            "name": "contrast logo denim jacket",
+            "description": "Born from the antithesis between streetwear and high fashion, Off-White set out to combine both. Mainly inspired by the youth culture, Off-White creates statement pieces with a distinctive aesthetic, expect punchy prints, graphic lines and laidback designs, as seen in this black cotton contrast embroidered logo denim jacket. Featuring two front pockets, a front button fastening, a branded rear patch, an embroidered fuchsia arrow logo at the front, a white lettering stamp at the hem, a contrasting white stitching and two slit side pockets.",
+            "mainImage": "https://cdn-images.farfetch-contents.com/14/07/71/33/14077133_18776035_1000.jpg",
+            "images": [
+              "https://cdn-images.farfetch-contents.com/14/07/71/33/14077133_18776035_1000.jpg",
+              "https://cdn-images.farfetch-contents.com/14/07/71/33/14077133_18776036_1000.jpg"
+            ],
+            "url": "https://www.farfetch.com/shopping/men/off-white-contrast-logo-denim-jacket-item-14077133.aspx?fsb=1&size=22&storeid=9352&utm_source=google&utm_medium=cpc&utm_keywordid=119358777&utm_shoppingproductid=14077133-8876&pid=google_search&af_channel=Search&c=2069781564&af_c_id=2069781564&af_siteid=&af_keywords=aud-331385746483:pla-423132148206&af_adset_id=79320100034&af_ad_id=277393252784&af_sub1=119358777&af_sub5=14077133-8876&is_retargeting=true&shopping=yes&gclid=Cj0KCQiArozwBRDOARIsAHo2s7t4edmSxA_-giayDjpAuT4Cyiu9XjqActJgq5xNUw7-zTtNwp5AZ6kaAmp5EALw_wcB",
+            "additionalProperty": [
+              {
+                "name": "designer style id",
+                "value": "OMYE019T19812081"
+              },
+              {
+                "name": "lining",
+                "value": "Polyester 65%, Cotton 35%"
+              },
+              {
+                "name": "the model is also styled with",
+                "value": "Off-White unfinished slim sweatpants, Off-White signature graphic print T-shirt."
+              }
+            ],
+            "offers": [
+              {
+                "price": "710.0",
+                "currency": "USD",
+                "availability": "InStock"
+              }
+            ],
+            "sku": "OMYE019T19812081",
+            "breadcrumbs": [
+              {
+                "name": "Sale: 6000 items at up to 60% off",
+                "link": "https://www.farfetch.com/shopping/men/sale/all/items.aspx"
+              }
+            ],
+            "probability": 0.9814771
+          },
+          "image": "https://cdn-images.farfetch-contents.com/14/07/71/33/14077133_18776035_1000.jpg",
+          "query": {
+            "id": "1577304004787-03edcdc96a219a3a",
+            "domain": "farfetch.com",
+            "userQuery": {
+              "url": "https://www.farfetch.com/shopping/men/off-white-contrast-logo-denim-jacket-item-14077133.aspx?fsb=1&size=22&storeid=9352&utm_source=google&utm_medium=cpc&utm_keywordid=119358777&utm_shoppingproductid=14077133-8876&pid=google_search&af_channel=Search&c=2069781564&af_c_id=2069781564&af_siteid=&af_keywords=aud-331385746483:pla-423132148206&af_adset_id=79320100034&af_ad_id=277393252784&af_sub1=119358777&af_sub5=14077133-8876&is_retargeting=true&shopping=yes&gclid=Cj0KCQiArozwBRDOARIsAHo2s7t4edmSxA_-giayDjpAuT4Cyiu9XjqActJgq5xNUw7-zTtNwp5AZ6kaAmp5EALw_wcB",
+              "pageType": "product"
+            }
+          },
+          "$$hashKey": "object:219"
+        },
+        {
+          "key": "product_1577303363945",
+          "product": {
+            "name": "ripped stonewashed skinny jeans",
+            "description": "The Details\n\nRtA\n\nripped stonewashed skinny jeans\n\nBlack cotton-blend ripped stonewashed skinny jeans from RtA featuring a stonewashed effect, a five pocket design, a high rise, a waistband with belt loops, a button and zip fly, a skinny style, ripped details and a faded effect.\n\nMade in United States\n\nComposition\n\nCotton 98%, Polyurethane 2%\n\nWashing instructions\n\nMachine Wash\n\nDesigner Style ID: WH8171131CONT\n\nWearing\n\nModel is 5 ft 10 in wearing size (Waist)\n\nSize & Fit\n\nCentimeters\nInches\n\nModel Measurements\n\nheight: 5 ft 10 in\nbust/Chest: 31.9 in\nhips: 33.9 in\nwaist: 24 in\n\nModel's wearing (Waist)",
+            "mainImage": "https://cdn-images.farfetch-contents.com/13/65/67/17/13656717_16526635_1000.jpg",
+            "images": [
+              "https://cdn-images.farfetch-contents.com/13/65/67/17/13656717_16526633_1000.jpg",
+              "https://cdn-images.farfetch-contents.com/13/65/67/17/13656717_16526635_1000.jpg"
+            ],
+            "url": "https://www.farfetch.com/shopping/women/rta-ripped-stonewashed-skinny-jeans-item-13656717.aspx?fsb=1&size=20&storeid=9889&utm_source=google&utm_medium=cpc&utm_keywordid=119356676&utm_shoppingproductid=13656717-5053&pid=google_search&af_channel=Search&c=2069920048&af_c_id=2069920048&af_siteid=&af_keywords=pla-414511222974&af_adset_id=75217631014&af_ad_id=273078362075&af_sub1=119356676&af_sub5=13656717-5053&is_retargeting=true&shopping=yes&gclid=Cj0KCQiArozwBRDOARIsAHo2s7uvA6YLR0UHHmZ0MmZuEDoXbciEbJjb80l1lBEexIHBjyDQ3WTdXfAaAt6OEALw_wcB",
+            "offers": [
+              {
+                "price": "365.0",
+                "currency": "USD",
+                "availability": "InStock",
+                "regularPrice": "521.0"
+              }
+            ],
+            "sku": "WH8171131CONT",
+            "breadcrumbs": [
+              {
+                "name": "home",
+                "link": "https://www.farfetch.com/"
+              },
+              {
+                "name": "Women",
+                "link": "https://www.farfetch.com/shopping/women/items.aspx"
+              },
+              {
+                "name": "RtA",
+                "link": "https://www.farfetch.com/shopping/women/rta/items.aspx"
+              },
+              {
+                "name": "Clothing",
+                "link": "https://www.farfetch.com/shopping/women/rta/clothing-1/items.aspx"
+              },
+              {
+                "name": "Skinny Jeans",
+                "link": "https://www.farfetch.com/shopping/women/rta/skinny-denim-1/items.aspx"
+              },
+              {
+                "name": "ripped stonewashed skinny jeans"
+              }
+            ],
+            "probability": 0.97937244
+          },
+          "image": "https://cdn-images.farfetch-contents.com/13/65/67/17/13656717_16526633_1000.jpg",
+          "query": {
+            "id": "1577303365148-d2e5fe4303612762",
+            "domain": "farfetch.com",
+            "userQuery": {
+              "url": "https://www.farfetch.com/shopping/women/rta-ripped-stonewashed-skinny-jeans-item-13656717.aspx?fsb=1&size=20&storeid=9889&utm_source=google&utm_medium=cpc&utm_keywordid=119356676&utm_shoppingproductid=13656717-5053&pid=google_search&af_channel=Search&c=2069920048&af_c_id=2069920048&af_siteid=&af_keywords=pla-414511222974&af_adset_id=75217631014&af_ad_id=273078362075&af_sub1=119356676&af_sub5=13656717-5053&is_retargeting=true&shopping=yes&gclid=Cj0KCQiArozwBRDOARIsAHo2s7uvA6YLR0UHHmZ0MmZuEDoXbciEbJjb80l1lBEexIHBjyDQ3WTdXfAaAt6OEALw_wcB",
+              "pageType": "product"
+            }
+          },
+          "$$hashKey": "object:220"
+        },
+        {
+          "key": "product_1577302692256",
+          "product": {
+            "name": "Comme des Garcons Play Long Sleeve Heart Logo Stripe Tee",
+            "description": "Buy the Comme des Garcons Play Long Sleeve Heart Logo Stripe Tee in Black & White from leading mens fashion retailer END. - only $125. Fast shipping on all latest Comme des Garçons Play products",
+            "mainImage": "https://media.endclothing.com/media/f_auto,q_auto:eco/prodmedia/media/catalog/product/1/5/15-04-2019_commedesgarcons_playlongsleeveheartlogostripetee_blackwhite_p1t164-1_bb_1.jpg",
+            "images": [
+              "https://media.endclothing.com/media/f_auto,q_auto:eco/prodmedia/media/catalog/product/1/5/15-04-2019_commedesgarcons_playlongsleeveheartlogostripetee_blackwhite_p1t164-1_bb_2.jpg"
+            ],
+            "url": "https://www.endclothing.com/us/comme-des-garcons-play-long-sleeve-heart-logo-stripe-tee-p1t164-1.html?173=small&gclid=Cj0KCQiArozwBRDOARIsAHo2s7twvVT32r1goCpXzfVz4Cmm0W0oyFffpv30vSnU6_EwqIyVQGqLkrsaAqXWEALw_wcB",
+            "offers": [
+              {
+                "price": "125.0",
+                "currency": "USD",
+                "availability": "InStock"
+              }
+            ],
+            "sku": "P1T164-1",
+            "breadcrumbs": [
+              {
+                "name": "Home",
+                "link": "https://www.endclothing.com/us/"
+              },
+              {
+                "name": "Brands",
+                "link": "https://www.endclothing.com/us/brands"
+              },
+              {
+                "name": "Comme des Garçons Play",
+                "link": "https://www.endclothing.com/us/brands/comme-des-garcons-play"
+              },
+              {
+                "name": "Comme des Garcons Play Long Sleeve Heart Logo Stripe Tee",
+                "link": "https://www.endclothing.com/us/comme-des-garcons-play-long-sleeve-heart-logo-stripe-tee-p1t164-1.html"
+              }
+            ],
+            "probability": 0.50174505
+          },
+          "image": "https://media.endclothing.com/media/f_auto,q_auto:eco/prodmedia/media/catalog/product/1/5/15-04-2019_commedesgarcons_playlongsleeveheartlogostripetee_blackwhite_p1t164-1_bb_1.jpg",
+          "query": {
+            "id": "1577302693307-556d10e432b0ed9c",
+            "domain": "endclothing.com",
+            "userQuery": {
+              "url": "https://www.endclothing.com/us/comme-des-garcons-play-long-sleeve-heart-logo-stripe-tee-p1t164-1.html?173=small&gclid=Cj0KCQiArozwBRDOARIsAHo2s7twvVT32r1goCpXzfVz4Cmm0W0oyFffpv30vSnU6_EwqIyVQGqLkrsaAqXWEALw_wcB",
+              "pageType": "product"
+            }
+          },
+          "$$hashKey": "object:221"
+        }
+      ],
+      "processing_item_array": [
+      ]
+    }
+    $scope.selected_item_array = [];
+
+    $scope.toggleSelect = function(item) {
+        if(item.selected == true){
+            item.selected = false;
+            var arr = $scope.selected_item_array;
+            for( var i = 0; i < arr.length; i++){
+               if ( arr[i].image === item.image) {
+                 arr.splice(i, 1);
+               }
+            }
+        }
+        else{
+            item.selected = true;
+            $scope.selected_item_array.push(item);
+        }
+    }
+
+    $scope.load = function() {
+        if($scope.selected_item_array.length == 0){
+            $rootScope.popupMessage('','Please select one or more items');
+        }
+        else{
+            CanvasService.loadItems($scope.selected_item_array);
+        }
+    }
+})
+.controller('WardrobeAddDemoCtrl', function($scope, $timeout){
+    $scope.data =
+    {
+      "item_array": [
+        {
+          "key": "product_1577304003863",
+          "product": {
+            "name": "contrast logo denim jacket",
+            "description": "Born from the antithesis between streetwear and high fashion, Off-White set out to combine both. Mainly inspired by the youth culture, Off-White creates statement pieces with a distinctive aesthetic, expect punchy prints, graphic lines and laidback designs, as seen in this black cotton contrast embroidered logo denim jacket. Featuring two front pockets, a front button fastening, a branded rear patch, an embroidered fuchsia arrow logo at the front, a white lettering stamp at the hem, a contrasting white stitching and two slit side pockets.",
+            "mainImage": "https://cdn-images.farfetch-contents.com/14/07/71/33/14077133_18776035_1000.jpg",
+            "images": [
+              "https://cdn-images.farfetch-contents.com/14/07/71/33/14077133_18776035_1000.jpg",
+              "https://cdn-images.farfetch-contents.com/14/07/71/33/14077133_18776036_1000.jpg"
+            ],
+            "url": "https://www.farfetch.com/shopping/men/off-white-contrast-logo-denim-jacket-item-14077133.aspx?fsb=1&size=22&storeid=9352&utm_source=google&utm_medium=cpc&utm_keywordid=119358777&utm_shoppingproductid=14077133-8876&pid=google_search&af_channel=Search&c=2069781564&af_c_id=2069781564&af_siteid=&af_keywords=aud-331385746483:pla-423132148206&af_adset_id=79320100034&af_ad_id=277393252784&af_sub1=119358777&af_sub5=14077133-8876&is_retargeting=true&shopping=yes&gclid=Cj0KCQiArozwBRDOARIsAHo2s7t4edmSxA_-giayDjpAuT4Cyiu9XjqActJgq5xNUw7-zTtNwp5AZ6kaAmp5EALw_wcB",
+            "additionalProperty": [
+              {
+                "name": "designer style id",
+                "value": "OMYE019T19812081"
+              },
+              {
+                "name": "lining",
+                "value": "Polyester 65%, Cotton 35%"
+              },
+              {
+                "name": "the model is also styled with",
+                "value": "Off-White unfinished slim sweatpants, Off-White signature graphic print T-shirt."
+              }
+            ],
+            "offers": [
+              {
+                "price": "710.0",
+                "currency": "USD",
+                "availability": "InStock"
+              }
+            ],
+            "sku": "OMYE019T19812081",
+            "breadcrumbs": [
+              {
+                "name": "Sale: 6000 items at up to 60% off",
+                "link": "https://www.farfetch.com/shopping/men/sale/all/items.aspx"
+              }
+            ],
+            "probability": 0.9814771
+          },
+          "image": "https://cdn-images.farfetch-contents.com/14/07/71/33/14077133_18776035_1000.jpg",
+          "query": {
+            "id": "1577304004787-03edcdc96a219a3a",
+            "domain": "farfetch.com",
+            "userQuery": {
+              "url": "https://www.farfetch.com/shopping/men/off-white-contrast-logo-denim-jacket-item-14077133.aspx?fsb=1&size=22&storeid=9352&utm_source=google&utm_medium=cpc&utm_keywordid=119358777&utm_shoppingproductid=14077133-8876&pid=google_search&af_channel=Search&c=2069781564&af_c_id=2069781564&af_siteid=&af_keywords=aud-331385746483:pla-423132148206&af_adset_id=79320100034&af_ad_id=277393252784&af_sub1=119358777&af_sub5=14077133-8876&is_retargeting=true&shopping=yes&gclid=Cj0KCQiArozwBRDOARIsAHo2s7t4edmSxA_-giayDjpAuT4Cyiu9XjqActJgq5xNUw7-zTtNwp5AZ6kaAmp5EALw_wcB",
+              "pageType": "product"
+            }
+          },
+          "$$hashKey": "object:219"
+        },
+        {
+          "key": "product_1577303363945",
+          "product": {
+            "name": "ripped stonewashed skinny jeans",
+            "description": "The Details\n\nRtA\n\nripped stonewashed skinny jeans\n\nBlack cotton-blend ripped stonewashed skinny jeans from RtA featuring a stonewashed effect, a five pocket design, a high rise, a waistband with belt loops, a button and zip fly, a skinny style, ripped details and a faded effect.\n\nMade in United States\n\nComposition\n\nCotton 98%, Polyurethane 2%\n\nWashing instructions\n\nMachine Wash\n\nDesigner Style ID: WH8171131CONT\n\nWearing\n\nModel is 5 ft 10 in wearing size (Waist)\n\nSize & Fit\n\nCentimeters\nInches\n\nModel Measurements\n\nheight: 5 ft 10 in\nbust/Chest: 31.9 in\nhips: 33.9 in\nwaist: 24 in\n\nModel's wearing (Waist)",
+            "mainImage": "https://cdn-images.farfetch-contents.com/13/65/67/17/13656717_16526635_1000.jpg",
+            "images": [
+              "https://cdn-images.farfetch-contents.com/13/65/67/17/13656717_16526633_1000.jpg",
+              "https://cdn-images.farfetch-contents.com/13/65/67/17/13656717_16526635_1000.jpg"
+            ],
+            "url": "https://www.farfetch.com/shopping/women/rta-ripped-stonewashed-skinny-jeans-item-13656717.aspx?fsb=1&size=20&storeid=9889&utm_source=google&utm_medium=cpc&utm_keywordid=119356676&utm_shoppingproductid=13656717-5053&pid=google_search&af_channel=Search&c=2069920048&af_c_id=2069920048&af_siteid=&af_keywords=pla-414511222974&af_adset_id=75217631014&af_ad_id=273078362075&af_sub1=119356676&af_sub5=13656717-5053&is_retargeting=true&shopping=yes&gclid=Cj0KCQiArozwBRDOARIsAHo2s7uvA6YLR0UHHmZ0MmZuEDoXbciEbJjb80l1lBEexIHBjyDQ3WTdXfAaAt6OEALw_wcB",
+            "offers": [
+              {
+                "price": "365.0",
+                "currency": "USD",
+                "availability": "InStock",
+                "regularPrice": "521.0"
+              }
+            ],
+            "sku": "WH8171131CONT",
+            "breadcrumbs": [
+              {
+                "name": "home",
+                "link": "https://www.farfetch.com/"
+              },
+              {
+                "name": "Women",
+                "link": "https://www.farfetch.com/shopping/women/items.aspx"
+              },
+              {
+                "name": "RtA",
+                "link": "https://www.farfetch.com/shopping/women/rta/items.aspx"
+              },
+              {
+                "name": "Clothing",
+                "link": "https://www.farfetch.com/shopping/women/rta/clothing-1/items.aspx"
+              },
+              {
+                "name": "Skinny Jeans",
+                "link": "https://www.farfetch.com/shopping/women/rta/skinny-denim-1/items.aspx"
+              },
+              {
+                "name": "ripped stonewashed skinny jeans"
+              }
+            ],
+            "probability": 0.97937244
+          },
+          "image": "https://cdn-images.farfetch-contents.com/13/65/67/17/13656717_16526633_1000.jpg",
+          "query": {
+            "id": "1577303365148-d2e5fe4303612762",
+            "domain": "farfetch.com",
+            "userQuery": {
+              "url": "https://www.farfetch.com/shopping/women/rta-ripped-stonewashed-skinny-jeans-item-13656717.aspx?fsb=1&size=20&storeid=9889&utm_source=google&utm_medium=cpc&utm_keywordid=119356676&utm_shoppingproductid=13656717-5053&pid=google_search&af_channel=Search&c=2069920048&af_c_id=2069920048&af_siteid=&af_keywords=pla-414511222974&af_adset_id=75217631014&af_ad_id=273078362075&af_sub1=119356676&af_sub5=13656717-5053&is_retargeting=true&shopping=yes&gclid=Cj0KCQiArozwBRDOARIsAHo2s7uvA6YLR0UHHmZ0MmZuEDoXbciEbJjb80l1lBEexIHBjyDQ3WTdXfAaAt6OEALw_wcB",
+              "pageType": "product"
+            }
+          },
+          "$$hashKey": "object:220"
+        },
+        {
+          "key": "product_1577302692256",
+          "product": {
+            "name": "Comme des Garcons Play Long Sleeve Heart Logo Stripe Tee",
+            "description": "Buy the Comme des Garcons Play Long Sleeve Heart Logo Stripe Tee in Black & White from leading mens fashion retailer END. - only $125. Fast shipping on all latest Comme des Garçons Play products",
+            "mainImage": "https://media.endclothing.com/media/f_auto,q_auto:eco/prodmedia/media/catalog/product/1/5/15-04-2019_commedesgarcons_playlongsleeveheartlogostripetee_blackwhite_p1t164-1_bb_1.jpg",
+            "images": [
+              "https://media.endclothing.com/media/f_auto,q_auto:eco/prodmedia/media/catalog/product/1/5/15-04-2019_commedesgarcons_playlongsleeveheartlogostripetee_blackwhite_p1t164-1_bb_2.jpg"
+            ],
+            "url": "https://www.endclothing.com/us/comme-des-garcons-play-long-sleeve-heart-logo-stripe-tee-p1t164-1.html?173=small&gclid=Cj0KCQiArozwBRDOARIsAHo2s7twvVT32r1goCpXzfVz4Cmm0W0oyFffpv30vSnU6_EwqIyVQGqLkrsaAqXWEALw_wcB",
+            "offers": [
+              {
+                "price": "125.0",
+                "currency": "USD",
+                "availability": "InStock"
+              }
+            ],
+            "sku": "P1T164-1",
+            "breadcrumbs": [
+              {
+                "name": "Home",
+                "link": "https://www.endclothing.com/us/"
+              },
+              {
+                "name": "Brands",
+                "link": "https://www.endclothing.com/us/brands"
+              },
+              {
+                "name": "Comme des Garçons Play",
+                "link": "https://www.endclothing.com/us/brands/comme-des-garcons-play"
+              },
+              {
+                "name": "Comme des Garcons Play Long Sleeve Heart Logo Stripe Tee",
+                "link": "https://www.endclothing.com/us/comme-des-garcons-play-long-sleeve-heart-logo-stripe-tee-p1t164-1.html"
+              }
+            ],
+            "probability": 0.50174505
+          },
+          "image": "https://media.endclothing.com/media/f_auto,q_auto:eco/prodmedia/media/catalog/product/1/5/15-04-2019_commedesgarcons_playlongsleeveheartlogostripetee_blackwhite_p1t164-1_bb_1.jpg",
+          "query": {
+            "id": "1577302693307-556d10e432b0ed9c",
+            "domain": "endclothing.com",
+            "userQuery": {
+              "url": "https://www.endclothing.com/us/comme-des-garcons-play-long-sleeve-heart-logo-stripe-tee-p1t164-1.html?173=small&gclid=Cj0KCQiArozwBRDOARIsAHo2s7twvVT32r1goCpXzfVz4Cmm0W0oyFffpv30vSnU6_EwqIyVQGqLkrsaAqXWEALw_wcB",
+              "pageType": "product"
+            }
+          },
+          "$$hashKey": "object:221"
+        }
+      ],
+      "processing_item_array": [
+          {
+              "key": "product_1577304601106",
+              "image": 'img/processing-icon.png'
+          }
+      ]
+    }
+    $timeout(function(){
+        $scope.data.processing_item_array.shift();
+        $scope.data.item_array.unshift({
+          "key": "product_1577304601106",
+          "image": "https://cdn.shopify.com/s/files/1/0787/5255/products/01_bando-3p-vans-UAoldskoolplatform-black-01_9ae53317-0d3a-4bd3-b4fb-48092dfcfd12_1024x1024.jpg?v=1575932030"
+        });
+    },2000);
+})
 .controller('WardrobeCtrl', function($scope, $state, CanvasService, $http, $rootScope, $interval, WardrobeService, $ionicActionSheet, $ionicLoading){
     function requestProduct(){
         $http.post($rootScope.baseURL+'/api/product/index', {
@@ -1108,8 +1577,8 @@ angular.module('starter.controllers', [])
                 for(var i=0;i<response.length;i++){
                     for(var j=0;j<$scope.data.processing_item_array.length;j++){
                         if($scope.data.processing_item_array[j].key == response[i].key){
-                            if(response[i].value != 'requested'){
-                                var returned_value = JSON.parse(response[i].value)[0];
+                            var returned_value = JSON.parse(response[i].value)[0];
+                            if(typeof returned_value.requested === 'undefined'){
                                 $scope.data.processing_item_array.splice(j,1);
                                 if(
                                     typeof returned_value.product === "undefined" ||
@@ -1117,7 +1586,8 @@ angular.module('starter.controllers', [])
                                 ){
                                     $scope.data.item_array.unshift({
                                         key: response[i].key,
-                                        image: 'https://cdna.artstation.com/p/assets/images/images/019/999/274/large/briana-banks-cute-icecreamshop-404-page.jpg',
+                                        error: true,
+                                        image: 'img/oops.png',
                                         query: returned_value.query
                                     });
                                 }
@@ -1162,11 +1632,17 @@ angular.module('starter.controllers', [])
             requestProduct();
             keepRequestProduct();
         }
+    }, function(){
+        $scope.data = {"item_array":[{"key":"product_1577578853709","product":{"name":"Aerie Ribbed Beanie Hat","description":"Cozy, warm ribbed fabric\nFold it as much (or as little) as you like to make it yours\nPop! Pretty specks of color\nStay warm!\nStyle: 5497-4162 | Color: 390","mainImage":"https://s7d2.scene7.com/is/image/aeo/5497_4162_390_f?$PDP-1910L$","images":["https://s7d2.scene7.com/is/image/aeo/5497_4162_390_b?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/5497_4162_390_f?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/5497_4162_390_f?$PDP-1910L$",null],"url":"https://www.ae.com/us/en/p/women/hats/beanies/aerie-ribbed-beanie-hat/5497_4162_390?menu=cat4840006","additionalProperty":[{"name":"blog","value":"AEO | Aerie"}],"offers":[{"price":"7.98","currency":"USD","availability":"InStock","regularPrice":"19.95"}],"sku":"5497-4162","brand":"Aerie","breadcrumbs":[{"name":"Women","link":"https://www.ae.com/us/en/c/women/womens"},{"name":"Accessories & Socks","link":"https://www.ae.com/us/en/c/women/accessories-socks/cat4840018"},{"name":"Hats","link":"https://www.ae.com/us/en/c/women/accessories-socks/hats/cat5400020"},{"name":"Beanies","link":"https://www.ae.com/us/en/c/women/hats/beanies/cat8130241"}],"probability":0.99223185},"image":"https://s7d2.scene7.com/is/image/aeo/5497_4162_390_f?$PDP-1910L$","query":{"id":"1577578855005-53ce3449995d1669","domain":"ae.com","userQuery":{"url":"https://www.ae.com/us/en/p/women/hats/beanies/aerie-ribbed-beanie-hat/5497_4162_390?menu=cat4840006","pageType":"product"}},"$$hashKey":"object:578"},{"key":"product_1577578758362","product":{"name":"EMU Australia Stinger Micro Boot","description":"These boots were made to keep you warm and stylish.","mainImage":"https://s7d2.scene7.com/is/image/aeo/7411_4687_217_d1?$PDP-1910L$","images":["https://s7d2.scene7.com/is/image/aeo/7411_4687_217_f?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/7411_4687_217_d1?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/7411_4687_217_b?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/7411_4687_217_d1?$PDP-1910L$",null],"url":"https://www.ae.com/us/en/p/women/boots/booties/emu-australia-stinger-micro-boot/7411_4687_217?menu=cat4840004","additionalProperty":[{"name":"style: 7411","value":"4687 | Color: 217"}],"offers":[{"price":"119.95","currency":"USD","availability":"InStock"}],"sku":"7411-4687","brand":"Online Only","breadcrumbs":[{"name":"Women","link":"https://www.ae.com/us/en/c/women/womens"},{"name":"Shoes","link":"https://www.ae.com/us/en/c/women/shoes/cat4840020"},{"name":"Boots","link":"https://www.ae.com/us/en/c/women/shoes/boots/cat120147"},{"name":"Booties","link":"https://www.ae.com/us/en/c/women/boots/booties/cat6470546"}],"probability":0.99690825},"image":"https://s7d2.scene7.com/is/image/aeo/7411_4687_217_d1?$PDP-1910L$","query":{"id":"1577578759626-b23793c08415a798","domain":"ae.com","userQuery":{"url":"https://www.ae.com/us/en/p/women/boots/booties/emu-australia-stinger-micro-boot/7411_4687_217?menu=cat4840004","pageType":"product"}},"$$hashKey":"object:579"},{"key":"product_1577578717898","product":{"name":"Skinny Jean","description":"The ultimate \"cool girl\" fit made for every day.","mainImage":"https://s7d2.scene7.com/is/image/aeo/0432_1985_426_of?$PDP-1910L$","images":["https://s7d2.scene7.com/is/image/aeo/0432_1985_426_b?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/0432_1985_426_d3?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/0432_1985_426_f?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/0432_1985_426_os?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/0432_1985_426_ob?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/0432_1985_426_of?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/0432_1985_426_of?$PDP-1910L$",null],"url":"https://www.ae.com/us/en/p/women/skinny-jeans/skinny-jeans/skinny-jean/0432_1985_426?menu=cat4840004","additionalProperty":[{"name":"style: 0432","value":"1985 | Color: 426"}],"offers":[{"price":"37.46","currency":"USD","availability":"InStock","regularPrice":"49.95"}],"sku":"0432-1985","brand":"AE","breadcrumbs":[{"name":"Women","link":"https://www.ae.com/us/en/c/women/womens"},{"name":"Bottoms","link":"https://www.ae.com/us/en/c/women/bottoms/cat10051"},{"name":"Jeans","link":"https://www.ae.com/us/en/c/women/bottoms/jeans/cat6430042"},{"name":"Skinny Jeans","link":"https://www.ae.com/us/en/c/women/jeans/skinny-jeans/cat1990002"},{"name":"Skinny Jeans","link":"https://www.ae.com/us/en/c/women/jeans/skinny-jeans/skinny-jeans/cat370080"}],"probability":0.99671775},"image":"https://s7d2.scene7.com/is/image/aeo/0432_1985_426_f?$PDP-1910L$","query":{"id":"1577578719147-a6705696d9de80f2","domain":"ae.com","userQuery":{"url":"https://www.ae.com/us/en/p/women/skinny-jeans/skinny-jeans/skinny-jean/0432_1985_426?menu=cat4840004","pageType":"product"}},"$$hashKey":"object:580"},{"key":"product_1577578313648","product":{"name":"AE Mock Neck Boxy Cropped Sweater","description":"So cozy! This sweater is loose and cropped for a boxy fit we love. Make it yours.","mainImage":"https://s7d2.scene7.com/is/image/aeo/1341_8604_313_of?$PDP-1910L$","images":["https://s7d2.scene7.com/is/image/aeo/1341_8604_313_ob?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/1341_8604_313_f?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/1341_8604_313_b?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/1341_8604_313_of?$PDP-1910L$","https://s7d2.scene7.com/is/image/aeo/1341_8604_313_of?$PDP-1910L$",null],"url":"https://www.ae.com/us/en/p/women/sweaters-cardigans/cropped-sweaters/ae-mock-neck-boxy-cropped-sweater/1341_8604_313?menu=cat4840004","additionalProperty":[{"name":"blog","value":"AEO | Aerie"},{"name":"style","value":"1341-8604 | Color: 313"}],"offers":[{"price":"29.96","currency":"USD","availability":"InStock","regularPrice":"39.95"}],"sku":"1341-8604","brand":"Online Only","breadcrumbs":[{"name":"Women","link":"https://www.ae.com/us/en/c/women/womens"},{"name":"Tops","link":"https://www.ae.com/us/en/c/women/tops/cat10049"},{"name":"Sweaters & Cardigans","link":"https://www.ae.com/us/en/c/women/tops/sweaters-cardigans/cat1410002"},{"name":"Cropped Sweaters","link":"https://www.ae.com/us/en/c/women/sweaters-cardigans/cropped-sweaters/cat670011"}],"probability":0.9946526},"image":"https://s7d2.scene7.com/is/image/aeo/1341_8604_313_f?$PDP-1910L$","query":{"id":"1577578314764-65a5f2413eb2d31c","domain":"ae.com","userQuery":{"url":"https://www.ae.com/us/en/p/women/sweaters-cardigans/cropped-sweaters/ae-mock-neck-boxy-cropped-sweater/1341_8604_313?menu=cat4840004","pageType":"product"}},"$$hashKey":"object:581"}],"processing_item_array":[]}
+        WardrobeService.saveState($scope);
     });
 
     $scope.selected_item_array = [];
 
     $scope.toggleSelect = function(item) {
+        if(typeof item.error !== "undefined"){
+            return;
+        }
         if(item.selected == true){
             item.selected = false;
             var arr = $scope.selected_item_array;
@@ -1183,7 +1659,12 @@ angular.module('starter.controllers', [])
     }
 
     $scope.load = function() {
-        CanvasService.loadItems($scope.selected_item_array);
+        if($scope.selected_item_array.length == 0){
+            $rootScope.popupMessage('','Please select one or more items');
+        }
+        else{
+            CanvasService.loadItems($scope.selected_item_array);
+        }
     }
 
     $scope.add = function() {
@@ -1199,19 +1680,27 @@ angular.module('starter.controllers', [])
         });
     }
 
+    $scope.clearProccessing = function() {
+        WardrobeService.loadStateStr().then(function(state_str){
+            $scope.data = JSON.parse(state_str);
+            $scope.data.processing_item_array = [];
+            WardrobeService.saveState($scope);
+        });
+    }
+
     $scope.show = function() {
-        console.log($scope.data);
+        console.log(JSON.stringify($scope.data));
     }
 
     $scope.edit = function(item) {
         var buttons = [
-            { text: 'Reimport Product Images' }
+            { text: 'Reimport Item Images' }
         ];
         if(typeof(item.product) !== "undefined"){
-            buttons.push({ text: 'Swap Product Image' });
+            buttons.push({ text: 'Select Other Item Image' });
         }
         $ionicActionSheet.show({
-            titleText: 'Product Control',
+            titleText: 'Item Control',
             destructiveText: 'Delete',
             destructiveButtonClicked: function() {
                 for( var i = 0; i < $scope.data.item_array.length; i++){
@@ -1260,14 +1749,17 @@ angular.module('starter.controllers', [])
     $scope.addToWardrobe = function(url){
         if(url){
             WardrobeService.addItemByUrl(url).then(function(){
-                $rootScope.popupMessage('Fetching Product..','It will be shown in a minute');
+                $rootScope.popupMessage('Fetching Item..','It will be processed in a minute');
                 $state.go('tab.wardrobe');
             });
         }
         else{
-            $rootScope.popupMessage('','Product URL is Required');
+            $rootScope.popupMessage('','Item URL is required');
         }
     }
+})
+.controller('WardrobeBrowserCtrl', function($scope){
+
 })
 .controller('WardrobeSwapCtrl', function($scope, $stateParams, $state, WardrobeService, AsyncStorageService){
     $scope.item = $stateParams.item;
@@ -1300,9 +1792,36 @@ angular.module('starter.controllers', [])
     }
 })
 .controller('OpenWithCtrl', function($scope, $stateParams, WardrobeService){
-    //$scope.url = $stateParams.url;
-    $scope.url = 'https://www.ae.com/us/en/p/women/sweaters-cardigans/crew-neck-sweaters/ae-cozy-crew-neck-sweater/0348_8684_717?nvid=pdp%3A0348_8684_309?menu=cat4840004';
-    WardrobeService.addItemByUrl($scope.url);
+    var openwith_intent = {};
+    if(localStorage.getItem('openwith_intent')){
+        openwith_intent = JSON.parse(localStorage.getItem('openwith_intent'));
+    }
+
+    // for android browser share or just a text
+    if(
+        typeof openwith_intent.text !== "undefined" &&
+        (
+            openwith_intent.text.includes('http://') ||
+            openwith_intent.text.includes('https://')
+        )
+    ){
+        $scope.url = openwith_intent.text;
+    }
+    // for iOS browser share
+    else if(
+        typeof openwith_intent.items !== "undefined" &&
+        openwith_intent.items.length > 0 &&
+        openwith_intent.items[0].type == "public.url"
+    ){
+        $scope.url = openwith_intent.items[0].url;
+    }
+    else{
+        $scope.url = null;
+    }
+
+    if($scope.url){
+        WardrobeService.addItemByUrl($scope.url);
+    }
 })
 .controller('PostCreateCtrl_deprecated_20191001', function($scope, FetchGoals, $state, $stateParams, $rootScope, $cordovaFile, $ionicLoading, $ionicHistory, $location, CameraPictues, $timeout, UxAnalytics, $http, $ionicScrollDelegate, ImageUpload, SlideHeader) {
     $scope.visibility = 'public';
@@ -1852,6 +2371,7 @@ angular.module('starter.controllers', [])
             captions: param_caption,
             user_id: user.id,
             title : '',
+            date_code: '20200102',
             visibility: $scope.visibility,
             duel_id : DuelService.getDuelId()
         };
@@ -2420,7 +2940,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('PostCardListCtrl', function($scope, $rootScope, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, $timeout, SearchFilter) {
+.controller('PostCardListCtrl', function($scope, $rootScope, $state, SlideHeader, PostCard, BusinessObjectList, $ionicScrollDelegate, UxAnalytics, $stateParams, $timeout, SearchFilter) {
     var user = $rootScope.getCurrentUser();
     if(user.username == user.email || user.username == ''){
         $state.go('register2').then(function(){
@@ -2551,6 +3071,10 @@ angular.module('starter.controllers', [])
         UxAnalytics.startScreen($scope.config.view);
         SlideHeader.viewEntered($scope);
     });
+})
+
+.controller('ItemsCtrl', function($scope, $stateParams){
+    $scope.items = JSON.parse($stateParams.photo.state).items;
 })
 
 .controller('PostLikersCtrl', function($scope, $stateParams, $http, $location, FetchUsers, $rootScope, $timeout, UxAnalytics) {
