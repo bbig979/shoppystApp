@@ -619,3 +619,11 @@ $repeat: 20 ; // How often you want the pattern to repeat.
     }
   }
 }
+.profile{
+    .post-card .photo-list .photo .photo-img-wrapper.index-1:before{
+        left:200%;
+    }
+    .post-card .post-card-footer .option {
+        width: 50%;
+    }
+}

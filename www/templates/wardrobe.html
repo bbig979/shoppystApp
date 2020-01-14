@@ -1,6 +1,6 @@
 <ion-view cache-view="false" view-title="<snap-title>WARDROBE</snap-title>" id="wardrobe">
     <ion-content>
-        <div class="control-pannel">
+        <div class="control-pannel" ng-hide="'hidden'==tab">
             <button class="button" ng-click="load()"><i class="fa fa-download" aria-hidden="true"></i> Load Selected</button>
             <button class="button" ng-click="add()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add an Item</button>
         </div>
@@ -9,7 +9,7 @@
                 <div class="photo-img-wrapper" style="background-image: url({{ item.image }})">
                 </div>
             </ion-item>
-            <ion-item ng-repeat="item in data.item_array" class="image-card" ng-click="toggleSelect(item)" on-hold="edit(item)" ng-class="item.selected?'selected':'unselected'">
+            <ion-item ng-repeat="item in data.item_array track by $index" class="image-card" ng-click="toggleSelect(item)" on-hold="edit(item)" ng-class="item.selected?'selected':'unselected'">
                 <div class="photo-img-wrapper" style="background-image: url({{ item.image }})">
                 </div>
             </ion-item>

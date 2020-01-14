@@ -30,7 +30,7 @@
         <ion-list>
             <div>
                 <ion-item ng-repeat="post in list track by $index" class="post-card" ng-class="$even ? 'even' : 'odd'">
-                    <div class="entity-id-{{post.id}}" ng-click="goPostDetail(post, list)">
+                    <div class="entity-id-{{post.id}}" ng-click="goPostDetail(post, list, true)">
                         <div class="photo-img-wrapper entity-id-{{post.photos[0].id}}" style="background-image: url({{ photoPath( post.photos[0].img_path, 'l' ) }})">
                             <a class="photo-img"></a>
                         </div>

@@ -88,21 +88,30 @@
 
 }
 #open-with{
-    .message-wrapper{
-        padding: 4vw;
-        text-align: center;
-        .pre-url-message{
+    .fetching-message{
+        text-align:center;
+        padding:4vw;
+        ul{
             padding: 4vw;
+            border: 1px solid #fc7878;
+            margin: 4vw;
+            border-radius: 2px;
+            color: #fc7878;
+            li{
+                list-style: decimal;
+                list-style-position: inside;
+            }
         }
-        .display-url{
-            padding: 4vw;
-            background-color: #f7f7f7;
-            border: 1px solid #ccc;
-            margin: 4vw 0;
-            border-radius: 3px;
-        }
-        .post-url-message{
 
+    }
+    .images-wrapper{
+        margin: 1vw;
+        img{
+            margin:1vw;
+            width:22.5vw;
+            &.selected{
+                border: 2px solid #55ff91;
+            }
         }
     }
 }

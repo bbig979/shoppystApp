@@ -7,15 +7,32 @@
             <a class="step step-1 active"><span class="label"></span></a>
             <a class="step step-2"><span class="label"></span></a>
         </div>
-        <div class="step-message">What's your style duel?</div>
+        <div class="step-message">Select a contest to participate</div>
 
-        <form name="searchForm" ng-submit="setTitle(title)">
-            <label class="item item-input item-floating-label title-wrapper" ng-class="titleState">
-                <input type="text" ng-model="title" placeholder="Type title of style duel" autocomplete="off">
-            </label>
-            <div class="button-padding">
-                <button class="button button-block button-positive" type="submit">Next</button>
+        <form name="searchForm" ng-submit="submitSearchTerm()">
+            <div class="bar item-input-inset">
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios-search placeholder-icon"></i>
+                    <input type="search" id="search" placeholder="Search contests" ng-model="search_term" autocomplete="off" ng-keyup="searchTermSuggestion()">
+                </label>
+                <div ng-click="search_term = '';searchTermSuggestion();" class="button button-clear search-clear" ng-show="search_term != ''">X</div>
             </div>
         </form>
+        <div class="loading-spinner" data-loading ng-if="is_list_loading">
+            <ion-spinner></ion-spinner>
+        </div>
+        <div class="no-result" ng-if="list.length == 0 && is_result_empty">
+            We have no contest by this keyword
+        </div>
+        <ion-list>
+            <div>
+                <ion-item ng-repeat="duel in list" ng-click="setDuel(duel)" class="goal-card">
+                    <div class="goal-item">
+                        <div class="goal-name">{{duel.title}}</div>
+                    </div>
+                </ion-item>
+            </div>
+        </ion-list>
+        <ion-infinite-scroll ng-if="!is_pagination_done" on-infinite="load()" distance="10%" immediate-check="false"></ion-infinite-scroll>
     </ion-content>
 </ion-view>

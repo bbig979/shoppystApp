@@ -652,7 +652,7 @@
 }
 /* line 90, ../../scss/tw/_post-create.scss */
 #create-post-step-1 .item {
-  padding: 12px;
+  padding: 5vw;
 }
 /* line 93, ../../scss/tw/_post-create.scss */
 #create-post-step-1 ion-item:first-child {
@@ -712,7 +712,7 @@
 /* line 143, ../../scss/tw/_post-create.scss */
 #create-post .post-images li {
   width: 50%;
-  height: 60vw;
+  height: 63vw;
   float: left;
   padding: 12px;
   padding-bottom: 0px;

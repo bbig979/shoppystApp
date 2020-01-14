@@ -1,15 +1,22 @@
 <ion-view cache-view="false" view-title="<snap-title>ADD TO WARDROBE</snap-title>" id="open-with">
     <ion-content>
-        <div class="message-wrapper">
-            <div class="pre-url-message">
-                We are fetching the item from URL below.
+        <div>
+            <div class="fetching-message" ng-show="time_out">
+                <br/>Fetching is stopped. Belows are possible reasons.
+                <ul>
+                    <li>Slow internet connection</li>
+                    <li>Brand is not allowing fetching</li>
+                </ul>
+                If you believe your internet connection is slow, please try with faster connection. If the brand is not allowing fetching, please use other brands.
             </div>
-            <div class="display-url">
-                 {{ url }}
+            <div class="fetching-message" ng-hide="images.length > 0 || time_out">
+                <br/>Fetching Product Images<br/><br/>
+                <ion-spinner></ion-spinner>
             </div>
-            <ion-spinner></ion-spinner>
-            <div class="post-url-message">
-                It will show up in your wardrobe in a minute.
+            <div class="images-wrapper" ng-show="images.length > 0 && !time_out">
+                 <button class="button button-positive button-block" disabled ng-show="selected_image===''">Select Main Image</button>
+                 <button class="button button-positive button-block" ng-click="finalize()" ng-show="selected_image!==''">Use Selected Image as Main</button>
+                 <img ng-repeat="image in images track by $index" src="{{image}}" ng-click="select(image)" ng-class="image == selected_image?'selected':'unselected'"/>
             </div>
         </div>
     </ion-content>

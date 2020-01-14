@@ -35,7 +35,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         $ionicHistory.nextViewOptions({
             disableBack: true
         });
-        $state.go('tab.open-with',{refresh:Date.now()});
+        $state.go('tab.open-with-hidden',{refresh:Date.now()});
       });
     });
 
@@ -66,10 +66,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $ionicConfigProvider.scrolling.jsScrolling(false);
     $ionicConfigProvider.tabs.position('bottom');
     $ionicConfigProvider.navBar.alignTitle('center');
-    //var baseURL = 'https://app.snaplook.today';
+    var baseURL = 'https://app.snaplook.today';
     //var baseURL = 'http://localhost:8000';
     //var baseURL = 'http://192.168.56.1:8000';
-    var baseURL = 'http://localhost:8888';
+    //var baseURL = 'http://localhost:8888';
     $authProvider.loginUrl = baseURL+'/api/authenticate';
     $authProvider.facebook({
         clientId: '932117430193850',
@@ -134,17 +134,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
-    .state('tab.canvas-demo', {
-      url: '/canvas-demo',
-      views: {
-        'tab-camera': {
-          templateUrl: 'templates/canvas.html',
-          controller: 'CanvasDemoCtrl'
-        }
-      }
-    })
-    .state('tab.wardrobe', {
-      url: '/wardrobe',
+    .state('tab.wardrobe-camera', {
+      url: '/wardrobe/camera',
       views: {
         'tab-camera': {
           templateUrl: 'templates/wardrobe.html',
@@ -152,21 +143,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
-    .state('tab.wardrobe-demo', {
-      url: '/wardrobe-demo',
+    .state('tab.wardrobe-hidden', {
+      url: '/wardrobe/hidden',
       views: {
-        'tab-camera': {
+        'tab-hidden': {
           templateUrl: 'templates/wardrobe.html',
-          controller: 'WardrobeDemoCtrl'
-        }
-      }
-    })
-    .state('tab.wardrobe-add-demo', {
-      url: '/wardrobe-add-demo',
-      views: {
-        'tab-camera': {
-          templateUrl: 'templates/wardrobe.html',
-          controller: 'WardrobeAddDemoCtrl'
+          controller: 'WardrobeCtrl'
         }
       }
     })
@@ -188,8 +170,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         }
       }
     })
-    .state('tab.wardrobe-swap', {
-      url: '/wardrobe-swap',
+    .state('tab.wardrobe-swap-hidden', {
+      url: '/wardrobe-swap/hidden',
+      views: {
+        'tab-hidden': {
+          templateUrl: 'templates/wardrobe-swap.html',
+          controller: 'WardrobeSwapCtrl'
+        }
+      },
+      params: {
+         item: null
+      }
+    })
+    .state('tab.wardrobe-swap-camera', {
+      url: '/wardrobe-swap/camera',
       views: {
         'tab-camera': {
           templateUrl: 'templates/wardrobe-swap.html',
@@ -200,10 +194,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
          item: null
       }
     })
-    .state('tab.open-with', {
-        url: '/open-with',
+    .state('tab.open-with-hidden', {
+        url: '/open-with/hidden',
         views:{
             'tab-hidden': {
+                templateUrl: 'templates/open-with.html',
+                controller: 'OpenWithCtrl'
+            }
+        },
+        params: {
+            refresh: null
+        }
+    })
+    .state('tab.open-with-camera', {
+        url: '/open-with/camera',
+        views:{
+            'tab-camera': {
                 templateUrl: 'templates/open-with.html',
                 controller: 'OpenWithCtrl'
             }
@@ -1053,7 +1059,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        },
        params: {
-           method: 'single_post'
+           method: 'single_post',
+           is_from_profile: false
        }
    })
    .state('tab.single-post-explore', {
@@ -1065,7 +1072,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        },
        params: {
-           method: 'single_post'
+           method: 'single_post',
+           is_from_profile: false
        }
    })
    .state('tab.single-post-camera', {
@@ -1077,7 +1085,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        },
        params: {
-           method: 'single_post'
+           method: 'single_post',
+           is_from_profile: false
        }
    })
    .state('tab.single-post-account', {
@@ -1089,7 +1098,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        },
        params: {
-           method: 'single_post'
+           method: 'single_post',
+           is_from_profile: false
        }
    })
    .state('tab.single-post-notification', {
@@ -1101,7 +1111,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        },
        params: {
-           method: 'single_post'
+           method: 'single_post',
+           is_from_profile: false
        }
    })
    .state('tab.single-post-hidden', {
@@ -1113,7 +1124,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
            }
        },
        params: {
-           method: 'single_post'
+           method: 'single_post',
+           is_from_profile: false
        }
    })
 

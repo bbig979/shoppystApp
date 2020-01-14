@@ -31,22 +31,6 @@
                         </div>
                     </div>
                 </li>
-                <li ng-if="duelService.getPicture(1)">
-                    <div class="post-image">
-                        <img class="item" ng-src="{{duelService.getPicture(1)}}" />
-                    </div>
-                    <div class="remove-image" ng-click="duelService.removePicture(1)">
-                        <i class="icon ion-close-circled"></i>
-                    </div>
-                </li>
-                <li ng-if="!duelService.getPicture(1)">
-                    <div class="add-more-to-compare-wrapper" ng-click="openCameraMenu(1)">
-                        <div class="add-more-to-compare-button">
-                            <i class="icon ion-plus-circled"></i><br>
-                            Add Vs. Outfit
-                        </div>
-                    </div>
-                </li>
             </ul>
             <div class="clearfix"></div>
             <div class="post-caption padding" ng-show="hasContent()">

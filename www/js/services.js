@@ -246,7 +246,7 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
         },
     };
 })
-.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts, GoalBO, $q, Util){
+.factory('BusinessObjectList', function($timeout, $rootScope, preloader, PostComment, FetchPosts, GoalBO, DuelBO, $q, Util){
     return {
         reset: function($scope){
             var config = $scope.business_object_list_config;
@@ -275,6 +275,9 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
             }
             else if('goal' == config.type){
                 return GoalBO.index(this._buildRequestObject($scope));
+            }
+            else if('duel' == config.type){
+                return DuelBO.index(this._buildRequestObject($scope));
             }
         },
         _buildRequestObject: function($scope){
@@ -438,6 +441,14 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
             }
             return this._countSummaryText(vote_count, 'Vote');
         },
+        likeCount: function(post){
+            var like_count = 0;
+            var photo = post.photos[0];
+            if(photo.vote_info && photo.vote_info.count){
+                like_count = photo.vote_info.count;
+            }
+            return this._countSummaryText(like_count, 'Like');
+        },
         voteToggle: function(post, photo){
             Vote.toggle(post, photo);
         },
@@ -520,14 +531,15 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
             });
         },
         _countSummaryText: function(count, domain){
-            if(count == 0){
-                return '';
+            var seperator = ' · ';
+            if('Comment' === domain){
+                seperator = '';
             }
-            else if(count == 1){
-                return ' · ' + count + ' ' + domain;
+            if(count < 2){
+                return seperator + count + ' ' + domain;
             }
             else{
-                return ' · ' + count + ' ' + domain + 's';
+                return seperator + count + ' ' + domain + 's';
             }
         }
     };
@@ -886,6 +898,19 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
                 var goal = goals[i];
                 goal.display_count = Util.numberWithCommas(goal.count);
             }
+        }
+    };
+})
+.factory('DuelBO', function($http, $rootScope, Util, $q) {
+    return {
+        index: function(arg_info) {
+            var this_factory = this;
+            return $http.get($rootScope.baseURL+"/api/duels"+Util.serialize(arg_info)).then(function(response){
+                return response.data;
+            }
+            ,function(response){
+                $rootScope.handleHttpError(response.data, response.status);
+            });
         }
     };
 })
@@ -1361,7 +1386,7 @@ angular.module('starter.services', ['ngCordova.plugins.nativeStorage'])
         },
         toJSON: function(){
             return {
-                canvas: _canvas.toJSON(['lockRotation','hasRotatingPoint']),
+                canvas: _canvas.toJSON(['lockRotation','hasBorders','hasControls']),
                 items: _items
             }
         },
@@ -1482,6 +1507,7 @@ console.log({'1358':JSON.parse(str)});
             });
         },
         loadItems: function(items){
+            var this_service = this;
             var added_image_count = 0;
             $ionicLoading.show({template: 'Auto Removing Backgrounds...<br/><br/><ion-spinner></ion-spinner>'});
             for( var i = 0; i < items.length; i++){
@@ -1490,10 +1516,13 @@ console.log({'1358':JSON.parse(str)});
                     item_sequence: i
                 }).success(function(result){
                     var temp_image_url = $rootScope.baseURL+result;
+                    /*
                     var url = 'https://res.cloudinary.com/ds33o4ozo/image/fetch/w_600/f_png,e_make_transparent/'+temp_image_url;
                     if($rootScope.baseURL.includes('localhost')){
                         url = temp_image_url;
                     }
+                    */
+                    var url = temp_image_url;
                     fabric.Image.fromURL(url, function(img) {
 
                       // need error handling when img fail to load
@@ -1506,11 +1535,12 @@ console.log({'1358':JSON.parse(str)});
 
                       // when dealing with _canvas CRUD take care of _items first because _canvas auto save
 
-                      img.scale(0.33).set({
+                      img.scale(0.5).set({
                         left: 0,
                         top: 0,
                         lockRotation: true,
-                        hasRotatingPoint: false
+                        hasBorders: false,
+                        hasControls: false,
                       });
                       _canvas.add(img);
 

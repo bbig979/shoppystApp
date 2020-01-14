@@ -11,7 +11,7 @@
         </ion-refresher>
         <div class="no-result" ng-if="list.length == 0 && is_result_empty" ng-bind-html="config.no_result_message">
         </div>
-        <ion-list>
+        <ion-list ng-class="{'profile': isProfile()}">
             <div>
                 <ion-item ng-repeat="post in list track by $index" class="post-card" ng-class="hide_slide_counter == 4 && list.length == 1 ? 'hide-slide-counter' : ''">
                     <div class="entity-id-{{post.id}}">
@@ -30,7 +30,7 @@
                         <div class="post-title">
                             <p>{{post.duel.title}}</p>
                         </div>
-                        <div class="duel-pannel">
+                        <div class="duel-pannel" ng-hide="isProfile()">
                             <div class="duel-vs">
                                 VS
                             </div>
@@ -60,17 +60,17 @@
                             </div>
                         </div>
                         <ion-slide-box class="photo-list" show-pager="false">
-                            <ion-slide ng-repeat="photo in post.photos">
+                            <ion-slide ng-repeat="photo in post.photos" ng-if="! (isProfile() && $index==1)">
                                 <div class="photo">
-                                    <div class="photo-counter" ng-click="hideSlideCounter()">
+                                    <div class="photo-counter" ng-click="hideSlideCounter()" ng-hide="isProfile()">
                                         {{ $index + 1 }}/{{ post.photos.length }}
                                     </div>
                                     <div class="shop-link" ng-click="goItems(photo)"><i class=" icon ion-bag"></i></div>
                                     <div class="photo-img-wrapper entity-id-{{photo.id}} index-{{ $index + 1 }}" style="background-image: url({{ photoPath( photo.img_path, 'l' ) }})" zoomable>
-                                        <div class="masker"></div>
+                                        <div class="masker" ng-hide="isProfile()"></div>
                                         <a class="photo-img"></a>
                                     </div>
-                                    <div class="vote-toggle">
+                                    <div class="vote-toggle" ng-hide="isProfile()">
                                         <div class="check-mark icon ion-ios-checkmark-empty" ng-click="postCard.voteToggle(post, photo)" ng-class="photo.user_liked ? 'checked' : 'not-checked'"></div>
                                     </div>
                                 </div>
@@ -79,7 +79,7 @@
                         <div class="caption" ng-bind-html="linkHashTagAndGoal(post) | unsafe"></div>
                         <div class="post-summary clearfix">
                             <div class="totals">
-                                {{ post.photos.length }} Outfits<span ng-click="goPostComment(post)">{{ postCard.commentCount(post) }}</span><span ng-click="goVoteResult(post)">{{ postCard.voteCount(post) }}</span>
+                                <span ng-click="goPostComment(post)">{{ postCard.commentCount(post) }}</span><span ng-click="goVoteResult(post)" ng-hide="isProfile()">{{ postCard.voteCount(post) }}</span><span ng-show="isProfile()">{{ postCard.likeCount(post) }}</span>
                             </div>
                         </div>
                         <hr>
@@ -87,7 +87,7 @@
                             <div class="option comment">
                                 <button class="button button-clear button-dark icon ion-ios-chatbubble-outline" ng-click="goPostComment(post)">&nbsp;&nbsp;Comment</button>
                             </div>
-                            <div class="option result">
+                            <div class="option result" ng-hide="isProfile()">
                                 <button class="button button-clear button-dark icon ion-ios-checkmark-outline" ng-click="goVoteResult(post)">&nbsp;&nbsp;Result</button>
                             </div>
                             <div class="option share">
